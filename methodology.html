@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta name="description" content="OrnyTools Methodology — How the Trade Size Optimizer works: constant-product solver, V3 on-chain liquidity derivation, and confidence scoring."/>
+<meta name="robots" content="index,follow"/>
+<link rel="canonical" href="https://ornytools.xyz/methodology.html"/>
+<meta property="og:type" content="website"/>
+<meta property="og:site_name" content="OrnyTools"/>
+<meta property="og:title" content="Methodology — OrnyTools"/>
+<meta property="og:description" content="How the Trade Size Optimizer works: exact constant-product solver, V3 on-chain liquidity derivation, and Orny confidence scoring."/>
+<meta property="og:url" content="https://ornytools.xyz/methodology.html"/>
+<meta property="og:image" content="https://ornytools.xyz/orny-banner.png"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="Methodology — OrnyTools"/>
+<meta name="twitter:description" content="How the Trade Size Optimizer works: exact constant-product solver, V3 on-chain liquidity derivation, and Orny confidence scoring."/>
+<meta name="twitter:image" content="https://ornytools.xyz/orny-banner.png"/>
+<title>Methodology — OrnyTools</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet"/>
+<style>
+  :root{
+    --gold:#C8841E;--gold-pale:rgba(200,132,30,.08);
+    --aqua:#3A9FD4;--aqua-pale:rgba(58,159,212,.08);
+    --good:#0E9F6E;--good-pale:rgba(14,159,110,.08);
+    --coral:#E8765A;--coral-pale:rgba(232,118,90,.08);
+    --warn:#F59E0B;--warn-pale:rgba(245,158,11,.08);
+    --purple:#7C3AED;
+    --text:#111827;--dim:#6B7280;--faint:#9AA5B4;
+    --line:#E4E8F0;--line-soft:#EDF0F5;
+    --surface:#FFFFFF;--surface-2:#F0F2F5;
+    --display:"Fraunces",Georgia,serif;
+    --ui:"Hanken Grotesk",system-ui,sans-serif;
+    --mono:"JetBrains Mono",ui-monospace,monospace;
+    --radius:14px;
+    --shadow:0 2px 8px rgba(0,0,0,.07),0 8px 32px rgba(0,0,0,.07);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#fff;color:var(--text);font-family:var(--ui);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+
+  .navbar{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(255,255,255,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);padding:10px 24px;display:flex;align-items:center;gap:12px;box-shadow:0 2px 12px rgba(0,0,0,.04)}
+  .nav-logo{width:36px;height:36px;object-fit:cover;object-position:center 15%;border-radius:8px}
+  .nav-brand{font-family:var(--display);font-size:1.05rem;font-weight:600;letter-spacing:-.02em}
+  .nav-brand .dot{color:var(--gold)}
+  .nav-tag{font-size:.6rem;color:var(--faint);text-transform:uppercase;letter-spacing:.18em;font-weight:600}
+  .nav-home{margin-left:auto;font-size:.82rem;font-weight:600;color:var(--dim);text-decoration:none;padding:7px 14px;border:1px solid var(--line);border-radius:7px;transition:.15s}
+  .nav-home:hover{border-color:var(--gold);color:var(--gold)}
+
+  /* HERO */
+  .page-hero{padding:100px 28px 56px;text-align:center;background:#fff}
+  .eyebrow{font-size:11.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:16px}
+  .page-hero h1{font-family:var(--display);font-weight:500;font-size:clamp(1.9rem,3.5vw,2.7rem);letter-spacing:-.02em;line-height:1.1;margin-bottom:16px}
+  .page-hero h1 em{font-style:italic;color:var(--gold)}
+  .page-hero p{color:var(--dim);font-size:1rem;max-width:54ch;margin:0 auto;line-height:1.8}
+
+  /* TOC */
+  .toc-wrap{max-width:860px;margin:0 auto;padding:0 28px 48px}
+  .toc{background:var(--surface-2);border:1px solid var(--line);border-radius:var(--radius);padding:20px 24px;display:flex;flex-wrap:wrap;gap:8px 20px}
+  .toc a{font-size:13px;font-weight:600;color:var(--dim);text-decoration:none;padding:3px 0;border-bottom:1.5px solid transparent;transition:.15s;white-space:nowrap}
+  .toc a:hover{color:var(--gold);border-bottom-color:var(--gold)}
+
+  /* BODY */
+  .content{max-width:860px;margin:0 auto;padding:0 28px 100px}
+
+  /* SECTIONS */
+  .sec{margin-bottom:64px;scroll-margin-top:80px}
+  .sec-num{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--gold);letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px}
+  .sec h2{font-family:var(--display);font-size:clamp(1.4rem,2.5vw,1.8rem);font-weight:500;letter-spacing:-.02em;margin-bottom:18px;line-height:1.2}
+  .sec h3{font-family:var(--display);font-size:1.1rem;font-weight:500;letter-spacing:-.015em;margin:28px 0 10px;color:var(--text)}
+  .sec p{font-size:.95rem;color:var(--dim);line-height:1.85;margin-bottom:14px}
+  .sec p:last-child{margin-bottom:0}
+  .sec ul,.sec ol{padding-left:20px;margin-bottom:14px}
+  .sec li{font-size:.95rem;color:var(--dim);line-height:1.75;margin-bottom:4px}
+  .sec strong{color:var(--text);font-weight:700}
+  .sec a{color:var(--aqua);text-decoration:none;font-weight:600}
+  .sec a:hover{text-decoration:underline}
+  hr.sec-div{border:none;border-top:1px solid var(--line);margin-bottom:64px}
+
+  /* FORMULA BLOCK */
+  .formula{background:var(--surface-2);border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:10px;padding:18px 20px;margin:18px 0;font-family:var(--mono);font-size:13.5px;line-height:1.9;color:var(--text);overflow-x:auto;white-space:pre}
+  .formula .comment{color:var(--faint);font-size:12px}
+  .formula .hl{color:var(--gold);font-weight:700}
+
+  /* CODE INLINE */
+  code{font-family:var(--mono);font-size:13px;background:var(--surface-2);border:1px solid var(--line);padding:1px 6px;border-radius:4px;color:var(--text)}
+
+  /* CALLOUT */
+  .callout{border-radius:var(--radius);padding:16px 20px;margin:20px 0;font-size:.9rem;line-height:1.7}
+  .callout.gold{background:var(--gold-pale);border:1px solid rgba(200,132,30,.2)}
+  .callout.aqua{background:var(--aqua-pale);border:1px solid rgba(58,159,212,.2)}
+  .callout.warn{background:var(--warn-pale);border:1px solid rgba(245,158,11,.2)}
+  .callout.good{background:var(--good-pale);border:1px solid rgba(14,159,110,.2)}
+  .callout b{color:var(--text)}
+
+  /* COMPARISON TABLE */
+  .cmp-table{width:100%;border-collapse:collapse;margin:18px 0;font-size:13.5px;background:#fff;border-radius:var(--radius);overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow)}
+  .cmp-table th{background:var(--surface-2);padding:11px 16px;font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);text-align:left;border-bottom:1px solid var(--line)}
+  .cmp-table td{padding:11px 16px;border-bottom:1px solid var(--line-soft);color:var(--dim);line-height:1.5}
+  .cmp-table tr:last-child td{border-bottom:none}
+  .cmp-table .good{color:var(--good);font-weight:700}
+  .cmp-table .bad{color:var(--coral);font-weight:700}
+
+  /* STEP LIST */
+  .steps{display:flex;flex-direction:column;gap:12px;margin:16px 0}
+  .step{display:flex;gap:14px;align-items:flex-start}
+  .step-num{flex-shrink:0;width:28px;height:28px;background:var(--gold);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:12px;font-weight:700;margin-top:1px}
+  .step-body{font-size:.9rem;color:var(--dim);line-height:1.7;padding-top:4px}
+  .step-body strong{color:var(--text)}
+
+  /* CONFIDENCE TABLE */
+  .conf-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:13px}
+  .conf-table td{padding:8px 12px;border-bottom:1px solid var(--line-soft);color:var(--dim)}
+  .conf-table td:first-child{font-family:var(--mono);font-size:12px;width:90px}
+  .conf-table td:nth-child(2){font-weight:600;color:var(--text);width:120px}
+  .conf-table tr:last-child td{border-bottom:none}
+  .tag-ok{font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px;background:var(--good-pale);color:var(--good)}
+  .tag-warn{font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px;background:var(--warn-pale);color:var(--warn)}
+  .tag-bad{font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px;background:var(--coral-pale);color:var(--coral)}
+
+  /* BACK + FOOTER */
+  .back-section{padding:40px 28px;text-align:center;border-top:1px solid var(--line);background:var(--surface-2)}
+  .back-link{display:inline-flex;align-items:center;gap:10px;text-decoration:none;color:var(--text);font-weight:700;font-size:15px;padding:14px 32px;border:1.5px solid var(--line);border-radius:40px;background:#fff;transition:.18s;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+  .back-link:hover{border-color:var(--gold);color:var(--gold)}
+  footer{padding:36px 0;text-align:center;color:var(--faint);font-size:13px;border-top:1px solid var(--line)}
+  .ft-tag{font-family:var(--display);font-style:italic;font-size:17px;color:var(--dim);margin-bottom:8px}
+  .ft-tag span{color:var(--gold)}
+
+  @media(max-width:600px){
+    .navbar{padding:8px 14px}.nav-home{padding:6px 10px;font-size:.75rem}
+    .page-hero{padding:80px 16px 36px}
+    .content,.toc-wrap{padding-left:16px;padding-right:16px}
+    .formula{font-size:12px;padding:14px}
+    .back-section{padding:28px 16px}
+  }
+</style>
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-5XT34MFV');</script>
+<!-- End Google Tag Manager -->
+</head>
+<body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5XT34MFV"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+<nav class="navbar">
+  <img class="nav-logo" src="logo.png" alt="OrnyTools"/>
+  <div>
+    <div class="nav-brand">Orny<span class="dot">Tools</span></div>
+    <div class="nav-tag">Methodology</div>
+  </div>
+  <a href="optimizer.html" class="nav-home">← Optimizer</a>
+</nav>
+
+<div class="page-hero">
+  <div class="eyebrow">Under the hood</div>
+  <h1>How the <em>engine</em> works.</h1>
+  <p>The math behind the Trade Size Optimizer — exact constant-product solver, on-chain V3 liquidity derivation, and the Orny confidence score.</p>
+</div>
+
+<!-- TOC -->
+<div class="toc-wrap">
+  <div class="toc">
+    <a href="#overview">1. Overview</a>
+    <a href="#formula">2. Why the analytical formula fails</a>
+    <a href="#solver">3. Exact constant-product solver</a>
+    <a href="#v3">4. V3 on-chain liquidity</a>
+    <a href="#confidence">5. Orny confidence score</a>
+    <a href="#limits">6. Known limitations</a>
+  </div>
+</div>
+
+<div class="content">
+
+  <!-- 1. OVERVIEW -->
+  <div class="sec" id="overview">
+    <div class="sec-num">01 — Overview</div>
+    <h2>What the optimizer solves</h2>
+    <p>Every swap on an AMM carries two competing costs: a <strong>fixed gas cost</strong> that dominates small trades, and a <strong>slippage cost</strong> that grows with trade size. Plotted against trade size, their sum forms a U-curve with a minimum — the optimal trade size.</p>
+    <p>The optimizer finds the exact bottom of that U-curve for any pool, using the full constant-product math rather than a linearized approximation.</p>
+
+    <div class="callout gold">
+      <b>The key insight:</b> the optimal size is <em>not</em> a function of gas alone. It depends on pool depth, fee tier, and — for V3 — the active liquidity at the current price. Two pools with the same TVL can have optimal sizes that differ by 5–10×.
+    </div>
+
+    <p>The total cost function minimized is:</p>
+    <pre class="formula"><span class="hl">C(A)</span> = G/A  +  A/(R+A)  +  fee
+<span class="comment">         ↑        ↑            ↑
+      gas %   slippage %   pool fee %</span></pre>
+    <p>where <code>A</code> is the trade size (USD), <code>G</code> is the gas cost (USD, fixed), <code>R</code> is the effective one-sided reserve (USD), and <code>fee</code> is the pool fee as a fraction.</p>
+  </div>
+
+  <hr class="sec-div"/>
+
+  <!-- 2. ANALYTICAL FORMULA -->
+  <div class="sec" id="formula">
+    <div class="sec-num">02 — The analytical formula</div>
+    <h2>Why <code>√(G·TVL)</code> underestimates</h2>
+
+    <p>A commonly cited shortcut for the optimal trade size is the closed-form solution derived by linearizing slippage. Assuming <code>A ≪ R</code> (trade size much smaller than pool depth):</p>
+
+    <pre class="formula">Approximate slippage:  A/(R+A)  ≈  A/R   (when A ≪ R)
+
+C(A) ≈ G/A + A/R + fee
+
+dC/dA = −G/A²  +  1/R  = 0
+
+<span class="hl">A_opt ≈ √(G·R)  =  √(G · TVL/2)</span></pre>
+
+    <p>For example, with <code>G = $2.50</code> and <code>TVL = $5M</code>:</p>
+    <pre class="formula">A_opt = √(2.50 × 2,500,000) = √6,250,000 ≈ <span class="hl">$2,500</span></pre>
+
+    <h3>Where the approximation breaks down</h3>
+    <p>The formula uses <code>A/R</code> for slippage. The exact constant-product formula is <code>A/(R+A)</code>. These diverge as <code>A</code> approaches <code>R</code> — which happens in three real-world situations:</p>
+
+    <table class="cmp-table">
+      <thead><tr><th>Situation</th><th>Effect on R_effective</th><th>Formula error</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>Unbalanced pool (price has moved)</td>
+          <td>R &lt; TVL/2</td>
+          <td class="bad">Overestimates A_opt</td>
+        </tr>
+        <tr>
+          <td>V3 concentrated liquidity</td>
+          <td>R_active ≪ TVL/2 (5–20% typical)</td>
+          <td class="bad">Overestimates A_opt by 3–10×</td>
+        </tr>
+        <tr>
+          <td>Deep pool, tiny trade</td>
+          <td>A/R → 0</td>
+          <td class="good">Formula is accurate</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout warn">
+      <b>The V3 problem:</b> A pool showing $50M TVL may have only $2–5M of active liquidity near the current price. Plugging $50M into the formula gives an optimal size 3–5× too large, landing you in the slippage-dominated zone.
+    </div>
+
+    <p>The formula also assumes a balanced pool (50/50 token split). Any price movement creates an imbalanced pool where the effective one-sided depth <code>R</code> differs from <code>TVL/2</code>. These compounding errors are why empirical measurements show the analytical formula can underestimate slippage by a factor of 3–5× on live V3 pools.</p>
+  </div>
+
+  <hr class="sec-div"/>
+
+  <!-- 3. SOLVER -->
+  <div class="sec" id="solver">
+    <div class="sec-num">03 — Exact solver</div>
+    <h2>Constant-product ternary search</h2>
+
+    <p>Rather than approximating, OrnyTools minimizes the exact cost function numerically via <strong>ternary search</strong> — a derivative-free method for unimodal functions that converges in O(log n) iterations.</p>
+
+    <h3>The exact cost model</h3>
+    <pre class="formula"><span class="comment">// Exact slippage from constant-product AMM (x·y = k)</span>
+<span class="comment">// One-sided reserve R = effective depth (USD)</span>
+<span class="comment">// Trade of size A pushes the pool by A tokens</span>
+
+slippage_USD(A, R)  = A² / (R + A)
+gas_share(A)        = G / A
+fee_cost(A)         = fee × A
+
+<span class="hl">C(A) = G/A  +  A/(R+A)  +  fee</span>   <span class="comment">← cost per dollar traded</span></pre>
+
+    <h3>Ternary search</h3>
+    <p>The cost function <code>C(A)</code> is strictly unimodal on <code>(0, ∞)</code>: it decreases from infinity as gas dominates at small A, reaches a minimum, then increases as slippage dominates at large A. This guarantees ternary search converges to the global minimum.</p>
+
+    <pre class="formula"><span class="comment">// Ternary search on [lo, hi] — O(log n) evaluations</span>
+lo = 0.01, hi = R × 0.5
+
+while hi − lo &gt; 0.01:
+    m1 = lo + (hi − lo) / 3
+    m2 = hi − (hi − lo) / 3
+    if C(m1) &lt; C(m2):
+        hi = m2
+    else:
+        lo = m1
+
+<span class="hl">A_opt = (lo + hi) / 2</span></pre>
+
+    <p>The search converges to $0.01 precision in under 50 iterations. There is no closed-form derivative required, and the result is exact for any <code>R</code> value — including the small active-liquidity values typical of tight V3 ranges.</p>
+
+    <h3>Fee tier inclusion</h3>
+    <p>The pool fee <code>fee × A</code> is a linear term in total cost. Its <strong>derivative is constant</strong>, so it does not shift the minimum of the cost-per-dollar curve — it only raises the floor uniformly. The fee is included in the displayed total cost but does not change <code>A_opt</code>. This is a known property of proportional fee models and applies equally to 0.05%, 0.3% and 1% fee tiers.</p>
+  </div>
+
+  <hr class="sec-div"/>
+
+  <!-- 4. V3 ON-CHAIN -->
+  <div class="sec" id="v3">
+    <div class="sec-num">04 — V3 on-chain liquidity</div>
+    <h2>From <code>slot0()</code> to virtual reserves</h2>
+
+    <p>For Uniswap V3 pools, TVL shown on GeckoTerminal or DefiLlama includes all liquidity across all price ranges — most of which is inactive. The engine reads the <strong>real active liquidity</strong> directly from the contract via raw <code>eth_call</code>, without any third-party library.</p>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body"><strong>Read slot0() — selector <code>0x3850c7bd</code></strong><br/>
+        Returns a packed tuple. The first 160 bits encode <code>sqrtPriceX96</code> — the square root of the current price in Q64.96 fixed-point format.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body"><strong>Read liquidity() — selector <code>0x1a686502</code></strong><br/>
+        Returns the active liquidity <code>L</code> at the current price. This is the liquidity that earns fees on the next swap — a real-time measure of depth, not a TVL proxy.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body"><strong>Derive virtual reserves</strong><br/>
+        The V3 virtual reserve model gives the amount of each token providing the active liquidity <code>L</code>:</div>
+      </div>
+    </div>
+
+    <pre class="formula"><span class="comment">// Q96 = 2^96 (fixed-point denominator)</span>
+sqrtP  = sqrtPriceX96 / 2^96
+
+<span class="comment">// Virtual reserves from active liquidity L and current sqrt-price</span>
+<span class="hl">x_virtual = L / sqrtP          </span><span class="comment"> (token0 amount, in token0 units)</span>
+<span class="hl">y_virtual = L × sqrtP          </span><span class="comment"> (token1 amount, in token1 units)</span>
+
+<span class="comment">// Convert to USD using GeckoTerminal spot prices p0, p1</span>
+R_eff = (x_virtual × p0 + y_virtual × p1) / 2</pre>
+
+    <p><code>R_eff</code> is the effective one-sided depth — the value used in the cost function. It directly represents the pool's capacity to absorb a swap near the current price, accounting for tick concentration.</p>
+
+    <div class="callout aqua">
+      <b>Why this matters:</b> for a pool with $50M TVL but a tight ±1% range, <code>R_eff</code> may be $3–8M. Using TVL directly overestimates depth by 6–15× and produces an optimal size far into the slippage-heavy zone.
+    </div>
+
+    <h3>RPC fallback chain</h3>
+    <p>All on-chain reads go through a <strong>fallback RPC array</strong> per chain. If the primary endpoint fails or returns <code>0x</code>, the engine retries on the next endpoint. Ethereum uses three public nodes (publicnode, llamarpc, cloudflare). Arbitrum and Base each use two. If all endpoints fail, the engine falls back to the TVL-based slider estimate and flags the lower confidence accordingly.</p>
+  </div>
+
+  <hr class="sec-div"/>
+
+  <!-- 5. CONFIDENCE SCORE -->
+  <div class="sec" id="confidence">
+    <div class="sec-num">05 — Orny confidence score</div>
+    <h2>How the confidence score is computed</h2>
+
+    <p>The score reflects the engine's certainty that the recommended size is close to the true optimum, given the quality of the inputs. It starts at a base of <strong>88%</strong> and adjusts for known error sources:</p>
+
+    <table class="conf-table">
+      <tbody>
+        <tr><td>+4 pts</td><td><span class="tag-ok">Positive</span></td><td>TVL ≥ $10M — deep pool, slippage model is accurate across a wide size range</td></tr>
+        <tr><td>−5 pts</td><td><span class="tag-warn">Caution</span></td><td>TVL $500k–$1M — moderate depth, reserve estimate may drift with price</td></tr>
+        <tr><td>−12 pts</td><td><span class="tag-bad">Negative</span></td><td>TVL &lt; $500k — thin pool, constant-product approximation degrades</td></tr>
+        <tr><td>+4 pts</td><td><span class="tag-ok">Positive</span></td><td>V3 depth read on-chain — <code>R_eff</code> is the real active liquidity, not TVL-based</td></tr>
+        <tr><td>−5 pts</td><td><span class="tag-warn">Caution</span></td><td>V3 pool with slider estimate — TVL proxy introduces a systematic error</td></tr>
+        <tr><td>−8 pts</td><td><span class="tag-bad">Negative</span></td><td>Trade &gt; 8% of pool depth — the first-order constant-product model degrades at high price impact; tick boundaries become relevant</td></tr>
+      </tbody>
+    </table>
+
+    <p>The score is clamped to [52%, 97%]. A score of 97% is never reached — the remaining 3% accounts for unknowable factors (pool imbalance at execution time, MEV, network latency). A score below 65% triggers a <strong>Orny Warning</strong> and a recommendation to use a deeper pool or on-chain data.</p>
+
+    <div class="callout good">
+      <b>Best-case configuration:</b> V3 pool with on-chain active liquidity read, TVL ≥ $10M, trade size ≤ 5% of depth → confidence 92%. The on-chain read is the single highest-value action the user can take.
+    </div>
+  </div>
+
+  <hr class="sec-div"/>
+
+  <!-- 6. LIMITATIONS -->
+  <div class="sec" id="limits">
+    <div class="sec-num">06 — Known limitations</div>
+    <h2>What the model does not capture</h2>
+
+    <ul>
+      <li><strong>Single-hop only.</strong> The optimizer models a direct swap on one pool. Aggregators (1inch, Paraswap) split volume across multiple pools, reducing effective slippage for large trades. For sizes where splitting is optimal, the simulator's "split recommendation" tab provides an estimate.</li>
+      <li><strong>Balanced reserve assumption.</strong> The model assumes <code>R = TVL / 2</code> for V2 pools (equal token values). Pools that have drifted from 50/50 due to price movement have different effective depths per side. The on-chain V3 read corrects for this; V2 remains approximate.</li>
+      <li><strong>Static tick range.</strong> V3 liquidity is distributed across price ticks. The <code>liquidity()</code> call returns the active liquidity at the current tick only. For large trades that cross multiple ticks, the real average depth is lower. The −8pt confidence penalty at high price-impact sizes partially accounts for this.</li>
+      <li><strong>No MEV model.</strong> Sandwich attacks and backrunning add an effective cost that depends on mempool conditions and block builder behavior. This is not modelable from on-chain data alone. Use private mempools (Flashbots Protect, MEV Blocker) for sensitive trades.</li>
+      <li><strong>Gas price is user-supplied.</strong> The model uses the gas cost entered by the user. On Ethereum mainnet, the actual gas cost varies with block congestion. On Arbitrum and Base, gas costs are near-deterministic and the defaults ($0.05 and $0.02 respectively) are reliable.</li>
+      <li><strong>Token prices via GeckoTerminal.</strong> The USD conversion for V3 reserve calculation uses GeckoTerminal spot prices fetched at load time. Rapid price movements between fetch and execution introduce a small reserve estimation error.</li>
+    </ul>
+
+    <div class="callout warn">
+      <b>In summary:</b> OrnyTools gives you the mathematically correct answer for the inputs you provide. The quality of the output is bounded by the quality of the inputs — especially pool depth. On-chain V3 data is always more reliable than TVL-based estimates.
+    </div>
+  </div>
+
+</div><!-- /content -->
+
+<div class="back-section">
+  <a class="back-link" href="optimizer.html">
+    <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 1.5L1.5 9 9 16.5M1.5 9h15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    Back to the optimizer
+  </a>
+</div>
+
+<footer>
+  <div class="ft-tag">The math is <span>exact.</span> The input quality isn't.</div>
+  Methodology reflects the current engine implementation · ornytools.xyz<br/>
+  <span style="margin-top:8px;display:inline-block">Built by <a href="https://www.linkedin.com/in/xavier-maquin-5576643b9/" target="_blank" rel="noopener" style="color:var(--gold);text-decoration:none;font-weight:600">Xavier Maquin</a></span>
+</footer>
+
+</body>
+</html>

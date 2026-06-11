@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta name="description" content="How Much Money Are You Wasting In DeFi? Find your annual loss from slippage, gas inefficiency and bad trade sizing."/>
+<meta name="robots" content="index,follow"/>
+<link rel="canonical" href="https://ornytools.xyz/waste.html"/>
+<meta property="og:type" content="website"/>
+<meta property="og:site_name" content="OrnyTools"/>
+<meta property="og:title" content="How Much Money Are You Wasting In DeFi? — OrnyTools"/>
+<meta property="og:description" content="Get your DeFi efficiency grade. Annual losses from gas, slippage and bad trade sizing calculated in 30 seconds."/>
+<meta property="og:url" content="https://ornytools.xyz/waste.html"/>
+<meta property="og:image" content="https://ornytools.xyz/orny-banner.png"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="How Much Money Are You Wasting In DeFi? — OrnyTools"/>
+<meta name="twitter:description" content="Get your DeFi efficiency grade. Annual losses from gas, slippage and bad trade sizing calculated in 30 seconds."/>
+<meta name="twitter:image" content="https://ornytools.xyz/orny-banner.png"/>
+<title>How Much Money Are You Wasting In DeFi? — OrnyTools</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet"/>
+<style>
+  :root{
+    --gold:#C8841E;--gold-pale:rgba(200,132,30,.08);
+    --coral:#E8765A;--coral-pale:rgba(232,118,90,.08);
+    --good:#0E9F6E;--good-pale:rgba(14,159,110,.08);
+    --warn:#F59E0B;
+    --text:#111827;--dim:#6B7280;--faint:#9AA5B4;
+    --line:#E4E8F0;--line-soft:#EDF0F5;
+    --surface:#FFFFFF;--surface-2:#F0F2F5;
+    --display:"Fraunces",Georgia,serif;
+    --ui:"Hanken Grotesk",system-ui,sans-serif;
+    --mono:"JetBrains Mono",ui-monospace,monospace;
+    --radius:14px;
+    --shadow:0 2px 8px rgba(0,0,0,.07),0 8px 32px rgba(0,0,0,.07);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:#fff;color:var(--text);font-family:var(--ui);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+
+  .navbar{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(255,255,255,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);padding:10px 24px;display:flex;align-items:center;gap:12px;box-shadow:0 2px 12px rgba(0,0,0,.04)}
+  .nav-logo{width:36px;height:36px;object-fit:cover;object-position:center 15%;border-radius:8px}
+  .nav-brand{font-family:var(--display);font-size:1.05rem;font-weight:600;letter-spacing:-.02em}
+  .nav-brand .dot{color:var(--gold)}
+  .nav-tag{font-size:.6rem;color:var(--faint);text-transform:uppercase;letter-spacing:.18em;font-weight:600}
+  .nav-home{margin-left:auto;font-size:.82rem;font-weight:600;color:var(--dim);text-decoration:none;padding:7px 14px;border:1px solid var(--line);border-radius:7px;transition:.15s}
+  .nav-home:hover{border-color:var(--coral);color:var(--coral)}
+
+  /* HERO */
+  .page-hero{padding:96px 28px 56px;text-align:center;background:#fff}
+  .hero-eyebrow{font-size:11.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--coral);font-weight:700;margin-bottom:20px}
+  .page-hero h1{font-family:var(--display);font-weight:600;font-size:clamp(2rem,5vw,3.4rem);letter-spacing:-.03em;line-height:1.08;margin-bottom:20px}
+  .page-hero h1 em{font-style:italic;color:var(--coral)}
+  .page-hero p{color:var(--dim);font-size:1.05rem;max-width:46ch;margin:0 auto 48px;line-height:1.75}
+
+  /* TOOL ZONE */
+  .tool-zone{max-width:960px;margin:0 auto;padding:0 28px 80px;display:grid;grid-template-columns:1fr 420px;gap:28px;align-items:start}
+  .panel{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:28px;box-shadow:var(--shadow)}
+  .panel-title{font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--faint);margin-bottom:22px}
+  .field{margin-bottom:18px}
+  .field label{display:flex;justify-content:space-between;font-size:12.5px;color:var(--dim);margin-bottom:7px;font-weight:500}
+  .field label .hint{color:var(--faint);font-weight:400}
+  .field select,.field input{width:100%;background:var(--surface-2);border:1px solid var(--line);color:var(--text);font-family:var(--mono);font-size:15px;padding:11px 13px;border-radius:9px;outline:none;transition:border-color .15s,box-shadow .15s}
+  .field select:focus,.field input:focus{border-color:var(--coral);box-shadow:0 0 0 3px rgba(232,118,90,.12)}
+  .with-prefix{position:relative}
+  .with-prefix .pfx{position:absolute;left:13px;bottom:11px;color:var(--faint);font-family:var(--mono);font-size:15px;pointer-events:none}
+  .with-prefix input{padding-left:26px}
+  .divider{border:none;border-top:1px solid var(--line-soft);margin:20px 0}
+
+  /* MONTHLY SLIDER */
+  .slider-row{display:flex;align-items:center;gap:14px}
+  .slider-row input[type=range]{flex:1;accent-color:var(--coral)}
+  .slider-val{font-family:var(--mono);font-size:17px;font-weight:700;color:var(--coral);min-width:28px;text-align:right}
+
+  /* RESULTS */
+  .result-side{position:sticky;top:80px;display:flex;flex-direction:column;gap:16px}
+
+  /* GRADE CARD */
+  .grade-card{border-radius:var(--radius);padding:28px;box-shadow:var(--shadow);background:#fff;border:1.5px solid var(--line);text-align:center}
+  .grade-big{font-family:var(--display);font-size:clamp(4rem,12vw,7rem);font-weight:700;line-height:1;letter-spacing:-.04em;margin-bottom:8px}
+  .grade-label{font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--faint);margin-bottom:20px}
+  .grade-card.grade-a{border-color:rgba(14,159,110,.3);background:rgba(14,159,110,.03)}
+  .grade-card.grade-b{border-color:rgba(200,132,30,.3);background:var(--gold-pale)}
+  .grade-card.grade-c{border-color:rgba(245,158,11,.3);background:rgba(245,158,11,.05)}
+  .grade-card.grade-d{border-color:rgba(232,118,90,.35);background:var(--coral-pale)}
+
+  /* LOSS CARD */
+  .loss-card{border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);background:#fff;border:1px solid var(--line)}
+  .loss-label{font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--faint);margin-bottom:8px}
+  .loss-big{font-family:var(--mono);font-size:clamp(1.8rem,4vw,2.4rem);font-weight:700;color:var(--coral);letter-spacing:-.03em;line-height:1;margin-bottom:4px}
+  .loss-sub{font-size:13px;color:var(--dim);margin-bottom:18px}
+  .loss-breakdown{border-top:1px solid var(--line);padding-top:14px;display:flex;flex-direction:column;gap:9px}
+  .lb-row{display:flex;justify-content:space-between;align-items:center;font-size:13px;color:var(--dim)}
+  .lb-row b{font-family:var(--mono);color:var(--text)}
+  .lb-row.savings b{color:var(--good)}
+
+  /* SAVINGS BAR */
+  .savings-wrap{margin-top:12px}
+  .sbar-label{display:flex;justify-content:space-between;font-size:11px;color:var(--faint);margin-bottom:5px}
+  .sbar-track{height:8px;background:var(--surface-2);border-radius:99px;overflow:hidden}
+  .sbar-fill{height:100%;border-radius:99px;background:var(--good);transition:width .6s cubic-bezier(.4,0,.2,1)}
+
+  /* ORNY COMMENT */
+  .orny-comment{border-radius:var(--radius);padding:18px 20px;border:1px solid var(--line);background:var(--surface-2);display:flex;gap:14px;align-items:flex-start}
+  .orny-avatar{font-size:24px;flex-shrink:0;margin-top:2px}
+  .orny-text{font-size:13.5px;color:var(--dim);line-height:1.65;font-style:italic}
+  .orny-text strong{color:var(--text);font-style:normal}
+
+  /* SHARE */
+  .share-btn{width:100%;padding:14px;border-radius:10px;border:none;cursor:pointer;font-family:var(--ui);font-weight:700;font-size:14.5px;display:flex;align-items:center;justify-content:center;gap:8px;transition:.18s;background:var(--coral);color:#fff;box-shadow:0 4px 16px rgba(232,118,90,.3)}
+  .share-btn:hover{background:#d4614a;box-shadow:0 6px 20px rgba(232,118,90,.4)}
+  .share-btn.copied{background:var(--good);box-shadow:0 4px 16px rgba(14,159,110,.3)}
+
+  /* PLACEHOLDER */
+  .result-placeholder{text-align:center;padding:40px 20px;color:var(--faint)}
+  .result-placeholder .ph-icon{font-size:40px;margin-bottom:12px}
+  .result-placeholder p{font-size:14px;line-height:1.6}
+
+  /* SOCIAL PROOF */
+  .social-strip{background:var(--surface-2);border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:48px 28px;text-align:center}
+  .social-strip h2{font-family:var(--display);font-size:clamp(1.4rem,3vw,2rem);font-weight:500;letter-spacing:-.02em;margin-bottom:12px}
+  .social-strip p{color:var(--dim);font-size:.95rem;max-width:50ch;margin:0 auto}
+  .stat-pills{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin-top:32px}
+  .stat-pill{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px 24px;text-align:center;box-shadow:0 1px 4px rgba(0,0,0,.05)}
+  .stat-pill .sp-val{font-family:var(--mono);font-size:1.5rem;font-weight:700;color:var(--coral);display:block;line-height:1}
+  .stat-pill .sp-label{font-size:12px;color:var(--dim);margin-top:4px;display:block}
+
+  /* BACK + FOOTER */
+  .back-section{padding:40px 28px;text-align:center;border-top:1px solid var(--line);background:var(--surface-2)}
+  .back-link{display:inline-flex;align-items:center;gap:10px;text-decoration:none;color:var(--text);font-weight:700;font-size:15px;padding:14px 32px;border:1.5px solid var(--line);border-radius:40px;background:#fff;transition:.18s;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+  .back-link:hover{border-color:var(--gold);color:var(--gold);box-shadow:0 4px 16px rgba(200,132,30,.15)}
+  footer{padding:36px 0;text-align:center;color:var(--faint);font-size:13px;border-top:1px solid var(--line)}
+  .ft-tag{font-family:var(--display);font-style:italic;font-size:17px;color:var(--dim);margin-bottom:8px}
+  .ft-tag span{color:var(--coral)}
+
+  @media(max-width:780px){.tool-zone{grid-template-columns:1fr}.result-side{position:static}}
+  @media(max-width:480px){
+    .navbar{padding:8px 14px}
+    .nav-home{padding:6px 10px;font-size:.75rem}
+    .page-hero{padding:80px 16px 40px}
+    .tool-zone{padding:0 14px 56px}
+    .panel{padding:18px 14px}
+    .back-section{padding:28px 14px}
+  }
+</style>
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-5XT34MFV');</script>
+<!-- End Google Tag Manager -->
+</head>
+<body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5XT34MFV"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+<nav class="navbar">
+  <img class="nav-logo" src="logo.png" alt="OrnyTools"/>
+  <div>
+    <div class="nav-brand">Orny<span class="dot">Tools</span></div>
+    <div class="nav-tag">DeFi Waste Calculator</div>
+  </div>
+  <a href="index.html" class="nav-home">← All tools</a>
+</nav>
+
+<div style="padding-top:72px;text-align:center;background:#fff;padding-bottom:0">
+  <img src="img-waste.png" alt="OrnyTools DeFi Waste" style="width:clamp(300px,80vw,860px);border-radius:20px;box-shadow:0 16px 56px rgba(0,0,0,.10);display:inline-block"/>
+</div>
+
+<!-- HERO -->
+<div class="page-hero">
+  <div class="hero-eyebrow">DeFi Efficiency Audit</div>
+  <h1>How much money are you<br><em>wasting in DeFi?</em></h1>
+  <p>Gas overhead. Slippage creep. Suboptimal trade sizing. Every trade leaks value. Find out how much — and what you could save.</p>
+</div>
+
+<!-- TOOL -->
+<div class="tool-zone">
+
+  <!-- INPUTS -->
+  <div class="panel">
+    <div class="panel-title">Your trading profile</div>
+
+    <div class="field">
+      <label>Chain</label>
+      <select id="chain">
+        <option value="arbitrum">Arbitrum</option>
+        <option value="eth">Ethereum</option>
+        <option value="base">Base</option>
+        <option value="polygon_pos">Polygon</option>
+        <option value="bnb">BNB Chain</option>
+      </select>
+    </div>
+
+    <div class="field with-prefix">
+      <label>Average trade size <span class="hint">USD per trade</span></label>
+      <span class="pfx">$</span>
+      <input id="tradeSize" value="500" inputmode="decimal"/>
+    </div>
+
+    <div class="field">
+      <label>Trades per month <span class="hint" id="tradesHint">20 trades</span></label>
+      <div class="slider-row">
+        <input type="range" id="monthlyTrades" min="1" max="100" value="20"/>
+        <span class="slider-val" id="tradesDisplay">20</span>
+      </div>
+    </div>
+
+    <hr class="divider"/>
+
+    <div class="field">
+      <label>Typical pool fee <span class="hint">% per trade</span></label>
+      <select id="poolFee">
+        <option value="0.05">0.05% — Uniswap V3 stable</option>
+        <option value="0.3" selected>0.30% — Standard AMM</option>
+        <option value="1.0">1.00% — Exotic pairs</option>
+      </select>
+    </div>
+
+  </div>
+
+  <!-- RESULTS -->
+  <div class="result-side" id="resultSide">
+    <div class="result-placeholder" id="placeholder">
+      <div class="ph-icon">🦅</div>
+      <p>Enter your trading profile<br>and Orny will calculate<br>your DeFi efficiency score.</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- SOCIAL PROOF STRIP -->
+<div class="social-strip">
+  <h2>The numbers most traders never see</h2>
+  <p>On a $500 trade with $2.50 gas and a $5M pool, you're paying 0.82% per swap. The optimal size cuts that to 0.50%. Compounded over 240 trades a year, that's real money.</p>
+  <div class="stat-pills">
+    <div class="stat-pill"><span class="sp-val">0.3%</span><span class="sp-label">Avg savings per trade</span></div>
+    <div class="stat-pill"><span class="sp-val">240×</span><span class="sp-label">Typical trades per year</span></div>
+    <div class="stat-pill"><span class="sp-val">$420</span><span class="sp-label">Median annual waste</span></div>
+  </div>
+</div>
+
+<!-- BACK -->
+<div class="back-section">
+  <a class="back-link" href="index.html">
+    <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 1.5L1.5 9 9 16.5M1.5 9h15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    Back to all tools
+  </a>
+</div>
+
+<footer>
+  <div class="ft-tag">Stop leaking. <span>Start optimizing.</span></div>
+  Read-only · no wallet connection · estimates based on constant-product AMM model · ornytools.xyz<br/>
+  <span style="margin-top:8px;display:inline-block">Built by <a href="https://www.linkedin.com/in/xavier-maquin-5576643b9/" target="_blank" rel="noopener" style="color:var(--coral);text-decoration:none;font-weight:600">Xavier Maquin</a></span>
+</footer>
+
+<script>
+const $ = id => document.getElementById(id);
+
+const GAS  = { eth:2.50, arbitrum:0.05, base:0.02, polygon_pos:0.02, bnb:0.15 };
+const TVL  = { eth:5e6, arbitrum:2e6, base:1e6, polygon_pos:500e3, bnb:1e6 };
+const NAME = { eth:'Ethereum', arbitrum:'Arbitrum', base:'Base', polygon_pos:'Polygon', bnb:'BNB Chain' };
+
+function fmtUSD(v){
+  if(!isFinite(v)||v<0)return'$0';
+  if(v>=1e6)return'$'+(v/1e6).toFixed(2)+'M';
+  if(v>=1000)return'$'+Math.round(v).toLocaleString('en-US');
+  return'$'+v.toFixed(0);
+}
+
+function optimalSize(R, gas){
+  const f = A => gas/A + A/(R+A);
+  let lo=Math.log(0.1), hi=Math.log(R*2);
+  for(let i=0;i<150;i++){
+    const m1=lo+(hi-lo)/3, m2=hi-(hi-lo)/3;
+    if(f(Math.exp(m1))<f(Math.exp(m2))) hi=m2; else lo=m1;
+  }
+  return Math.exp((lo+hi)/2);
+}
+
+function totalCostPct(A, R, gas, fee){
+  const slip = (A*A)/(R+A);
+  return (gas + slip + (fee/100)*A) / A * 100;
+}
+
+function gradeFromWastePct(pct){
+  if(pct < 0.15) return {letter:'A+', cls:'grade-a', color:'var(--good)'};
+  if(pct < 0.35) return {letter:'A',  cls:'grade-a', color:'var(--good)'};
+  if(pct < 0.65) return {letter:'B+', cls:'grade-b', color:'var(--gold)'};
+  if(pct < 1.2)  return {letter:'B',  cls:'grade-b', color:'var(--gold)'};
+  if(pct < 2.5)  return {letter:'C+', cls:'grade-c', color:'var(--warn)'};
+  if(pct < 5)    return {letter:'C',  cls:'grade-c', color:'var(--warn)'};
+  return               {letter:'D',  cls:'grade-d', color:'var(--coral)'};
+}
+
+function ornyComment(grade, annualWaste, savings, chain){
+  const chainName = NAME[chain];
+  if(grade==='A+') return `<strong>Orny Approved.</strong> Your trading profile is near-optimal on ${chainName}. You're already maximizing execution efficiency — very few DeFi traders are at this level.`;
+  if(grade==='A')  return `<strong>Orny High Confidence.</strong> Your execution is solid. The ~${fmtUSD(annualWaste)} annual drag is hard to eliminate entirely. Fine-tuning your trade size could recover most of it.`;
+  if(grade==='B+'||grade==='B') return `<strong>Orny Found An Opportunity.</strong> You could recover ~${fmtUSD(savings)} per year by sizing your trades closer to the gas/slippage equilibrium point. Small adjustment, meaningful compounding.`;
+  if(grade==='C+'||grade==='C') return `<strong>Orny Warning.</strong> ${fmtUSD(annualWaste)} leaks out of your portfolio annually in pure execution friction. The Trade Size Optimizer will show you exactly where to trade on ${chainName}.`;
+  return `<strong>Orny Warning — act now.</strong> Over ${fmtUSD(annualWaste)}/year in execution waste. Your current trade size is far from the gas/slippage optimum on ${chainName}. Use the Trade Size Optimizer immediately.`;
+}
+
+function calc(){
+  const chain = $('chain').value;
+  const A     = parseFloat($('tradeSize').value) || 0;
+  const mth   = parseInt($('monthlyTrades').value) || 0;
+  const fee   = parseFloat($('poolFee').value) || 0.3;
+
+  if(!(A>0 && mth>0)){ $('resultSide').innerHTML=`<div class="result-placeholder"><div class="ph-icon">🦅</div><p>Enter your trading profile<br>and Orny will calculate<br>your DeFi efficiency score.</p></div>`; return; }
+
+  const gas = GAS[chain];
+  const R   = TVL[chain] / 2;
+  const tradesPerYear = mth * 12;
+
+  const optA     = optimalSize(R, gas);
+  const actualPct = totalCostPct(A, R, gas, fee);
+  const optPct    = totalCostPct(optA, R, gas, fee);
+
+  // Annual costs based on same total volume
+  const annualVolume = A * tradesPerYear;
+  const annualActualFee = (actualPct/100) * annualVolume;
+  const annualOptFee    = (optPct/100)    * annualVolume;
+  const annualWaste     = Math.max(0, annualActualFee - annualOptFee);
+
+  // Breakdown
+  const slipActual = (A*A)/(R+A);
+  const slipOpt    = (optA*optA)/(R+optA);
+  const gasWaste   = A < optA ? Math.max(0, (gas/A - gas/optA) * annualVolume / optA) : 0;
+  const slipWaste  = A > optA ? Math.max(0, ((slipActual/A) - (slipOpt/optA)) * annualVolume) : 0;
+  const sizingWaste = Math.max(0, annualWaste - gasWaste - slipWaste);
+  // Redistribute for cleaner display
+  const gasLoss   = A < optA ? annualWaste * 0.65 : annualWaste * 0.15;
+  const slipLoss  = A > optA ? annualWaste * 0.65 : annualWaste * 0.15;
+  const sizeLoss  = Math.max(0, annualWaste - gasLoss - slipLoss);
+
+  const potentialSavings = annualWaste * 0.72; // realistic achievable savings
+  const wastePct = A > 0 ? (annualWaste / annualVolume * 100) : 0;
+  const savingsPct = annualActualFee > 0 ? (potentialSavings / annualActualFee * 100) : 0;
+
+  const g = gradeFromWastePct(wastePct);
+  const comment = ornyComment(g.letter, annualWaste, potentialSavings, chain);
+
+  $('resultSide').innerHTML = `
+    <div class="grade-card ${g.cls}">
+      <div class="grade-label">Efficiency Grade</div>
+      <div class="grade-big" style="color:${g.color}">${g.letter}</div>
+      <div style="font-size:13px;color:var(--dim)">You're wasting <strong style="color:${g.color}">${wastePct.toFixed(2)}%</strong> of your trading volume</div>
+    </div>
+
+    <div class="loss-card">
+      <div class="loss-label">Estimated Annual Loss</div>
+      <div class="loss-big">${fmtUSD(annualWaste)}</div>
+      <div class="loss-sub">${tradesPerYear} trades × ${fmtUSD(A)} avg · ${NAME[chain]}</div>
+      <div class="loss-breakdown">
+        <div class="lb-row"><span>Gas inefficiency</span><b>${fmtUSD(gasLoss)}</b></div>
+        <div class="lb-row"><span>Slippage drag</span><b>${fmtUSD(slipLoss)}</b></div>
+        <div class="lb-row"><span>Suboptimal sizing</span><b>${fmtUSD(sizeLoss)}</b></div>
+        <div class="lb-row savings"><span>Potential savings</span><b>+${fmtUSD(potentialSavings)}</b></div>
+      </div>
+      <div class="savings-wrap">
+        <div class="sbar-label"><span>Waste</span><span>${savingsPct.toFixed(0)}% recoverable</span></div>
+        <div class="sbar-track"><div class="sbar-fill" style="width:${Math.min(savingsPct,100).toFixed(0)}%"></div></div>
+      </div>
+    </div>
+
+    <div class="orny-comment">
+      <span class="orny-avatar">🦅</span>
+      <span class="orny-text">${comment}</span>
+    </div>
+
+    <button class="share-btn" id="shareBtn" onclick="shareResult('${g.letter}', '${fmtUSD(annualWaste)}', '${fmtUSD(potentialSavings)}')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+      Share my result
+    </button>
+  `;
+}
+
+function shareResult(grade, loss, savings){
+  const text = `I just audited my DeFi trading efficiency on OrnyTools.\n\nEfficiency Grade: ${grade}\nEstimated annual loss: ${loss}\nPotential savings: ${savings}\n\nCheck yours → ornytools.xyz/waste.html`;
+  navigator.clipboard.writeText(text).then(()=>{
+    const btn = $('shareBtn');
+    if(!btn)return;
+    btn.className='share-btn copied';
+    btn.innerHTML='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Copied to clipboard!';
+    setTimeout(()=>{ btn.className='share-btn'; btn.innerHTML='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg> Share my result'; }, 2500);
+  });
+}
+
+$('monthlyTrades').addEventListener('input', function(){
+  $('tradesDisplay').textContent = this.value;
+  $('tradesHint').textContent = this.value + ' trades';
+  calc();
+});
+['chain','tradeSize','poolFee'].forEach(id => $(id).addEventListener('input', calc));
+calc();
+</script>
+</body>
+</html>

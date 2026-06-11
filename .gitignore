@@ -18,4 +18,7 @@
 # Transcriptions
 transcription_*.md
 
-# Keep only OrnyTools web files
+# Temp
+hornytools-index.html
+
+# Keep only OrnyTools web files — all .html and .png are tracked

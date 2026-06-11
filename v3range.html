@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta name="description" content="Uniswap V3 Range Optimizer — OrnyTools. Calculate your concentration multiplier, token split, IL curve and optimal range for any V3 LP position."/>
+<meta name="robots" content="index,follow"/>
+<link rel="canonical" href="https://ornytools.xyz/v3range.html"/>
+<meta property="og:type" content="website"/>
+<meta property="og:site_name" content="OrnyTools"/>
+<meta property="og:title" content="V3 Range Optimizer — OrnyTools"/>
+<meta property="og:description" content="Concentrated liquidity math: capital efficiency multiplier, token split, IL curve — for Uniswap V3, Camelot, Algebra and any CLAMM."/>
+<meta property="og:url" content="https://ornytools.xyz/v3range.html"/>
+<meta property="og:image" content="https://ornytools.xyz/orny-banner.png"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="V3 Range Optimizer — OrnyTools"/>
+<meta name="twitter:description" content="Concentrated liquidity math: capital efficiency multiplier, token split, IL curve — for any CLAMM."/>
+<meta name="twitter:image" content="https://ornytools.xyz/orny-banner.png"/>
+<title>V3 Range Optimizer — OrnyTools</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  :root{
+    --gold:#C8841E;--gold-pale:rgba(200,132,30,.08);
+    --aqua:#3A9FD4;--aqua-pale:rgba(58,159,212,.08);
+    --good:#0E9F6E;--good-pale:rgba(14,159,110,.08);
+    --coral:#E8765A;--coral-pale:rgba(232,118,90,.08);
+    --warn:#F59E0B;--warn-pale:rgba(245,158,11,.08);
+    --purple:#7C3AED;--purple-pale:rgba(124,58,237,.08);
+    --text:#111827;--dim:#6B7280;--faint:#9AA5B4;
+    --line:#E4E8F0;--line-soft:#EDF0F5;
+    --surface:#FFFFFF;--surface-2:#F0F2F5;
+    --display:"Fraunces",Georgia,serif;
+    --ui:"Hanken Grotesk",system-ui,sans-serif;
+    --mono:"JetBrains Mono",ui-monospace,monospace;
+    --radius:14px;
+    --shadow:0 2px 8px rgba(0,0,0,.07),0 8px 32px rgba(0,0,0,.07);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#fff;color:var(--text);font-family:var(--ui);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+
+  .navbar{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(255,255,255,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);padding:10px 24px;display:flex;align-items:center;gap:12px}
+  .nav-logo{width:36px;height:36px;object-fit:cover;object-position:center 15%;border-radius:8px}
+  .nav-brand{font-family:var(--display);font-size:1.05rem;font-weight:600;letter-spacing:-.02em}
+  .nav-brand .dot{color:var(--gold)}
+  .nav-tag{font-size:.6rem;color:var(--faint);text-transform:uppercase;letter-spacing:.18em;font-weight:600}
+  .nav-home{margin-left:auto;font-size:.82rem;font-weight:600;color:var(--dim);text-decoration:none;padding:7px 14px;border:1px solid var(--line);border-radius:7px;transition:.15s}
+  .nav-home:hover{border-color:var(--purple);color:var(--purple)}
+
+  .page-hero{padding:96px 28px 48px;text-align:center}
+  .eyebrow{font-size:11.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--purple);font-weight:700;margin-bottom:16px}
+  .page-hero h1{font-family:var(--display);font-weight:500;font-size:clamp(1.8rem,3.5vw,2.5rem);letter-spacing:-.02em;line-height:1.12;margin-bottom:14px}
+  .page-hero h1 em{font-style:italic;color:var(--purple)}
+  .page-hero p{color:var(--dim);font-size:1rem;max-width:50ch;margin:0 auto;line-height:1.75}
+
+  /* LAYOUT */
+  .main-wrap{max-width:1080px;margin:0 auto;padding:36px 28px 80px;display:grid;grid-template-columns:400px 1fr;gap:28px;align-items:start}
+
+  /* INPUT CARD */
+  .input-card{background:#fff;border:1.5px solid var(--line);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);position:sticky;top:80px}
+  .ic-title{font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--faint);margin-bottom:14px}
+
+  /* PRESETS */
+  .preset-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:20px}
+  .preset-btn{padding:10px 8px;border-radius:9px;border:1.5px solid var(--line);background:var(--surface-2);cursor:pointer;text-align:center;transition:.15s;font-family:var(--ui)}
+  .preset-btn:hover{border-color:var(--purple)}
+  .preset-btn.active{border-color:var(--purple);background:var(--purple-pale)}
+  .preset-btn .pb-sym{font-size:.85rem;font-weight:800;display:block;color:var(--text)}
+  .preset-btn .pb-sub{font-size:10px;color:var(--faint)}
+
+  /* INPUTS */
+  .field{margin-bottom:14px}
+  .field label{display:flex;justify-content:space-between;align-items:center;font-size:12px;font-weight:700;color:var(--dim);margin-bottom:6px;letter-spacing:.05em}
+  .field label span{font-size:11px;color:var(--faint);font-weight:500}
+  .field input{width:100%;padding:10px 14px;border:1.5px solid var(--line);border-radius:9px;font-family:var(--mono);font-size:14px;color:var(--text);background:#fff;transition:.15s;outline:none}
+  .field input:focus{border-color:var(--purple)}
+  .row-2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+
+  /* RANGE VISUAL */
+  .range-bar-wrap{margin:18px 0 20px;background:var(--surface-2);border-radius:10px;padding:14px}
+  .range-bar-label{font-size:10.5px;font-weight:700;color:var(--faint);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px}
+  .range-track{position:relative;height:12px;background:var(--line);border-radius:99px;overflow:visible;margin:0 8px}
+  .range-fill{position:absolute;height:100%;border-radius:99px;background:var(--purple);opacity:.5;transition:.3s}
+  .range-tick{position:absolute;top:-3px;width:3px;height:18px;border-radius:2px;transform:translateX(-50%)}
+  .range-tick.current{background:var(--gold);z-index:2}
+  .range-tick.low{background:var(--coral);z-index:2}
+  .range-tick.high{background:var(--good);z-index:2}
+  .range-labels{display:flex;justify-content:space-between;margin-top:8px;font-size:10px;color:var(--faint);font-family:var(--mono)}
+
+  .analyze-btn{width:100%;padding:14px;background:var(--purple);color:#fff;border:none;border-radius:10px;font-family:var(--ui);font-size:15px;font-weight:700;cursor:pointer;transition:.15s;margin-top:4px}
+  .analyze-btn:hover{background:#6D28D9}
+
+  /* RESULTS */
+  .result-col{display:flex;flex-direction:column;gap:20px}
+
+  /* MULTIPLIER HERO */
+  .mult-card{border-radius:var(--radius);padding:24px 28px;border:1.5px solid rgba(124,58,237,.3);background:var(--purple-pale);box-shadow:var(--shadow);display:flex;align-items:center;gap:24px}
+  .mult-num{font-family:var(--mono);font-size:3rem;font-weight:700;color:var(--purple);line-height:1}
+  .mult-label{font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--purple);opacity:.7;margin-bottom:6px}
+  .mult-desc{font-size:13px;color:var(--dim);line-height:1.6}
+
+  /* METRICS */
+  .metrics-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  .metric-box{background:#fff;border:1px solid var(--line);border-radius:11px;padding:14px 16px;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+  .metric-box .mb-val{font-family:var(--mono);font-size:1.2rem;font-weight:700;margin-bottom:2px}
+  .metric-box .mb-key{font-size:10.5px;color:var(--faint);font-weight:600;letter-spacing:.08em;text-transform:uppercase}
+
+  /* TOKEN SPLIT */
+  .split-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+  .split-title{font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);margin-bottom:12px}
+  .split-bar-track{height:10px;border-radius:99px;background:var(--line);overflow:hidden;margin-bottom:10px}
+  .split-bar-inner{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--aqua),var(--purple))}
+  .split-labels{display:flex;justify-content:space-between;font-size:12.5px;font-weight:700}
+
+  /* IL TABLE */
+  .il-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+  .il-title{font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);margin-bottom:12px}
+  .il-table{width:100%;border-collapse:collapse}
+  .il-table th{font-size:10.5px;color:var(--faint);font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:6px 10px;text-align:left;border-bottom:1px solid var(--line)}
+  .il-table th:not(:first-child){text-align:right}
+  .il-table td{padding:8px 10px;font-size:13px;border-bottom:1px solid var(--line-soft);color:var(--text)}
+  .il-table td:not(:first-child){font-family:var(--mono);text-align:right;font-size:12.5px}
+  .il-table tr:last-child td{border-bottom:none}
+  .in-range{font-size:10px;color:var(--good);font-weight:700;background:var(--good-pale);padding:2px 7px;border-radius:99px;margin-left:4px}
+  .out-range{font-size:10px;color:var(--coral);font-weight:700;background:var(--coral-pale);padding:2px 7px;border-radius:99px;margin-left:4px}
+
+  /* CHART */
+  .chart-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:20px;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+  .chart-title{font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);margin-bottom:6px}
+  .chart-sub{font-size:12px;color:var(--dim);margin-bottom:16px}
+
+  /* ORNY */
+  .orny-card{border-radius:var(--radius);padding:20px;border:1.5px solid;background:#fff;box-shadow:var(--shadow)}
+  .orny-card.safe{border-color:rgba(14,159,110,.3);background:var(--good-pale)}
+  .orny-card.caution{border-color:rgba(245,158,11,.3);background:var(--warn-pale)}
+  .orny-card.tight{border-color:rgba(232,118,90,.35);background:var(--coral-pale)}
+  .orny-header{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+  .orny-state{font-size:10.5px;font-weight:800;letter-spacing:.16em;text-transform:uppercase}
+  .orny-card.safe .orny-state{color:var(--good)}
+  .orny-card.caution .orny-state{color:var(--warn)}
+  .orny-card.tight .orny-state{color:var(--coral)}
+  .orny-body{font-size:13px;color:var(--dim);line-height:1.65;font-style:italic}
+  .orny-body strong{color:var(--text);font-style:normal}
+
+  /* EMPTY STATE */
+  .empty-state{text-align:center;padding:60px 20px;color:var(--faint)}
+  .empty-state .es-icon{font-size:3rem;margin-bottom:12px}
+  .empty-state p{font-size:14px;line-height:1.7}
+
+  /* BACK + FOOTER */
+  .back-section{padding:40px 28px;text-align:center;border-top:1px solid var(--line);background:var(--surface-2)}
+  .back-link{display:inline-flex;align-items:center;gap:10px;text-decoration:none;color:var(--text);font-weight:700;font-size:15px;padding:14px 32px;border:1.5px solid var(--line);border-radius:40px;background:#fff;transition:.18s;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+  .back-link:hover{border-color:var(--purple);color:var(--purple)}
+  footer{padding:36px 0;text-align:center;color:var(--faint);font-size:13px;border-top:1px solid var(--line)}
+  .ft-tag{font-family:var(--display);font-style:italic;font-size:17px;color:var(--dim);margin-bottom:8px}
+  .ft-tag span{color:var(--purple)}
+
+  @media(max-width:840px){.main-wrap{grid-template-columns:1fr}.input-card{position:static}.metrics-row{grid-template-columns:1fr 1fr}}
+  @media(max-width:480px){
+    .navbar{padding:8px 14px}.nav-home{padding:6px 10px;font-size:.75rem}
+    .page-hero{padding:80px 16px 32px}
+    .main-wrap,.back-section{padding-left:14px;padding-right:14px}
+    .metrics-row{grid-template-columns:1fr}
+    .preset-grid{grid-template-columns:repeat(4,1fr)}
+    .mult-card{flex-direction:column;gap:12px;text-align:center}
+    .mult-num{font-size:2.2rem}
+  }
+</style>
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-5XT34MFV');</script>
+<!-- End Google Tag Manager -->
+</head>
+<body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5XT34MFV"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+<nav class="navbar">
+  <img class="nav-logo" src="logo.png" alt="OrnyTools"/>
+  <div>
+    <div class="nav-brand">Orny<span class="dot">Tools</span></div>
+    <div class="nav-tag">V3 Range Optimizer</div>
+  </div>
+  <a href="index.html" class="nav-home">← All tools</a>
+</nav>
+
+<div class="page-hero">
+  <div class="eyebrow">Concentrated Liquidity · Uniswap V3 / Algebra / Camelot</div>
+  <h1>What is the <em>real efficiency</em><br>of this LP range?</h1>
+  <p>Capital efficiency multiplier vs v2, exact token split, IL curve and Orny's verdict on your range width.</p>
+</div>
+
+<div class="main-wrap">
+
+  <!-- INPUT CARD -->
+  <div class="input-card">
+    <div class="ic-title">Pool & Range</div>
+
+    <div class="preset-grid" id="presetGrid">
+      <button class="preset-btn active" data-preset="eth-usdc-5">
+        <span class="pb-sym">ETH/USDC</span><span class="pb-sub">0.05%</span>
+      </button>
+      <button class="preset-btn" data-preset="eth-usdc-30">
+        <span class="pb-sym">ETH/USDC</span><span class="pb-sub">0.3%</span>
+      </button>
+      <button class="preset-btn" data-preset="wbtc-usdc">
+        <span class="pb-sym">WBTC/USDC</span><span class="pb-sub">0.3%</span>
+      </button>
+      <button class="preset-btn" data-preset="custom">
+        <span class="pb-sym">Custom</span><span class="pb-sub">manual</span>
+      </button>
+    </div>
+
+    <div class="field">
+      <label>Current Price <span id="priceUnit">USDC per ETH</span></label>
+      <input type="number" id="inputPc" placeholder="3400" min="0" step="any"/>
+    </div>
+
+    <div class="row-2">
+      <div class="field">
+        <label>Min Price (Pa) <span id="pctLow"></span></label>
+        <input type="number" id="inputPa" placeholder="3000" min="0" step="any"/>
+      </div>
+      <div class="field">
+        <label>Max Price (Pb) <span id="pctHigh"></span></label>
+        <input type="number" id="inputPb" placeholder="3800" min="0" step="any"/>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Investment <span>USD value</span></label>
+      <input type="number" id="inputV" placeholder="10000" min="0" step="any"/>
+    </div>
+
+    <!-- RANGE VISUAL -->
+    <div class="range-bar-wrap">
+      <div class="range-bar-label">Price range visualization</div>
+      <div class="range-track" id="rangeTrack">
+        <div class="range-fill" id="rangeFill"></div>
+        <div class="range-tick low"  id="tickLow"  style="left:15%"></div>
+        <div class="range-tick high" id="tickHigh" style="left:85%"></div>
+        <div class="range-tick current" id="tickCur" style="left:50%"></div>
+      </div>
+      <div class="range-labels">
+        <span id="rlLeft"></span>
+        <span id="rlMid" style="color:var(--gold);font-weight:700"></span>
+        <span id="rlRight"></span>
+      </div>
+    </div>
+
+    <button class="analyze-btn" onclick="analyze()">Analyze Range →</button>
+  </div>
+
+  <!-- RESULTS -->
+  <div class="result-col" id="results">
+    <div class="empty-state">
+      <div class="es-icon">📐</div>
+      <p>Enter a price range and investment<br>to see your concentrated liquidity analysis.</p>
+    </div>
+  </div>
+
+</div>
+
+<div class="back-section">
+  <a class="back-link" href="index.html">
+    <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 1.5L1.5 9 9 16.5M1.5 9h15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    Back to all tools
+  </a>
+</div>
+
+<footer>
+  <div class="ft-tag">Not all <span>ranges</span> are equal.</div>
+  Applies to Uniswap V3, Algebra, Camelot V3 and any CLAMM · read-only · ornytools.xyz<br/>
+  <span style="margin-top:8px;display:inline-block">Built by <a href="https://www.linkedin.com/in/xavier-maquin-5576643b9/" target="_blank" rel="noopener" style="color:var(--purple);text-decoration:none;font-weight:600">Xavier Maquin</a></span>
+</footer>
+
+<script>
+const PRESETS = {
+  'eth-usdc-5':  { label:'ETH/USDC 0.05%', t0:'ETH',  t1:'USDC', price:3400, pa:3200, pb:3600 },
+  'eth-usdc-30': { label:'ETH/USDC 0.3%',  t0:'ETH',  t1:'USDC', price:3400, pa:2800, pb:4200 },
+  'wbtc-usdc':   { label:'WBTC/USDC 0.3%', t0:'WBTC', t1:'USDC', price:103000, pa:88000, pb:120000 },
+  'custom':      { label:'Custom',          t0:'Token0', t1:'USD', price:null, pa:null, pb:null },
+};
+
+let _preset = 'eth-usdc-5';
+let _chart = null;
+
+document.getElementById('presetGrid').querySelectorAll('.preset-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    _preset = btn.dataset.preset;
+    document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const p = PRESETS[_preset];
+    if (p.price) {
+      document.getElementById('inputPc').value = p.price;
+      document.getElementById('inputPa').value = p.pa;
+      document.getElementById('inputPb').value = p.pb;
+      document.getElementById('priceUnit').textContent = p.t1 + ' per ' + p.t0;
+    } else {
+      document.getElementById('inputPc').value = '';
+      document.getElementById('inputPa').value = '';
+      document.getElementById('inputPb').value = '';
+    }
+    updateRangeBar();
+    updatePctLabels();
+  });
+});
+
+['inputPc','inputPa','inputPb'].forEach(id => {
+  document.getElementById(id).addEventListener('input', () => {
+    updateRangeBar();
+    updatePctLabels();
+  });
+});
+
+function updatePctLabels() {
+  const Pc = parseFloat(document.getElementById('inputPc').value);
+  const Pa = parseFloat(document.getElementById('inputPa').value);
+  const Pb = parseFloat(document.getElementById('inputPb').value);
+  if (Pc && Pa) document.getElementById('pctLow').textContent = '-' + ((1 - Pa/Pc)*100).toFixed(1) + '%';
+  else document.getElementById('pctLow').textContent = '';
+  if (Pc && Pb) document.getElementById('pctHigh').textContent = '+' + ((Pb/Pc - 1)*100).toFixed(1) + '%';
+  else document.getElementById('pctHigh').textContent = '';
+}
+
+function updateRangeBar() {
+  const Pc = parseFloat(document.getElementById('inputPc').value);
+  const Pa = parseFloat(document.getElementById('inputPa').value);
+  const Pb = parseFloat(document.getElementById('inputPb').value);
+  if (!Pc || !Pa || !Pb || Pa >= Pb || Pa <= 0) return;
+
+  // Use sqrt-based display to match tick spacing
+  const lo = Math.min(Pa * 0.7, Pc * 0.7);
+  const hi = Math.max(Pb * 1.3, Pc * 1.3);
+  const sqLo = Math.sqrt(lo), sqHi = Math.sqrt(hi);
+  const toPos = v => ((Math.sqrt(v) - sqLo) / (sqHi - sqLo)) * 100;
+
+  const pctPa = Math.max(0, Math.min(100, toPos(Pa)));
+  const pctPb = Math.max(0, Math.min(100, toPos(Pb)));
+  const pctPc = Math.max(0, Math.min(100, toPos(Pc)));
+
+  document.getElementById('rangeFill').style.left  = pctPa + '%';
+  document.getElementById('rangeFill').style.width = (pctPb - pctPa) + '%';
+  document.getElementById('tickLow').style.left  = pctPa + '%';
+  document.getElementById('tickHigh').style.left = pctPb + '%';
+  document.getElementById('tickCur').style.left  = pctPc + '%';
+
+  const fmt = v => v >= 1000 ? (v >= 100000 ? (v/1000).toFixed(0)+'k' : v.toFixed(0)) : v.toFixed(2);
+  document.getElementById('rlLeft').textContent  = fmt(lo);
+  document.getElementById('rlMid').textContent   = fmt(Pc);
+  document.getElementById('rlRight').textContent = fmt(hi);
+}
+
+/* ── CORE MATH ───────────────────────────────────────────────────────── */
+function sqrtPrice(p) { return Math.sqrt(p); }
+
+function computePosition(Pc, Pa, Pb, V) {
+  const sqPc = Math.sqrt(Pc), sqPa = Math.sqrt(Pa), sqPb = Math.sqrt(Pb);
+  // Per-unit-L amounts (real tokens, assuming Pa < Pc < Pb)
+  const x0 = 1/sqPc - 1/sqPb;
+  const y0 = sqPc - sqPa;
+  const vx = x0 * Pc;
+  const vy = y0;
+  const V0 = vx + vy;
+  const mult = 2 * sqPc / V0;  // vs v2
+  const L = V / V0;
+  return { L, x0: L*x0, y0: L*y0, pctX: vx/V0*100, pctY: vy/V0*100, mult, V0: V };
+}
+
+function poolValue(L, p, Pa, Pb) {
+  const sqPa = Math.sqrt(Pa), sqPb = Math.sqrt(Pb);
+  if (p <= Pa)  return L * p * (1/sqPa - 1/sqPb);
+  if (p >= Pb)  return L * (sqPb - sqPa);
+  return L * (2*Math.sqrt(p) - sqPa - p/sqPb);
+}
+
+function hodlValue(x0, y0, p) { return x0 * p + y0; }
+
+function ilPct(L, Pa, Pb, x0, y0, p) {
+  const vp = poolValue(L, p, Pa, Pb);
+  const vh = hodlValue(x0, y0, p);
+  return (vp / vh - 1) * 100;
+}
+
+/* ── ANALYZE ─────────────────────────────────────────────────────────── */
+function analyze() {
+  const Pc = parseFloat(document.getElementById('inputPc').value);
+  const Pa = parseFloat(document.getElementById('inputPa').value);
+  const Pb = parseFloat(document.getElementById('inputPb').value);
+  const V  = parseFloat(document.getElementById('inputV').value) || 10000;
+
+  if (!Pc || !Pa || !Pb || Pa >= Pb || Pa <= 0 || Pb <= 0 || Pc <= Pa || Pc >= Pb) {
+    alert('Check your inputs: Pa < Current Price < Pb, all positive.');
+    return;
+  }
+
+  const pos = computePosition(Pc, Pa, Pb, V);
+  const { L, x0, y0, pctX, pctY, mult } = pos;
+
+  const pctBelow = (1 - Pa/Pc) * 100;
+  const pctAbove = (Pb/Pc - 1) * 100;
+  const rangeWidth = ((Pb - Pa) / Pc) * 100;
+
+  // IL at key prices
+  const ilAtPa   = ilPct(L, Pa, Pb, x0, y0, Pa);
+  const ilAtPb   = ilPct(L, Pa, Pb, x0, y0, Pb);
+  const ilHalf   = ilPct(L, Pa, Pb, x0, y0, (Pa + Pc)/2);
+  const ilMinus30 = ilPct(L, Pa, Pb, x0, y0, Pc * 0.70);
+  const ilMinus50 = ilPct(L, Pa, Pb, x0, y0, Pc * 0.50);
+  const ilPlus50  = ilPct(L, Pa, Pb, x0, y0, Pc * 1.50);
+
+  const p = PRESETS[_preset];
+  const t0 = p.t0, t1 = p.t1;
+
+  // Orny state
+  const minSide = Math.min(pctBelow, pctAbove);
+  let ornyState, ornyLabel, ornyMsg;
+  if (minSide < 5) {
+    ornyState = 'tight';
+    ornyLabel = 'Orny Warning — Very Tight Range';
+    ornyMsg = `<strong>Range width: ${pctBelow.toFixed(1)}% / +${pctAbove.toFixed(1)}%.</strong> Highly concentrated = maximum fee capture, but you'll exit range with any significant move. Gas costs to rebalance will eat your gains unless you're monitoring constantly. Suitable only for stablecoin pairs or professional market makers.`;
+  } else if (minSide < 15) {
+    ornyState = 'caution';
+    ornyLabel = 'Orny Caution — Tight Range';
+    ornyMsg = `<strong>Range width: ${pctBelow.toFixed(1)}% / +${pctAbove.toFixed(1)}%.</strong> ${mult.toFixed(1)}x capital efficiency means strong fee APR — but you need active management. If price exits range, fees stop and you crystallize IL. Consider setting a rebalancing alert at ±${(minSide * 0.8).toFixed(0)}%.`;
+  } else if (minSide < 40) {
+    ornyState = 'safe';
+    ornyLabel = 'Orny Approved — Balanced Range';
+    ornyMsg = `<strong>Range width: ${pctBelow.toFixed(1)}% / +${pctAbove.toFixed(1)}%.</strong> ${mult.toFixed(1)}x efficiency vs full-range v2. Good balance between fee capture and staying in range through normal volatility. This is the sweet spot for most active LP strategies.`;
+  } else {
+    ornyState = 'safe';
+    ornyLabel = 'Orny Approved — Wide Range';
+    ornyMsg = `<strong>Range width: ${pctBelow.toFixed(1)}% / +${pctAbove.toFixed(1)}%.</strong> ${mult.toFixed(1)}x vs v2 — conservative efficiency. You'll stay in range through major moves, which is ideal for set-and-forget. For higher APR, consider a tighter sub-range with a portion of capital.`;
+  }
+
+  // Chart data
+  const steps = 80;
+  const pMin = Pc * 0.3, pMax = Pc * 2.5;
+  const labels = [], ilV3 = [], ilV2 = [];
+  for (let i = 0; i <= steps; i++) {
+    const price = pMin + (pMax - pMin) * i / steps;
+    const r = price / Pc;
+    labels.push(price.toFixed(price < 10 ? 4 : price < 100 ? 2 : 0));
+    ilV3.push(ilPct(L, Pa, Pb, x0, y0, price).toFixed(2));
+    ilV2.push((2*Math.sqrt(r)/(1+r) - 1)*100 + '');
+  }
+
+  // Build results HTML
+  const fmt = (n, d=2) => Number(n).toLocaleString('en-US', {minimumFractionDigits:d, maximumFractionDigits:d});
+  const fmtPct = n => (n >= 0 ? '+' : '') + n.toFixed(2) + '%';
+  const ilColor = v => v < -1 ? 'var(--coral)' : v < -0.3 ? 'var(--warn)' : 'var(--good)';
+  const inRng = p => p >= Pa && p <= Pb;
+
+  document.getElementById('results').innerHTML = `
+    <div class="mult-card">
+      <div>
+        <div class="mult-label">Capital Efficiency vs V2</div>
+        <div class="mult-num">${mult.toFixed(1)}x</div>
+      </div>
+      <div class="mult-desc">
+        For the same capital, this concentrated position earns <strong>${mult.toFixed(1)}× more in fees</strong> than a full-range Uniswap V2 position — while price stays in range [${fmt(Pa,0)} – ${fmt(Pb,0)}].
+      </div>
+    </div>
+
+    <div class="metrics-row">
+      <div class="metric-box">
+        <div class="mb-val" style="color:var(--purple)">${pctBelow.toFixed(1)}% / +${pctAbove.toFixed(1)}%</div>
+        <div class="mb-key">Range width</div>
+      </div>
+      <div class="metric-box">
+        <div class="mb-val">${fmt(x0, x0 < 0.01 ? 6 : x0 < 1 ? 4 : 3)} ${t0}</div>
+        <div class="mb-key">Token 0 amount</div>
+      </div>
+      <div class="metric-box">
+        <div class="mb-val">${fmt(y0, y0 > 100 ? 0 : 2)} ${t1}</div>
+        <div class="mb-key">Token 1 amount</div>
+      </div>
+    </div>
+
+    <div class="split-card">
+      <div class="split-title">Token split at current price</div>
+      <div class="split-bar-track">
+        <div class="split-bar-inner" style="width:${pctX}%"></div>
+      </div>
+      <div class="split-labels">
+        <span style="color:var(--aqua)">${pctX.toFixed(1)}% ${t0}</span>
+        <span style="color:var(--purple)">${pctY.toFixed(1)}% ${t1}</span>
+      </div>
+    </div>
+
+    <div class="il-card">
+      <div class="il-title">Impermanent loss scenarios</div>
+      <table class="il-table">
+        <thead><tr><th>Price</th><th>Move</th><th>IL (V3)</th><th>IL (V2)</th><th>Status</th></tr></thead>
+        <tbody>
+          ${[
+            { price: Pc*0.5,  label:`$${fmt(Pc*0.5,0)}` },
+            { price: Pc*0.7,  label:`$${fmt(Pc*0.7,0)}` },
+            { price: Pa,      label:`$${fmt(Pa,0)} — Pa` },
+            { price: (Pa+Pc)/2, label:`$${fmt((Pa+Pc)/2,0)}` },
+            { price: Pc,      label:`$${fmt(Pc,0)} — now` },
+            { price: (Pb+Pc)/2, label:`$${fmt((Pb+Pc)/2,0)}` },
+            { price: Pb,      label:`$${fmt(Pb,0)} — Pb` },
+            { price: Pc*1.5,  label:`$${fmt(Pc*1.5,0)}` },
+            { price: Pc*2.0,  label:`$${fmt(Pc*2.0,0)}` },
+          ].map(row => {
+            const r = row.price / Pc;
+            const v3 = ilPct(L, Pa, Pb, x0, y0, row.price);
+            const v2 = (2*Math.sqrt(r)/(1+r) - 1)*100;
+            const movePct = ((row.price/Pc - 1)*100).toFixed(1);
+            const isIn = inRng(row.price);
+            return `<tr>
+              <td>${row.label}</td>
+              <td style="font-size:11px;color:${row.price < Pc ? 'var(--coral)':'var(--good)'}">${movePct > 0 ? '+':''}${movePct}%</td>
+              <td style="color:${ilColor(v3)}">${fmtPct(v3)}</td>
+              <td style="color:${ilColor(v2)}">${fmtPct(v2)}</td>
+              <td><span class="${isIn?'in-range':'out-range'}">${isIn?'In':'Out'}</span></td>
+            </tr>`;
+          }).join('')}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-title">IL Curve</div>
+      <div class="chart-sub">V3 concentrated (purple) vs V2 full-range (grey) — dashed lines mark your Pa / Pb.</div>
+      <canvas id="ilChart" height="200"></canvas>
+    </div>
+
+    <div class="orny-card ${ornyState}">
+      <div class="orny-header">
+        <span style="font-size:22px">🦅</span>
+        <span class="orny-state">${ornyLabel}</span>
+      </div>
+      <div class="orny-body">${ornyMsg}</div>
+    </div>
+  `;
+
+  // Draw chart
+  if (_chart) { _chart.destroy(); _chart = null; }
+  const ctx = document.getElementById('ilChart').getContext('2d');
+  _chart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [
+        {
+          label: 'V3 range IL%',
+          data: ilV3,
+          borderColor: '#7C3AED',
+          borderWidth: 2,
+          pointRadius: 0,
+          tension: 0.3,
+          fill: false,
+        },
+        {
+          label: 'V2 full-range IL%',
+          data: ilV2,
+          borderColor: '#9AA5B4',
+          borderWidth: 1.5,
+          pointRadius: 0,
+          tension: 0.3,
+          borderDash: [4,4],
+          fill: false,
+        },
+      ]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { display: true, position: 'bottom', labels: { usePointStyle: true, font: { family: 'Hanken Grotesk', size: 12 } } },
+        tooltip: {
+          callbacks: {
+            label: ctx => ` ${ctx.dataset.label}: ${parseFloat(ctx.parsed.y).toFixed(2)}%`,
+            title: ctx => `Price: $${ctx[0].label}`,
+          }
+        },
+        annotation: {},
+      },
+      scales: {
+        x: {
+          ticks: { maxTicksLimit: 8, font: { family: 'JetBrains Mono', size: 10 }, color: '#9AA5B4' },
+          grid: { color: '#EDF0F5' },
+        },
+        y: {
+          ticks: { callback: v => v.toFixed(1) + '%', font: { family: 'JetBrains Mono', size: 10 }, color: '#9AA5B4' },
+          grid: { color: '#EDF0F5' },
+        }
+      }
+    }
+  });
+}
+
+// Init with default preset
+updateRangeBar();
+updatePctLabels();
+</script>
+</body>
+</html>

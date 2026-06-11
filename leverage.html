@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta name="description" content="Leverage Loop Calculator — OrnyTools. Calculate your real leverage, liquidation price and break-even APY on Aave recursive borrowing."/>
+<meta name="robots" content="index,follow"/>
+<link rel="canonical" href="https://ornytools.xyz/leverage.html"/>
+<meta property="og:type" content="website"/>
+<meta property="og:site_name" content="OrnyTools"/>
+<meta property="og:title" content="Leverage Loop Calculator — OrnyTools"/>
+<meta property="og:description" content="Real leverage, liquidation price and net APY on Aave recursive borrowing. Step-by-step loop breakdown — free."/>
+<meta property="og:url" content="https://ornytools.xyz/leverage.html"/>
+<meta property="og:image" content="https://ornytools.xyz/orny-banner.png"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="Leverage Loop Calculator — OrnyTools"/>
+<meta name="twitter:description" content="Real leverage, liquidation price and net APY on Aave recursive borrowing. Step-by-step loop breakdown — free."/>
+<meta name="twitter:image" content="https://ornytools.xyz/orny-banner.png"/>
+<title>Leverage Loop Calculator — OrnyTools</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet"/>
+<style>
+  :root{
+    --gold:#C8841E;--gold-pale:rgba(200,132,30,.08);
+    --purple:#7C3AED;--purple-pale:rgba(124,58,237,.08);
+    --coral:#E8765A;--coral-pale:rgba(232,118,90,.08);
+    --good:#0E9F6E;--good-pale:rgba(14,159,110,.08);
+    --warn:#F59E0B;--warn-pale:rgba(245,158,11,.08);
+    --text:#111827;--dim:#6B7280;--faint:#9AA5B4;
+    --line:#E4E8F0;--line-soft:#EDF0F5;
+    --surface:#FFFFFF;--surface-2:#F0F2F5;
+    --display:"Fraunces",Georgia,serif;
+    --ui:"Hanken Grotesk",system-ui,sans-serif;
+    --mono:"JetBrains Mono",ui-monospace,monospace;
+    --radius:14px;
+    --shadow:0 2px 8px rgba(0,0,0,.07),0 8px 32px rgba(0,0,0,.07);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:#fff;color:var(--text);font-family:var(--ui);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+
+  .navbar{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(255,255,255,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);padding:10px 24px;display:flex;align-items:center;gap:12px;box-shadow:0 2px 12px rgba(0,0,0,.04)}
+  .nav-logo{width:36px;height:36px;object-fit:cover;object-position:center 15%;border-radius:8px}
+  .nav-brand{font-family:var(--display);font-size:1.05rem;font-weight:600;letter-spacing:-.02em}
+  .nav-brand .dot{color:var(--gold)}
+  .nav-tag{font-size:.6rem;color:var(--faint);text-transform:uppercase;letter-spacing:.18em;font-weight:600}
+  .nav-home{margin-left:auto;font-size:.82rem;font-weight:600;color:var(--dim);text-decoration:none;padding:7px 14px;border:1px solid var(--line);border-radius:7px;transition:.15s}
+  .nav-home:hover{border-color:var(--purple);color:var(--purple)}
+
+  /* TOP IMAGE */
+  .top-img-wrap{padding-top:62px;text-align:center;background:#fff}
+  .top-img-wrap img{width:clamp(280px,58vw,720px);border-radius:22px;box-shadow:0 16px 56px rgba(0,0,0,.10);display:inline-block}
+
+  /* HERO */
+  .page-hero{padding:48px 28px 48px;text-align:center;background:#fff}
+  .eyebrow{font-size:11.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--purple);font-weight:700;margin-bottom:16px}
+  .page-hero h1{font-family:var(--display);font-weight:500;font-size:clamp(1.7rem,3.2vw,2.4rem);letter-spacing:-.02em;line-height:1.12;margin-bottom:14px}
+  .page-hero h1 em{font-style:italic;color:var(--purple)}
+  .page-hero p{color:var(--dim);font-size:1rem;max-width:48ch;margin:0 auto;line-height:1.75}
+
+  /* LAYOUT */
+  .config-zone{display:grid;grid-template-columns:1fr 360px;gap:28px;align-items:start;padding:48px 28px 72px;max-width:1100px;margin:0 auto}
+  .panel{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:28px;box-shadow:var(--shadow)}
+  .panel-title{font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--faint);margin-bottom:22px}
+  .field{margin-bottom:16px}
+  .field label{display:flex;justify-content:space-between;font-size:12.5px;color:var(--dim);margin-bottom:7px;font-weight:500}
+  .field label .hint{color:var(--faint);font-weight:400}
+  .field input,.field select{width:100%;background:var(--surface-2);border:1px solid var(--line);color:var(--text);font-family:var(--mono);font-size:15px;padding:11px 13px;border-radius:9px;outline:none;transition:border-color .15s,box-shadow .15s}
+  .field input:focus,.field select:focus{border-color:var(--purple);box-shadow:0 0 0 3px rgba(124,58,237,.12)}
+  .with-prefix{position:relative}
+  .with-prefix .pfx{position:absolute;left:13px;bottom:11px;color:var(--faint);font-family:var(--mono);font-size:15px;pointer-events:none}
+  .with-prefix input{padding-left:26px}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .divider{border:none;border-top:1px solid var(--line-soft);margin:20px 0}
+
+  /* LOOP COUNTER */
+  .loop-counter{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+  .loop-btn{width:36px;height:36px;border-radius:50%;border:1.5px solid var(--line);background:var(--surface-2);font-size:18px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.15s;color:var(--text)}
+  .loop-btn:hover{border-color:var(--purple);color:var(--purple)}
+  .loop-val{font-family:var(--mono);font-size:1.4rem;font-weight:700;color:var(--purple);min-width:28px;text-align:center}
+  .loop-label{font-size:13px;color:var(--dim)}
+
+  /* PRESETS */
+  .presets{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px}
+  .preset-btn{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--line);background:var(--surface-2);color:var(--dim);cursor:pointer;transition:.15s}
+  .preset-btn:hover,.preset-btn.active{border-color:var(--purple);color:var(--purple);background:var(--purple-pale)}
+
+  /* RESULTS */
+  .result-side{position:sticky;top:80px;display:flex;flex-direction:column;gap:16px}
+  .result-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:28px;box-shadow:var(--shadow)}
+  .result-label{font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--faint);margin-bottom:10px}
+  .result-big{font-family:var(--mono);font-size:clamp(2rem,4.5vw,2.8rem);font-weight:700;letter-spacing:-.03em;line-height:1;margin-bottom:6px;color:var(--purple)}
+  .result-sub{font-size:13px;color:var(--dim);margin-bottom:20px}
+  .breakdown{border-top:1px solid var(--line);padding-top:16px;display:flex;flex-direction:column;gap:10px}
+  .br-row{display:flex;justify-content:space-between;align-items:center;font-size:13.5px;color:var(--dim)}
+  .br-row b{font-family:var(--mono);color:var(--text)}
+  .br-row.danger b{color:var(--coral)}
+  .br-row.good b{color:var(--good)}
+  .br-row.purple b{color:var(--purple)}
+
+  /* LOOP TABLE */
+  .loop-table-wrap{background:var(--surface-2);border-top:1px solid var(--line);padding:56px 28px 72px}
+  .loop-table-wrap h3{font-family:var(--display);font-size:1.2rem;font-weight:500;letter-spacing:-.02em;margin-bottom:6px}
+  .loop-table-wrap p{font-size:.85rem;color:var(--dim);margin-bottom:24px}
+  .ltable{width:100%;max-width:900px;margin:0 auto;border-collapse:collapse;background:#fff;border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow)}
+  .ltable th{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);padding:12px 16px;text-align:right;border-bottom:1px solid var(--line);background:var(--surface-2)}
+  .ltable th:first-child{text-align:center}
+  .ltable td{font-family:var(--mono);font-size:13px;padding:11px 16px;text-align:right;border-bottom:1px solid var(--line-soft);color:var(--text)}
+  .ltable td:first-child{text-align:center;font-weight:700;color:var(--purple)}
+  .ltable tr:last-child td{border-bottom:none;font-weight:700;background:var(--purple-pale)}
+  .ltable td.danger{color:var(--coral)}
+  .ltable td.good{color:var(--good)}
+
+  /* ALERT */
+  .alert-card{border-radius:var(--radius);padding:20px;border:1px solid}
+  .alert-card.good{background:var(--good-pale);border-color:rgba(14,159,110,.25)}
+  .alert-card.warn{background:var(--warn-pale);border-color:rgba(245,158,11,.3)}
+  .alert-card.danger{background:var(--coral-pale);border-color:rgba(232,118,90,.35)}
+  .alert-title{font-size:11px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;margin-bottom:8px}
+  .alert-card.good .alert-title{color:var(--good)}
+  .alert-card.warn .alert-title{color:var(--warn)}
+  .alert-card.danger .alert-title{color:var(--coral)}
+  .alert-text{font-size:13px;line-height:1.65}
+
+  /* BOTTOM IMAGE */
+  .bottom-img-wrap{padding:56px 28px;text-align:center;background:#fff;border-top:1px solid var(--line)}
+  .bottom-img-wrap img{width:clamp(280px,58vw,720px);border-radius:22px;box-shadow:0 16px 56px rgba(0,0,0,.10);display:inline-block}
+
+  /* BACK + FOOTER */
+  .back-section{padding:40px 28px;text-align:center;border-top:1px solid var(--line);background:var(--surface-2)}
+  .back-link{display:inline-flex;align-items:center;gap:10px;text-decoration:none;color:var(--text);font-weight:700;font-size:15px;padding:14px 32px;border:1.5px solid var(--line);border-radius:40px;background:#fff;transition:.18s;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+  .back-link:hover{border-color:var(--purple);color:var(--purple);box-shadow:0 4px 16px rgba(124,58,237,.15)}
+  footer{padding:36px 0;text-align:center;color:var(--faint);font-size:13px;border-top:1px solid var(--line)}
+  .ft-tag{font-family:var(--display);font-style:italic;font-size:17px;color:var(--dim);margin-bottom:8px}
+  .ft-tag span{color:var(--purple)}
+
+  @media(max-width:860px){.config-zone{grid-template-columns:1fr}.result-side{position:static}}
+  @media(max-width:560px){.row2{grid-template-columns:1fr}}
+  @media(max-width:480px){
+    .navbar{padding:8px 14px}
+    .nav-home{padding:6px 10px;font-size:.75rem}
+    .top-img-wrap{padding-top:58px}
+    .top-img-wrap img{border-radius:14px}
+    .page-hero{padding:32px 16px 28px}
+    .config-zone{padding:24px 14px 48px}
+    .panel{padding:18px 14px}
+    .presets{gap:6px}
+    .preset-btn{font-size:11px;padding:5px 10px}
+    .result-card{padding:18px 14px}
+    .alert-card{padding:14px}
+    .loop-table-wrap{padding:36px 0 48px;overflow-x:auto}
+    .loop-table-wrap h3,.loop-table-wrap p{padding:0 14px}
+    .ltable{border-radius:0;min-width:560px}
+    .bottom-img-wrap{padding:32px 14px}
+    .back-section{padding:28px 14px}
+  }
+</style>
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-5XT34MFV');</script>
+<!-- End Google Tag Manager -->
+</head>
+<body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5XT34MFV"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+<nav class="navbar">
+  <img class="nav-logo" src="logo.png" alt="OrnyTools"/>
+  <div>
+    <div class="nav-brand">Orny<span class="dot">Tools</span></div>
+    <div class="nav-tag">Leverage Loop Calculator</div>
+  </div>
+  <a href="index.html" class="nav-home">← All tools</a>
+</nav>
+
+<!-- TOP IMAGE -->
+<div class="top-img-wrap">
+  <img src="img-leverage.png" alt="OrnyTools Leverage Calculator"/>
+</div>
+
+<!-- HERO -->
+<div class="page-hero">
+  <div class="eyebrow">Leverage Loop Calculator — Aave V3</div>
+  <h1>How much <em>real leverage</em><br>does your loop give you?</h1>
+  <p>Deposit collateral → borrow → rebuy → repeat. See your effective leverage, final liquidation price, and the APY you need to be profitable at each step.</p>
+</div>
+
+<!-- TOOL -->
+<div class="config-zone">
+
+  <div class="panel">
+    <div class="panel-title">Position setup</div>
+
+    <div class="presets">
+      <button class="preset-btn active" data-lt="73" data-sym="₿" data-label="WBTC">WBTC — LTV 73%</button>
+      <button class="preset-btn" data-lt="80" data-sym="Ξ" data-label="ETH">ETH — LTV 80%</button>
+      <button class="preset-btn" data-lt="75" data-sym="Ξ" data-label="wstETH">wstETH — LTV 75%</button>
+    </div>
+
+    <hr class="divider"/>
+
+    <div class="row2">
+      <div class="field with-prefix">
+        <label>Initial collateral <span class="hint" id="symHint">BTC</span></label>
+        <span class="pfx" id="colSym" style="font-family:var(--ui);font-size:13px">₿</span>
+        <input id="colAmount" class="mono" value="1" inputmode="decimal"/>
+      </div>
+      <div class="field with-prefix">
+        <label>Current price <span class="hint" id="priceHint">USD</span></label>
+        <span class="pfx">$</span>
+        <input id="colPrice" class="mono" value="65000" inputmode="decimal"/>
+      </div>
+    </div>
+
+    <div class="row2">
+      <div class="field">
+        <label>Max LTV <span class="hint">%</span></label>
+        <input id="ltv" class="mono" value="73" inputmode="decimal"/>
+      </div>
+      <div class="field">
+        <label>Liquidation Threshold <span class="hint">%</span></label>
+        <input id="ltPct" class="mono" value="78" inputmode="decimal"/>
+      </div>
+    </div>
+
+    <hr class="divider"/>
+
+    <div class="row2">
+      <div class="field with-prefix">
+        <label>Borrow APY <span class="hint">USDC</span></label>
+        <span class="pfx" style="font-family:var(--ui);font-size:13px">%</span>
+        <input id="borrowApy" class="mono" value="5" inputmode="decimal" style="padding-left:26px"/>
+      </div>
+      <div class="field with-prefix">
+        <label>Collateral APY <span class="hint">optional</span></label>
+        <span class="pfx" style="font-family:var(--ui);font-size:13px">%</span>
+        <input id="colApy" class="mono" value="0" inputmode="decimal" style="padding-left:26px"/>
+      </div>
+    </div>
+
+    <hr class="divider"/>
+
+    <div class="panel-title" style="margin-bottom:14px">Number of loops</div>
+    <div class="loop-counter">
+      <button class="loop-btn" id="loopMinus">−</button>
+      <span class="loop-val" id="loopVal">3</span>
+      <button class="loop-btn" id="loopPlus">+</button>
+      <span class="loop-label">loops (1 = no leverage)</span>
+    </div>
+  </div>
+
+  <!-- RESULTS -->
+  <div class="result-side">
+
+    <div class="result-card">
+      <div class="result-label">Effective Leverage</div>
+      <div class="result-big" id="resLeverage">—</div>
+      <div class="result-sub" id="resSub">Enter your position above</div>
+
+      <div class="breakdown">
+        <div class="br-row purple"><span>Total collateral</span><b id="resTotalCol">—</b></div>
+        <div class="br-row danger"><span>Total debt (USD)</span><b id="resTotalDebt">—</b></div>
+        <div class="br-row danger"><span>Liquidation price</span><b id="resLiqPrice">—</b></div>
+        <div class="br-row"><span>Drop to liquidation</span><b id="resDrop">—</b></div>
+        <div class="br-row"><span>Net APY</span><b id="resNetApy">—</b></div>
+        <div class="br-row"><span>Break-even collateral APY</span><b id="resBreakEven">—</b></div>
+      </div>
+    </div>
+
+    <div class="alert-card good" id="alertCard">
+      <div class="alert-title" id="alertTitle">—</div>
+      <div class="alert-text" id="alertText">—</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- LOOP TABLE -->
+<div class="loop-table-wrap">
+  <div style="max-width:900px;margin:0 auto">
+    <h3>Step-by-step breakdown</h3>
+    <p>Each loop: deposit → borrow at LTV → rebuy collateral.</p>
+    <table class="ltable" id="loopTable">
+      <thead>
+        <tr>
+          <th>Loop</th>
+          <th>Deposited (USD)</th>
+          <th>Borrowed (USD)</th>
+          <th>Cumul. collateral</th>
+          <th>Cumul. debt</th>
+          <th>Health Factor</th>
+        </tr>
+      </thead>
+      <tbody id="loopBody"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- BACK -->
+<div class="back-section">
+  <a class="back-link" href="index.html">
+    <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 1.5L1.5 9 9 16.5M1.5 9h15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    Back to all tools
+  </a>
+</div>
+
+<footer>
+  <div class="ft-tag">Leverage smart. <span>Survive the dip.</span></div>
+  Read-only · no wallet connection · Health Factor = (Collateral × LT) / Debt · ornytools.xyz<br/>
+  <span style="margin-top:8px;display:inline-block">Built by <a href="https://www.linkedin.com/in/xavier-maquin-5576643b9/" target="_blank" rel="noopener" style="color:var(--purple);text-decoration:none;font-weight:600">Xavier Maquin</a></span>
+</footer>
+
+<script>
+const $ = id => document.getElementById(id);
+let loops = 3;
+
+function fmtUSD(v){
+  if(!isFinite(v))return'—';
+  if(Math.abs(v)>=1e6)return'$'+(v/1e6).toFixed(2)+'M';
+  return '$'+v.toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:0});
+}
+function fmtX(v){ return isFinite(v) ? v.toFixed(2)+'×' : '—'; }
+function fmtPct(v){ return isFinite(v) ? (v>=0?'+':'')+v.toFixed(2)+'%' : '—'; }
+
+const PRESETS = {
+  'WBTC':  {ltv:73,  lt:78,   sym:'₿', symLabel:'BTC',    gecko:'wrapped-bitcoin'},
+  'ETH':   {ltv:80,  lt:82.5, sym:'Ξ', symLabel:'ETH',    gecko:'ethereum'},
+  'wstETH':{ltv:75,  lt:80,   sym:'Ξ', symLabel:'wstETH', gecko:'ethereum'},
+};
+
+const _prices = {};
+
+async function fetchPrice(gecko){
+  if(!gecko) return null;
+  if(_prices[gecko]) return _prices[gecko];
+  try {
+    const r = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${gecko}&vs_currencies=usd`);
+    const d = await r.json();
+    _prices[gecko] = d[gecko]?.usd || null;
+    return _prices[gecko];
+  } catch { return null; }
+}
+
+function setPriceLive(price){
+  if(!price) return;
+  $('colPrice').value = price;
+  $('priceHint').innerHTML = '<span style="color:var(--good);font-weight:700">● live</span>';
+  calc();
+}
+
+document.querySelectorAll('.preset-btn').forEach(btn => {
+  btn.addEventListener('click', async () => {
+    document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const p = PRESETS[btn.dataset.label];
+    $('ltv').value           = p.ltv;
+    $('ltPct').value         = p.lt;
+    $('colSym').textContent  = p.sym;
+    $('symHint').textContent = p.symLabel;
+    $('priceHint').textContent = 'fetching…';
+    const price = await fetchPrice(p.gecko);
+    setPriceLive(price);
+    if(!price){ $('priceHint').textContent = 'USD'; calc(); }
+  });
+});
+
+// Auto-fetch on load for active preset (WBTC)
+fetchPrice('wrapped-bitcoin').then(p => setPriceLive(p));
+
+$('loopMinus').addEventListener('click', () => { if(loops>1){loops--;$('loopVal').textContent=loops;calc();} });
+$('loopPlus').addEventListener('click',  () => { if(loops<10){loops++;$('loopVal').textContent=loops;calc();} });
+
+function calc(){
+  const colAmt   = parseFloat($('colAmount').value)  || 0;
+  const price    = parseFloat($('colPrice').value)   || 0;
+  const ltv      = parseFloat($('ltv').value)        / 100 || 0;
+  const lt       = parseFloat($('ltPct').value)      / 100 || 0;
+  const borrow   = parseFloat($('borrowApy').value)  || 0;
+  const colApy   = parseFloat($('colApy').value)     || 0;
+
+  if(!(colAmt>0 && price>0 && ltv>0 && lt>0)) return;
+
+  const initUSD = colAmt * price;
+
+  // Build loop steps
+  let cumCol = initUSD, cumDebt = 0;
+  const steps = [];
+
+  steps.push({loop:0, deposited:initUSD, borrowed:0, cumCol, cumDebt});
+
+  for(let i=1; i<=loops; i++){
+    const borrowed  = steps[i-1].deposited * ltv;
+    cumDebt  += borrowed;
+    cumCol   += borrowed;  // rebuy same asset
+    steps.push({loop:i, deposited:borrowed, borrowed, cumCol, cumDebt});
+  }
+
+  const lastStep   = steps[steps.length-1];
+  const leverage   = lastStep.cumCol / initUSD;
+  const liqPrice   = price * (lastStep.cumDebt) / (lastStep.cumCol * lt);
+  const dropPct    = ((price - liqPrice) / price) * 100;
+  const hf         = (lastStep.cumCol * lt) / (lastStep.cumDebt || 0.0001);
+  const netApy     = colApy * leverage - borrow * (leverage - 1);
+  const breakEven  = borrow * (leverage - 1) / leverage;
+
+  $('resLeverage').textContent = fmtX(leverage);
+  $('resSub').textContent      = `${loops} loop${loops>1?'s':''} · HF = ${hf.toFixed(2)}`;
+  $('resTotalCol').textContent = fmtUSD(lastStep.cumCol);
+  $('resTotalDebt').textContent= fmtUSD(lastStep.cumDebt);
+  $('resLiqPrice').textContent = '$'+liqPrice.toLocaleString('en-US',{maximumFractionDigits:0});
+  $('resDrop').textContent     = '-'+dropPct.toFixed(1)+'%';
+  $('resNetApy').textContent   = fmtPct(netApy);
+  $('resBreakEven').textContent= breakEven.toFixed(2)+'% APY';
+
+  // Color net APY
+  document.querySelector('.br-row:has(#resNetApy) b').style.color =
+    netApy > 0 ? 'var(--good)' : 'var(--coral)';
+
+  // Alert
+  const card  = $('alertCard');
+  const title = $('alertTitle');
+  const text  = $('alertText');
+  if(hf >= 2){
+    card.className = 'alert-card good';
+    title.textContent = 'Position healthy';
+    text.textContent = `${dropPct.toFixed(1)}% drop needed to get liquidated. Net APY: ${fmtPct(netApy)}. You need the asset to appreciate at least ${breakEven.toFixed(2)}%/yr to cover borrow costs.`;
+  } else if(hf >= 1.5){
+    card.className = 'alert-card warn';
+    title.textContent = 'Monitor closely';
+    text.textContent = `Only ${dropPct.toFixed(1)}% away from liquidation with ${fmtX(leverage)} leverage. Consider fewer loops or a higher LT asset.`;
+  } else {
+    card.className = 'alert-card danger';
+    title.textContent = '⚠ High liquidation risk';
+    text.textContent = `HF = ${hf.toFixed(2)}. A ${dropPct.toFixed(1)}% drop liquidates you. Reduce loops or borrow less per step.`;
+  }
+
+  // Table
+  const tbody = $('loopBody');
+  tbody.innerHTML = steps.map((s,i) => {
+    const stepHF = s.cumDebt > 0 ? (s.cumCol * lt / s.cumDebt) : Infinity;
+    const hfStr  = s.cumDebt === 0 ? '∞' : stepHF.toFixed(2);
+    const hfClass= stepHF < 1.5 ? 'danger' : stepHF < 2 ? '' : 'good';
+    const isLast = i === steps.length-1;
+    return `<tr${isLast?' style="font-weight:700"':''}>
+      <td>${s.loop === 0 ? 'Init' : s.loop}</td>
+      <td>${fmtUSD(s.deposited)}</td>
+      <td>${s.borrowed > 0 ? fmtUSD(s.borrowed) : '—'}</td>
+      <td>${fmtUSD(s.cumCol)}</td>
+      <td>${s.cumDebt > 0 ? fmtUSD(s.cumDebt) : '—'}</td>
+      <td class="${hfClass}">${hfStr}</td>
+    </tr>`;
+  }).join('');
+}
+
+['colAmount','colPrice','ltv','ltPct','borrowApy','colApy'].forEach(id => $(id).addEventListener('input', calc));
+calc();
+</script>
+</body>
+</html>

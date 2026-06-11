@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>wstETH — Fiche Technique DeFi</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --indigo:      #6366f1;
+      --indigo-dark: #4f46e5;
+      --indigo-dim:  #e0e7ff;
+      --indigo-bg:   #eef2ff;
+      --text:        #1e1b4b;
+      --text-light:  #6b7280;
+      --bg:          #f8fafc;
+      --card:        #ffffff;
+      --border:      #e2e8f0;
+      --red:         #ef4444;
+      --red-bg:      #fef2f2;
+      --green:       #10b981;
+      --green-bg:    #f0fdf4;
+      --amber:       #f59e0b;
+      --amber-bg:    #fffbeb;
+    }
+
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; padding: 2rem 1rem; }
+    .page { max-width: 860px; margin: 0 auto; }
+
+    header {
+      background: linear-gradient(135deg, var(--indigo-dark) 0%, var(--indigo) 100%);
+      border-radius: 16px; padding: 2.5rem 2rem; color: white;
+      margin-bottom: 1.5rem; position: relative; overflow: hidden;
+    }
+    header::after {
+      content: ''; position: absolute; top: -40px; right: -40px;
+      width: 200px; height: 200px; background: rgba(255,255,255,0.05); border-radius: 50%;
+    }
+    .badge {
+      display: inline-block; background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.25); padding: 0.25rem 0.75rem;
+      border-radius: 99px; font-size: 0.75rem; font-weight: 500;
+      letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 0.75rem;
+    }
+    header h1 { font-size: 2.5rem; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 0.5rem; }
+    header p  { font-size: 1rem; opacity: 0.85; max-width: 580px; }
+    .meta { display: flex; gap: 1.5rem; margin-top: 1.5rem; flex-wrap: wrap; }
+    .meta-item { display: flex; flex-direction: column; }
+    .meta-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; opacity: 0.6; }
+    .meta-value { font-family: 'IBM Plex Mono', monospace; font-size: 0.95rem; font-weight: 500; }
+
+    .kpi-strip { display: grid; grid-template-columns: repeat(auto-fit, minmax(155px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
+    .kpi { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 1.25rem 1rem; text-align: center; }
+    .kpi-value { font-family: 'IBM Plex Mono', monospace; font-size: 1.5rem; font-weight: 700; color: var(--indigo); line-height: 1.1; }
+    .kpi-label { font-size: 0.75rem; color: var(--text-light); margin-top: 0.35rem; }
+
+    .section { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 1.75rem; margin-bottom: 1.25rem; }
+    .section-title {
+      font-size: 1rem; font-weight: 700; color: var(--indigo-dark);
+      text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 1.25rem;
+      display: flex; align-items: center; gap: 0.5rem;
+    }
+    .section-title::before { content: ''; display: inline-block; width: 3px; height: 1em; background: var(--indigo); border-radius: 2px; }
+
+    p { margin-bottom: 0.75rem; }
+    p:last-child { margin-bottom: 0; }
+
+    .diagram {
+      background: #1e1b4b; color: #a5b4fc;
+      font-family: 'IBM Plex Mono', monospace; font-size: 0.82rem; line-height: 1.8;
+      border-radius: 10px; padding: 1.25rem 1.5rem; margin: 1rem 0; overflow-x: auto;
+    }
+    .diagram .hi  { color: #e0e7ff; font-weight: 500; }
+    .diagram .ok  { color: #6ee7b7; }
+    .diagram .dim { color: #6366f1; }
+
+    /* COMPARAISON stETH / wstETH */
+    .token-compare {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem;
+    }
+    .token-col { border-radius: 10px; padding: 1.25rem; }
+    .token-col.a { background: #fff7ed; border: 1px solid #fed7aa; }
+    .token-col.c { background: var(--indigo-bg); border: 1px solid var(--indigo-dim); }
+    .token-col-name { font-family: 'IBM Plex Mono', monospace; font-size: 1rem; font-weight: 700; margin-bottom: 0.75rem; }
+    .token-col.a .token-col-name { color: #c2410c; }
+    .token-col.c .token-col-name { color: var(--indigo-dark); }
+    .token-row { font-size: 0.84rem; padding: 0.3rem 0; border-bottom: 1px solid rgba(0,0,0,0.06); display: flex; gap: 0.5rem; }
+    .token-row:last-child { border-bottom: none; }
+    .tr-key { color: var(--text-light); min-width: 100px; }
+
+    /* STEPS */
+    .steps { list-style: none; counter-reset: step; }
+    .steps li { counter-increment: step; display: flex; gap: 1rem; align-items: flex-start; margin-bottom: 0.9rem; }
+    .steps li::before {
+      content: counter(step); flex-shrink: 0; width: 28px; height: 28px;
+      background: var(--indigo-bg); color: var(--indigo-dark);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-size: 0.8rem; font-weight: 700; font-family: 'IBM Plex Mono', monospace;
+    }
+
+    /* TABLE */
+    table { width: 100%; border-collapse: collapse; font-size: 0.875rem; margin-top: 0.75rem; }
+    th {
+      background: var(--indigo-bg); color: var(--indigo-dark);
+      font-weight: 600; font-size: 0.75rem; text-transform: uppercase;
+      letter-spacing: 0.05em; padding: 0.6rem 0.75rem; text-align: left;
+    }
+    td { padding: 0.6rem 0.75rem; border-bottom: 1px solid var(--border); }
+    tr:last-child td { border-bottom: none; }
+    code {
+      font-family: 'IBM Plex Mono', monospace; font-size: 0.85em;
+      background: var(--indigo-bg); color: var(--indigo-dark);
+      padding: 0.1em 0.4em; border-radius: 4px;
+    }
+
+    /* PROTOCOLES GRID */
+    .proto-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(185px, 1fr)); gap: 0.75rem; margin-top: 0.5rem; }
+    .proto-card { background: var(--indigo-bg); border: 1px solid var(--indigo-dim); border-radius: 10px; padding: 1rem; }
+    .proto-name { font-family: 'IBM Plex Mono', monospace; font-size: 0.9rem; font-weight: 600; color: var(--indigo-dark); margin-bottom: 0.4rem; }
+    .proto-desc { font-size: 0.82rem; color: var(--text); line-height: 1.5; }
+
+    /* RISKS */
+    .risk-list { list-style: none; }
+    .risk-item { display: flex; gap: 0.75rem; align-items: flex-start; padding: 0.85rem 1rem; border-radius: 8px; margin-bottom: 0.6rem; font-size: 0.9rem; }
+    .risk-item.high   { background: var(--red-bg);   border-left: 3px solid var(--red); }
+    .risk-item.medium { background: var(--amber-bg); border-left: 3px solid var(--amber); }
+    .risk-item.low    { background: var(--green-bg); border-left: 3px solid var(--green); }
+    .risk-badge { flex-shrink: 0; font-family: 'IBM Plex Mono', monospace; font-size: 0.65rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; padding: 0.15rem 0.45rem; border-radius: 4px; margin-top: 2px; }
+    .risk-item.high   .risk-badge { background: var(--red);   color: white; }
+    .risk-item.medium .risk-badge { background: var(--amber); color: white; }
+    .risk-item.low    .risk-badge { background: var(--green); color: white; }
+
+    /* USE CASES */
+    .usecase-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.75rem; }
+    .usecase { background: var(--indigo-bg); border-radius: 10px; padding: 1rem; font-size: 0.875rem; }
+    .usecase strong { display: block; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--indigo-dark); margin-bottom: 0.3rem; }
+
+    /* SOURCES */
+    .sources { list-style: none; }
+    .sources li { padding: 0.4rem 0; border-bottom: 1px solid var(--border); font-size: 0.875rem; }
+    .sources li:last-child { border-bottom: none; }
+    .sources a { color: var(--indigo); text-decoration: none; font-family: 'IBM Plex Mono', monospace; font-size: 0.8rem; }
+    .sources a:hover { text-decoration: underline; }
+    .src-label { display: inline-block; font-weight: 500; min-width: 180px; color: var(--text); }
+
+    footer { text-align: center; font-size: 0.75rem; color: var(--text-light); margin-top: 2rem; padding-top: 1rem; border-top: 1px solid var(--border); font-family: 'IBM Plex Mono', monospace; }
+
+    @media (max-width: 560px) {
+      header h1 { font-size: 1.75rem; }
+      .token-compare { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <header>
+    <div class="badge">Actif · Liquid Staking Token (LST)</div>
+    <h1>wstETH</h1>
+    <p>Wrapped staked ETH — la version DeFi-compatible du staking Ethereum via Lido. Génère du yield automatiquement, utilisable comme collateral sur Aave, Uniswap, et tous les L2.</p>
+    <div class="meta">
+      <div class="meta-item">
+        <span class="meta-label">Émetteur</span>
+        <span class="meta-value">Lido Finance</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Modèle</span>
+        <span class="meta-value">c-token (taux variable)</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Sous-jacent</span>
+        <span class="meta-value">ETH staké (PoS)</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Standard</span>
+        <span class="meta-value">ERC-20</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- KPI -->
+  <div class="kpi-strip">
+    <div class="kpi">
+      <div class="kpi-value">~9,8M</div>
+      <div class="kpi-label">ETH stakés chez Lido</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-value">~3,5%</div>
+      <div class="kpi-label">APR staking (estimé)</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-value">&gt;1 ETH</div>
+      <div class="kpi-label">valeur de 1 wstETH</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-value">#1</div>
+      <div class="kpi-label">LST par TVL DeFi</div>
+    </div>
+  </div>
+
+  <!-- VUE D'ENSEMBLE -->
+  <div class="section">
+    <div class="section-title">Vue d'ensemble</div>
+    <p>
+      Le staking Ethereum génère des récompenses (~3,5% APR), mais l'ETH staké en solo est illiquide et requiert 32 ETH. Lido résout le premier problème avec <strong>stETH</strong> (ETH staké liquide), mais stETH utilise un mécanisme de <em>rebase</em> — son solde augmente chaque jour — ce qui le rend incompatible avec de nombreux protocoles DeFi.
+    </p>
+    <p>
+      <strong>wstETH</strong> (Wrapped staked ETH) résout ce problème : c'est une enveloppe autour de stETH dont le solde <em>ne change jamais</em>. À la place, c'est le taux de conversion qui augmente. 1 wstETH vaut aujourd'hui plus d'1 ETH — et ce ratio monte en permanence au fil des récompenses de staking.
+    </p>
+    <p>
+      C'est cet actif que la quasi-totalité des protocoles DeFi (Aave, Uniswap, Curve, bridges L2) utilise, car il est prévisible, standard ERC-20, et disponible nativement sur Arbitrum, Optimism, Polygon et d'autres chaînes.
+    </p>
+  </div>
+
+  <!-- stETH vs wstETH -->
+  <div class="section">
+    <div class="section-title">stETH vs wstETH — la différence clé</div>
+    <p>Lido émet deux tokens représentant le même sous-jacent (ETH staké). Seul le mécanisme d'accumulation des récompenses diffère :</p>
+
+    <div class="token-compare">
+      <div class="token-col a">
+        <div class="token-col-name">stETH — a-token</div>
+        <div class="token-row"><span class="tr-key">Modèle</span><span>Rebasing</span></div>
+        <div class="token-row"><span class="tr-key">Récompenses</span><span>Solde augmente chaque jour</span></div>
+        <div class="token-row"><span class="tr-key">1 stETH =</span><span>≈ 1 ETH (toujours)</span></div>
+        <div class="token-row"><span class="tr-key">Usage</span><span>Wallet, hodl simple</span></div>
+        <div class="token-row"><span class="tr-key">Problème</span><span>Incompatible avec certains protocoles DeFi (balance variable)</span></div>
+      </div>
+      <div class="token-col c">
+        <div class="token-col-name">wstETH — c-token</div>
+        <div class="token-row"><span class="tr-key">Modèle</span><span>Taux de change variable</span></div>
+        <div class="token-row"><span class="tr-key">Récompenses</span><span>Taux de conversion monte</span></div>
+        <div class="token-row"><span class="tr-key">1 wstETH =</span><span>x ETH (ratio croissant)</span></div>
+        <div class="token-row"><span class="tr-key">Usage</span><span>DeFi, collateral, bridges, L2</span></div>
+        <div class="token-row"><span class="tr-key">Avantage</span><span>Solde fixe → compatible partout</span></div>
+      </div>
+    </div>
+
+    <div class="diagram" style="margin-top:1.25rem">
+<span class="hi">Exemple concret — taux de conversion dans le temps</span>
+
+Jan 2023 :  1 wstETH = 1.08 stETH = 1.08 ETH
+Jan 2024 :  1 wstETH = 1.14 stETH = 1.14 ETH
+Jan 2025 :  1 wstETH = 1.20 stETH = 1.20 ETH   <span class="ok">← taux monte</span>
+
+<span class="dim">Le nombre de wstETH dans ton wallet ne bouge pas.</span>
+<span class="dim">C'est la valeur de chaque wstETH qui augmente.</span>
+    </div>
+
+    <p style="margin-top:0.75rem;font-size:0.875rem;color:var(--text-light)">
+      Formule : <code>wstETH = stETH ÷ taux_de_conversion</code> — au wrap, puis <code>stETH récupéré = wstETH × taux_actuel</code> au unwrap.
+    </p>
+  </div>
+
+  <!-- FONCTIONNEMENT -->
+  <div class="section">
+    <div class="section-title">Comment obtenir du wstETH</div>
+    <ol class="steps">
+      <li><div><strong>Via Lido</strong> — le chemin direct : déposer de l'ETH sur <code>stake.lido.fi</code>, recevoir du stETH, puis le wrapper en wstETH en un clic sur la même interface.</div></li>
+      <li><div><strong>Via un DEX</strong> — acheter directement du wstETH contre de l'ETH sur Uniswap ou Curve. Plus rapide, mais tu paies le spread du marché secondaire.</div></li>
+      <li><div><strong>Via un bridge</strong> — wstETH existe en natif sur Arbitrum, Optimism, Polygon. Utiliser le bridge officiel Lido ou un bridge tiers pour le transférer depuis Ethereum.</div></li>
+    </ol>
+
+    <div class="diagram" style="margin-top:0.5rem">
+<span class="hi">ETH</span>
+ <span class="dim">↓</span> stake sur Lido
+<span class="hi">stETH</span>  (rebase, solde monte chaque jour)
+ <span class="dim">↓</span> wrap sur Lido / app.lido.fi
+<span class="hi">wstETH</span> (non-rebase, valeur monte)
+ <span class="dim">↓</span> utiliser dans la DeFi
+  <span class="ok">Aave V3 (collateral)</span>
+  <span class="ok">Uniswap (LP)</span>
+  <span class="ok">Curve (pool wstETH/ETH)</span>
+  <span class="ok">Bridge → Arbitrum natif</span>
+    </div>
+  </div>
+
+  <!-- PROTOCOLES -->
+  <div class="section">
+    <div class="section-title">Où utiliser wstETH</div>
+    <div class="proto-grid">
+      <div class="proto-card">
+        <div class="proto-name">Aave V3</div>
+        <div class="proto-desc">Collateral accepté (LTV ~70–80%). En eMode ETH-correlated : LTV jusqu'à 93%. Emprunter ETH ou stables contre wstETH.</div>
+      </div>
+      <div class="proto-card">
+        <div class="proto-name">Aave — eMode</div>
+        <div class="proto-desc">Mode haute efficacité pour actifs corrélés à ETH. wstETH + ETH emprunt = LTV 93% au lieu de 80%. Capital quasi-total déployable.</div>
+      </div>
+      <div class="proto-card">
+        <div class="proto-name">Uniswap V3</div>
+        <div class="proto-desc">Pool wstETH/ETH en liquidité concentrée. Faible divergence de prix entre les deux actifs → risque d'impermanent loss limité.</div>
+      </div>
+      <div class="proto-card">
+        <div class="proto-name">Curve</div>
+        <div class="proto-desc">Pools stETH/ETH et wstETH/ETH avec faible slippage. Récompenses en LDO + frais de swap. Historiquement le pool le plus liquide.</div>
+      </div>
+      <div class="proto-card">
+        <div class="proto-name">Arbitrum (natif)</div>
+        <div class="proto-desc">wstETH déployé nativement. Toutes les stratégies disponibles avec des frais de gas 10× moins élevés qu'Ethereum mainnet.</div>
+      </div>
+      <div class="proto-card">
+        <div class="proto-name">Levier en boucle</div>
+        <div class="proto-desc">Déposer wstETH → emprunter ETH → wrapper en wstETH → redéposer. Rentable si APR wstETH &gt; taux emprunt ETH (spread positif).</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RISQUES -->
+  <div class="section">
+    <div class="section-title">Risques</div>
+    <ul class="risk-list">
+      <li class="risk-item high">
+        <span class="risk-badge">Élevé</span>
+        <div><strong>Smart contract Lido.</strong> wstETH dépend des contrats Lido (~$20B de TVL). Un exploit sur le protocole Lido impacterait directement la valeur de wstETH.</div>
+      </li>
+      <li class="risk-item high">
+        <span class="risk-badge">Élevé</span>
+        <div><strong>Centralisation Lido.</strong> Lido contrôle ~29% de tout l'ETH staké. Si ce ratio dépasse 33%, Lido pourrait influencer la finalité d'Ethereum — risque systémique pour le réseau entier.</div>
+      </li>
+      <li class="risk-item medium">
+        <span class="risk-badge">Moyen</span>
+        <div><strong>Dépeg wstETH/ETH.</strong> wstETH suit stETH. En juin 2022 (crise Celsius), stETH est tombé à ~0,94 ETH. wstETH aurait subi la même décote. Le dépeg se résorbe avec le temps mais crée des risques de liquidation si utilisé comme collateral.</div>
+      </li>
+      <li class="risk-item medium">
+        <span class="risk-badge">Moyen</span>
+        <div><strong>Slashing des node operators.</strong> Si un validateur opéré par Lido est slashé (faute grave), les pertes sont mutualisées entre tous les détenteurs de stETH/wstETH. Fonds d'assurance partiel.</div>
+      </li>
+      <li class="risk-item low">
+        <span class="risk-badge">Faible</span>
+        <div><strong>Risque de liquidité.</strong> En période de stress, vendre du wstETH en grande quantité peut induire du slippage. Les pools Curve/Uniswap sont profondes mais pas infinies.</div>
+      </li>
+    </ul>
+  </div>
+
+  <!-- CAS D'USAGE -->
+  <div class="section">
+    <div class="section-title">Cas d'usage</div>
+    <div class="usecase-grid">
+      <div class="usecase">
+        <strong>Staking passif</strong>
+        Stake ETH → obtenir wstETH → garder dans son wallet. Le yield s'accumule automatiquement via l'appréciation du taux de conversion. Rien à faire.
+      </div>
+      <div class="usecase">
+        <strong>Collateral Aave</strong>
+        Déposer wstETH sur Aave V3 (Arbitrum), emprunter USDC ou USDT. Exposition longue ETH maintenue, liquidités obtenues sans vendre.
+      </div>
+      <div class="usecase">
+        <strong>Levier ETH (loop)</strong>
+        Déposer wstETH → emprunter ETH (eMode LTV 93%) → wrapper en wstETH → redéposer. Amplifie le yield de staking. Risque : spread qui se compresse.
+      </div>
+      <div class="usecase">
+        <strong>LP Curve / Uniswap</strong>
+        Fournir de la liquidité dans une pool wstETH/ETH. Corrélation forte = impermanent loss faible. Revenus : frais de swap + récompenses LDO.
+      </div>
+    </div>
+  </div>
+
+  <!-- COMPARATIF LST -->
+  <div class="section">
+    <div class="section-title">wstETH vs autres LST</div>
+    <table>
+      <thead>
+        <tr><th>Token</th><th>Protocole</th><th>Modèle</th><th>Part de marché</th><th>Décentralisation</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>wstETH</code></td><td>Lido</td><td>c-token</td><td>~75%</td><td>⚠️ node operators centralisés</td></tr>
+        <tr><td><code>rETH</code></td><td>RocketPool</td><td>c-token</td><td>~8%</td><td>✅ nœuds permissionless</td></tr>
+        <tr><td><code>cbETH</code></td><td>Coinbase</td><td>c-token</td><td>~8%</td><td>❌ custodial</td></tr>
+        <tr><td><code>swETH</code></td><td>Swell</td><td>c-token</td><td>&lt;2%</td><td>⚠️ en développement</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- SOURCES -->
+  <div class="section">
+    <div class="section-title">Sources</div>
+    <ul class="sources">
+      <li><span class="src-label">Interface Lido (stake + wrap)</span><a href="https://stake.lido.fi" target="_blank">stake.lido.fi</a></li>
+      <li><span class="src-label">Documentation wstETH</span><a href="https://docs.lido.fi/contracts/wsteth" target="_blank">docs.lido.fi/contracts/wsteth</a></li>
+      <li><span class="src-label">Taux de conversion en temps réel</span><a href="https://dune.com/lido" target="_blank">dune.com/lido</a></li>
+      <li><span class="src-label">TVL & métriques</span><a href="https://defillama.com/protocol/lido" target="_blank">defillama.com/protocol/lido</a></li>
+      <li><span class="src-label">Contrat wstETH (Ethereum)</span><a href="https://etherscan.io/token/0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0" target="_blank">Etherscan — wstETH</a></li>
+      <li><span class="src-label">Vault Alyra (formation)</span><code>S2-Depots-Tokenises.md</code> · <code>S2-Wrappers.md</code> · <code>Lido.md</code></li>
+    </ul>
+  </div>
+
+  <footer>
+    Généré le 28 mai 2026 · Vault Alyra DeFi · Xavier — Promo Blaise Pascal
+  </footer>
+
+</div>
+</body>
+</html>

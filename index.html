@@ -485,7 +485,7 @@
   </ul>
   <div class="nav-right">
     <div class="btn-theme" title="Toggle theme">🌙</div>
-    <button class="btn-launch" onclick="document.getElementById('tool').scrollIntoView({behavior:'smooth'})">
+    <button class="btn-launch" onclick="location.href='optimizer.html'">
       Launch App 🚀
     </button>
   </div>
@@ -505,7 +505,7 @@
       </h1>
       <p class="hero-sub">Advanced calculators and risk tools that turn DeFi complexity into clear actions.</p>
       <div class="hero-ctas">
-        <button class="btn-hero-primary" onclick="document.getElementById('tool').scrollIntoView({behavior:'smooth'})">
+        <button class="btn-hero-primary" onclick="location.href='optimizer.html'">
           🚀 Launch Tools
         </button>
         <button class="btn-hero-outline" onclick="document.getElementById('tools').scrollIntoView({behavior:'smooth'})">
@@ -576,28 +576,28 @@
   <h2 class="sec-title">What are you trying to do today?</h2>
   <p class="sec-sub">Choose your objective, we'll help you make the right decision.</p>
   <div class="intent-grid">
-    <div class="intent-card" onclick="document.getElementById('tool').scrollIntoView({behavior:'smooth'})">
+    <div class="intent-card" onclick="location.href='optimizer.html'">
       <div class="intent-ico" style="background:#eff6ff">🔄</div>
       <div class="intent-pre">I want to</div>
       <div class="intent-title">Trade</div>
       <div class="intent-desc">Find the optimal trade size and minimize slippage</div>
       <div class="intent-arrow">→</div>
     </div>
-    <div class="intent-card">
+    <div class="intent-card" onclick="location.href='il-calculator.html'">
       <div class="intent-ico" style="background:#f0fdf4">💧</div>
       <div class="intent-pre">I want to</div>
       <div class="intent-title">Provide LP</div>
       <div class="intent-desc">Simulate impermanent loss and optimize returns</div>
       <div class="intent-arrow">→</div>
     </div>
-    <div class="intent-card">
+    <div class="intent-card" onclick="location.href='leverage.html'">
       <div class="intent-ico" style="background:#fdf4ff">📈</div>
       <div class="intent-pre">I want to</div>
       <div class="intent-title">Leverage</div>
       <div class="intent-desc">Maximize yield with safe leverage strategies</div>
       <div class="intent-arrow">→</div>
     </div>
-    <div class="intent-card">
+    <div class="intent-card" onclick="location.href='liquidation.html'">
       <div class="intent-ico" style="background:#fff7ed">🏛️</div>
       <div class="intent-pre">I want to</div>
       <div class="intent-title">Borrow</div>
@@ -627,18 +627,18 @@
         </div>
         <span class="tc-badge badge-best">BEST TRADES</span>
       </div>
-      <button class="open-tool" onclick="document.getElementById('tool').scrollIntoView({behavior:'smooth'})">Open Tool →</button>
+      <button class="open-tool" onclick="location.href='optimizer.html'">Open Tool →</button>
     </div>
 
     <div class="tool-card">
       <div class="tc-head">
         <div class="tc-ico" style="background:#fdf4ff">📉</div>
         <div class="tc-meta">
-          <h3>LP Simulator</h3>
+          <h3>IL Calculator</h3>
           <p>Calculate impermanent loss, fees earned, and total PnL for any price range.</p>
         </div>
       </div>
-      <button class="open-tool" onclick="location.href='defi-tx-optimizer.html'">Open Tool →</button>
+      <button class="open-tool" onclick="location.href='il-calculator.html'">Open Tool →</button>
     </div>
 
     <div class="tool-card">
@@ -650,8 +650,7 @@
         </div>
         <span class="tc-badge badge-risk">RISK</span>
       </div>
-      <div class="tc-stat" style="color:var(--gold)">1.48x <small>Buffer</small></div>
-      <button class="open-tool">Open Tool →</button>
+      <button class="open-tool" onclick="location.href='liquidation.html'">Open Tool →</button>
     </div>
 
     <div class="tool-card">
@@ -662,20 +661,18 @@
           <p>Calculate real APY, borrow costs, and find the optimal leverage for your strategy.</p>
         </div>
       </div>
-      <div class="tc-stat" style="color:var(--green)">27.48% <small>APY</small></div>
-      <button class="open-tool">Open Tool →</button>
+      <button class="open-tool" onclick="location.href='leverage.html'">Open Tool →</button>
     </div>
 
     <div class="tool-card">
       <div class="tc-head">
-        <div class="tc-ico" style="background:#eff6ff">🎯</div>
+        <div class="tc-ico" style="background:#eff6ff">📐</div>
         <div class="tc-meta">
-          <h3>Position Size Calculator</h3>
-          <p>Find the right position size based on your risk tolerance and market conditions.</p>
+          <h3>V3 Range Calculator</h3>
+          <p>Optimize your Uniswap V3 range to maximize fee capture vs impermanent loss.</p>
         </div>
       </div>
-      <div class="tc-stat" style="color:var(--blue)">2% <small>Risk</small></div>
-      <button class="open-tool">Open Tool →</button>
+      <button class="open-tool" onclick="location.href='v3range.html'">Open Tool →</button>
     </div>
 
     <div class="tool-card">
@@ -686,7 +683,29 @@
           <p>Compare yields across protocols to find the best risk-adjusted opportunities.</p>
         </div>
       </div>
-      <button class="open-tool">Open Tool →</button>
+      <button class="open-tool" onclick="location.href='yield.html'">Open Tool →</button>
+    </div>
+
+    <div class="tool-card">
+      <div class="tc-head">
+        <div class="tc-ico" style="background:#f0fdf4">🪙</div>
+        <div class="tc-meta">
+          <h3>Stablecoin Analyzer</h3>
+          <p>Compare stablecoins by peg mechanism, yield, risk profile and protocol backing.</p>
+        </div>
+      </div>
+      <button class="open-tool" onclick="location.href='stablecoin.html'">Open Tool →</button>
+    </div>
+
+    <div class="tool-card">
+      <div class="tc-head">
+        <div class="tc-ico" style="background:#fff7ed">🔥</div>
+        <div class="tc-meta">
+          <h3>DeFi Waste Detector</h3>
+          <p>How much money are you wasting in DeFi? See the numbers most traders never see.</p>
+        </div>
+      </div>
+      <button class="open-tool" onclick="location.href='waste.html'">Open Tool →</button>
     </div>
 
   </div>

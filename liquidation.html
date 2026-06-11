@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta name="description" content="RedZone — Aave Liquidation Calculator by OrnyTools. Know exactly when you get liquidated before it happens."/>
+<meta name="robots" content="index,follow"/>
+<link rel="canonical" href="https://ornytools.xyz/liquidation.html"/>
+<meta property="og:type" content="website"/>
+<meta property="og:site_name" content="OrnyTools"/>
+<meta property="og:title" content="RedZone — Aave Liquidation Calculator — OrnyTools"/>
+<meta property="og:description" content="Your exact Aave liquidation price, health factor and % drop to liquidation — with live price. Before the market moves against you."/>
+<meta property="og:url" content="https://ornytools.xyz/liquidation.html"/>
+<meta property="og:image" content="https://ornytools.xyz/orny-banner.png"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="RedZone — Aave Liquidation Calculator — OrnyTools"/>
+<meta name="twitter:description" content="Your exact Aave liquidation price, health factor and % drop to liquidation — with live price. Before the market moves against you."/>
+<meta name="twitter:image" content="https://ornytools.xyz/orny-banner.png"/>
+<title>RedZone — Liquidation Calculator — OrnyTools</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet"/>
+<style>
+  :root{
+    --gold:#C8841E;--gold-pale:rgba(200,132,30,.08);
+    --coral:#E8765A;--coral-pale:rgba(232,118,90,.08);
+    --good:#0E9F6E;--good-pale:rgba(14,159,110,.08);
+    --warn:#F59E0B;--warn-pale:rgba(245,158,11,.08);
+    --text:#111827;--dim:#6B7280;--faint:#9AA5B4;
+    --line:#E4E8F0;--line-soft:#EDF0F5;
+    --surface:#FFFFFF;--surface-2:#F0F2F5;
+    --display:"Fraunces",Georgia,serif;
+    --ui:"Hanken Grotesk",system-ui,sans-serif;
+    --mono:"JetBrains Mono",ui-monospace,monospace;
+    --radius:14px;
+    --shadow:0 2px 8px rgba(0,0,0,.07),0 8px 32px rgba(0,0,0,.07);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:#fff;color:var(--text);font-family:var(--ui);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+
+  /* NAV */
+  .navbar{
+    position:fixed;top:0;left:0;right:0;z-index:100;
+    background:rgba(255,255,255,.96);backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);padding:10px 24px;
+    display:flex;align-items:center;gap:12px;
+    box-shadow:0 2px 12px rgba(0,0,0,.04);
+  }
+  .nav-logo{width:36px;height:36px;object-fit:cover;object-position:center 15%;border-radius:8px}
+  .nav-brand{font-family:var(--display);font-size:1.05rem;font-weight:600;letter-spacing:-.02em}
+  .nav-brand .dot{color:var(--gold)}
+  .nav-tag{font-size:.6rem;color:var(--faint);text-transform:uppercase;letter-spacing:.18em;font-weight:600}
+  .nav-home{margin-left:auto;font-size:.82rem;font-weight:600;color:var(--dim);text-decoration:none;padding:7px 14px;border:1px solid var(--line);border-radius:7px;transition:.15s}
+  .nav-home:hover{border-color:var(--gold);color:var(--gold)}
+
+  /* TOP IMAGE */
+  .top-img-wrap{padding-top:72px;padding-bottom:0;text-align:center;background:#fff}
+  .top-img-wrap img{width:clamp(280px,55vw,640px);border-radius:20px;box-shadow:0 12px 48px rgba(0,0,0,.10);display:inline-block}
+
+  /* HERO */
+  .page-hero{padding:56px 28px 48px;text-align:center;background:#fff}
+  .eyebrow{font-size:11.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--coral);font-weight:700;margin-bottom:16px}
+  .page-hero h1{font-family:var(--display);font-weight:500;font-size:clamp(1.7rem,3.2vw,2.4rem);letter-spacing:-.02em;line-height:1.12;margin-bottom:14px}
+  .page-hero h1 em{font-style:italic;color:var(--coral)}
+  .page-hero p{color:var(--dim);font-size:1rem;max-width:46ch;margin:0 auto;line-height:1.75}
+
+  /* LAYOUT */
+  .config-zone{display:grid;grid-template-columns:1fr 360px;gap:28px;align-items:start;padding:48px 28px 72px;max-width:1100px;margin:0 auto}
+  .panel{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:28px;box-shadow:var(--shadow)}
+  .panel-title{font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--faint);margin-bottom:22px}
+  .field{margin-bottom:16px}
+  .field label{display:flex;justify-content:space-between;font-size:12.5px;color:var(--dim);margin-bottom:7px;font-weight:500}
+  .field label .hint{color:var(--faint);font-weight:400}
+  .field input,.field select{width:100%;background:var(--surface-2);border:1px solid var(--line);color:var(--text);font-family:var(--mono);font-size:15px;padding:11px 13px;border-radius:9px;outline:none;transition:border-color .15s,box-shadow .15s}
+  .field input:focus,.field select:focus{border-color:var(--coral);box-shadow:0 0 0 3px rgba(232,118,90,.12)}
+  .with-prefix{position:relative}
+  .with-prefix .pfx{position:absolute;left:13px;bottom:11px;color:var(--faint);font-family:var(--mono);font-size:15px;pointer-events:none}
+  .with-prefix input{padding-left:26px}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .divider{border:none;border-top:1px solid var(--line-soft);margin:20px 0}
+
+  /* PRESET BUTTONS */
+  .presets{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px}
+  .preset-btn{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--line);background:var(--surface-2);color:var(--dim);cursor:pointer;transition:.15s}
+  .preset-btn:hover,.preset-btn.active{border-color:var(--coral);color:var(--coral);background:var(--coral-pale)}
+
+  /* RESULT */
+  .result-side{position:sticky;top:80px;display:flex;flex-direction:column;gap:16px}
+  .result-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:28px;box-shadow:var(--shadow)}
+  .result-label{font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--faint);margin-bottom:10px}
+  .result-big{font-family:var(--mono);font-size:clamp(1.8rem,4vw,2.6rem);font-weight:700;letter-spacing:-.03em;line-height:1;margin-bottom:6px}
+  .result-sub{font-size:13px;color:var(--dim);margin-bottom:20px}
+  .hf-bar-wrap{margin-bottom:20px}
+  .hf-bar-track{height:8px;background:var(--surface-2);border-radius:99px;overflow:hidden;margin-top:6px}
+  .hf-bar-fill{height:100%;border-radius:99px;transition:width .4s,background .4s}
+  .breakdown{border-top:1px solid var(--line);padding-top:16px;display:flex;flex-direction:column;gap:10px}
+  .br-row{display:flex;justify-content:space-between;align-items:center;font-size:13.5px;color:var(--dim)}
+  .br-row b{font-family:var(--mono);color:var(--text)}
+
+  /* ALERT CARD */
+  .alert-card{border-radius:var(--radius);padding:20px;border:1px solid}
+  .alert-card.safe{background:var(--good-pale);border-color:rgba(14,159,110,.25)}
+  .alert-card.warn{background:var(--warn-pale);border-color:rgba(245,158,11,.3)}
+  .alert-card.danger{background:var(--coral-pale);border-color:rgba(232,118,90,.35)}
+  .alert-title{font-size:11px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;margin-bottom:10px}
+  .alert-card.safe .alert-title{color:var(--good)}
+  .alert-card.warn .alert-title{color:var(--warn)}
+  .alert-card.danger .alert-title{color:var(--coral)}
+  .alert-text{font-size:13px;line-height:1.65;color:var(--text)}
+
+  /* BOTTOM IMAGE */
+  .bottom-img-wrap{padding:48px 28px;border-top:1px solid var(--line);text-align:center;background:var(--surface-2)}
+  .bottom-img-wrap img{width:clamp(260px,50vw,580px);border-radius:20px;box-shadow:0 12px 48px rgba(0,0,0,.09);display:inline-block}
+
+  /* BACK LINK */
+  .back-section{padding:40px 28px;text-align:center;border-top:1px solid var(--line);background:var(--surface-2)}
+  .back-link{display:inline-flex;align-items:center;gap:10px;text-decoration:none;color:var(--text);font-weight:700;font-size:15px;padding:14px 32px;border:1.5px solid var(--line);border-radius:40px;background:#fff;transition:.18s;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+  .back-link:hover{border-color:var(--gold);color:var(--gold);box-shadow:0 4px 16px rgba(200,132,30,.15)}
+
+  /* FOOTER */
+  footer{padding:36px 0;text-align:center;color:var(--faint);font-size:13px;border-top:1px solid var(--line)}
+  .ft-tag{font-family:var(--display);font-style:italic;font-size:17px;color:var(--dim);margin-bottom:8px}
+  .ft-tag span{color:var(--coral)}
+
+  @media(max-width:860px){.config-zone{grid-template-columns:1fr}.result-side{position:static}}
+  @media(max-width:560px){.row2{grid-template-columns:1fr}}
+  @media(max-width:480px){
+    .navbar{padding:8px 14px}
+    .nav-home{padding:6px 10px;font-size:.75rem}
+    .top-img-wrap{padding-top:58px}
+    .top-img-wrap img{border-radius:14px}
+    .page-hero{padding:32px 16px 28px}
+    .config-zone{padding:24px 14px 48px}
+    .panel{padding:18px 14px}
+    .presets{gap:6px}
+    .preset-btn{font-size:11px;padding:5px 10px}
+    .result-card{padding:18px 14px}
+    .alert-card{padding:14px}
+    .bottom-img-wrap{padding:32px 14px}
+    .back-section{padding:28px 14px}
+  }
+</style>
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-5XT34MFV');</script>
+<!-- End Google Tag Manager -->
+</head>
+<body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5XT34MFV"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+<nav class="navbar">
+  <img class="nav-logo" src="logo.png" alt="OrnyTools"/>
+  <div>
+    <div class="nav-brand">Orny<span class="dot">Tools</span></div>
+    <div class="nav-tag">RedZone</div>
+  </div>
+  <a href="index.html" class="nav-home">← All tools</a>
+</nav>
+
+<div style="padding-top:72px;text-align:center;background:#fff;padding-bottom:0">
+  <img src="img-liquidation.png" alt="OrnyTools RedZone" style="width:clamp(300px,80vw,860px);border-radius:20px;box-shadow:0 16px 56px rgba(0,0,0,.10);display:inline-block"/>
+</div>
+
+<!-- HERO -->
+<div class="page-hero">
+  <div class="eyebrow">RedZone — Aave V3 Liquidation Calculator</div>
+  <h1>Are you in the <em>RedZone</em>?</h1>
+  <p>Enter your collateral and debt. Get your health factor, your exact liquidation price, and how many % the market needs to drop to wipe you out.</p>
+</div>
+
+<!-- TOOL -->
+<div class="config-zone">
+
+  <!-- Inputs -->
+  <div class="panel">
+    <div class="panel-title">Position parameters</div>
+
+    <div class="panel-title" style="margin-bottom:12px;font-size:10px">Quick presets — Aave V3</div>
+    <div class="presets">
+      <button class="preset-btn active" data-lt="78" data-label="WBTC">WBTC — 78%</button>
+      <button class="preset-btn" data-lt="82.5" data-label="ETH">ETH — 82.5%</button>
+      <button class="preset-btn" data-lt="80" data-label="wstETH">wstETH — 80%</button>
+      <button class="preset-btn" data-lt="67.5" data-label="LINK">LINK — 67.5%</button>
+      <button class="preset-btn" data-lt="" data-label="Custom">Custom</button>
+    </div>
+
+    <hr class="divider"/>
+
+    <div class="row2">
+      <div class="field with-prefix">
+        <label>Collateral amount</label>
+        <span class="pfx" style="font-family:var(--ui);font-size:13px" id="colSymbol">₿</span>
+        <input id="colAmount" class="mono" value="1" inputmode="decimal"/>
+      </div>
+      <div class="field with-prefix">
+        <label>Current price <span class="hint" id="priceHint">USD</span></label>
+        <span class="pfx">$</span>
+        <input id="colPrice" class="mono" value="65000" inputmode="decimal"/>
+      </div>
+    </div>
+
+    <div class="field with-prefix">
+      <label>Total debt <span class="hint">USD</span></label>
+      <span class="pfx">$</span>
+      <input id="debtUSD" class="mono" value="30000" inputmode="decimal"/>
+    </div>
+
+    <hr class="divider"/>
+
+    <div class="field">
+      <label>Liquidation Threshold <span class="hint" id="ltHint">WBTC on Aave V3 = 78%</span></label>
+      <input id="ltPct" class="mono" value="78" inputmode="decimal" placeholder="78"/>
+    </div>
+
+    <div class="field">
+      <label>Liquidation Penalty <span class="hint">Aave default = 10%</span></label>
+      <input id="penaltyPct" class="mono" value="10" inputmode="decimal"/>
+    </div>
+  </div>
+
+  <!-- Results -->
+  <div class="result-side">
+
+    <div class="result-card">
+      <div class="result-label">Health Factor</div>
+      <div class="result-big" id="hfVal" style="color:var(--good)">—</div>
+      <div class="result-sub" id="hfSub">Enter your position above</div>
+      <div class="hf-bar-wrap">
+        <div class="hf-bar-track"><div class="hf-bar-fill" id="hfBar" style="width:0%;background:var(--good)"></div></div>
+      </div>
+
+      <div class="breakdown">
+        <div class="br-row"><span>Collateral (USD)</span><b id="rColUSD">—</b></div>
+        <div class="br-row"><span>Collateral × LT</span><b id="rColLT">—</b></div>
+        <div class="br-row"><span>Liquidation price</span><b id="rLiqPrice" style="color:var(--coral)">—</b></div>
+        <div class="br-row"><span>Drop to liquidation</span><b id="rDrop">—</b></div>
+        <div class="br-row"><span>Loss at liquidation</span><b id="rPenalty" style="color:var(--coral)">—</b></div>
+      </div>
+    </div>
+
+    <div class="alert-card safe" id="alertCard">
+      <div class="alert-title" id="alertTitle">Position safe</div>
+      <div class="alert-text" id="alertText">Your health factor is healthy. Monitor it as price moves.</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- BACK TO HUB -->
+<div class="back-section">
+  <a class="back-link" href="index.html">
+    <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 1.5L1.5 9 9 16.5M1.5 9h15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    Back to all tools
+  </a>
+</div>
+
+<footer>
+  <div class="ft-tag">RedZone — <span>know your risk</span> before the market does.</div>
+  Health Factor = (Collateral × LT) / Debt · Read-only, no wallet connection · ornytools.xyz<br/>
+  <span style="margin-top:8px;display:inline-block">Built by <a href="https://www.linkedin.com/in/xavier-maquin-5576643b9/" target="_blank" rel="noopener" style="color:var(--coral);text-decoration:none;font-weight:600">Xavier Maquin</a></span>
+</footer>
+
+<script>
+const $ = id => document.getElementById(id);
+
+function fmtUSD(v){
+  if(!isFinite(v))return'—';
+  if(Math.abs(v)>=1e6)return'$'+(v/1e6).toFixed(2)+'M';
+  return '$'+v.toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:0});
+}
+
+const PRESETS = {
+  'WBTC':  {lt:78,   symbol:'₿', label:'WBTC on Aave V3 = 78%', gecko:'wrapped-bitcoin'},
+  'ETH':   {lt:82.5, symbol:'Ξ', label:'ETH on Aave V3 = 82.5%', gecko:'ethereum'},
+  'wstETH':{lt:80,   symbol:'Ξ', label:'wstETH on Aave V3 = 80%', gecko:'ethereum'},
+  'LINK':  {lt:67.5, symbol:'⬡', label:'LINK on Aave V3 = 67.5%', gecko:'chainlink'},
+  'Custom':{lt:null, symbol:'◈', label:'Enter your LT below', gecko:null},
+};
+
+// Live prices cache
+const _prices = {};
+
+async function fetchPrice(gecko){
+  if(!gecko) return null;
+  if(_prices[gecko]) return _prices[gecko];
+  try {
+    const r = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${gecko}&vs_currencies=usd`);
+    const d = await r.json();
+    _prices[gecko] = d[gecko]?.usd || null;
+    return _prices[gecko];
+  } catch { return null; }
+}
+
+function setPriceLive(price){
+  if(!price) return;
+  $('colPrice').value = price;
+  $('priceHint').innerHTML = '<span style="color:var(--good);font-weight:700">● live</span>';
+  calc();
+}
+
+// Preset buttons
+document.querySelectorAll('.preset-btn').forEach(btn => {
+  btn.addEventListener('click', async () => {
+    document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const p = PRESETS[btn.dataset.label];
+    if(p.lt) { $('ltPct').value = p.lt; }
+    $('ltHint').textContent = p.label;
+    $('colSymbol').textContent = p.symbol;
+    $('priceHint').textContent = 'fetching…';
+    const price = await fetchPrice(p.gecko);
+    setPriceLive(price);
+    if(!price) { $('priceHint').textContent = 'USD'; calc(); }
+  });
+});
+
+// Auto-fetch on load for active preset (WBTC)
+fetchPrice('wrapped-bitcoin').then(p => setPriceLive(p));
+
+function calc(){
+  const colAmt    = parseFloat($('colAmount').value)  || 0;
+  const colPrice  = parseFloat($('colPrice').value)   || 0;
+  const debt      = parseFloat($('debtUSD').value)    || 0;
+  const lt        = parseFloat($('ltPct').value)      / 100 || 0;
+  const penalty   = parseFloat($('penaltyPct').value) / 100 || 0.10;
+
+  if(!(colAmt>0 && colPrice>0 && debt>0 && lt>0)) return;
+
+  const colUSD   = colAmt * colPrice;
+  const colLT    = colUSD * lt;
+  const hf       = debt > 0 ? colLT / debt : Infinity;
+  const liqPrice = debt / (colAmt * lt);
+  const dropPct  = ((colPrice - liqPrice) / colPrice) * 100;
+  const lossAtLiq = colAmt * liqPrice * penalty;
+
+  // Health Factor display
+  const hfDisplay = hf > 99 ? '∞' : hf.toFixed(2);
+  $('hfVal').textContent = hfDisplay;
+
+  let hfColor, barColor, barW;
+  if(hf >= 2)       { hfColor='var(--good)';  barColor='var(--good)';  barW=Math.min(hf/4*100,100); }
+  else if(hf >= 1.5){ hfColor='var(--warn)';  barColor='var(--warn)';  barW=hf/4*100; }
+  else if(hf >= 1)  { hfColor='var(--coral)'; barColor='var(--coral)'; barW=hf/4*100; }
+  else              { hfColor='var(--coral)'; barColor='var(--coral)'; barW=5; }
+
+  $('hfVal').style.color = hfColor;
+  $('hfBar').style.width = barW.toFixed(0)+'%';
+  $('hfBar').style.background = barColor;
+  $('hfSub').textContent = hf >= 1.5 ? 'Safe — monitor as price moves'
+    : hf >= 1.2 ? 'Warning — reduce debt or add collateral'
+    : hf >= 1   ? 'Danger — liquidation imminent'
+    : 'Already liquidatable';
+
+  $('rColUSD').textContent   = fmtUSD(colUSD);
+  $('rColLT').textContent    = fmtUSD(colLT);
+  $('rLiqPrice').textContent = '$'+liqPrice.toLocaleString('en-US',{maximumFractionDigits:0});
+  $('rDrop').textContent     = '-'+dropPct.toFixed(1)+'%';
+  $('rPenalty').textContent  = fmtUSD(lossAtLiq);
+
+  // Alert card
+  const card = $('alertCard');
+  const title= $('alertTitle');
+  const text = $('alertText');
+  if(hf >= 2){
+    card.className='alert-card safe';
+    title.textContent='Position safe';
+    text.textContent=`${dropPct.toFixed(1)}% price drop needed to reach liquidation. Health factor is comfortable at ${hf.toFixed(2)}.`;
+  } else if(hf >= 1.5){
+    card.className='alert-card warn';
+    title.textContent='Monitor closely';
+    text.textContent=`Only ${dropPct.toFixed(1)}% away from liquidation. Consider repaying some debt or adding collateral to reach HF > 2.`;
+  } else if(hf >= 1){
+    card.className='alert-card danger';
+    title.textContent='⚠ Liquidation risk — act now';
+    text.textContent=`HF = ${hf.toFixed(2)}. A ${dropPct.toFixed(1)}% drop liquidates your position. You lose ~${fmtUSD(lossAtLiq)} in penalty fees alone.`;
+  } else {
+    card.className='alert-card danger';
+    title.textContent='⚠ Position undercollateralised';
+    text.textContent='Your position can already be liquidated. Repay debt immediately.';
+  }
+}
+
+['colAmount','colPrice','debtUSD','ltPct','penaltyPct'].forEach(id => $(id).addEventListener('input', calc));
+calc();
+</script>
+</body>
+</html>

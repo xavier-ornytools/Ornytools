@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta name="description" content="Yield Allocation Optimizer — OrnyTools. Find the optimal allocation across Aave, Morpho, Spark and Compound with live APY data."/>
+<meta name="robots" content="index,follow"/>
+<link rel="canonical" href="https://ornytools.xyz/yield.html"/>
+<meta property="og:type" content="website"/>
+<meta property="og:site_name" content="OrnyTools"/>
+<meta property="og:title" content="Yield Allocation Optimizer — OrnyTools"/>
+<meta property="og:description" content="Live APY from Aave, Morpho, Spark and Compound. Optimal stablecoin allocation by risk profile — updated in real time."/>
+<meta property="og:url" content="https://ornytools.xyz/yield.html"/>
+<meta property="og:image" content="https://ornytools.xyz/orny-banner.png"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="Yield Allocation Optimizer — OrnyTools"/>
+<meta name="twitter:description" content="Live APY from Aave, Morpho, Spark and Compound. Optimal stablecoin allocation by risk profile — updated in real time."/>
+<meta name="twitter:image" content="https://ornytools.xyz/orny-banner.png"/>
+<title>Yield Allocation Optimizer — OrnyTools</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet"/>
+<style>
+  :root{
+    --gold:#C8841E;--gold-pale:rgba(200,132,30,.08);
+    --aqua:#3A9FD4;--aqua-pale:rgba(58,159,212,.08);
+    --good:#0E9F6E;--good-pale:rgba(14,159,110,.08);
+    --coral:#E8765A;--warn:#F59E0B;
+    --text:#111827;--dim:#6B7280;--faint:#9AA5B4;
+    --line:#E4E8F0;--line-soft:#EDF0F5;
+    --surface:#FFFFFF;--surface-2:#F0F2F5;
+    --display:"Fraunces",Georgia,serif;
+    --ui:"Hanken Grotesk",system-ui,sans-serif;
+    --mono:"JetBrains Mono",ui-monospace,monospace;
+    --radius:14px;
+    --shadow:0 2px 8px rgba(0,0,0,.07),0 8px 32px rgba(0,0,0,.07);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#fff;color:var(--text);font-family:var(--ui);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+
+  .navbar{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(255,255,255,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);padding:10px 24px;display:flex;align-items:center;gap:12px;box-shadow:0 2px 12px rgba(0,0,0,.04)}
+  .nav-logo{width:36px;height:36px;object-fit:cover;object-position:center 15%;border-radius:8px}
+  .nav-brand{font-family:var(--display);font-size:1.05rem;font-weight:600;letter-spacing:-.02em}
+  .nav-brand .dot{color:var(--gold)}
+  .nav-tag{font-size:.6rem;color:var(--faint);text-transform:uppercase;letter-spacing:.18em;font-weight:600}
+  .nav-home{margin-left:auto;font-size:.82rem;font-weight:600;color:var(--dim);text-decoration:none;padding:7px 14px;border:1px solid var(--line);border-radius:7px;transition:.15s}
+  .nav-home:hover{border-color:var(--good);color:var(--good)}
+
+  /* HERO */
+  .page-hero{padding:96px 28px 52px;text-align:center;background:#fff}
+  .eyebrow{font-size:11.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--good);font-weight:700;margin-bottom:16px}
+  .page-hero h1{font-family:var(--display);font-weight:500;font-size:clamp(1.8rem,3.5vw,2.6rem);letter-spacing:-.02em;line-height:1.12;margin-bottom:14px}
+  .page-hero h1 em{font-style:italic;color:var(--good)}
+  .page-hero p{color:var(--dim);font-size:1rem;max-width:46ch;margin:0 auto;line-height:1.75}
+
+  /* TOOL LAYOUT */
+  .tool-zone{max-width:1100px;margin:0 auto;padding:48px 28px 80px;display:grid;grid-template-columns:340px 1fr;gap:28px;align-items:start}
+  .panel{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow)}
+  .panel-title{font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--faint);margin-bottom:20px}
+  .field{margin-bottom:16px}
+  .field label{display:flex;justify-content:space-between;font-size:12.5px;color:var(--dim);margin-bottom:7px;font-weight:500}
+  .field label .hint{color:var(--faint);font-weight:400}
+  .field select,.field input{width:100%;background:var(--surface-2);border:1px solid var(--line);color:var(--text);font-family:var(--mono);font-size:15px;padding:11px 13px;border-radius:9px;outline:none;transition:border-color .15s,box-shadow .15s}
+  .field select:focus,.field input:focus{border-color:var(--good);box-shadow:0 0 0 3px rgba(14,159,110,.12)}
+  .with-prefix{position:relative}
+  .with-prefix .pfx{position:absolute;left:13px;bottom:11px;color:var(--faint);font-family:var(--mono);font-size:15px;pointer-events:none}
+  .with-prefix input{padding-left:26px}
+  .divider{border:none;border-top:1px solid var(--line-soft);margin:16px 0}
+
+  /* RISK PROFILE */
+  .risk-toggle{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}
+  .risk-btn{padding:10px 4px;border-radius:9px;border:1.5px solid var(--line);background:var(--surface-2);font-family:var(--ui);font-size:12px;font-weight:700;cursor:pointer;transition:.15s;text-align:center;color:var(--dim)}
+  .risk-btn.active-conservative{border-color:var(--good);color:var(--good);background:var(--good-pale)}
+  .risk-btn.active-moderate{border-color:var(--gold);color:var(--gold);background:var(--gold-pale)}
+  .risk-btn.active-aggressive{border-color:var(--coral);color:var(--coral);background:rgba(232,118,90,.08)}
+
+  /* STATUS */
+  .fetch-status{font-size:12px;color:var(--faint);margin-top:12px;min-height:16px;display:flex;align-items:center;gap:6px}
+  .fetch-dot{width:7px;height:7px;border-radius:50%;background:var(--faint);animation:pulse 1.4s infinite}
+  .fetch-dot.live{background:var(--good);animation:none}
+  @keyframes pulse{0%,100%{opacity:.3}50%{opacity:1}}
+
+  /* RIGHT SIDE */
+  .result-zone{display:flex;flex-direction:column;gap:16px}
+
+  /* SUMMARY CARD */
+  .summary-card{background:#fff;border:1.5px solid rgba(14,159,110,.3);border-radius:var(--radius);padding:24px;box-shadow:0 4px 16px rgba(14,159,110,.08),0 16px 40px rgba(14,159,110,.06)}
+  .summary-top{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:16px}
+  .sum-stat .sk{font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);margin-bottom:6px}
+  .sum-stat .sv{font-family:var(--mono);font-size:1.7rem;font-weight:700;line-height:1;letter-spacing:-.02em}
+  .sum-stat .sv.green{color:var(--good)}
+  .sum-stat .sv.gold{color:var(--gold)}
+  .sum-stat .sv.dim{color:var(--dim)}
+
+  /* PROTOCOL CARDS */
+  .protocols-grid{display:flex;flex-direction:column;gap:10px}
+  .proto-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px;display:flex;align-items:center;gap:16px;transition:box-shadow .15s}
+  .proto-card:hover{box-shadow:var(--shadow)}
+  .proto-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+  .proto-info{flex:1;min-width:0}
+  .proto-name{font-size:14px;font-weight:700;color:var(--text)}
+  .proto-meta{font-size:12px;color:var(--faint);margin-top:2px}
+  .proto-apy{text-align:right;flex-shrink:0}
+  .proto-apy .apy-val{font-family:var(--mono);font-size:1.3rem;font-weight:700;color:var(--good);line-height:1}
+  .proto-apy .apy-label{font-size:10.5px;color:var(--faint);text-align:right;margin-top:2px}
+  .proto-alloc{flex-shrink:0;min-width:120px}
+  .alloc-bar-track{height:6px;background:var(--surface-2);border-radius:99px;overflow:hidden;margin-bottom:4px}
+  .alloc-bar-fill{height:100%;border-radius:99px;transition:width .6s cubic-bezier(.4,0,.2,1)}
+  .alloc-pct{font-family:var(--mono);font-size:13px;font-weight:700;color:var(--text)}
+  .alloc-usd{font-size:11px;color:var(--dim)}
+
+  /* ORNY PANEL */
+  .orny-panel{border-radius:var(--radius);padding:18px 20px;border:1px solid var(--line);background:var(--surface-2);display:flex;gap:14px;align-items:flex-start}
+  .orny-text{font-size:13.5px;color:var(--dim);line-height:1.65;font-style:italic}
+  .orny-text strong{color:var(--text);font-style:normal}
+
+  /* PLACEHOLDER */
+  .placeholder-card{background:var(--surface-2);border:1px solid var(--line);border-radius:var(--radius);padding:48px 28px;text-align:center}
+  .placeholder-card .ph-icon{font-size:40px;margin-bottom:12px}
+  .placeholder-card p{font-size:14px;color:var(--faint);line-height:1.6}
+
+  /* DISCLAIMER */
+  .disclaimer{font-size:11.5px;color:var(--faint);background:var(--surface-2);border:1px solid var(--line);border-radius:10px;padding:12px 16px;line-height:1.6;margin-top:4px}
+
+  /* BACK + FOOTER */
+  .back-section{padding:40px 28px;text-align:center;border-top:1px solid var(--line);background:var(--surface-2)}
+  .back-link{display:inline-flex;align-items:center;gap:10px;text-decoration:none;color:var(--text);font-weight:700;font-size:15px;padding:14px 32px;border:1.5px solid var(--line);border-radius:40px;background:#fff;transition:.18s;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+  .back-link:hover{border-color:var(--gold);color:var(--gold);box-shadow:0 4px 16px rgba(200,132,30,.15)}
+  footer{padding:36px 0;text-align:center;color:var(--faint);font-size:13px;border-top:1px solid var(--line)}
+  .ft-tag{font-family:var(--display);font-style:italic;font-size:17px;color:var(--dim);margin-bottom:8px}
+  .ft-tag span{color:var(--good)}
+
+  @media(max-width:860px){.tool-zone{grid-template-columns:1fr}}
+  @media(max-width:480px){
+    .navbar{padding:8px 14px}.nav-home{padding:6px 10px;font-size:.75rem}
+    .page-hero{padding:80px 16px 36px}
+    .tool-zone{padding:28px 14px 56px}
+    .panel{padding:18px 14px}
+    .summary-top{grid-template-columns:1fr 1fr}
+    .proto-card{flex-wrap:wrap}
+    .back-section{padding:28px 14px}
+  }
+</style>
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-5XT34MFV');</script>
+<!-- End Google Tag Manager -->
+</head>
+<body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5XT34MFV"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+<nav class="navbar">
+  <img class="nav-logo" src="logo.png" alt="OrnyTools"/>
+  <div>
+    <div class="nav-brand">Orny<span class="dot">Tools</span></div>
+    <div class="nav-tag">Yield Allocation Optimizer</div>
+  </div>
+  <a href="index.html" class="nav-home">← All tools</a>
+</nav>
+
+<div style="padding-top:72px;text-align:center;background:#fff;padding-bottom:0">
+  <img src="img-yield.png" alt="OrnyTools Yield Optimizer" style="width:clamp(300px,80vw,860px);border-radius:20px;box-shadow:0 16px 56px rgba(0,0,0,.10);display:inline-block"/>
+</div>
+
+<div class="page-hero">
+  <div class="eyebrow">Yield Allocation Optimizer — Live APY</div>
+  <h1>Where should you put<br>your <em>stablecoins</em>?</h1>
+  <p>Live APY from Aave, Morpho, Spark and Compound. One allocation recommendation, tuned to your risk profile.</p>
+</div>
+
+<div class="tool-zone">
+
+  <!-- INPUTS -->
+  <div>
+    <div class="panel">
+      <div class="panel-title">Your position</div>
+
+      <div class="field">
+        <label>Asset</label>
+        <select id="asset">
+          <option value="USDC">USDC</option>
+          <option value="USDT">USDT</option>
+          <option value="DAI">DAI</option>
+          <option value="WETH">WETH (ETH)</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Chain</label>
+        <select id="chain">
+          <option value="Ethereum">Ethereum</option>
+          <option value="Arbitrum">Arbitrum</option>
+        </select>
+      </div>
+
+      <div class="field with-prefix">
+        <label>Capital to allocate <span class="hint">USD</span></label>
+        <span class="pfx">$</span>
+        <input id="capital" value="10000" inputmode="decimal"/>
+      </div>
+
+      <hr class="divider"/>
+
+      <div class="field">
+        <label>Risk profile</label>
+        <div class="risk-toggle">
+          <button class="risk-btn active-conservative" data-risk="conservative">Conservative</button>
+          <button class="risk-btn" data-risk="moderate">Moderate</button>
+          <button class="risk-btn" data-risk="aggressive">Aggressive</button>
+        </div>
+      </div>
+
+      <div class="fetch-status" id="fetchStatus">
+        <span class="fetch-dot" id="fetchDot"></span>
+        <span id="fetchText">Loading live APY…</span>
+      </div>
+    </div>
+
+    <div class="disclaimer" style="margin-top:12px">
+      APY data via DeFiLlama · updates on load · rates change continuously · not financial advice
+    </div>
+  </div>
+
+  <!-- RESULTS -->
+  <div class="result-zone" id="resultZone">
+    <div class="placeholder-card">
+      <div class="ph-icon">🦅</div>
+      <p>Fetching live APY data…<br>Your allocation will appear here.</p>
+    </div>
+  </div>
+
+</div>
+
+<div class="back-section">
+  <a class="back-link" href="index.html">
+    <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 1.5L1.5 9 9 16.5M1.5 9h15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    Back to all tools
+  </a>
+</div>
+
+<footer>
+  <div class="ft-tag">Allocate smart. <span>Yield more.</span></div>
+  Live APY via DeFiLlama · read-only · no wallet connection · ornytools.xyz<br/>
+  <span style="margin-top:8px;display:inline-block">Built by <a href="https://www.linkedin.com/in/xavier-maquin-5576643b9/" target="_blank" rel="noopener" style="color:var(--good);text-decoration:none;font-weight:600">Xavier Maquin</a></span>
+</footer>
+
+<script>
+const $ = id => document.getElementById(id);
+
+let _poolsCache = null;
+let _currentRisk = 'conservative';
+
+const PROTO_META = {
+  'aave-v3':     { name:'Aave V3',   icon:'🏦', color:'#B6509E', bg:'rgba(182,80,158,.10)' },
+  'morpho-blue': { name:'Morpho',    icon:'🔵', color:'#2470FF', bg:'rgba(36,112,255,.10)' },
+  'spark-savings':{ name:'Spark',    icon:'✨', color:'#E07912', bg:'rgba(224,121,18,.10)' },
+  'sparklend':   { name:'SparkLend', icon:'✨', color:'#E07912', bg:'rgba(224,121,18,.10)' },
+  'compound-v3': { name:'Compound',  icon:'🌿', color:'#00D395', bg:'rgba(0,211,149,.10)' },
+};
+
+const ALLOC_COLORS = ['#0E9F6E','#3A9FD4','#C8841E','#E8765A'];
+
+function fmtUSD(v){
+  if(!isFinite(v)||v<0)return'$0';
+  if(v>=1e6)return'$'+(v/1e6).toFixed(2)+'M';
+  if(v>=1000)return'$'+v.toLocaleString('en-US',{maximumFractionDigits:0});
+  return'$'+v.toFixed(0);
+}
+
+async function fetchPools(){
+  if(_poolsCache) return _poolsCache;
+  const r = await fetch('https://yields.llama.fi/pools');
+  const d = await r.json();
+  _poolsCache = d.data;
+  return _poolsCache;
+}
+
+function selectPools(pools, asset, chain){
+  const targets = Object.keys(PROTO_META);
+  // For each protocol, pick the pool with highest TVL for this asset+chain
+  const byProto = {};
+  pools.forEach(p => {
+    if(!targets.includes(p.project)) return;
+    if(p.symbol !== asset) return;
+    if(p.chain !== chain) return;
+    if(p.tvlUsd < 500000) return; // min $500k TVL
+    if(p.apy <= 0) return;
+    if(!byProto[p.project] || p.tvlUsd > byProto[p.project].tvlUsd){
+      byProto[p.project] = p;
+    }
+  });
+  // Merge spark variants
+  const spark = byProto['spark-savings'] || byProto['sparklend'];
+  if(spark && !byProto['spark-savings']) byProto['spark-savings'] = spark;
+  delete byProto['sparklend'];
+
+  return Object.values(byProto).sort((a,b) => b.apy - a.apy);
+}
+
+function allocate(pools, risk){
+  const n = pools.length;
+  if(!n) return [];
+  let weights;
+  if(risk === 'conservative'){
+    const totTVL = pools.reduce((s,p)=>s+p.tvlUsd,0);
+    weights = pools.map(p => 0.7*(p.tvlUsd/totTVL) + 0.3/n);
+  } else if(risk === 'moderate'){
+    const maxAPY = pools[0].apy;
+    const totTVL = pools.reduce((s,p)=>s+p.tvlUsd,0);
+    weights = pools.map(p => 0.55*(p.apy/maxAPY) + 0.45*(p.tvlUsd/totTVL));
+  } else {
+    const maxAPY = pools[0].apy;
+    weights = pools.map(p => Math.pow(p.apy/maxAPY, 2.5));
+  }
+  const total = weights.reduce((s,w)=>s+w,0);
+  return pools.map((p,i)=>({...p, allocation: weights[i]/total}));
+}
+
+function ornyComment(risk, pools, weightedAPY, capital){
+  const topProto = PROTO_META[pools[0]?.project]?.name || pools[0]?.project;
+  const spread = pools.length;
+  const annualYield = capital * weightedAPY / 100;
+
+  if(risk === 'conservative'){
+    return `<strong>Orny Approved — conservative allocation.</strong> Spread across ${spread} protocols, weighted by TVL depth. Lower concentration risk at the cost of ~${(pools[0]?.apy - weightedAPY).toFixed(2)}% APY vs full concentration. Expected yield: <strong>${fmtUSD(annualYield)}/year</strong>.`;
+  } else if(risk === 'moderate'){
+    return `<strong>Orny High Confidence — balanced allocation.</strong> APY and TVL co-weighted across ${spread} protocols. Captures most of ${topProto}'s yield while keeping ${spread > 2 ? 'healthy diversification' : 'some diversification'}. Expected yield: <strong>${fmtUSD(annualYield)}/year</strong>.`;
+  } else {
+    return `<strong>Orny Found An Opportunity — aggressive allocation.</strong> Concentrated toward highest APY (${pools[0]?.apy?.toFixed(2)}% on ${topProto}). Higher smart-contract concentration risk. Only use if you've independently assessed ${topProto}'s protocol risk. Expected yield: <strong>${fmtUSD(annualYield)}/year</strong>.`;
+  }
+}
+
+function renderResults(allocatedPools, capital, risk){
+  if(!allocatedPools.length){
+    $('resultZone').innerHTML = `<div class="placeholder-card"><div class="ph-icon">😕</div><p>No live data found for this asset on this chain.<br>Try USDC on Ethereum — most liquidity.</p></div>`;
+    return;
+  }
+
+  const weightedAPY = allocatedPools.reduce((s,p) => s + p.apy * p.allocation, 0);
+  const annualYield = capital * weightedAPY / 100;
+  const monthlyYield = annualYield / 12;
+  const comment = ornyComment(risk, allocatedPools, weightedAPY, capital);
+
+  const protoCards = allocatedPools.map((p, i) => {
+    const m = PROTO_META[p.project] || {name:p.project, icon:'🏛', color:'var(--dim)', bg:'var(--surface-2)'};
+    const allocUSD = capital * p.allocation;
+    const pctStr = (p.allocation*100).toFixed(0)+'%';
+    const tvlStr = p.tvlUsd >= 1e9 ? '$'+(p.tvlUsd/1e9).toFixed(1)+'B' : '$'+(p.tvlUsd/1e6).toFixed(0)+'M';
+    const color = ALLOC_COLORS[i] || 'var(--dim)';
+    return `
+    <div class="proto-card">
+      <div class="proto-icon" style="background:${m.bg}">
+        <span style="font-size:20px">${m.icon}</span>
+      </div>
+      <div class="proto-info">
+        <div class="proto-name">${m.name}</div>
+        <div class="proto-meta">TVL ${tvlStr} · ${p.chain}</div>
+      </div>
+      <div class="proto-alloc">
+        <div class="alloc-bar-track">
+          <div class="alloc-bar-fill" style="width:${(p.allocation*100).toFixed(0)}%;background:${color}"></div>
+        </div>
+        <div class="alloc-pct" style="color:${color}">${pctStr}</div>
+        <div class="alloc-usd">${fmtUSD(allocUSD)}</div>
+      </div>
+      <div class="proto-apy">
+        <div class="apy-val">${p.apy.toFixed(2)}%</div>
+        <div class="apy-label">APY live</div>
+      </div>
+    </div>`;
+  }).join('');
+
+  $('resultZone').innerHTML = `
+    <div class="summary-card">
+      <div class="panel-title" style="margin-bottom:16px">Recommended allocation</div>
+      <div class="summary-top">
+        <div class="sum-stat"><div class="sk">Expected APY</div><div class="sv green">${weightedAPY.toFixed(2)}%</div></div>
+        <div class="sum-stat"><div class="sk">Annual yield</div><div class="sv gold">${fmtUSD(annualYield)}</div></div>
+        <div class="sum-stat"><div class="sk">Monthly yield</div><div class="sv dim">${fmtUSD(monthlyYield)}</div></div>
+      </div>
+    </div>
+
+    <div class="protocols-grid">${protoCards}</div>
+
+    <div class="orny-panel">
+      <span style="font-size:24px;flex-shrink:0;margin-top:2px">🦅</span>
+      <span class="orny-text">${comment}</span>
+    </div>
+  `;
+}
+
+async function calc(){
+  const asset   = $('asset').value;
+  const chain   = $('chain').value;
+  const capital = parseFloat($('capital').value) || 10000;
+  const risk    = _currentRisk;
+
+  try {
+    const pools = await fetchPools();
+    const selected = selectPools(pools, asset, chain);
+    const allocated = allocate(selected, risk);
+    renderResults(allocated, capital, risk);
+
+    $('fetchDot').className = 'fetch-dot live';
+    $('fetchText').textContent = `Live APY · ${new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'})}`;
+  } catch(e) {
+    $('fetchDot').className = 'fetch-dot';
+    $('fetchText').textContent = 'Could not fetch APY — check connection';
+    $('resultZone').innerHTML = `<div class="placeholder-card"><div class="ph-icon">⚠️</div><p>Could not load live APY data.<br>Check your internet connection and refresh.</p></div>`;
+  }
+}
+
+// Risk buttons
+document.querySelectorAll('.risk-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.risk-btn').forEach(b => b.className = 'risk-btn');
+    _currentRisk = btn.dataset.risk;
+    btn.className = `risk-btn active-${_currentRisk}`;
+    calc();
+  });
+});
+
+['asset','chain','capital'].forEach(id => $(id).addEventListener('input', calc));
+calc();
+</script>
+</body>
+</html>

@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aave V3 — Fiche Technique DeFi</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --indigo:      #6366f1;
+      --indigo-dark: #4f46e5;
+      --indigo-dim:  #e0e7ff;
+      --indigo-bg:   #eef2ff;
+      --text:        #1e1b4b;
+      --text-light:  #6b7280;
+      --bg:          #f8fafc;
+      --card:        #ffffff;
+      --border:      #e2e8f0;
+      --red:         #ef4444;
+      --red-bg:      #fef2f2;
+      --green:       #10b981;
+      --green-bg:    #f0fdf4;
+      --amber:       #f59e0b;
+      --amber-bg:    #fffbeb;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 2rem 1rem;
+    }
+
+    .page { max-width: 860px; margin: 0 auto; }
+
+    /* HEADER */
+    header {
+      background: linear-gradient(135deg, var(--indigo-dark) 0%, var(--indigo) 100%);
+      border-radius: 16px;
+      padding: 2.5rem 2rem;
+      color: white;
+      margin-bottom: 1.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    header::after {
+      content: '';
+      position: absolute;
+      top: -40px; right: -40px;
+      width: 200px; height: 200px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 50%;
+    }
+    .badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.25);
+      padding: 0.25rem 0.75rem;
+      border-radius: 99px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+    }
+    header h1 { font-size: 2.5rem; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 0.5rem; }
+    header p  { font-size: 1rem; opacity: 0.85; max-width: 560px; }
+    .meta { display: flex; gap: 1.5rem; margin-top: 1.5rem; flex-wrap: wrap; }
+    .meta-item { display: flex; flex-direction: column; }
+    .meta-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; opacity: 0.6; }
+    .meta-value { font-family: 'IBM Plex Mono', monospace; font-size: 0.95rem; font-weight: 500; }
+
+    /* KPI */
+    .kpi-strip {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(155px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .kpi { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 1.25rem 1rem; text-align: center; }
+    .kpi-value { font-family: 'IBM Plex Mono', monospace; font-size: 1.5rem; font-weight: 700; color: var(--indigo); line-height: 1.1; }
+    .kpi-label { font-size: 0.75rem; color: var(--text-light); margin-top: 0.35rem; }
+
+    /* SECTIONS */
+    .section { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 1.75rem; margin-bottom: 1.25rem; }
+    .section-title {
+      font-size: 1rem; font-weight: 700; color: var(--indigo-dark);
+      text-transform: uppercase; letter-spacing: 0.06em;
+      margin-bottom: 1.25rem;
+      display: flex; align-items: center; gap: 0.5rem;
+    }
+    .section-title::before {
+      content: ''; display: inline-block; width: 3px; height: 1em;
+      background: var(--indigo); border-radius: 2px;
+    }
+
+    p { margin-bottom: 0.75rem; }
+    p:last-child { margin-bottom: 0; }
+
+    /* STEPS */
+    .steps { list-style: none; counter-reset: step; }
+    .steps li { counter-increment: step; display: flex; gap: 1rem; align-items: flex-start; margin-bottom: 0.9rem; }
+    .steps li::before {
+      content: counter(step);
+      flex-shrink: 0; width: 28px; height: 28px;
+      background: var(--indigo-bg); color: var(--indigo-dark);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-size: 0.8rem; font-weight: 700; font-family: 'IBM Plex Mono', monospace;
+    }
+
+    /* DIAGRAM */
+    .diagram {
+      background: #1e1b4b;
+      color: #a5b4fc;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.82rem;
+      line-height: 1.7;
+      border-radius: 10px;
+      padding: 1.25rem 1.5rem;
+      margin: 1rem 0;
+      overflow-x: auto;
+    }
+    .diagram .hi { color: #e0e7ff; font-weight: 500; }
+    .diagram .arrow { color: #6366f1; }
+
+    /* HEALTH FACTOR TABLE */
+    .hf-table { width: 100%; border-collapse: collapse; font-size: 0.875rem; margin-top: 0.75rem; }
+    .hf-table th {
+      background: var(--indigo-bg); color: var(--indigo-dark);
+      font-weight: 600; font-size: 0.75rem; text-transform: uppercase;
+      letter-spacing: 0.05em; padding: 0.6rem 0.75rem; text-align: left;
+    }
+    .hf-table td { padding: 0.65rem 0.75rem; border-bottom: 1px solid var(--border); }
+    .hf-table tr:last-child td { border-bottom: none; }
+    .hf-table .dot { font-size: 1rem; }
+
+    /* V3 FEATURES */
+    .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; }
+    .feature-card { background: var(--indigo-bg); border: 1px solid var(--indigo-dim); border-radius: 10px; padding: 1.1rem; }
+    .feature-name { font-family: 'IBM Plex Mono', monospace; font-size: 0.9rem; font-weight: 600; color: var(--indigo-dark); margin-bottom: 0.5rem; }
+    .feature-desc { font-size: 0.85rem; color: var(--text); line-height: 1.5; }
+
+    /* PARAMS TABLE */
+    table { width: 100%; border-collapse: collapse; font-size: 0.875rem; margin-top: 0.5rem; }
+    th {
+      background: var(--indigo-bg); color: var(--indigo-dark);
+      font-weight: 600; font-size: 0.75rem; text-transform: uppercase;
+      letter-spacing: 0.05em; padding: 0.6rem 0.75rem; text-align: left;
+    }
+    td { padding: 0.6rem 0.75rem; border-bottom: 1px solid var(--border); }
+    tr:last-child td { border-bottom: none; }
+    code {
+      font-family: 'IBM Plex Mono', monospace; font-size: 0.85em;
+      background: var(--indigo-bg); color: var(--indigo-dark);
+      padding: 0.1em 0.4em; border-radius: 4px;
+    }
+
+    /* RISK ITEMS */
+    .risk-list { list-style: none; }
+    .risk-item {
+      display: flex; gap: 0.75rem; align-items: flex-start;
+      padding: 0.85rem 1rem; border-radius: 8px; margin-bottom: 0.6rem; font-size: 0.9rem;
+    }
+    .risk-item.high   { background: var(--red-bg);   border-left: 3px solid var(--red); }
+    .risk-item.medium { background: var(--amber-bg); border-left: 3px solid var(--amber); }
+    .risk-item.low    { background: var(--green-bg); border-left: 3px solid var(--green); }
+    .risk-badge {
+      flex-shrink: 0; font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.65rem; font-weight: 600; text-transform: uppercase;
+      letter-spacing: 0.05em; padding: 0.15rem 0.45rem; border-radius: 4px; margin-top: 2px;
+    }
+    .risk-item.high   .risk-badge { background: var(--red);   color: white; }
+    .risk-item.medium .risk-badge { background: var(--amber); color: white; }
+    .risk-item.low    .risk-badge { background: var(--green); color: white; }
+
+    /* USE CASES */
+    .usecase-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.75rem; }
+    .usecase { background: var(--indigo-bg); border-radius: 10px; padding: 1rem; font-size: 0.875rem; }
+    .usecase strong { display: block; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--indigo-dark); margin-bottom: 0.3rem; }
+
+    /* POSITION HIGHLIGHT */
+    .position-box {
+      background: #1e1b4b;
+      color: #e0e7ff;
+      border-radius: 10px;
+      padding: 1.25rem 1.5rem;
+      margin-top: 1rem;
+      font-size: 0.875rem;
+    }
+    .position-box .pos-title {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #a5b4fc;
+      margin-bottom: 0.75rem;
+    }
+    .position-row { display: flex; justify-content: space-between; padding: 0.3rem 0; border-bottom: 1px solid rgba(255,255,255,0.07); font-family: 'IBM Plex Mono', monospace; font-size: 0.85rem; }
+    .position-row:last-child { border-bottom: none; }
+    .pos-key { color: #a5b4fc; }
+    .pos-val { color: #e0e7ff; font-weight: 500; }
+
+    /* SOURCES */
+    .sources { list-style: none; }
+    .sources li { padding: 0.4rem 0; border-bottom: 1px solid var(--border); font-size: 0.875rem; }
+    .sources li:last-child { border-bottom: none; }
+    .sources a { color: var(--indigo); text-decoration: none; font-family: 'IBM Plex Mono', monospace; font-size: 0.8rem; }
+    .sources a:hover { text-decoration: underline; }
+    .src-label { display: inline-block; font-weight: 500; min-width: 180px; color: var(--text); }
+
+    footer {
+      text-align: center; font-size: 0.75rem; color: var(--text-light);
+      margin-top: 2rem; padding-top: 1rem; border-top: 1px solid var(--border);
+      font-family: 'IBM Plex Mono', monospace;
+    }
+
+    @media (max-width: 560px) {
+      header h1 { font-size: 1.75rem; }
+      .features-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <header>
+    <div class="badge">Protocole · Lending / Borrowing</div>
+    <h1>Aave V3</h1>
+    <p>Le protocole de prêt décentralisé de référence. Dépose des cryptos pour générer des intérêts, emprunte en déposant un collatéral — sans KYC, 24h/24, sur 10+ chaînes.</p>
+    <div class="meta">
+      <div class="meta-item">
+        <span class="meta-label">Version</span>
+        <span class="meta-value">V3 (2022)</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Chaînes</span>
+        <span class="meta-value">Ethereum, Arbitrum, Polygon…</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Token governance</span>
+        <span class="meta-value">AAVE</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Token de dépôt</span>
+        <span class="meta-value">aTokens (ex : aUSDC)</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- KPI -->
+  <div class="kpi-strip">
+    <div class="kpi">
+      <div class="kpi-value">~$15B</div>
+      <div class="kpi-label">TVL total (toutes chaînes)</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-value">10+</div>
+      <div class="kpi-label">blockchains déployées</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-value">#1</div>
+      <div class="kpi-label">lending DeFi par TVL</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-value">2017</div>
+      <div class="kpi-label">fondé (ex-ETHLend)</div>
+    </div>
+  </div>
+
+  <!-- VUE D'ENSEMBLE -->
+  <div class="section">
+    <div class="section-title">Vue d'ensemble</div>
+    <p>
+      Aave est l'équivalent décentralisé d'une banque de prêt : des déposants fournissent des liquidités (ETH, USDC, WBTC…) dans des pools gérés par des smart contracts, et des emprunteurs puisent dans ces pools en déposant un collatéral supérieur à ce qu'ils empruntent.
+    </p>
+    <p>
+      Aucun intermédiaire, aucun KYC. Les règles — taux d'intérêt, seuils de liquidation, actifs acceptés — sont codées dans les contrats et ajustables uniquement par vote de la DAO.
+    </p>
+    <p>
+      Aave V3 (lancé en 2022) améliore V2 sur trois axes majeurs : l'<strong>efficiency mode</strong> (meilleur capital pour les actifs corrélés), l'<strong>isolation mode</strong> (confinement du risque des nouveaux actifs) et le <strong>Portal</strong> (liquidité cross-chain).
+    </p>
+  </div>
+
+  <!-- FONCTIONNEMENT -->
+  <div class="section">
+    <div class="section-title">Fonctionnement</div>
+
+    <div class="diagram">
+<span class="hi">DÉPOSANT</span>                        <span class="hi">EMPRUNTEUR</span>
+    <span class="arrow">│</span>                                   <span class="arrow">│</span>
+    <span class="arrow">│</span> dépose ETH / WBTC / USDC         <span class="arrow">│</span> dépose collatéral (ex : WBTC)
+    <span class="arrow">▼</span>                                   <span class="arrow">▼</span>
+<span class="hi">═══════════════════ POOL AAVE (smart contract) ════════════════</span>
+    <span class="arrow">│</span>                                   <span class="arrow">│</span>
+    <span class="arrow">▼</span>                                   <span class="arrow">▼</span>
+reçoit <span class="hi">aTokens</span>                    emprunte USDT / USDC / DAI
+(aUSDC, aWBTC…)                    paie intérêts variables
+solde augmente en continu          surveille son <span class="hi">Health Factor</span>
+    </div>
+
+    <ol class="steps" style="margin-top:1.25rem">
+      <li>
+        <div>Le déposant envoie ses cryptos au smart contract Aave. Il reçoit instantanément des <code>aTokens</code> (ex : déposer USDC → recevoir aUSDC). Ces tokens sont intérêts-porteurs : leur valeur augmente chaque seconde, en temps réel.</div>
+      </li>
+      <li>
+        <div>L'emprunteur dépose un collatéral (ex : WBTC) dont la valeur doit dépasser celle de l'emprunt selon le <strong>LTV</strong> (Loan-to-Value) défini par la DAO. Il reçoit les fonds empruntés et commence à payer des intérêts.</div>
+      </li>
+      <li>
+        <div>Le <strong>Health Factor</strong> de l'emprunteur est calculé en continu. S'il descend sous 1.0, n'importe qui peut déclencher la liquidation et recevoir un bonus.</div>
+      </li>
+      <li>
+        <div>Pour récupérer son collatéral, l'emprunteur rembourse la dette (principal + intérêts). Le déposant retire ses fonds + intérêts accumulés en brûlant ses aTokens.</div>
+      </li>
+    </ol>
+
+    <div style="margin-top:1.5rem">
+      <strong style="font-size:0.85rem;color:var(--text-light);text-transform:uppercase;letter-spacing:0.05em;">Health Factor (HF)</strong>
+      <p style="margin-top:0.5rem;font-size:0.9rem;">Le HF mesure la sécurité d'une position d'emprunt :</p>
+      <div class="diagram" style="margin-top:0.5rem">HF = (Valeur collatéral × Liquidation Threshold) / Valeur dette</div>
+      <table class="hf-table">
+        <thead>
+          <tr><th>Health Factor</th><th>Situation</th><th>Action</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>&gt; 2.0</code></td><td><span class="dot">🟢</span> Sûr</td><td>Rien à faire</td></tr>
+          <tr><td><code>1.5 – 2.0</code></td><td><span class="dot">🟡</span> À surveiller</td><td>Surveiller le marché</td></tr>
+          <tr><td><code>1.0 – 1.5</code></td><td><span class="dot">🟠</span> Danger</td><td>Rembourser ou ajouter du collatéral</td></tr>
+          <tr><td><code>&lt; 1.0</code></td><td><span class="dot">🔴</span> Liquidation</td><td>Smart contract liquide automatiquement</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div style="margin-top:1.5rem">
+      <strong style="font-size:0.85rem;color:var(--text-light);text-transform:uppercase;letter-spacing:0.05em;">Paramètres clés par actif (exemples Arbitrum)</strong>
+      <table style="margin-top:0.75rem">
+        <thead>
+          <tr><th>Actif</th><th>LTV max</th><th>Liq. Threshold</th><th>Liq. Bonus</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>WBTC</code></td><td>70%</td><td>75%</td><td>+6.25%</td></tr>
+          <tr><td><code>wstETH</code></td><td>70%</td><td>78%</td><td>+6%</td></tr>
+          <tr><td><code>ETH</code></td><td>80%</td><td>82.5%</td><td>+5%</td></tr>
+          <tr><td><code>USDC</code></td><td>75%</td><td>78%</td><td>+5%</td></tr>
+        </tbody>
+      </table>
+      <p style="font-size:0.8rem;color:var(--text-light);margin-top:0.5rem;">LTV = montant max empruntable / valeur collatéral. Liq. Threshold = seuil à partir duquel la liquidation devient possible.</p>
+    </div>
+  </div>
+
+  <!-- FONCTIONNALITÉS V3 -->
+  <div class="section">
+    <div class="section-title">Nouveautés Aave V3</div>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-name">eMode — Efficiency Mode</div>
+        <div class="feature-desc">Pour les actifs fortement corrélés (ex : ETH / stETH / wstETH), le LTV monte jusqu'à 93%. Permet un levier bien plus efficace en capital sur des paires stables.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-name">Isolation Mode</div>
+        <div class="feature-desc">Les nouveaux actifs risqués sont listés en mode isolé : plafond d'emprunt global fixé, seuls les stablecoins peuvent être empruntés contre eux. Limite la contagion.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-name">Supply & Borrow Caps</div>
+        <div class="feature-desc">La DAO fixe un plafond de dépôt et d'emprunt par actif. Réduit l'exposition au risque systémique d'un actif peu liquide.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-name">Portal (cross-chain)</div>
+        <div class="feature-desc">Mécanisme permettant la migration de liquidité d'une chaîne à l'autre. Objectif : unifier la liquidité Aave sur toutes les blockchains déployées.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RISQUES -->
+  <div class="section">
+    <div class="section-title">Risques</div>
+    <ul class="risk-list">
+      <li class="risk-item high">
+        <span class="risk-badge">Élevé</span>
+        <div><strong>Liquidation.</strong> Si le prix du collatéral chute brutalement (crash BTC, ETH), le HF peut passer sous 1.0 avant que tu aies le temps de réagir. Une chute de -30% sur WBTC avec un LTV à 70% suffit à déclencher la liquidation.</div>
+      </li>
+      <li class="risk-item high">
+        <span class="risk-badge">Élevé</span>
+        <div><strong>Risque oracle.</strong> Aave utilise Chainlink pour connaître le prix des actifs. Une manipulation ou une panne d'oracle peut provoquer des liquidations artificielles ou permettre des emprunts excessifs.</div>
+      </li>
+      <li class="risk-item medium">
+        <span class="risk-badge">Moyen</span>
+        <div><strong>Smart contract risk.</strong> Aave est massivement audité, mais un bug dans les contrats (~$15B de TVL) serait catastrophique. Plusieurs forks d'Aave ont été exploités par le passé.</div>
+      </li>
+      <li class="risk-item medium">
+        <span class="risk-badge">Moyen</span>
+        <div><strong>Risque de taux.</strong> Les taux d'emprunt sont variables et peuvent monter fortement en cas de forte demande. Un emprunt rentable à 2% peut devenir coûteux à 8% sans prévenir.</div>
+      </li>
+      <li class="risk-item medium">
+        <span class="risk-badge">Moyen</span>
+        <div><strong>Gouvernance.</strong> La DAO peut modifier les paramètres de risque (LTV, seuils de liquidation, actifs acceptés). Un vote malveillant ou une prise de contrôle de la DAO reste théoriquement possible.</div>
+      </li>
+      <li class="risk-item low">
+        <span class="risk-badge">Faible</span>
+        <div><strong>Risque de liquidité.</strong> En cas de stress extrême, le pool peut être temporairement sous-liquide : tu ne peux pas retirer tes dépôts tant que le taux d'utilisation est à 100%. Rare mais possible sur les pools peu profondes.</div>
+      </li>
+    </ul>
+  </div>
+
+  <!-- CAS D'USAGE -->
+  <div class="section">
+    <div class="section-title">Cas d'usage</div>
+    <div class="usecase-grid">
+      <div class="usecase">
+        <strong>Yield sur stables</strong>
+        Déposer USDC ou USDT pour toucher ~3–6% APY sans risque de prix. Alternative aux comptes épargne, accessible depuis 1 USDC.
+      </div>
+      <div class="usecase">
+        <strong>WBTC collateral</strong>
+        Utiliser son BTC tokenisé comme collatéral pour emprunter des stablecoins sans vendre son BTC. Reste exposé à la hausse BTC, obtient des liquidités.
+      </div>
+      <div class="usecase">
+        <strong>Levier wstETH</strong>
+        Déposer wstETH, emprunter ETH, wrapper en wstETH, redéposer. Tant que le yield wstETH > coût d'emprunt ETH, la boucle est profitable. Utilisable en eMode (LTV 93%).
+      </div>
+      <div class="usecase">
+        <strong>Flash Loan</strong>
+        Emprunt sans collatéral remboursé dans la même transaction. Utilisé pour l'arbitrage, la gestion de position, les liquidations. Coût : 0,05% du montant.
+      </div>
+    </div>
+
+    <div class="position-box">
+      <div class="pos-title">⚡ Ta position active — Aave V3 Arbitrum</div>
+      <div class="position-row"><span class="pos-key">Collatéral</span><span class="pos-val">WBTC</span></div>
+      <div class="position-row"><span class="pos-key">Dette</span><span class="pos-val">USDT (taux variable)</span></div>
+      <div class="position-row"><span class="pos-key">Réseau</span><span class="pos-val">Arbitrum (frais réduits)</span></div>
+      <div class="position-row"><span class="pos-key">Surveiller</span><span class="pos-val">Health Factor &gt; 1.5 en permanence</span></div>
+      <div class="position-row"><span class="pos-key">Risque principal</span><span class="pos-val">Chute prix WBTC → liquidation</span></div>
+    </div>
+  </div>
+
+  <!-- SOURCES -->
+  <div class="section">
+    <div class="section-title">Sources</div>
+    <ul class="sources">
+      <li><span class="src-label">Documentation officielle</span><a href="https://docs.aave.com" target="_blank">docs.aave.com</a></li>
+      <li><span class="src-label">Dashboard positions</span><a href="https://app.aave.com" target="_blank">app.aave.com</a></li>
+      <li><span class="src-label">Métriques TVL</span><a href="https://defillama.com/protocol/aave-v3" target="_blank">defillama.com/protocol/aave-v3</a></li>
+      <li><span class="src-label">Paramètres de risque</span><a href="https://risk.aave.com" target="_blank">risk.aave.com</a></li>
+      <li><span class="src-label">Analytics on-chain</span><a href="https://dune.com/aave" target="_blank">dune.com/aave</a></li>
+      <li><span class="src-label">Vault Alyra (formation)</span><code>Aave.md</code> · <code>Risques-DeFi.md</code> · <code>Liquidité.md</code></li>
+    </ul>
+  </div>
+
+  <footer>
+    Généré le 28 mai 2026 · Vault Alyra DeFi · Xavier — Promo Blaise Pascal
+  </footer>
+
+</div>
+</body>
+</html>

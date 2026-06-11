@@ -1,0 +1,1811 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="description" content="Estimate the economically optimal trade size for any AMM pool. Real constant-product math, not a shortcut." />
+<meta name="robots" content="index,follow"/>
+<link rel="canonical" href="https://ornytools.xyz/optimizer.html"/>
+<meta property="og:type" content="website"/>
+<meta property="og:site_name" content="OrnyTools"/>
+<meta property="og:title" content="Trade Size Optimizer — OrnyTools"/>
+<meta property="og:description" content="Find the exact optimal trade size for any AMM pool. Gas vs slippage crossover from real constant-product math — free."/>
+<meta property="og:url" content="https://ornytools.xyz/optimizer.html"/>
+<meta property="og:image" content="https://ornytools.xyz/orny-banner.png"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="Trade Size Optimizer — OrnyTools"/>
+<meta name="twitter:description" content="Find the exact optimal trade size for any AMM pool. Gas vs slippage crossover from real constant-product math — free."/>
+<meta name="twitter:image" content="https://ornytools.xyz/orny-banner.png"/>
+<title>Trade Size Optimizer — OrnyTools</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --ink:#FFFFFF;--ink-2:#F8F9FA;--surface:#FFFFFF;--surface-2:#F0F2F5;
+    --line:#E4E8F0;--line-soft:#EDF0F5;
+    --gold:#C8841E;--gold-deep:#A06818;--gold-pale:rgba(200,132,30,.08);
+    --coral:#E8765A;--aqua:#3A9FD4;
+    --text:#111827;--dim:#6B7280;--faint:#9AA5B4;--good:#0E9F6E;
+    --radius:14px;
+    --mono:"JetBrains Mono",ui-monospace,monospace;
+    --ui:"Hanken Grotesk",system-ui,sans-serif;
+    --display:"Fraunces",Georgia,serif;
+    --shadow:0 1px 3px rgba(0,0,0,.06),0 4px 16px rgba(0,0,0,.05);
+    --shadow-md:0 2px 8px rgba(0,0,0,.07),0 8px 32px rgba(0,0,0,.07);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:#fff;color:var(--text);font-family:var(--ui);line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+
+  /* ── NAVBAR ─────────────────────────────── */
+  .navbar{
+    position:fixed;top:0;left:0;right:0;z-index:100;
+    background:rgba(255,255,255,.96);backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);padding:10px 24px;
+    display:flex;align-items:center;gap:12px;
+    transform:translateY(-100%);transition:transform .35s ease;
+    box-shadow:0 2px 12px rgba(0,0,0,.05);
+  }
+  .navbar.visible{transform:translateY(0)}
+  .nav-logo{width:38px;height:38px;object-fit:cover;object-position:center 15%;border-radius:8px;flex-shrink:0}
+  .nav-brand{font-family:var(--display);font-size:1.05rem;font-weight:600;color:var(--text);letter-spacing:-.02em}
+  .nav-brand .dot{color:var(--gold)}
+  .nav-tag{font-size:.6rem;color:var(--faint);text-transform:uppercase;letter-spacing:.18em;font-weight:600}
+  .btn-nav{
+    margin-left:auto;background:var(--gold);color:#fff;border:none;
+    border-radius:7px;font-size:.8rem;font-weight:700;padding:7px 16px;cursor:pointer;transition:.15s;white-space:nowrap;
+  }
+  .btn-nav:hover{background:var(--gold-deep)}
+
+  /* ── HERO ────────────────────────────────── */
+  .hero-landing{
+    min-height:100vh;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;text-align:center;
+    background:#fff;padding:60px 32px 100px;
+    position:relative;overflow:hidden;
+  }
+  .hero-logo-img{
+    width:clamp(280px,55vw,520px);margin-bottom:36px;
+    filter:drop-shadow(0 8px 32px rgba(200,132,30,.12));
+    animation:fadeUp .8s ease both;position:relative;z-index:1;
+  }
+  .hero-landing h1{
+    font-family:var(--display);font-weight:500;
+    font-size:clamp(1.6rem,3.2vw,2.35rem);line-height:1.15;
+    letter-spacing:-.02em;color:var(--text);margin-bottom:18px;
+    animation:fadeUp .8s .15s ease both;position:relative;z-index:1;
+  }
+  .hero-landing h1 em{font-style:italic;color:var(--gold)}
+  .hero-desc{
+    font-size:1.05rem;color:var(--dim);max-width:44ch;
+    margin:0 auto 52px;line-height:1.75;animation:fadeUp .8s .28s ease both;
+    position:relative;z-index:1;
+  }
+  .hero-desc b{color:var(--text)}
+  .scroll-cue{display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;animation:fadeUp .8s .44s ease both;position:relative;z-index:1}
+  .scroll-cue span{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.22em;color:var(--faint)}
+  .scroll-arrow{
+    width:32px;height:32px;border:2px solid var(--line);border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    animation:bounce 2s 1.2s infinite;
+  }
+  .scroll-arrow svg{width:15px;height:15px;color:var(--gold)}
+  /* Cartes déco dans les marges de la page */
+  .page-deco-zone{position:relative;overflow:visible}
+  .page-deco{
+    position:absolute;pointer-events:none;z-index:0;
+    width:clamp(60px,calc(50vw - 615px),260px);
+    background:#fff;border-radius:20px;overflow:hidden;
+    box-shadow:0 20px 56px rgba(0,0,0,.10),0 4px 14px rgba(0,0,0,.05);
+  }
+  .page-deco img{width:100%;height:auto;display:block}
+  .page-deco-left {left:0;  border:1.5px solid rgba(200,132,30,.14)}
+  .page-deco-right{right:0; border:2px   solid rgba(58,159,212,.14)}
+  .pd-1{top:4%;  transform:rotate(-4deg) scaleX(-1)}
+  .pd-2{top:28%; transform:rotate( 4deg) scaleX(-1)}
+  .pd-3{top:54%; transform:rotate(-3deg)}
+  .pd-4{top:78%; transform:rotate( 3deg)}
+  @media(max-width:1200px){.page-deco{display:none}}
+  @keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(8px)}}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes fadeFromLeft{
+    from{opacity:0;transform:translateX(-44px) rotate(-5deg)}
+    to  {opacity:1;transform:translateX(0)     rotate(-5deg)}
+  }
+  @keyframes fadeFromRight{
+    from{opacity:0;transform:translateX(44px) rotate(4deg)}
+    to  {opacity:1;transform:translateX(0)    rotate(4deg)}
+  }
+
+  /* ── LAYOUT ──────────────────────────────── */
+  .wrap{max-width:1180px;margin:0 auto;padding:0 28px}
+  a{color:inherit}
+  .mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+
+  /* ── TOOL HEADER ─────────────────────────── */
+  .tool-header{
+    padding:64px 0 52px;text-align:center;
+    border-bottom:1px solid var(--line);margin-bottom:52px;
+  }
+  .eyebrow{font-size:11.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--aqua);font-weight:700;margin-bottom:16px}
+  .tool-header h2{
+    font-family:var(--display);font-weight:500;
+    font-size:clamp(24px,3.4vw,42px);line-height:1.1;
+    letter-spacing:-.025em;color:var(--text);margin-bottom:18px;
+  }
+  .tool-header h2 em{font-style:italic;color:var(--gold)}
+  .tool-lede{color:var(--dim);font-size:15.5px;max-width:50ch;margin:0 auto;line-height:1.75}
+  .tool-lede b{color:var(--text)}
+
+  /* ── CONFIG ZONE ─────────────────────────── */
+  .config-zone{display:grid;grid-template-columns:1.15fr 0.85fr;gap:28px;margin-bottom:52px;align-items:start}
+  .result-side{display:flex;flex-direction:column;gap:16px;position:sticky;top:80px}
+
+  /* ── PANEL (shared card style) ───────────── */
+  .panel{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow)}
+  .panel-title{font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);font-weight:700;margin-bottom:20px}
+
+  /* ── RESULT CARD ─────────────────────────── */
+  .result-card{background:var(--gold-pale);border:1.5px solid rgba(200,132,30,.22);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow)}
+  .result-label{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:10px}
+  .result-big{font-family:var(--display);font-weight:600;font-size:clamp(48px,7vw,76px);color:var(--gold);line-height:1;letter-spacing:-.025em;margin-bottom:6px}
+  .result-sub{color:var(--dim);font-size:13.5px;margin-bottom:18px}
+  .balance{display:flex;gap:10px}
+  .bcell{flex:1;background:#fff;border:1px solid var(--line);border-radius:10px;padding:11px 13px}
+  .bcell .k{font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);display:flex;align-items:center;gap:5px}
+  .bcell .v{font-family:var(--mono);font-size:17px;margin-top:3px}
+  .swatch{width:8px;height:8px;border-radius:2px;display:inline-block}
+  .balance-note{font-size:12px;color:var(--dim);margin-top:12px;display:flex;align-items:flex-start;gap:7px;line-height:1.5}
+  .balance-note .eq{color:var(--gold);font-family:var(--mono);font-weight:700;white-space:nowrap}
+
+  /* ── STAT GRID ───────────────────────────── */
+  .stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .stat{background:var(--ink-2);border:1px solid var(--line);border-radius:10px;padding:13px}
+  .stat .k{font-size:10.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--faint);font-weight:600}
+  .stat .v{font-family:var(--mono);font-size:19px;margin-top:5px;font-variant-numeric:tabular-nums}
+  .stat .v.gold{color:var(--gold)}
+  .stat .v.coral{color:var(--coral)}
+  .stat .v.aqua{color:var(--aqua)}
+  .stat-explain{font-size:13px;color:var(--dim);margin-top:14px;line-height:1.6;border-top:1px solid var(--line-soft);padding-top:14px}
+
+  /* ── INPUTS ──────────────────────────────── */
+  .field{margin-bottom:15px}
+  .field label{display:flex;justify-content:space-between;font-size:12.5px;color:var(--dim);margin-bottom:7px;font-weight:500}
+  .field label .hint{color:var(--faint);font-weight:400}
+  .field input,.field select{
+    width:100%;background:var(--ink-2);border:1px solid var(--line);color:var(--text);
+    font-family:var(--mono);font-size:15px;padding:11px 13px;border-radius:9px;outline:none;
+    transition:border-color .15s,box-shadow .15s;
+  }
+  .field input:focus,.field select:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(200,132,30,.12)}
+  .field.with-prefix{position:relative}
+  .field.with-prefix .pfx{position:absolute;left:13px;bottom:11px;color:var(--faint);font-family:var(--mono);font-size:15px;pointer-events:none}
+  .field.with-prefix input{padding-left:26px}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .pool-load{display:grid;grid-template-columns:1fr auto;gap:9px;margin-bottom:6px}
+  .search-box{position:relative}
+  .search-box input{width:100%;background:var(--ink-2);border:1px solid var(--line);color:var(--text);font-family:var(--ui);font-size:15px;padding:11px 13px 11px 36px;border-radius:9px;outline:none;transition:border-color .15s,box-shadow .15s}
+  .search-box input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(200,132,30,.12)}
+  .search-box::before{content:'⌕';position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--faint);font-size:18px;pointer-events:none;z-index:1}
+  .search-drop{position:absolute;left:0;right:0;top:calc(100% + 6px);background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:var(--shadow-md);z-index:200;overflow:hidden;display:none}
+  .drop-item{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;cursor:pointer;transition:background .1s;gap:12px}
+  .drop-item:hover{background:var(--gold-pale)}
+  .drop-item + .drop-item{border-top:1px solid var(--line-soft)}
+  .drop-name{font-size:13.5px;font-weight:600;color:var(--text);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .drop-network{font-size:11px;color:var(--faint);text-transform:uppercase;letter-spacing:.08em}
+  .drop-tvl{font-size:12px;font-family:var(--mono);color:var(--dim);white-space:nowrap}
+  .drop-loading,.drop-empty{padding:12px 14px;font-size:13px;color:var(--faint);text-align:center}
+  .btn{font-family:var(--ui);font-weight:600;font-size:14px;border-radius:9px;border:1px solid var(--line);background:var(--surface-2);color:var(--text);padding:11px 16px;cursor:pointer;transition:.15s;white-space:nowrap}
+  .btn:hover{border-color:var(--gold);color:var(--gold)}
+  .status{font-size:12px;color:var(--faint);min-height:16px;margin-top:4px}
+  .status.err{color:var(--coral)}
+  .status.ok{color:var(--good)}
+  .toggle{display:flex;background:var(--ink-2);border:1px solid var(--line);border-radius:9px;padding:3px;gap:3px}
+  .toggle button{flex:1;background:transparent;border:none;color:var(--dim);font-family:var(--ui);font-weight:600;font-size:13px;padding:9px;border-radius:7px;cursor:pointer;transition:.15s}
+  .toggle button.active{background:#fff;color:var(--text);box-shadow:var(--shadow)}
+  .adv{margin-top:6px;border-top:1px solid var(--line-soft);padding-top:4px}
+  .adv summary{cursor:pointer;list-style:none;font-size:12.5px;color:var(--dim);font-weight:600;padding:12px 2px;display:flex;align-items:center;gap:8px}
+  .adv summary::-webkit-details-marker{display:none}
+  .adv summary .chev{transition:transform .2s;color:var(--faint)}
+  .adv[open] summary .chev{transform:rotate(90deg)}
+  .adv .adv-body{padding:6px 2px 4px}
+  .slider-field .sv{font-family:var(--mono);color:var(--gold)}
+  input[type=range]{width:100%;accent-color:var(--gold);margin-top:6px}
+  .note-inline{font-size:12px;color:var(--faint);margin-top:8px;line-height:1.5}
+  .onchain{margin-top:12px;background:var(--ink-2);border:1px solid var(--line);border-left:3px solid var(--aqua);border-radius:10px;padding:13px 15px}
+  .oc-row{display:flex;justify-content:space-between;gap:12px;font-size:12.5px;color:var(--dim);padding:4px 0}
+  .oc-row b{color:var(--text);font-weight:600}
+  .oc-row b.hi{color:var(--aqua)}
+
+  /* ── CHART SECTION ───────────────────────── */
+  .chart-section{margin-bottom:56px}
+  .chart-section-head{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:10px}
+  .chart-section-head h3{font-family:var(--display);font-weight:500;font-size:21px;letter-spacing:-.015em}
+  .chart-section-head p{font-size:13px;color:var(--dim);max-width:52ch;line-height:1.55}
+  .chart-shell{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:18px 16px 10px;position:relative;box-shadow:var(--shadow)}
+  .chart-head{display:flex;justify-content:space-between;align-items:center;padding:2px 6px 12px;flex-wrap:wrap;gap:8px}
+  .chart-title{font-size:13px;color:var(--dim);font-weight:600;letter-spacing:.02em}
+  .legend{display:flex;gap:14px;font-size:11.5px;color:var(--dim)}
+  .legend span{display:flex;align-items:center;gap:6px}
+  svg.curve{width:100%;height:auto;display:block;touch-action:none}
+  .readout{
+    position:absolute;pointer-events:none;
+    background:rgba(255,255,255,.97);border:1px solid var(--line);
+    border-radius:9px;padding:9px 11px;font-size:12px;min-width:148px;
+    opacity:0;transition:opacity .12s;box-shadow:0 4px 16px rgba(0,0,0,.1);
+  }
+  .readout .r-size{font-family:var(--mono);color:var(--text);font-size:14px;margin-bottom:6px;font-weight:600}
+  .readout .r-row{display:flex;justify-content:space-between;gap:14px;color:var(--dim);font-family:var(--mono);font-size:11.5px;line-height:1.7}
+  .readout .r-row b{font-weight:600}
+
+  /* ── SECTIONS ────────────────────────────── */
+  section{padding:0 0 52px}
+  .sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:20px;flex-wrap:wrap}
+  .sec-head h2{font-family:var(--display);font-weight:500;font-size:24px;letter-spacing:-.01em}
+  .sec-num{font-family:var(--mono);font-size:11px;color:var(--gold);border:1px solid rgba(200,132,30,.3);background:var(--gold-pale);border-radius:6px;padding:3px 9px;font-weight:700}
+  .sec-sub{color:var(--faint);font-size:13px;margin-left:auto;max-width:44ch;text-align:right}
+
+  /* ── SIMULATE ────────────────────────────── */
+  .sim-layout{display:grid;grid-template-columns:260px 1fr;gap:32px;align-items:start}
+  .sim-input-label{font-size:12px;color:var(--dim);font-weight:600;letter-spacing:.05em;margin-bottom:8px}
+  .sim-input-big{position:relative}
+  .sim-input-big .pfx{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--faint);font-family:var(--mono);font-size:18px;pointer-events:none}
+  .sim-input-big input{
+    width:100%;background:var(--ink-2);border:2px solid var(--line);color:var(--text);
+    font-family:var(--mono);font-size:24px;font-weight:600;padding:14px 14px 14px 30px;
+    border-radius:11px;outline:none;transition:border-color .15s,box-shadow .15s;
+  }
+  .sim-input-big input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(200,132,30,.12)}
+  .sim-context{font-size:12px;color:var(--faint);margin-top:8px}
+  .sim-results{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:14px}
+  .sim-tip{
+    font-size:13px;font-weight:600;padding:11px 15px;border-radius:10px;
+    border:1px solid;line-height:1.5;display:none;
+  }
+  .sim-tip.good{color:var(--good);background:rgba(14,159,110,.06);border-color:rgba(14,159,110,.2)}
+  .sim-tip.info{color:var(--aqua);background:rgba(58,159,212,.06);border-color:rgba(58,159,212,.2)}
+
+  /* ── SCENARIO TABLE ──────────────────────── */
+  .tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--radius);background:#fff;box-shadow:var(--shadow)}
+  table{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:13.5px;min-width:660px}
+  th,td{padding:13px 16px;text-align:right;font-variant-numeric:tabular-nums}
+  th:first-child,td:first-child{text-align:left}
+  thead th{font-family:var(--ui);font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--faint);font-weight:700;border-bottom:1px solid var(--line)}
+  tbody tr{border-bottom:1px solid var(--line-soft);transition:background .1s}
+  tbody tr:last-child{border-bottom:none}
+  tbody tr:hover{background:var(--ink-2)}
+  tbody tr.optimal{background:var(--gold-pale)}
+  tbody tr.optimal:hover{background:rgba(200,132,30,.12)}
+  .verdict{font-family:var(--ui);font-weight:700;font-size:12px;padding:4px 10px;border-radius:999px;display:inline-block}
+  .v-gas{color:var(--aqua);background:rgba(58,159,212,.1)}
+  .v-eff{color:var(--good);background:rgba(14,159,110,.1)}
+  .v-opt{color:var(--gold);background:rgba(200,132,30,.12)}
+  .v-slip{color:var(--coral);background:rgba(232,118,90,.1)}
+  .bar-cell{display:flex;align-items:center;gap:8px;justify-content:flex-end}
+  .cost-bar{width:40px;height:5px;background:var(--line);border-radius:3px;overflow:hidden;flex-shrink:0}
+  .cost-bar-fill{height:100%;border-radius:3px;transition:width .3s}
+
+  /* ── METHODOLOGY ─────────────────────────── */
+  .method{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px}
+  .method .panel p{color:var(--dim);font-size:14px;margin-bottom:13px;line-height:1.65}
+  .method .panel p b{color:var(--text)}
+  .formula{font-family:var(--mono);font-size:13px;background:var(--ink-2);border:1px solid var(--line);border-radius:9px;padding:14px 16px;color:var(--gold);margin:14px 0;overflow-x:auto;line-height:1.9}
+  .formula .c{color:var(--faint)}
+  ul.limits{list-style:none}
+  ul.limits li{color:var(--dim);font-size:13.5px;padding:8px 0 8px 22px;position:relative;border-bottom:1px solid var(--line-soft);line-height:1.55}
+  ul.limits li:last-child{border:none}
+  ul.limits li::before{content:"";position:absolute;left:0;top:16px;width:7px;height:7px;border-radius:2px;background:var(--gold)}
+  .risk{background:rgba(232,118,90,.04);border:1px solid var(--line);border-left:3px solid var(--coral);border-radius:var(--radius);padding:20px 24px}
+  .risk h3{color:var(--coral);font-size:11.5px;letter-spacing:.15em;text-transform:uppercase;font-weight:700;margin-bottom:10px}
+  .risk p{color:var(--dim);font-size:14px;line-height:1.65}
+  .risk p b{color:var(--text)}
+
+  /* ── BANNER ──────────────────────────────── */
+  /* ── IMPERMANENT LOSS ───────────────────────── */
+  .il-section{background:var(--surface-2);border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:80px 28px 88px}
+  .il-header{text-align:center;margin-bottom:48px}
+  .il-header h2{font-family:var(--display);font-weight:500;font-size:clamp(1.5rem,3vw,2.1rem);letter-spacing:-.02em;margin-bottom:12px}
+  .il-grid{display:grid;grid-template-columns:1fr 340px;gap:28px;align-items:start}
+  .il-breakdown{margin-top:18px;border-top:1px solid var(--line);padding-top:14px;display:flex;flex-direction:column;gap:8px}
+  .il-row{display:flex;justify-content:space-between;align-items:center;font-size:13.5px;color:var(--dim)}
+  .il-row b{color:var(--text)}
+  .il-row-loss b{color:var(--coral);font-size:15px}
+  .il-note{font-size:12px;color:var(--faint);margin-top:14px;line-height:1.6;text-align:center}
+  @media(max-width:760px){.il-grid{grid-template-columns:1fr}}
+
+  .banner-section{background:#fff;border-top:1px solid var(--line);padding:88px 28px 96px;text-align:center}
+  .banner-inner{max-width:680px;margin:0 auto;display:flex;flex-direction:column;align-items:center;gap:44px}
+  .banner-img{width:100%;max-width:540px;border-radius:24px;box-shadow:0 20px 72px rgba(0,0,0,.09)}
+  .banner-tag{display:inline-block;background:rgba(200,132,30,.1);color:var(--gold);font-size:.68rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;padding:5px 14px;border-radius:999px;margin-bottom:18px}
+  .banner-title{font-family:var(--display);font-size:clamp(2.2rem,5vw,3.4rem);font-weight:600;color:var(--text);line-height:1.08;letter-spacing:-.03em;margin-bottom:22px}
+  .banner-sub{font-size:1rem;color:var(--dim);line-height:1.85;max-width:500px}
+
+  /* ── FOOTER ──────────────────────────────── */
+  .back-section{padding:40px 28px;text-align:center;border-top:1px solid var(--line);background:var(--surface-2)}
+  .back-link{display:inline-flex;align-items:center;gap:10px;text-decoration:none;color:var(--text);font-weight:700;font-size:15px;padding:14px 32px;border:1.5px solid var(--line);border-radius:40px;background:#fff;transition:.18s;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+  .back-link:hover{border-color:var(--gold);color:var(--gold);box-shadow:0 4px 16px rgba(200,132,30,.15)}
+  footer{padding:42px 0;text-align:center;color:var(--faint);font-size:13px;border-top:1px solid var(--line)}
+  footer .ft-tag{font-family:var(--display);font-style:italic;font-size:18px;color:var(--dim);margin-bottom:10px}
+  footer .ft-tag span{color:var(--gold)}
+
+  /* ── RESPONSIVE ──────────────────────────── */
+  @media(max-width:960px){
+    .config-zone{grid-template-columns:1fr}
+    .result-side{position:static}
+    .method{grid-template-columns:1fr}
+    .sim-layout{grid-template-columns:1fr}
+    .sim-results{grid-template-columns:1fr 1fr 1fr}
+    .sec-sub{text-align:left;margin-left:0;max-width:none}
+    .page-deco{display:none}
+  }
+  @media(max-width:640px){
+    .sim-results{grid-template-columns:1fr 1fr}
+    .row2{grid-template-columns:1fr}
+    .tool-header{padding:48px 0 38px}
+    .wrap{padding:0 18px}
+  }
+  @media(max-width:480px){
+    .navbar{padding:8px 14px}
+    .nav-home{padding:6px 10px;font-size:.75rem}
+    .wrap{padding:0 12px}
+    .tool-header{padding:40px 0 28px}
+    .panel{padding:18px 12px}
+    .result-card{padding:18px 12px}
+    .pool-search-wrap{padding:0 12px 16px}
+    .sim-results{grid-template-columns:1fr}
+    .back-section{padding:28px 12px}
+    table{font-size:12px}
+  }
+  @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+  /* ── ORNY ANALYSIS PANEL ─────────────────── */
+  .orny-panel{border-radius:var(--radius);padding:20px;border:1.5px solid;background:#fff;box-shadow:var(--shadow)}
+  .orny-panel.state-approved{border-color:rgba(14,159,110,.3);background:rgba(14,159,110,.03)}
+  .orny-panel.state-warning{border-color:rgba(232,118,90,.35);background:rgba(232,118,90,.03)}
+  .orny-panel.state-high{border-color:rgba(200,132,30,.3);background:var(--gold-pale)}
+  .orny-panel.state-low{border-color:var(--line);background:var(--surface-2)}
+  .orny-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid var(--line-soft)}
+  .orny-badge{display:flex;align-items:center;gap:8px}
+  .orny-badge .lbl{font-size:10.5px;font-weight:800;letter-spacing:.16em;text-transform:uppercase}
+  .state-approved .lbl{color:var(--good)}
+  .state-warning  .lbl{color:var(--coral)}
+  .state-high     .lbl{color:var(--gold)}
+  .state-low      .lbl{color:var(--dim)}
+  .orny-score-wrap{text-align:right}
+  .orny-score-wrap .sc-label{font-size:10px;color:var(--faint);text-transform:uppercase;letter-spacing:.1em}
+  .orny-score-wrap .sc-val{font-family:var(--mono);font-size:19px;font-weight:700;line-height:1}
+  .state-approved .sc-val{color:var(--good)}
+  .state-warning  .sc-val{color:var(--coral)}
+  .state-high     .sc-val{color:var(--gold)}
+  .state-low      .sc-val{color:var(--dim)}
+  .orny-insights{display:flex;flex-direction:column;gap:7px;margin-bottom:14px}
+  .o-insight{display:flex;align-items:flex-start;gap:8px;font-size:12.5px;color:var(--dim);line-height:1.5}
+  .o-insight .ic{font-size:13px;flex-shrink:0;margin-top:1px}
+  .o-insight.ok .ic{color:var(--good)}
+  .o-insight.warn .ic{color:var(--coral)}
+  .o-insight.neutral .ic{color:var(--gold)}
+  .orny-metrics{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .o-metric{background:var(--surface-2);border:1px solid var(--line);border-radius:9px;padding:10px 12px}
+  .o-metric .mk{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);margin-bottom:4px}
+  .o-metric .mv{font-size:13px;font-weight:700;color:var(--text)}
+  .o-metric .mv.c-good{color:var(--good)}
+  .o-metric .mv.c-warn{color:#F59E0B}
+  .o-metric .mv.c-bad{color:var(--coral)}
+  .orny-action{margin-top:12px;padding:10px 14px;border-radius:9px;font-size:13px;font-weight:600;text-align:center}
+  .state-approved .orny-action{background:rgba(14,159,110,.1);color:var(--good)}
+  .state-warning  .orny-action{background:rgba(232,118,90,.1);color:var(--coral)}
+  .state-high     .orny-action{background:var(--gold-pale);color:var(--gold)}
+  .state-low      .orny-action{background:var(--surface-2);color:var(--dim)}
+
+  .draw-total{stroke-dasharray:var(--len);stroke-dashoffset:var(--len);animation:draw 1.1s cubic-bezier(.4,0,.2,1) forwards}
+  @keyframes draw{to{stroke-dashoffset:0}}
+  .pop{animation:pop .5s .9s both}
+  @keyframes pop{from{opacity:0;transform:scale(.4)}to{opacity:1;transform:scale(1)}}
+
+  /* ── FEE TIER COMPARISON ─────────────────────── */
+  .fee-cmp{background:var(--ink-2);border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:10px;padding:13px 15px;margin-top:10px}
+  .fee-cmp-title{font-size:10.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);margin-bottom:9px}
+  .fee-cmp-row{display:flex;align-items:center;justify-content:space-between;padding:5px 0;gap:6px;font-size:12.5px;color:var(--dim);border-bottom:1px solid var(--line-soft);flex-wrap:wrap}
+  .fee-cmp-row:last-of-type{border-bottom:none}
+  .fee-cmp-badge{font-size:10px;font-weight:700;padding:2px 7px;border-radius:99px;white-space:nowrap}
+  .fee-cmp-badge.best{background:rgba(14,159,110,.12);color:var(--good)}
+  .fee-cmp-badge.worse{background:rgba(232,118,90,.12);color:var(--coral)}
+  .fee-cmp-cross{font-size:11.5px;color:var(--dim);margin-top:8px;padding-top:8px;border-top:1px solid var(--line-soft);line-height:1.5}
+  .fee-cmp-switch{font-family:var(--ui);font-size:12px;font-weight:600;border:1px solid var(--gold);color:var(--gold);background:var(--gold-pale);padding:6px 12px;border-radius:7px;cursor:pointer;margin-top:10px;width:100%;transition:.15s;text-align:left}
+  .fee-cmp-switch:hover{background:var(--gold);color:#fff}
+
+  /* ── POOL REGISTRY ───────────────────────────── */
+  .reg-wrap{margin-bottom:14px}
+  .reg-label{font-size:10.5px;font-weight:700;color:var(--faint);letter-spacing:.14em;text-transform:uppercase;margin-bottom:7px}
+  .reg-chips{display:flex;flex-wrap:wrap;gap:5px}
+  .reg-chip{font-family:var(--ui);font-size:11.5px;font-weight:600;border:1px solid var(--line);background:var(--ink-2);color:var(--dim);padding:4px 9px;border-radius:6px;cursor:pointer;transition:border-color .15s,color .15s,background .15s;white-space:nowrap;line-height:1.4}
+  .reg-chip:hover{border-color:var(--gold);color:var(--gold);background:var(--gold-pale)}
+  .reg-chip .rc-fee{font-size:10px;opacity:.65;margin-left:2px}
+</style>
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-5XT34MFV');</script>
+<!-- End Google Tag Manager -->
+</head>
+<body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5XT34MFV"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+<!-- STICKY NAVBAR -->
+<nav class="navbar" id="navbar">
+  <img class="nav-logo" src="logo.png" alt="OrnyTools" />
+  <div>
+    <div class="nav-brand">Orny<span class="dot">Tools</span></div>
+    <div class="nav-tag">Trade Size Optimizer</div>
+  </div>
+  <a href="index.html" class="btn-nav" style="text-decoration:none">← All tools</a>
+  <button class="btn-nav" onclick="document.getElementById('tool').scrollIntoView({behavior:'smooth'})">Open tool ↓</button>
+</nav>
+
+<!-- HERO — logo centré, propre -->
+<div class="hero-landing">
+  <img class="hero-logo-img" src="logo.png" alt="OrnyTools" />
+  <h1>Your trade has an <em>optimal size.</em><br>Most traders never find it.</h1>
+  <p class="hero-desc">Too small: gas eats your profit. Too big: slippage does. <b>OrnyTools finds the exact crossover point</b> — calculated from the real constant-product curve.</p>
+  <div class="scroll-cue" onclick="document.getElementById('tool').scrollIntoView({behavior:'smooth'})">
+    <span>Calculate now</span>
+    <div class="scroll-arrow">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+  </div>
+
+</div>
+
+<!-- TOOL + décos dans les marges -->
+<div class="page-deco-zone">
+  <div class="page-deco page-deco-left  pd-1"><img src="orny-pensif.png"   alt=""/></div>
+  <div class="page-deco page-deco-right pd-2"><img src="orny-pointeur.png" alt=""/></div>
+  <div class="page-deco page-deco-left  pd-3"><img src="orny-victoire.png" alt=""/></div>
+  <div class="page-deco page-deco-right pd-4"><img src="orny-karate.png"   alt=""/></div>
+<div class="wrap" id="tool">
+
+  <!-- Intro strip -->
+  <div class="tool-header">
+    <div class="eyebrow">Trade Size Optimizer</div>
+    <h2>Paste your pool. Get <em>the number</em>.</h2>
+    <p class="tool-lede">The size where gas cost equals slippage cost — the bottom of the U-curve. Below it, gas dominates. Above it, slippage takes over. <b>Load a live pool or enter manually.</b></p>
+  </div>
+
+  <!-- STEP 1 — Configure + Live result (sticky) -->
+  <div class="config-zone">
+
+    <!-- Inputs -->
+    <div class="panel">
+      <div class="panel-title">Pool parameters</div>
+      <div class="field">
+        <label>Network</label>
+        <select id="network">
+          <option value="eth">Ethereum</option>
+          <option value="arbitrum">Arbitrum</option>
+          <option value="base">Base</option>
+          <option value="optimism">Optimism</option>
+          <option value="bsc">BNB Chain</option>
+          <option value="polygon_pos">Polygon</option>
+        </select>
+      </div>
+      <div class="reg-wrap" id="regWrap"></div>
+      <div class="field">
+        <label>Search pool <span class="hint">by name or token pair</span></label>
+        <div class="search-box">
+          <input id="poolSearch" placeholder="WBTC/USDC, ETH/USDC, stETH…" autocomplete="off" spellcheck="false" />
+          <div class="search-drop" id="searchDrop"></div>
+        </div>
+      </div>
+      <div class="field">
+        <label>Pool address <span class="hint">or paste directly</span></label>
+        <div class="pool-load">
+          <input id="poolAddr" placeholder="0x… pool contract" spellcheck="false" />
+          <button class="btn" id="loadBtn">Load</button>
+        </div>
+        <div class="status" id="loadStatus"></div>
+        <div id="feeCompare" style="display:none"></div>
+      </div>
+      <div class="row2">
+        <div class="field with-prefix">
+          <label>Total liquidity (TVL)</label>
+          <span class="pfx">$</span>
+          <input id="tvl" class="mono" value="5000000" inputmode="decimal" />
+        </div>
+        <div class="field with-prefix">
+          <label>Network fee (gas)</label>
+          <span class="pfx">$</span>
+          <input id="gas" class="mono" value="2.50" inputmode="decimal" />
+        </div>
+      </div>
+      <div class="field">
+        <label>Pool fee <span class="hint">% per trade</span></label>
+        <input id="fee" class="mono" value="0.30" inputmode="decimal" />
+      </div>
+      <div class="field">
+        <label>Pool type</label>
+        <div class="toggle" id="poolType">
+          <button data-type="v2" class="active">Constant product (v2)</button>
+          <button data-type="v3">Concentrated (v3)</button>
+        </div>
+      </div>
+      <details class="adv">
+        <summary><span class="chev">›</span>Advanced — v3 active liquidity</summary>
+        <div class="adv-body">
+          <div class="field slider-field" id="v3Field" style="display:none">
+            <label>Active liquidity near price <span class="sv" id="v3Val">20% of TVL</span></label>
+            <input type="range" id="v3frac" min="2" max="100" value="20" />
+            <p class="note-inline">In v3, only a fraction of TVL sits at the current price. The slider is a manual estimate — the button below reads the real figure from the contract.</p>
+            <button class="btn" id="chainBtn" style="width:100%;margin-top:8px">⛓ Read on-chain liquidity</button>
+            <div class="status" id="chainStatus"></div>
+            <div class="onchain" id="v3chain" style="display:none">
+              <div class="oc-row"><span>Effective depth at price</span><b class="mono" id="ocDepth">—</b></div>
+              <div class="oc-row"><span>Active liquidity (notional)</span><b class="mono" id="ocActive">—</b></div>
+              <div class="oc-row"><span>Concentration vs TVL</span><b class="mono hi" id="ocConc">—</b></div>
+              <div class="oc-row"><span>Spot price</span><b class="mono" id="ocPrice">—</b></div>
+              <p class="note-inline" id="ocExplain"></p>
+            </div>
+          </div>
+          <p class="note-inline" id="v2Note">Constant-product assumes a balanced 50/50 pool, single-hop swap. Switch to v3 to model concentrated liquidity.</p>
+        </div>
+      </details>
+    </div>
+
+    <!-- Result (sticky) -->
+    <div class="result-side">
+
+      <div class="result-card">
+        <div class="result-label">Optimal trade size</div>
+        <div class="result-big mono" id="optSize">$2,498</div>
+        <div class="result-sub">Total cost: <span class="mono" id="optTotalPct">0.50%</span> · <span class="mono" id="optTotalUsd">$12.4</span></div>
+        <div class="balance">
+          <div class="bcell">
+            <div class="k"><span class="swatch" style="background:var(--aqua)"></span>Gas</div>
+            <div class="v" id="balGas" style="color:var(--aqua)">$2.50</div>
+          </div>
+          <div class="bcell">
+            <div class="k"><span class="swatch" style="background:var(--coral)"></span>Slippage</div>
+            <div class="v" id="balSlip" style="color:var(--coral)">$2.50</div>
+          </div>
+        </div>
+        <div class="balance-note"><span class="eq" id="balEq">≈ balanced</span> — at optimum: gas cost = slippage cost.</div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-title">Breakdown at optimum</div>
+        <div class="stat-grid">
+          <div class="stat"><div class="k">Optimal size</div><div class="v gold mono" id="rOpt">$2,498</div></div>
+          <div class="stat"><div class="k">Total cost %</div><div class="v mono" id="rTotPct">0.50%</div></div>
+          <div class="stat"><div class="k">Gas cost</div><div class="v aqua mono" id="rGas">$2.50</div></div>
+          <div class="stat"><div class="k">Slippage</div><div class="v coral mono" id="rSlip">$2.50</div></div>
+          <div class="stat"><div class="k">Pool fee</div><div class="v mono" id="rFee">$7.49</div></div>
+          <div class="stat"><div class="k">Total cost $</div><div class="v mono" id="rTotUsd">$12.49</div></div>
+        </div>
+        <div class="stat-explain" id="explain">
+          This size sits at the bottom of the U: trade smaller and fixed gas dominates; trade larger and slippage on a finite pool takes over.
+        </div>
+      </div>
+
+      <!-- Orny Analysis -->
+      <div class="orny-panel state-high" id="ornyPanel">
+        <div class="orny-header">
+          <div class="orny-badge">
+            <span style="font-size:20px">🦅</span>
+            <span class="lbl" id="ornyStateLabel">Orny Thinking…</span>
+          </div>
+          <div class="orny-score-wrap">
+            <div class="sc-label">Confidence</div>
+            <div class="sc-val" id="ornyScore">—</div>
+          </div>
+        </div>
+        <div class="orny-insights" id="ornyInsights"></div>
+        <div class="orny-metrics">
+          <div class="o-metric"><div class="mk">Cost Efficiency</div><div class="mv" id="ornyEfficiency">—</div></div>
+          <div class="o-metric"><div class="mk">Expected Slippage</div><div class="mv" id="ornySlippage">—</div></div>
+          <div class="o-metric"><div class="mk">Risk Level</div><div class="mv" id="ornyRisk">—</div></div>
+          <div class="o-metric"><div class="mk">Recommended Size</div><div class="mv c-good mono" id="ornyOptSize">—</div></div>
+        </div>
+        <div class="orny-action" id="ornyAction">—</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- CHART — full width -->
+  <div class="chart-section">
+    <div class="chart-section-head">
+      <div>
+        <h3>The U-curve</h3>
+        <p>Below the optimum, fixed gas dominates. Above it, slippage takes over. Hover to read exact values at any size.</p>
+      </div>
+      <div class="legend">
+        <span><span class="swatch" style="background:var(--aqua)"></span>Gas</span>
+        <span><span class="swatch" style="background:var(--coral)"></span>Slippage</span>
+        <span><span class="swatch" style="background:var(--gold)"></span>Total</span>
+      </div>
+    </div>
+    <div class="chart-shell">
+      <svg class="curve" id="chart" viewBox="0 0 720 420" preserveAspectRatio="xMidYMid meet" aria-label="Cost curve"></svg>
+      <div class="readout" id="readout"></div>
+    </div>
+  </div>
+
+  <!-- SECTION 01 — Simulate -->
+  <section>
+    <div class="sec-head">
+      <span class="sec-num">01</span>
+      <h2>Test your trade</h2>
+      <span class="sec-sub">Enter your amount. See the real cost — and whether splitting saves more.</span>
+    </div>
+    <div class="panel">
+      <div class="sim-layout">
+        <div>
+          <div class="sim-input-label">I want to swap</div>
+          <div class="sim-input-big">
+            <span class="pfx">$</span>
+            <input id="myTrade" class="mono" value="500" inputmode="decimal" />
+          </div>
+          <div class="sim-context" id="simContext">vs optimal: <span id="simVsOpt" class="mono">—</span></div>
+        </div>
+        <div>
+          <div class="sim-results">
+            <div class="stat"><div class="k">Total cost</div><div class="v mono" id="simTotUsd">—</div></div>
+            <div class="stat"><div class="k">As % of trade</div><div class="v mono" id="simTotPct">—</div></div>
+            <div class="stat"><div class="k">vs optimal</div><div class="v mono" id="simDelta">—</div></div>
+          </div>
+          <div class="sim-tip" id="simSavings"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 02 — Scenario table -->
+  <section>
+    <div class="sec-head">
+      <span class="sec-num">02</span>
+      <h2>Scenario comparison</h2>
+      <span class="sec-sub">Same pool, different sizes. See where gas and slippage cross.</span>
+    </div>
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr><th>Trade size</th><th>Gas $</th><th>Slippage $</th><th>Fee $</th><th>Total $</th><th>Total %</th><th>Verdict</th></tr>
+        </thead>
+        <tbody id="scenarioBody"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- SECTION 03 — Methodology -->
+  <section>
+    <div class="sec-head">
+      <span class="sec-num">03</span>
+      <h2>Methodology</h2>
+      <span class="sec-sub">No black box — here's the exact math, and where it stops being reliable.</span>
+    </div>
+    <div class="method">
+      <div class="panel">
+        <p><b>Gas</b> is a fixed dollar cost — as a share of your trade, it shrinks the bigger you go. <b>Slippage</b> is the price you move against yourself on a finite pool — it grows with size. The optimizer finds where the sum of the two is lowest.</p>
+        <p>OrnyTools uses the <b>exact constant-product formula</b> (x·y=k) — not the <span class="mono">√(2·gas·TVL)</span> shortcut that overstates optimal size by up to 2×.</p>
+        <div class="formula">
+<span class="c">// one-sided reserve (balanced pool)</span>
+R = TVL / 2        <span class="c">(× active fraction for v3)</span>
+<span class="c">// exact slippage cost — derived from x·y=k</span>
+slippage($) = A² / (R + A)
+<span class="c">// full cost as % of trade size</span>
+cost(%) = gas/A + A/(R+A) + fee
+<span class="c">// optimum = ternary search min of the U</span>
+        </div>
+        <p>At the minimum, gas dollars and slippage dollars are approximately equal — that's the equilibrium point.</p>
+      </div>
+      <div class="panel">
+        <p style="font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);font-weight:700;margin-bottom:14px">Where it's only an estimate</p>
+        <ul class="limits">
+          <li>TVL approximates usable liquidity. Real slippage depends on reserves, trade direction, fee tier and the specific AMM curve.</li>
+          <li>For v3 pools, accuracy depends on active liquidity at the current price. Use the slider or the on-chain reader for better precision.</li>
+          <li>Single-hop only. Aggregators split across pools — which changes the slippage profile entirely.</li>
+          <li>Gas is an estimate. The figure your wallet confirms can differ from any quote.</li>
+          <li>This is execution efficiency analysis — not financial advice.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="risk">
+      <h3>Risk note</h3>
+      <p>This tool estimates <b>execution efficiency only</b>. It does not account for MEV, sandwich attacks, smart-contract risk, oracle failures, bridge risk, token volatility, or failed transaction costs. It is read-only: it never connects a wallet and never asks you to sign anything. <b>Not financial advice.</b></p>
+    </div>
+    <div style="text-align:center;margin-top:28px">
+      <a href="methodology.html" style="display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:var(--dim);text-decoration:none;padding:10px 22px;border:1.5px solid var(--line);border-radius:40px;background:#fff;transition:.15s" onmouseover="this.style.borderColor='var(--gold)';this.style.color='var(--gold)'" onmouseout="this.style.borderColor='var(--line)';this.style.color='var(--dim)'">
+        <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><rect x="1" y="1" width="13" height="13" rx="2" stroke="currentColor" stroke-width="1.4"/><path d="M4 5h7M4 7.5h7M4 10h4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+        Full methodology
+      </a>
+    </div>
+  </section>
+
+</div><!-- /.wrap -->
+</div><!-- /.page-deco-zone -->
+
+<!-- IL SECTION MOVED TO il-calculator.html -->
+<section class="il-section" id="il-calc" style="display:none">
+  <div class="wrap">
+
+    <div class="il-header">
+      <div class="eyebrow" style="color:var(--aqua)">Impermanent Loss Calculator</div>
+      <h2>How much does providing liquidity <em>really</em> cost?</h2>
+      <p class="tool-lede">Enter your entry prices and current prices. Get the exact IL — and how much you'd have kept by just holding.</p>
+    </div>
+
+    <div class="il-grid">
+
+      <!-- Inputs -->
+      <div class="panel">
+        <div class="panel-title">Your LP position</div>
+
+        <div class="row2">
+          <div class="field">
+            <label>Token A — entry price <span class="hint">USD</span></label>
+            <div style="position:relative">
+              <span class="pfx" style="position:absolute;left:13px;bottom:11px;color:var(--faint);font-family:var(--mono);font-size:15px;pointer-events:none">$</span>
+              <input id="ilA0" class="mono" style="padding-left:26px" value="1800" inputmode="decimal" placeholder="e.g. 1800" />
+            </div>
+          </div>
+          <div class="field">
+            <label>Token A — current price <span class="hint">USD</span></label>
+            <div style="position:relative">
+              <span class="pfx" style="position:absolute;left:13px;bottom:11px;color:var(--faint);font-family:var(--mono);font-size:15px;pointer-events:none">$</span>
+              <input id="ilA1" class="mono" style="padding-left:26px" value="2400" inputmode="decimal" placeholder="e.g. 2400" />
+            </div>
+          </div>
+        </div>
+
+        <div class="row2">
+          <div class="field">
+            <label>Token B — entry price <span class="hint">USD</span></label>
+            <div style="position:relative">
+              <span class="pfx" style="position:absolute;left:13px;bottom:11px;color:var(--faint);font-family:var(--mono);font-size:15px;pointer-events:none">$</span>
+              <input id="ilB0" class="mono" style="padding-left:26px" value="1" inputmode="decimal" placeholder="e.g. 1" />
+            </div>
+          </div>
+          <div class="field">
+            <label>Token B — current price <span class="hint">USD</span></label>
+            <div style="position:relative">
+              <span class="pfx" style="position:absolute;left:13px;bottom:11px;color:var(--faint);font-family:var(--mono);font-size:15px;pointer-events:none">$</span>
+              <input id="ilB1" class="mono" style="padding-left:26px" value="1" inputmode="decimal" placeholder="e.g. 1" />
+            </div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Initial investment <span class="hint">optional — for USD amounts</span></label>
+          <div style="position:relative">
+            <span class="pfx" style="position:absolute;left:13px;bottom:11px;color:var(--faint);font-family:var(--mono);font-size:15px;pointer-events:none">$</span>
+            <input id="ilDeposit" class="mono" style="padding-left:26px" value="10000" inputmode="decimal" placeholder="10000" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Result -->
+      <div class="result-side">
+        <div class="result-card">
+          <div class="result-label">Impermanent Loss</div>
+          <div class="result-big mono" id="ilPct" style="color:var(--coral)">—</div>
+          <div class="result-sub" id="ilUsd">Enter prices above</div>
+
+          <div class="il-breakdown" id="ilBreakdown" style="display:none">
+            <div class="il-row">
+              <span>Value if held</span>
+              <b class="mono" id="ilHeld">—</b>
+            </div>
+            <div class="il-row">
+              <span>Value in pool</span>
+              <b class="mono" id="ilPool">—</b>
+            </div>
+            <div class="il-row il-row-loss">
+              <span>Loss from IL</span>
+              <b class="mono" id="ilLoss">—</b>
+            </div>
+            <div class="il-row">
+              <span>Token A change</span>
+              <b class="mono" id="ilChgA">—</b>
+            </div>
+            <div class="il-row">
+              <span>Token B change</span>
+              <b class="mono" id="ilChgB">—</b>
+            </div>
+          </div>
+
+          <p class="il-note" id="ilNote"></p>
+        </div>
+      </div>
+
+    </div><!-- /.il-grid -->
+  </div><!-- /.wrap -->
+</section>
+
+<!-- BANNER -->
+<section class="banner-section">
+  <div class="banner-inner">
+    <img src="orny-banner.png" alt="OrnyTools — Patience. Strategy. Freedom." class="banner-img" />
+    <div>
+      <div class="banner-tag">Built for DeFi traders</div>
+      <h2 class="banner-title">Patience.<br>Strategy.<br>Freedom.</h2>
+      <p class="banner-sub">Most traders lose money before the trade even starts — on gas overhead and slippage creep. Every basis point saved compounds. OrnyTools gives you one number so you stop leaving it on the table.</p>
+    </div>
+  </div>
+</section>
+
+<div class="back-section">
+  <a class="back-link" href="index.html">
+    <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 1.5L1.5 9 9 16.5M1.5 9h15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    Back to all tools
+  </a>
+</div>
+<footer>
+  <div class="ft-tag">Patience. <span>Strategy.</span> Freedom.</div>
+  Every basis point saved compounds. OrnyTools gives you the math — you make the move.<br/>
+  Live data via GeckoTerminal &amp; public RPCs · ornytools.xyz<br/>
+  <span style="margin-top:8px;display:inline-block">Built by <a href="https://www.linkedin.com/in/xavier-maquin-5576643b9/" target="_blank" rel="noopener" style="color:var(--gold);text-decoration:none;font-weight:600">Xavier Maquin</a></span>
+</footer>
+
+<script>
+/* =========================================================================
+   OrnyTools — Transaction Size Optimizer
+   Financial engine: exact constant-product (Uniswap-v2 style) cost model.
+   ========================================================================= */
+
+const $ = id => document.getElementById(id);
+
+const state = {
+  network:  'eth',
+  tvl:      5_000_000,
+  gas:      2.50,
+  fee:      0.30,
+  poolType: 'v2',
+  v3frac:   0.20,
+  myTrade:  500
+};
+
+const GAS_DEFAULTS = {
+  eth: 2.50, arbitrum: 0.05, base: 0.02,
+  optimism: 0.03, bsc: 0.15, polygon_pos: 0.02
+};
+
+const RPCS = {
+  eth:         ['https://ethereum-rpc.publicnode.com', 'https://eth.llamarpc.com', 'https://cloudflare-eth.com'],
+  arbitrum:    ['https://arbitrum-one-rpc.publicnode.com', 'https://arb1.arbitrum.io/rpc'],
+  base:        ['https://base-rpc.publicnode.com', 'https://mainnet.base.org'],
+  optimism:    ['https://optimism-rpc.publicnode.com', 'https://mainnet.optimism.io'],
+  bsc:         ['https://bsc-rpc.publicnode.com', 'https://binance.llamarpc.com'],
+  polygon_pos: ['https://polygon-bor-rpc.publicnode.com', 'https://polygon-rpc.com']
+};
+
+// Pool registry — curated shortcuts, one click to load.
+// Addresses are Uniswap V3 pools unless noted. Wrong address → GeckoTerminal 404, search fallback remains available.
+const POOL_REGISTRY = {
+  eth: [
+    { label:'USDC/ETH',   fee:'0.05%', addr:'0x88e6a0c2ddd26feeb64f039a2c41296fcb3f5640', pair:'USDC-ETH' },
+    { label:'USDC/ETH',   fee:'0.3%',  addr:'0x8ad599c3a0ff1de082011efddc58f1908eb6e6d8', pair:'USDC-ETH' },
+    { label:'WBTC/ETH',   fee:'0.3%',  addr:'0xcbcdf9626bc03e24f779434178a73a0b4bad62ed' },
+    { label:'USDT/ETH',   fee:'0.05%', addr:'0x11b815efb8f581194ae79006d24e0d814b7697f6' },
+    { label:'DAI/USDC',   fee:'0.01%', addr:'0x5777d92f208679db4b9778590fa3cab3ac9e2168' },
+    { label:'wstETH/ETH', fee:'0.01%', addr:'0x109830a1aaad605bbf02a9dfa7a0df6e9bfeb04c' },
+  ],
+  arbitrum: [
+    { label:'USDC/WETH',  fee:'0.05%', addr:'0xc6962004f452be9203591991d15f6b388e09e8d0' },
+    { label:'WBTC/WETH',  fee:'0.05%', addr:'0x2f5e87c9312fa29aed5c179e456625d79015299c' },
+    { label:'USDT/WETH',  fee:'0.05%', addr:'0x641c00a822e8b671738d32a431a4fb6074e5c79d' },
+    { label:'ARB/WETH',   fee:'0.3%',  addr:'0xcda53b1f66614552f834ceef361a8d12a0b8dad8' },
+  ],
+  base: [
+    { label:'WETH/USDC',  fee:'0.05%', addr:'0xd0b53d9277642d899df5c87a3966a349a798f224' },
+    { label:'WETH/USDbC', fee:'0.3%',  addr:'0x4c36388be6f416a29c8d8eee81c771ce6be14b18' },
+    { label:'cbETH/WETH', fee:'0.05%', addr:'0x10648ba41b8565907cfa1496765fa4d95390aa0d' },
+  ],
+  optimism: [
+    { label:'WETH/USDC',  fee:'0.05%', addr:'0x85149247691df622eaf1a8bd0cafd40bc45154a9' },
+    { label:'WETH/USDT',  fee:'0.05%', addr:'0xc858a329bf053be78d6239c4a4343b8fbd21472b' },
+    { label:'WBTC/WETH',  fee:'0.3%',  addr:'0x73b14a78a0d396c521f954532d43fd5ffe385216' },
+  ],
+  bsc: [
+    { label:'WBNB/USDC',  fee:'0.05%', addr:'0x6fe9e9de56356f7edbfcbb29fab7cd69471a4869' },
+    { label:'WBNB/USDT',  fee:'0.05%', addr:'0x172fcd41e0913e95784454622d1c3724f546f849' },
+    { label:'ETH/USDC',   fee:'0.05%', addr:'0x1ac1a8feaaea1900c4166deeed0c11cc10669d36' },
+  ],
+  polygon_pos: [
+    { label:'WMATIC/USDC',fee:'0.05%', addr:'0xa374094527e1673a86de625aa59517c5de346d32' },
+    { label:'WETH/USDC',  fee:'0.05%', addr:'0x45dda9cb7c25131df268515131f647d726f50608' },
+    { label:'WBTC/WETH',  fee:'0.3%',  addr:'0xf6539a55bfe3b560d21bda10e4f8ac8b44b59af8' },
+  ],
+};
+
+const SEL = {
+  slot0:'0x3850c7bd', liquidity:'0x1a686502',
+  token0:'0x0dfe1681', token1:'0xd21220a7',
+  fee:'0xddca3f43', decimals:'0x313ce567',
+};
+const Q96 = 2 ** 96;
+
+state.v3DepthUSD = null;
+state.v3Source   = 'slider';
+
+// ==========================================================================
+// FINANCIAL ENGINE
+// ==========================================================================
+
+function effectiveDepth() {
+  const base = state.tvl / 2;
+  if (state.poolType !== 'v3') return base;
+  if (state.v3DepthUSD && state.v3DepthUSD > 0) return state.v3DepthUSD;
+  return base * state.v3frac;
+}
+
+function estimateSlippage(A, R) {
+  return (A * A) / (R + A);
+}
+
+function feeUSD(A) {
+  return (state.fee / 100) * A;
+}
+
+function totalCostUSD(A, R) {
+  return state.gas + estimateSlippage(A, R) + feeUSD(A);
+}
+
+function totalCostPct(A, R) {
+  return totalCostUSD(A, R) / A * 100;
+}
+
+function calculateOptimalTradeSize(R) {
+  const f = A => state.gas / A + A / (R + A);
+  let lo = Math.log(0.05), hi = Math.log(Math.max(R * 50, 5000));
+  for (let i = 0; i < 160; i++) {
+    const m1 = lo + (hi - lo) / 3, m2 = hi - (hi - lo) / 3;
+    if (f(Math.exp(m1)) < f(Math.exp(m2))) hi = m2; else lo = m1;
+  }
+  return Math.exp((lo + hi) / 2);
+}
+
+function generateScenarioData(optA, R) {
+  return [0.25, 0.50, 1.00, 1.50, 2.00].map(frac => {
+    const A = optA * frac;
+    const gas = state.gas, slip = estimateSlippage(A, R), fee = feeUSD(A);
+    const tot = gas + slip + fee;
+    return { frac, A, gas, slip, fee, tot, totPct: tot / A * 100 };
+  });
+}
+
+function generateCostCurveData(optA, R, N = 140) {
+  const aMin = Math.max(0.5, optA / 55), aMax = optA * 55;
+  const pts = [];
+  for (let i = 0; i <= N; i++) {
+    const A = Math.exp(Math.log(aMin) + (i / N) * (Math.log(aMax) - Math.log(aMin)));
+    pts.push({ A, gasPct: state.gas / A * 100, slipPct: A / (R + A) * 100, totPct: totalCostPct(A, R) });
+  }
+  return { pts, aMin, aMax };
+}
+
+function splitOptimizer(totalAmount, pools) {
+  throw new Error('splitOptimizer: not yet implemented');
+}
+
+// ==========================================================================
+// FORMATTING
+// ==========================================================================
+
+function fmtUSD(n) {
+  if (!isFinite(n)) return '—';
+  if (n >= 1000) return '$' + Math.round(n).toLocaleString('en-US');
+  if (n >= 10)   return '$' + n.toFixed(1);
+  if (n >= 1)    return '$' + n.toFixed(2);
+  return '$' + n.toFixed(3);
+}
+function fmtPct(p) {
+  if (!isFinite(p)) return '—';
+  if (p >= 1) return p.toFixed(2) + '%';
+  return p.toFixed(3) + '%';
+}
+
+// ==========================================================================
+// RENDER
+// ==========================================================================
+
+let optA = 0, R = 0;
+
+function recompute() {
+  R    = effectiveDepth();
+  optA = calculateOptimalTradeSize(R);
+  const g = state.gas, s = estimateSlippage(optA, R), fe = feeUSD(optA);
+  const tot = g + s + fe, totP = tot / optA * 100;
+
+  $('optSize').textContent     = fmtUSD(optA);
+  $('optTotalPct').textContent = fmtPct(totP);
+  $('optTotalUsd').textContent = fmtUSD(tot);
+  $('balGas').textContent      = fmtUSD(g);
+  $('balSlip').textContent     = fmtUSD(s);
+  const ratio = s / g;
+  $('balEq').textContent = (ratio > 0.85 && ratio < 1.18) ? '≈ balanced'
+    : ratio >= 1.18 ? 'slippage-led' : 'gas-led';
+
+  $('rOpt').textContent    = fmtUSD(optA);
+  $('rTotPct').textContent = fmtPct(totP);
+  $('rGas').textContent    = fmtUSD(g);
+  $('rSlip').textContent   = fmtUSD(s);
+  $('rFee').textContent    = fmtUSD(fe);
+  $('rTotUsd').textContent = fmtUSD(tot);
+
+  const ex = $('explain');
+  if (state.poolType === 'v3') {
+    const src = state.v3Source === 'on-chain'
+      ? `Depth is the <b style="color:var(--aqua)">real active liquidity</b> read from the contract.`
+      : `Depth is a slider estimate (${Math.round(state.v3frac * 100)}% of TVL). Use "Read on-chain liquidity" for the real figure.`;
+    ex.innerHTML = `${src} Trade above the optimum and you start crossing ticks where this estimate degrades.`;
+  } else {
+    ex.innerHTML = `Constant-product pool: trade smaller and fixed gas dominates; trade larger and slippage on a finite reserve takes over.`;
+  }
+
+  renderChart();
+  renderScenarioTable();
+  renderSim();
+  renderOrnyAnalysis(optA, R, totP, s / optA * 100, g / optA * 100);
+}
+
+function renderOrnyAnalysis(optA, R, totP, slipP, gasP) {
+  const tvl = state.tvl;
+
+  // Confidence score
+  let conf = 88;
+  if (tvl >= 10e6)      conf += 4;
+  else if (tvl < 500e3) conf -= 12;
+  else if (tvl < 1e6)   conf -= 5;
+  if (state.poolType === 'v3' && state.v3Source === 'on-chain') conf += 4;
+  if (state.poolType === 'v3' && state.v3Source === 'slider')   conf -= 5;
+  if (optA > R * 0.08) conf -= 8;
+  conf = Math.max(52, Math.min(97, Math.round(conf)));
+
+  // Insights
+  const ins = [];
+  if (slipP < 0.5)
+    ins.push({type:'ok',   text:'Slippage remains negligible at this size'});
+  else if (slipP < 1.5)
+    ins.push({type:'neutral', text:`Slippage is moderate (${slipP.toFixed(2)}%) — stay near the optimum`});
+  else
+    ins.push({type:'warn', text:`High slippage (${slipP.toFixed(2)}%) — consider splitting into smaller trades`});
+
+  ins.push({type:'ok', text:'Gas impact is minimized at the optimal size'});
+
+  if (optA > R * 0.08)
+    ins.push({type:'warn', text:'Trade is large relative to pool depth — real slippage may differ'});
+  else
+    ins.push({type:'ok',  text:'Larger trades become inefficient beyond this threshold'});
+
+  if (tvl < 500e3)
+    ins.push({type:'warn', text:'Low pool TVL — load a larger pool for higher precision'});
+
+  // Metrics
+  const effLabel = totP < 0.5 ? 'High' : totP < 1.5 ? 'Medium' : 'Low';
+  const effClass = totP < 0.5 ? 'c-good' : totP < 1.5 ? 'c-warn' : 'c-bad';
+  const slipLabel = slipP < 0.1 ? 'Very Low' : slipP < 0.3 ? 'Low' : slipP < 1 ? 'Medium' : 'High';
+  const slipClass = slipP < 0.3 ? 'c-good' : slipP < 1 ? 'c-warn' : 'c-bad';
+  const riskLabel = (totP < 0.5 && slipP < 0.3) ? 'Low' : totP < 1.5 ? 'Moderate' : 'High';
+  const riskClass = riskLabel === 'Low' ? 'c-good' : riskLabel === 'Moderate' ? 'c-warn' : 'c-bad';
+
+  // State
+  let panelClass, stateLabel, actionText;
+  if (riskLabel === 'Low' && conf >= 85) {
+    panelClass = 'state-approved'; stateLabel = 'Orny Approved';
+    actionText = '✓ Execute at the recommended size';
+  } else if (riskLabel === 'High') {
+    panelClass = 'state-warning'; stateLabel = 'Orny Warning';
+    actionText = '⚠ Split your trade or choose a deeper pool';
+  } else if (conf >= 78) {
+    panelClass = 'state-high'; stateLabel = 'Orny High Confidence';
+    actionText = '→ Trade near the optimum for best efficiency';
+  } else {
+    panelClass = 'state-low'; stateLabel = 'Orny Low Confidence';
+    actionText = '→ Load a live pool for a more reliable estimate';
+  }
+
+  // Render
+  const panel = $('ornyPanel');
+  panel.className = `orny-panel ${panelClass}`;
+  $('ornyStateLabel').textContent = stateLabel;
+  $('ornyScore').textContent      = conf + '%';
+  $('ornyEfficiency').textContent = effLabel;
+  $('ornyEfficiency').className   = `mv ${effClass}`;
+  $('ornySlippage').textContent   = slipLabel;
+  $('ornySlippage').className     = `mv ${slipClass}`;
+  $('ornyRisk').textContent       = riskLabel;
+  $('ornyRisk').className         = `mv ${riskClass}`;
+  $('ornyOptSize').textContent    = fmtUSD(optA);
+  $('ornyAction').textContent     = actionText;
+  $('ornyInsights').innerHTML = ins.map(i =>
+    `<div class="o-insight ${i.type}"><span class="ic">${i.type==='ok'?'✓':i.type==='warn'?'⚠':'→'}</span><span>${i.text}</span></div>`
+  ).join('');
+}
+
+function renderSim() {
+  const A = state.myTrade;
+  if (!(A > 0)) {
+    ['simTotUsd','simTotPct','simDelta'].forEach(i => $(i).textContent = '—');
+    $('simVsOpt').textContent = '—';
+    $('simSavings').style.display = 'none';
+    return;
+  }
+  const tot  = totalCostUSD(A, R);
+  const totP = totalCostPct(A, R);
+  const optP = totalCostPct(optA, R);
+  $('simTotUsd').textContent = fmtUSD(tot);
+  $('simTotPct').textContent = fmtPct(totP);
+  $('simVsOpt').textContent  = fmtUSD(optA);
+
+  const worse = (totP / optP - 1) * 100;
+  const el    = $('simDelta');
+  if (Math.abs(worse) < 3) {
+    el.textContent = 'at optimum'; el.style.color = 'var(--gold)';
+  } else {
+    el.textContent = '+' + worse.toFixed(0) + '% costlier';
+    el.style.color = worse > 40 ? 'var(--coral)' : 'var(--dim)';
+  }
+
+  // Split / batch tip
+  const tip = $('simSavings');
+  if (A > optA * 1.25) {
+    const N = Math.max(2, Math.round(A / optA));
+    const chunk = A / N;
+    const splitCost = N * totalCostUSD(chunk, R);
+    const saved = tot - splitCost;
+    if (saved > 0.01) {
+      tip.className = 'sim-tip good';
+      tip.style.display = 'block';
+      tip.innerHTML = `Split into <b>${N} trades of ${fmtUSD(chunk)}</b> → save ~<b>${fmtUSD(saved)}</b> in fees (${((saved / tot) * 100).toFixed(0)}% less)`;
+    } else { tip.style.display = 'none'; }
+  } else if (A < optA * 0.4 && optA < A * 20) {
+    const N = Math.max(2, Math.round(optA / A));
+    tip.className = 'sim-tip info';
+    tip.style.display = 'block';
+    tip.innerHTML = `Gas dominates at this size. Batching <b>${N} transactions</b> into one ~${fmtUSD(optA)} trade would cut total cost significantly.`;
+  } else {
+    tip.style.display = 'none';
+  }
+}
+
+function verdictLabel(frac) {
+  if (frac < 0.50)  return ['Too small — gas-heavy',   'v-gas'];
+  if (frac < 0.85)  return ['Efficient zone',           'v-eff'];
+  if (frac <= 1.15) return ['Optimal',                  'v-opt'];
+  if (frac <= 1.75) return ['Efficient zone',           'v-eff'];
+  return               ['Too large — slippage-heavy', 'v-slip'];
+}
+
+function renderScenarioTable() {
+  const optTot = totalCostPct(optA, R);
+  const scenarios = generateScenarioData(optA, R);
+  const body = $('scenarioBody');
+  body.innerHTML = '';
+  scenarios.forEach(({ frac, A, gas, slip, fee, tot, totPct }) => {
+    const [vtxt, vcls] = verdictLabel(frac);
+    const barW = Math.min(totPct / (optTot * 3.2) * 100, 100).toFixed(0);
+    const barColor = frac === 1 ? '#C8841E' : (totPct > optTot * 1.5 ? '#E8765A' : '#3A9FD4');
+    const tr = document.createElement('tr');
+    if (frac === 1) tr.className = 'optimal';
+    tr.innerHTML =
+      `<td class="mono">${fmtUSD(A)} <span style="color:var(--faint);font-size:12px">×${frac.toFixed(2)}</span></td>` +
+      `<td>${fmtUSD(gas)}</td><td>${fmtUSD(slip)}</td><td>${fmtUSD(fee)}</td><td>${fmtUSD(tot)}</td>` +
+      `<td><div class="bar-cell"><div class="cost-bar"><div class="cost-bar-fill" style="width:${barW}%;background:${barColor}"></div></div>${fmtPct(totPct)}</div></td>` +
+      `<td><span class="verdict ${vcls}">${vtxt}</span></td>`;
+    body.appendChild(tr);
+  });
+}
+
+// ==========================================================================
+// CHART
+// ==========================================================================
+
+const VB = { w: 720, h: 420, l: 52, r: 18, t: 18, b: 40 };
+
+function xScale(A, aMin, aMax) {
+  const t = (Math.log(A) - Math.log(aMin)) / (Math.log(aMax) - Math.log(aMin));
+  return VB.l + t * (VB.w - VB.l - VB.r);
+}
+function xInv(px, aMin, aMax) {
+  const t = (px - VB.l) / (VB.w - VB.l - VB.r);
+  return Math.exp(Math.log(aMin) + t * (Math.log(aMax) - Math.log(aMin)));
+}
+function yScale(p, yMax) {
+  const t = Math.min(p, yMax) / yMax;
+  return (VB.h - VB.b) - t * (VB.h - VB.b - VB.t);
+}
+
+let chartCtx = { aMin: 1, aMax: 100, yMax: 1 };
+
+function renderChart() {
+  const optTot = totalCostPct(optA, R);
+  const yMax   = Math.max(optTot * 5, state.fee * 1.5 + 0.4);
+  const { pts, aMin, aMax } = generateCostCurveData(optA, R);
+  chartCtx = { aMin, aMax, yMax };
+
+  const toPath = key =>
+    pts.map((p, i) =>
+      (i ? 'L' : 'M') + xScale(p.A, aMin, aMax).toFixed(1) + ' ' + yScale(p[key], yMax).toFixed(1)
+    ).join(' ');
+
+  const totalPath = toPath('totPct');
+  const area = totalPath +
+    ` L ${xScale(aMax, aMin, aMax).toFixed(1)} ${VB.h - VB.b}` +
+    ` L ${xScale(aMin, aMin, aMax).toFixed(1)} ${VB.h - VB.b} Z`;
+
+  let grid = '';
+  for (let k = 1; k <= 4; k++) {
+    const gv = yMax * k / 4, y = yScale(gv, yMax);
+    grid +=
+      `<line x1="${VB.l}" y1="${y}" x2="${VB.w - VB.r}" y2="${y}" stroke="#E4E8F0" stroke-width="1"/>` +
+      `<text x="${VB.l - 8}" y="${y + 3}" text-anchor="end" font-size="10" fill="#9AA5B4" font-family="'JetBrains Mono',monospace">${gv.toFixed(2)}%</text>`;
+  }
+
+  const ticks = [aMin, optA / 4, optA, optA * 4, aMax];
+  let xax = '';
+  ticks.forEach(tk => {
+    const x = xScale(tk, aMin, aMax);
+    xax += `<text x="${x}" y="${VB.h - VB.b + 22}" text-anchor="middle" font-size="10" fill="#9AA5B4" font-family="'JetBrains Mono',monospace">${fmtUSD(tk)}</text>`;
+  });
+
+  const ox = xScale(optA, aMin, aMax), oy = yScale(optTot, yMax);
+
+  $('chart').innerHTML = `
+    <defs>
+      <linearGradient id="totFill" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="rgba(200,132,30,.15)"/>
+        <stop offset="100%" stop-color="rgba(200,132,30,0)"/>
+      </linearGradient>
+    </defs>
+    ${grid}${xax}
+    <path d="${area}" fill="url(#totFill)"/>
+    <path d="${toPath('gasPct')}"  fill="none" stroke="#3A9FD4" stroke-width="2" opacity=".9" stroke-linejoin="round"/>
+    <path d="${toPath('slipPct')}" fill="none" stroke="#E8765A" stroke-width="2" opacity=".9" stroke-linejoin="round"/>
+    <path id="totPath" d="${totalPath}" fill="none" stroke="#C8841E" stroke-width="3" stroke-linejoin="round"/>
+    <line x1="${ox}" y1="${oy}" x2="${ox}" y2="${VB.h - VB.b}" stroke="#C8841E" stroke-width="1" stroke-dasharray="3 4" opacity=".4"/>
+    <circle id="optDot" cx="${ox}" cy="${oy}" r="6" fill="#C8841E" stroke="#fff" stroke-width="2.5"/>
+    <text x="${ox}" y="${oy - 14}" text-anchor="middle" font-size="11" font-weight="700" fill="#C8841E" font-family="'JetBrains Mono',monospace">optimum</text>
+    <line id="crossLine" x1="0" y1="${VB.t}" x2="0" y2="${VB.h - VB.b}" stroke="#111827" stroke-width="1" opacity="0"/>
+    <circle id="crossDot" r="4" fill="#111827" opacity="0"/>
+  `;
+
+  const tp = $('totPath');
+  try { const l = tp.getTotalLength(); tp.style.setProperty('--len', l); tp.classList.add('draw-total'); } catch(e){}
+  $('optDot').classList.add('pop');
+}
+
+function setupCross() {
+  const svg = $('chart'), ro = $('readout');
+  svg.addEventListener('mousemove', e => {
+    const rect = svg.getBoundingClientRect();
+    const px   = (e.clientX - rect.left) / rect.width * VB.w;
+    if (px < VB.l || px > VB.w - VB.r) { hideCross(); return; }
+    const A  = xInv(px, chartCtx.aMin, chartCtx.aMax);
+    const gP = state.gas / A * 100;
+    const sP = A / (R + A) * 100;
+    const tP = totalCostPct(A, R);
+    const x  = xScale(A, chartCtx.aMin, chartCtx.aMax);
+    const y  = yScale(tP, chartCtx.yMax);
+    const cl = $('crossLine'), cd = $('crossDot');
+    cl.setAttribute('x1', x); cl.setAttribute('x2', x); cl.setAttribute('opacity', '.3');
+    cd.setAttribute('cx', x); cd.setAttribute('cy', y); cd.setAttribute('opacity', '1');
+    ro.style.opacity = '1';
+    ro.innerHTML =
+      `<div class="r-size">${fmtUSD(A)}</div>` +
+      `<div class="r-row"><span>Gas</span><b style="color:#3A9FD4">${fmtPct(gP)}</b></div>` +
+      `<div class="r-row"><span>Slippage</span><b style="color:#E8765A">${fmtPct(sP)}</b></div>` +
+      `<div class="r-row"><span>Total</span><b style="color:#C8841E">${fmtPct(tP)}</b></div>`;
+    let lx = e.clientX - rect.left + 14;
+    if (lx > rect.width - 160) lx = e.clientX - rect.left - 162;
+    ro.style.left = lx + 'px';
+    ro.style.top  = (e.clientY - rect.top - 10) + 'px';
+  });
+  svg.addEventListener('mouseleave', hideCross);
+}
+function hideCross() {
+  $('readout').style.opacity = '0';
+  const cl = $('crossLine'), cd = $('crossDot');
+  if (cl) { cl.setAttribute('opacity','0'); cd.setAttribute('opacity','0'); }
+}
+
+// ==========================================================================
+// V3 ON-CHAIN READER
+// ==========================================================================
+
+const _poolCache = {};
+
+async function fetchWithTimeout(url, opts={}, ms=8000) {
+  const ctrl = new AbortController();
+  const tid  = setTimeout(() => ctrl.abort(), ms);
+  try {
+    const r = await fetch(url, {...opts, signal: ctrl.signal});
+    return r;
+  } finally { clearTimeout(tid); }
+}
+
+async function fetchRetry(url, opts={}, retries=3, delay=1200) {
+  for (let i=0; i<retries; i++) {
+    try {
+      const r = await fetchWithTimeout(url, opts, 8000);
+      if (r.status === 429) {
+        if (i < retries-1) { await new Promise(r=>setTimeout(r, delay*(i+1))); continue; }
+        throw new Error('rate-limited');
+      }
+      return r;
+    } catch(e) {
+      if (i === retries-1) throw e;
+      await new Promise(r=>setTimeout(r, delay*(i+1)));
+    }
+  }
+}
+
+async function ethCall(rpc, to, data) {
+  const res = await fetchWithTimeout(rpc, {
+    method:'POST', headers:{'content-type':'application/json'},
+    body: JSON.stringify({jsonrpc:'2.0',id:1,method:'eth_call',params:[{to,data},'latest']})
+  }, 6000);
+  const j = await res.json();
+  if (j.error) throw new Error(j.error.message || 'rpc error');
+  return j.result;
+}
+
+const word  = (hex, i=0) => hex.slice(2 + i*64, 2 + i*64 + 64);
+const toBig = w => BigInt('0x' + w);
+const toAddr= w => '0x' + w.slice(-40).toLowerCase();
+const toNum = w => Number(toBig(w));
+
+async function rpcCall(net, to, data) {
+  let lastErr;
+  for (const rpc of (RPCS[net] || [])) {
+    try { const r = await ethCall(rpc, to, data); if (r && r !== '0x') return r; } catch(e){ lastErr=e; }
+  }
+  throw lastErr || new Error('all RPCs failed');
+}
+
+async function readChainV3() {
+  const addr = $('poolAddr').value.trim().toLowerCase();
+  const st   = $('chainStatus');
+  st.className = 'status';
+  if (!/^0x[0-9a-f]{40}$/.test(addr)) {
+    st.className = 'status err';
+    st.textContent = 'Enter a valid pool address above first.';
+    return;
+  }
+  st.textContent = 'Reading the pool contract on-chain…';
+  const net = state.network;
+  try {
+    const slot0 = await rpcCall(net, addr, SEL.slot0);
+    const sqrtPriceX96 = toBig(word(slot0, 0));
+    if (sqrtPriceX96 === 0n) throw new Error('no price');
+
+    const [liqHex, t0Hex, t1Hex] = await Promise.all([
+      rpcCall(net, addr, SEL.liquidity),
+      rpcCall(net, addr, SEL.token0),
+      rpcCall(net, addr, SEL.token1),
+    ]);
+    const L = toBig(word(liqHex, 0));
+    const token0 = toAddr(word(t0Hex, 0));
+    const token1 = toAddr(word(t1Hex, 0));
+
+    const [d0Hex, d1Hex] = await Promise.all([
+      rpcCall(net, token0, SEL.decimals),
+      rpcCall(net, token1, SEL.decimals),
+    ]);
+    const dec0 = toNum(word(d0Hex, 0));
+    const dec1 = toNum(word(d1Hex, 0));
+
+    const px = await fetchPrices(net, addr, token0, token1);
+    if (!px) throw new Error('no USD price (GeckoTerminal)');
+
+    const sqrtP = Number(sqrtPriceX96) / Q96;
+    const amt0  = (Number(L) / sqrtP) / 10 ** dec0;
+    const amt1  = (Number(L) * sqrtP) / 10 ** dec1;
+    const Reff  = (amt0 * px.p0 + amt1 * px.p1) / 2;
+    if (!(Reff > 0) || !isFinite(Reff)) throw new Error('bad reserves');
+
+    state.v3DepthUSD = Reff;
+    state.v3Source   = 'on-chain';
+    state.poolType   = 'v3';
+    setPoolType('v3');
+
+    const activeNotional = 2 * Reff;
+    const conc = state.tvl > 0 ? activeNotional / state.tvl : 0;
+    $('ocDepth').textContent  = fmtUSD(Reff);
+    $('ocActive').textContent = fmtUSD(activeNotional);
+    $('ocConc').textContent   = conc > 0 ? conc.toFixed(2) + '×' : '—';
+    $('ocConc').className     = 'mono hi';
+    $('ocPrice').textContent  = px.priceLabel;
+    $('ocExplain').textContent = conc >= 1
+      ? `Liquidity is concentrated near the price — ${conc.toFixed(1)}× deeper than TVL suggests. Optimal size is larger than a TVL-based guess.`
+      : `Liquidity is spread thin at the current price — only ${(conc*100).toFixed(0)}% of TVL is active here. Optimal size is smaller than a TVL-based guess.`;
+    $('v3chain').style.display = 'block';
+    st.className   = 'status ok';
+    st.textContent = 'Read from chain — depth driven by real active liquidity.';
+    recompute();
+  } catch (err) {
+    state.v3DepthUSD = null; state.v3Source = 'slider';
+    st.className   = 'status err';
+    st.textContent = /no price|GeckoTerminal/.test(String(err.message))
+      ? "Got on-chain liquidity but no USD price — falling back to slider."
+      : "Couldn't read as v3 (may be v2, or RPC blocked). Enter values manually.";
+  }
+}
+
+// ==========================================================================
+// POOL DATA FETCHER
+// ==========================================================================
+
+async function fetchPrices(net, addr, token0, token1) {
+  try {
+    const r = await fetchRetry(`https://api.geckoterminal.com/api/v2/networks/${net}/pools/${addr}`, {headers:{accept:'application/json'}});
+    if (!r.ok) return null;
+    const j = await r.json();
+    const a = j.data.attributes, rel = j.data.relationships;
+    const baseAddr  = (rel.base_token.data.id  || '').toLowerCase().split('_').pop();
+    const quoteAddr = (rel.quote_token.data.id || '').toLowerCase().split('_').pop();
+    const pBase = parseFloat(a.base_token_price_usd);
+    const pQuote = parseFloat(a.quote_token_price_usd);
+    const tvl = parseFloat(a.reserve_in_usd);
+    if (tvl > 0) { state.tvl = tvl; $('tvl').value = Math.round(tvl); }
+    let p0, p1;
+    if      (token0 === baseAddr)  { p0 = pBase;  p1 = pQuote; }
+    else if (token0 === quoteAddr) { p0 = pQuote; p1 = pBase;  }
+    else                           { p0 = pBase;  p1 = pQuote; }
+    if (!(p0 > 0) || !(p1 > 0)) return null;
+    const human = p1 > 0 ? (p0 / p1) : 0;
+    return { p0, p1, priceLabel: `${human.toLocaleString('en-US',{maximumSignificantDigits:6})} · ${a.name||'pool'}` };
+  } catch(e){ return null; }
+}
+
+async function fetchPoolData() {
+  const addr = $('poolAddr').value.trim().toLowerCase();
+  const st   = $('loadStatus');
+  st.className = 'status';
+  if (!addr) { st.textContent = 'Paste a pool address first.'; return; }
+
+  const cacheKey = `${state.network}:${addr}`;
+  if (_poolCache[cacheKey]) {
+    const c = _poolCache[cacheKey];
+    state.tvl = c.tvl; $('tvl').value = Math.round(c.tvl);
+    state.fee = c.fee; $('fee').value = c.fee;
+    st.className = 'status ok';
+    st.textContent = `${c.name} · TVL ${fmtUSD(c.tvl)} (cached)`;
+    recompute();
+    return;
+  }
+
+  st.textContent = 'Contacting GeckoTerminal…';
+  const net = state.network;
+  try {
+    const res = await fetchRetry(
+      `https://api.geckoterminal.com/api/v2/networks/${net}/pools/${addr}`,
+      {headers:{accept:'application/json'}}, 3, 1500
+    );
+    if (res.status === 404) throw new Error('pool not found on GeckoTerminal — check network and address');
+    if (!res.ok) throw new Error(`GeckoTerminal returned ${res.status}`);
+    const j = await res.json();
+    const a = j.data.attributes;
+    const tvl = parseFloat(a.reserve_in_usd);
+    const gtFee = parseFloat(a.pool_fee_percentage);
+    if (tvl > 0) { state.tvl = tvl; $('tvl').value = Math.round(tvl); }
+    if (isFinite(gtFee) && gtFee > 0) { state.fee = gtFee; $('fee').value = gtFee; }
+    const name = a.name || 'pool';
+    _poolCache[cacheKey] = {tvl, fee: state.fee, name};
+    st.className   = 'status ok';
+    st.textContent = `Loaded ${name} · TVL ${fmtUSD(tvl)}`;
+    recompute();
+    try {
+      st.textContent += ' · checking v3…';
+      const probe = await rpcCall(net, addr, SEL.slot0);
+      if (probe && probe !== '0x') {
+        setPoolType('v3');
+        $('chainStatus').textContent = 'v3 pool detected — reading active liquidity…';
+        await readChainV3();
+      }
+      st.textContent = `Loaded ${name} · TVL ${fmtUSD(tvl)}`;
+    } catch(_){ st.textContent = `Loaded ${name} · TVL ${fmtUSD(tvl)}`; }
+    loadSiblings(addr); // async, non-blocking
+  } catch(err) {
+    st.className = 'status err';
+    const msg = String(err.message||'');
+    if (/rate.limit|429/.test(msg))       st.textContent = 'GeckoTerminal rate limit — attends 30 sec puis réessaie.';
+    else if (/not found/.test(msg))       st.textContent = 'Pool introuvable — vérifie que le réseau sélectionné est correct.';
+    else if (/abort|timeout/.test(msg))   st.textContent = 'Timeout — GeckoTerminal ne répond pas, réessaie dans quelques secondes.';
+    else st.textContent = `Erreur : ${msg}. Entre les valeurs manuellement.`;
+  }
+}
+
+// ==========================================================================
+// WIRING
+// ==========================================================================
+
+function num(v, fb) {
+  const n = parseFloat(String(v).replace(/[^0-9.]/g, ''));
+  return isFinite(n) ? n : fb;
+}
+
+// ── FEE TIER COMPARISON ───────────────────────────────────────────────────────
+state.siblings = [];
+
+function feeToNum(feeStr) { return parseFloat(feeStr) / 100; }
+
+function totalCostFull(A, R, feeNum, gas) {
+  if (!(A > 0) || !(R > 0)) return Infinity;
+  return gas + A * A / (R + A) + feeNum * A;
+}
+
+function findCrossover(R1, fee1, R2, fee2, gas, lo = 1, hi = 5e6) {
+  const diff = A => totalCostFull(A, R1, fee1, gas) - totalCostFull(A, R2, fee2, gas);
+  const dLo = diff(lo), dHi = diff(hi);
+  if (dLo * dHi > 0) return null;
+  let a = lo, b = hi;
+  for (let i = 0; i < 60; i++) {
+    const mid = (a + b) / 2;
+    if (diff(mid) * dLo <= 0) b = mid; else a = mid;
+  }
+  return (a + b) / 2;
+}
+
+async function fetchSiblingTVL(addr) {
+  try {
+    const r = await fetchRetry(
+      `https://api.geckoterminal.com/api/v2/networks/${state.network}/pools/${addr}`,
+      {headers:{accept:'application/json'}}, 2, 800
+    );
+    if (!r.ok) return null;
+    const j = await r.json();
+    const a = j.data.attributes;
+    return parseFloat(a.reserve_in_usd) || 0;
+  } catch(e) { return null; }
+}
+
+async function loadSiblings(loadedAddr) {
+  const pools = POOL_REGISTRY[state.network] || [];
+  const loaded = pools.find(p => p.addr === loadedAddr.toLowerCase());
+  if (!loaded?.pair) { state.siblings = []; $('feeCompare').style.display = 'none'; return; }
+  const family = pools.filter(p => p.pair === loaded.pair);
+  if (family.length < 2) { state.siblings = []; $('feeCompare').style.display = 'none'; return; }
+  const results = await Promise.all(family.map(async p => {
+    const tvl = p.addr === loadedAddr.toLowerCase()
+      ? state.tvl
+      : (await fetchSiblingTVL(p.addr) ?? 0);
+    return { ...p, tvl, feeNum: feeToNum(p.fee), isCurrent: p.addr === loadedAddr.toLowerCase() };
+  }));
+  state.siblings = results.filter(p => p.tvl > 0);
+  if (state.siblings.length < 2) { $('feeCompare').style.display = 'none'; return; }
+  renderFeeComparison();
+}
+
+function renderFeeComparison() {
+  const el = $('feeCompare');
+  const sibs = state.siblings;
+  if (!sibs || sibs.length < 2) { el.style.display = 'none'; return; }
+
+  const A   = Math.max(state.myTrade || 500, 1);
+  const gas = state.gas;
+
+  const costs = sibs.map(p => {
+    const R    = p.tvl / 2;
+    const cost = totalCostFull(A, R, p.feeNum, gas);
+    return { ...p, R, cost, costPct: cost / A * 100 };
+  }).sort((a, b) => a.cost - b.cost);
+
+  const best   = costs[0];
+  const second = costs[1];
+  const cross  = findCrossover(best.R, best.feeNum, second.R, second.feeNum, gas);
+  const current = costs.find(p => p.isCurrent);
+  const showSwitch = current && current.addr !== best.addr;
+
+  el.style.display = 'block';
+  el.innerHTML = `<div class="fee-cmp">
+    <div class="fee-cmp-title">Fee tier comparison · ${sibs[0].label}</div>
+    ${costs.map((p, i) => `
+      <div class="fee-cmp-row">
+        <span><b style="color:var(--text)">${p.fee}</b>
+          <span style="font-size:11px;color:var(--faint);margin-left:5px">TVL ${fmtUSD(p.tvl)}</span>
+          ${p.isCurrent ? '<span style="font-size:10px;color:var(--aqua);margin-left:4px">current</span>' : ''}
+        </span>
+        <span style="font-family:var(--mono);font-size:12px;color:var(--text)">${fmtPct(p.costPct)}</span>
+        ${i === 0
+          ? `<span class="fee-cmp-badge best">✓ cheapest at ${fmtUSD(A)}</span>`
+          : `<span class="fee-cmp-badge worse">+${fmtUSD(p.cost - best.cost)}</span>`}
+      </div>`).join('')}
+    <div class="fee-cmp-cross">${
+      cross
+        ? `Crossover ~${fmtUSD(cross)}: <b>${costs[0].fee}</b> wins below, <b>${costs[1].fee}</b> wins above.`
+        : `<b>${costs[0].fee}</b> is cheaper at every trade size on these pools.`
+    }</div>
+    ${showSwitch
+      ? `<button class="fee-cmp-switch" data-addr="${best.addr}" data-label="${best.label} ${best.fee}">
+           Switch to ${best.fee} pool — save ~${fmtUSD(current.cost - best.cost)} on this trade →
+         </button>`
+      : ''}
+  </div>`;
+
+  const sw = el.querySelector('.fee-cmp-switch');
+  if (sw) sw.addEventListener('click', () => {
+    $('poolAddr').value   = sw.dataset.addr;
+    $('poolSearch').value = sw.dataset.label;
+    fetchPoolData();
+  });
+}
+
+// ── POOL REGISTRY CHIPS ───────────────────────────────────────────────────────
+function renderRegistryChips() {
+  const wrap = $('regWrap');
+  const pools = POOL_REGISTRY[state.network] || [];
+  if (!pools.length) { wrap.innerHTML = ''; return; }
+  wrap.innerHTML =
+    `<div class="reg-label">Quick-load</div>` +
+    `<div class="reg-chips">${
+      pools.map(p =>
+        `<button class="reg-chip" data-addr="${p.addr}" data-label="${p.label} ${p.fee}">` +
+        `${p.label}<span class="rc-fee">${p.fee}</span></button>`
+      ).join('')
+    }</div>`;
+  wrap.querySelectorAll('.reg-chip').forEach(btn => {
+    btn.addEventListener('click', () => {
+      $('poolAddr').value  = btn.dataset.addr;
+      $('poolSearch').value = btn.dataset.label;
+      $('searchDrop').style.display = 'none';
+      fetchPoolData();
+    });
+  });
+}
+
+// ── POOL SEARCH ──────────────────────────────────────────────────────────────
+const NET_LABELS = {eth:'ETH',arbitrum:'ARB',base:'BASE',optimism:'OP',bsc:'BNB',polygon_pos:'MATIC'};
+let _searchTimer;
+
+async function searchPools(query) {
+  const drop = $('searchDrop');
+  drop.innerHTML = '<div class="drop-loading">Searching…</div>';
+  drop.style.display = 'block';
+  try {
+    const net = state.network;
+    const r = await fetchRetry(
+      `https://api.geckoterminal.com/api/v2/search/pools?query=${encodeURIComponent(query)}&network=${net}&page=1`,
+      {headers:{accept:'application/json'}}, 2, 800
+    );
+    if (!r.ok) throw new Error('search failed');
+    const j = await r.json();
+    const pools = (j.data || []).slice(0, 7);
+    if (!pools.length) { drop.innerHTML = '<div class="drop-empty">No pools found on this network</div>'; return; }
+    drop.innerHTML = pools.map(p => {
+      const a = p.attributes;
+      const tvl = parseFloat(a.reserve_in_usd);
+      const netLabel = NET_LABELS[net] || net.toUpperCase();
+      return `<div class="drop-item" data-addr="${a.address}">
+        <span class="drop-name">${a.name||a.address}</span>
+        <span class="drop-network">${netLabel}</span>
+        <span class="drop-tvl">${tvl>0?fmtUSD(tvl):'—'}</span>
+      </div>`;
+    }).join('');
+    drop.querySelectorAll('.drop-item').forEach(el => {
+      el.addEventListener('mousedown', e => {
+        e.preventDefault();
+        $('poolAddr').value = el.dataset.addr;
+        $('poolSearch').value = el.querySelector('.drop-name').textContent;
+        drop.style.display = 'none';
+        fetchPoolData();
+      });
+    });
+  } catch(e) {
+    drop.innerHTML = '<div class="drop-empty">Search unavailable — paste the address directly</div>';
+  }
+}
+
+$('poolSearch').addEventListener('input', e => {
+  clearTimeout(_searchTimer);
+  const q = e.target.value.trim();
+  if (q.length < 2) { $('searchDrop').style.display='none'; return; }
+  _searchTimer = setTimeout(() => searchPools(q), 380);
+});
+$('poolSearch').addEventListener('blur', () => setTimeout(() => { $('searchDrop').style.display='none'; }, 150));
+
+$('network').addEventListener('change', e => {
+  state.network = e.target.value;
+  state.gas     = GAS_DEFAULTS[state.network] ?? state.gas;
+  $('gas').value = state.gas;
+  $('poolAddr').value = '';
+  $('loadStatus').textContent = '';
+  state.siblings = []; $('feeCompare').style.display = 'none';
+  renderRegistryChips();
+  recompute();
+});
+$('tvl').addEventListener('input',     e => { state.tvl     = num(e.target.value, state.tvl);  recompute(); });
+$('gas').addEventListener('input',     e => { state.gas     = num(e.target.value, state.gas);  recompute(); });
+$('fee').addEventListener('input',     e => { state.fee     = num(e.target.value, state.fee);  recompute(); });
+$('myTrade').addEventListener('input', e => { state.myTrade = num(e.target.value, 0); renderSim(); renderFeeComparison(); });
+$('loadBtn').addEventListener('click', fetchPoolData);
+
+function setPoolType(type) {
+  state.poolType = type;
+  $('poolType').querySelectorAll('button').forEach(x => x.classList.toggle('active', x.dataset.type === type));
+  $('v3Field').style.display = type === 'v3' ? 'block' : 'none';
+  $('v2Note').style.display  = type === 'v3' ? 'none'  : 'block';
+  if (type === 'v3') document.querySelector('.adv').open = true;
+}
+$('poolType').querySelectorAll('button').forEach(b => {
+  b.addEventListener('click', () => { setPoolType(b.dataset.type); recompute(); });
+});
+$('v3frac').addEventListener('input', e => {
+  state.v3frac = num(e.target.value, 20) / 100;
+  $('v3Val').textContent = Math.round(state.v3frac * 100) + '% of TVL';
+  state.v3DepthUSD = null; state.v3Source = 'slider';
+  $('v3chain').style.display = 'none';
+  recompute();
+});
+$('chainBtn').addEventListener('click', readChainV3);
+
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', () => {
+  navbar.classList.toggle('visible', window.scrollY > window.innerHeight * 0.6);
+}, {passive:true});
+
+setupCross();
+renderRegistryChips();
+recompute();
+
+// ── IMPERMANENT LOSS CALCULATOR ───────────────────────────────────────────
+function calcIL() {
+  const a0 = parseFloat($('ilA0').value);
+  const a1 = parseFloat($('ilA1').value);
+  const b0 = parseFloat($('ilB0').value);
+  const b1 = parseFloat($('ilB1').value);
+  const dep = parseFloat($('ilDeposit').value) || 0;
+
+  if (!(a0>0 && a1>0 && b0>0 && b1>0)) return;
+
+  // price ratio relative to entry (combined move)
+  const rA = a1 / a0;
+  const rB = b1 / b0;
+  const k  = rA / rB;  // relative price change between the two tokens
+
+  // IL formula: 2√k/(1+k) − 1
+  const ilFrac = (2 * Math.sqrt(k) / (1 + k)) - 1;
+  const ilPct  = ilFrac * 100;
+
+  $('ilPct').textContent = ilPct.toFixed(2) + '%';
+  $('ilPct').style.color = ilFrac < -0.001 ? 'var(--coral)' : 'var(--good)';
+
+  const chgA = ((rA - 1)*100).toFixed(1);
+  const chgB = ((rB - 1)*100).toFixed(1);
+  $('ilChgA').textContent = (rA>=1?'+':'') + chgA + '%';
+  $('ilChgB').textContent = (rB>=1?'+':'') + chgB + '%';
+
+  if (dep > 0) {
+    // value held = half in A, half in B at entry, revalued at current prices
+    const heldA = (dep / 2) * rA;
+    const heldB = (dep / 2) * rB;
+    const held  = heldA + heldB;
+    const pool  = held * (1 + ilFrac);
+    const loss  = pool - held;
+
+    $('ilHeld').textContent = fmtUSD(held);
+    $('ilPool').textContent = fmtUSD(pool);
+    $('ilLoss').textContent = (loss < 0 ? '-' : '+') + fmtUSD(Math.abs(loss));
+    $('ilUsd').textContent  = `You'd have ${fmtUSD(Math.abs(loss))} ${loss<0?'less':'more'} than if you'd just held`;
+    $('ilBreakdown').style.display = 'flex';
+  } else {
+    $('ilUsd').textContent = `Price ratio: ${k.toFixed(3)}×`;
+    $('ilBreakdown').style.display = 'none';
+  }
+
+  $('ilNote').textContent = Math.abs(ilPct) < 0.1
+    ? 'Prices moved together — IL is negligible.'
+    : ilFrac < -0.05
+    ? 'Significant IL. Make sure fees earned exceed this loss.'
+    : 'Moderate IL — check that your fee APR covers it.';
+}
+
+['ilA0','ilA1','ilB0','ilB1','ilDeposit'].forEach(id => $( id).addEventListener('input', calcIL));
+calcIL();
+</script>
+</body>
+</html>
