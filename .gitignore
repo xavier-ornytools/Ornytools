@@ -1,0 +1,21 @@
+# Obsidian
+.obsidian/
+.claude/
+
+# Notes
+*.md
+*.canvas
+
+# Scripts / data
+*.py
+*.sh
+*.ods
+*.xlsx
+*.zip
+*.pdf
+*.odt
+
+# Transcriptions
+transcription_*.md
+
+# Keep only OrnyTools web files
