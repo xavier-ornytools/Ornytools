@@ -94,20 +94,57 @@
 
   /* PROTOCOL CARDS */
   .protocols-grid{display:flex;flex-direction:column;gap:10px}
-  .proto-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px;display:flex;align-items:center;gap:16px;transition:box-shadow .15s}
+  .proto-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:16px 20px;display:flex;align-items:center;gap:14px;transition:box-shadow .15s}
   .proto-card:hover{box-shadow:var(--shadow)}
   .proto-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
   .proto-info{flex:1;min-width:0}
   .proto-name{font-size:14px;font-weight:700;color:var(--text)}
-  .proto-meta{font-size:12px;color:var(--faint);margin-top:2px}
+  .proto-meta{font-size:11.5px;color:var(--faint);margin-top:3px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
   .proto-apy{text-align:right;flex-shrink:0}
   .proto-apy .apy-val{font-family:var(--mono);font-size:1.3rem;font-weight:700;color:var(--good);line-height:1}
   .proto-apy .apy-label{font-size:10.5px;color:var(--faint);text-align:right;margin-top:2px}
-  .proto-alloc{flex-shrink:0;min-width:120px}
-  .alloc-bar-track{height:6px;background:var(--surface-2);border-radius:99px;overflow:hidden;margin-bottom:4px}
+  .proto-alloc{flex-shrink:0;min-width:110px}
+  .alloc-bar-track{height:5px;background:var(--surface-2);border-radius:99px;overflow:hidden;margin-bottom:4px}
   .alloc-bar-fill{height:100%;border-radius:99px;transition:width .6s cubic-bezier(.4,0,.2,1)}
   .alloc-pct{font-family:var(--mono);font-size:13px;font-weight:700;color:var(--text)}
   .alloc-usd{font-size:11px;color:var(--dim)}
+
+  /* RISK BADGES */
+  .risk-badge{display:inline-flex;align-items:center;gap:3px;font-size:10px;font-weight:700;padding:2px 7px;border-radius:99px;letter-spacing:.03em;white-space:nowrap}
+  .rb-low{background:rgba(14,159,110,.12);color:var(--good)}
+  .rb-medium{background:rgba(245,158,11,.12);color:var(--warn)}
+  .rb-high{background:rgba(232,118,90,.12);color:var(--coral)}
+
+  /* RISK COMPOSITION IN SUMMARY */
+  .risk-comp{margin-top:14px;padding-top:14px;border-top:1px solid var(--line-soft)}
+  .risk-comp-title{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);margin-bottom:10px}
+  .rc-row{display:flex;align-items:center;gap:8px;margin-bottom:5px}
+  .rc-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+  .rc-label{font-size:11.5px;color:var(--dim);width:90px;font-weight:600}
+  .rc-bar-track{flex:1;height:5px;background:var(--surface-2);border-radius:99px;overflow:hidden}
+  .rc-bar-fill{height:100%;border-radius:99px;transition:width .5s}
+  .rc-pct{font-family:var(--mono);font-size:11px;font-weight:700;width:28px;text-align:right}
+
+  /* BENCHMARK ROW */
+  .bench-row{display:flex;align-items:center;gap:10px;margin-top:12px;padding:10px 14px;background:var(--surface-2);border-radius:9px;border:1px solid var(--line-soft)}
+  .bench-vs{font-family:var(--mono);font-size:1.15rem;font-weight:900}
+  .bench-pos{color:var(--good)}.bench-neg{color:var(--coral)}
+  .bench-meta{font-size:12px;color:var(--dim);line-height:1.4}
+
+  /* ALL RATES TABLE */
+  .all-rates{background:var(--surface-2);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;margin-top:4px}
+  .ar-header{padding:12px 16px;font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);border-bottom:1px solid var(--line);display:flex;justify-content:space-between;cursor:pointer;user-select:none;background:#fff}
+  .ar-header:hover{background:var(--surface-2)}
+  .ar-body{display:none}
+  .ar-body.open{display:block}
+  .ar-row{display:flex;align-items:center;gap:10px;padding:9px 16px;border-bottom:1px solid var(--line-soft);font-size:13px}
+  .ar-row:last-child{border-bottom:none}
+  .ar-proto{flex:1;font-weight:600;color:var(--text)}
+  .ar-meta{font-size:11px;color:var(--faint);margin-top:1px}
+  .ar-chain{font-size:11px;color:var(--faint);min-width:70px}
+  .ar-tvl{font-size:11px;color:var(--dim);min-width:60px;text-align:right}
+  .ar-apy{font-family:var(--mono);font-weight:700;font-size:13px;color:var(--good);min-width:52px;text-align:right}
+  .ar-alloc{font-size:11px;color:var(--faint);min-width:30px;text-align:right}
 
   /* ORNY PANEL */
   .orny-panel{border-radius:var(--radius);padding:18px 20px;border:1px solid var(--line);background:var(--surface-2);display:flex;gap:14px;align-items:flex-start}
@@ -268,22 +305,25 @@ const $ = id => document.getElementById(id);
 let _poolsCache = null;
 let _currentRisk = 'conservative';
 
+// riskLevel: 'low' = battle-tested ($1B+ TVL, multi-audit, years live)
+//            'medium' = established but smaller TVL or newer
+//            'high' = credit/uncollateralized or very concentrated
 const PROTO_META = {
-  'aave-v3':          { name:'Aave V3',        icon:'🏦', color:'#B6509E', bg:'rgba(182,80,158,.10)' },
-  'morpho-blue':      { name:'Morpho',          icon:'🔵', color:'#2470FF', bg:'rgba(36,112,255,.10)' },
-  'spark-savings':    { name:'Spark Savings',   icon:'✨', color:'#E07912', bg:'rgba(224,121,18,.10)' },
-  'sparklend':        { name:'SparkLend',       icon:'✨', color:'#E07912', bg:'rgba(224,121,18,.10)' },
-  'compound-v3':      { name:'Compound V3',     icon:'🌿', color:'#00D395', bg:'rgba(0,211,149,.10)' },
-  'euler':            { name:'Euler Finance',   icon:'⚡', color:'#E040FB', bg:'rgba(224,64,251,.10)' },
-  'fluid':            { name:'Fluid',           icon:'💧', color:'#0EA5E9', bg:'rgba(14,165,233,.10)' },
-  'yearn-finance':    { name:'Yearn Finance',   icon:'🔷', color:'#0057FF', bg:'rgba(0,87,255,.10)' },
-  'venus-core-pool':  { name:'Venus',           icon:'🪐', color:'#F7CF47', bg:'rgba(247,207,71,.10)' },
-  'exactly-protocol': { name:'Exactly',         icon:'🎯', color:'#00E5FF', bg:'rgba(0,229,255,.10)' },
-  'radiant-v2':       { name:'Radiant V2',      icon:'💎', color:'#7B61FF', bg:'rgba(123,97,255,.10)' },
-  'silo-finance':     { name:'Silo Finance',    icon:'🏔', color:'#6C9B7D', bg:'rgba(108,155,125,.10)' },
-  'clearpool':        { name:'Clearpool',       icon:'🌊', color:'#00B4D8', bg:'rgba(0,180,216,.10)' },
-  'pendle':           { name:'Pendle',          icon:'🔄', color:'#4ADE80', bg:'rgba(74,222,128,.10)' },
-  'seamless-protocol':{ name:'Seamless',        icon:'🔗', color:'#A855F7', bg:'rgba(168,85,247,.10)' },
+  'aave-v3':          { name:'Aave V3',        icon:'🏦', color:'#B6509E', bg:'rgba(182,80,158,.10)', riskLevel:'low',    riskLabel:'Battle-tested', riskDesc:'$12B+ TVL · 6 audits · 4yr on mainnet' },
+  'morpho-blue':      { name:'Morpho',          icon:'🔵', color:'#2470FF', bg:'rgba(36,112,255,.10)', riskLevel:'low',    riskLabel:'Battle-tested', riskDesc:'$3B+ TVL · formal verification · 2yr' },
+  'spark-savings':    { name:'Spark Savings',   icon:'✨', color:'#E07912', bg:'rgba(224,121,18,.10)', riskLevel:'low',    riskLabel:'Battle-tested', riskDesc:'Sky/MakerDAO ecosystem · sDAI vault' },
+  'sparklend':        { name:'SparkLend',       icon:'✨', color:'#E07912', bg:'rgba(224,121,18,.10)', riskLevel:'low',    riskLabel:'Battle-tested', riskDesc:'Sky/MakerDAO ecosystem · Aave V3 fork' },
+  'compound-v3':      { name:'Compound V3',     icon:'🌿', color:'#00D395', bg:'rgba(0,211,149,.10)', riskLevel:'low',    riskLabel:'Battle-tested', riskDesc:'$800M TVL · pioneer protocol · 6yr' },
+  'euler':            { name:'Euler Finance',   icon:'⚡', color:'#E040FB', bg:'rgba(224,64,251,.10)', riskLevel:'medium', riskLabel:'Established',   riskDesc:'Re-launched V2 after 2023 hack · audited' },
+  'fluid':            { name:'Fluid',           icon:'💧', color:'#0EA5E9', bg:'rgba(14,165,233,.10)', riskLevel:'medium', riskLabel:'Established',   riskDesc:'Instadapp ecosystem · growing TVL' },
+  'yearn-finance':    { name:'Yearn Finance',   icon:'🔷', color:'#0057FF', bg:'rgba(0,87,255,.10)',  riskLevel:'medium', riskLabel:'Yield agg.',    riskDesc:'Auto-compounding · smart contract complexity' },
+  'venus-core-pool':  { name:'Venus',           icon:'🪐', color:'#F7CF47', bg:'rgba(247,207,71,.10)', riskLevel:'medium', riskLabel:'Cross-chain',   riskDesc:'BNB Chain leader · cross-chain bridge risk' },
+  'exactly-protocol': { name:'Exactly',         icon:'🎯', color:'#00E5FF', bg:'rgba(0,229,255,.10)', riskLevel:'medium', riskLabel:'Fixed-rate',    riskDesc:'Novel fixed-rate mechanism on Optimism' },
+  'radiant-v2':       { name:'Radiant V2',      icon:'💎', color:'#7B61FF', bg:'rgba(123,97,255,.10)', riskLevel:'medium', riskLabel:'Established',   riskDesc:'Arbitrum-native · RDNT token dependency' },
+  'silo-finance':     { name:'Silo Finance',    icon:'🏔', color:'#6C9B7D', bg:'rgba(108,155,125,.10)', riskLevel:'medium', riskLabel:'Isolated mkts', riskDesc:'Per-market isolation reduces contagion' },
+  'clearpool':        { name:'Clearpool',       icon:'🌊', color:'#00B4D8', bg:'rgba(0,180,216,.10)', riskLevel:'high',   riskLabel:'Credit risk',   riskDesc:'Uncollateralized · institutional borrowers' },
+  'pendle':           { name:'Pendle',          icon:'🔄', color:'#4ADE80', bg:'rgba(74,222,128,.10)', riskLevel:'medium', riskLabel:'Yield token.',  riskDesc:'PT/YT structure · maturity dates · complexity' },
+  'seamless-protocol':{ name:'Seamless',        icon:'🔗', color:'#A855F7', bg:'rgba(168,85,247,.10)', riskLevel:'medium', riskLabel:'Established',   riskDesc:'Aave V3 fork on Base · newer protocol' },
 };
 
 const ALLOC_COLORS = ['#0E9F6E','#3A9FD4','#C8841E','#E8765A'];
@@ -365,32 +405,71 @@ function ornyComment(risk, pools, weightedAPY, capital){
   }
 }
 
-function renderResults(allocatedPools, capital, risk){
+let _lastAllPools = [];
+
+function renderResults(allocatedPools, capital, risk, allPools){
   if(!allocatedPools.length){
-    $('resultZone').innerHTML = `<div class="placeholder-card"><div class="ph-icon">😕</div><p>No live data found for this asset on this chain.<br>Try USDC on Ethereum — most liquidity.</p></div>`;
+    const l = getLang();
+    $('resultZone').innerHTML = `<div class="placeholder-card"><div class="ph-icon">😕</div><p>${l==='fr' ? 'Aucune donnée trouvée pour cet actif sur cette chaîne.<br>Essayez USDC sur Ethereum — liquidité maximale.' : 'No live data found for this asset on this chain.<br>Try USDC on Ethereum — most liquidity.'}</p></div>`;
     return;
   }
 
+  _lastAllPools = allPools || allocatedPools;
   const l = getLang();
   const weightedAPY = allocatedPools.reduce((s,p) => s + p.apy * p.allocation, 0);
   const annualYield = capital * weightedAPY / 100;
   const monthlyYield = annualYield / 12;
   const comment = ornyComment(risk, allocatedPools, weightedAPY, capital);
 
+  // Risk composition
+  const compLow  = allocatedPools.reduce((s,p)=>s+((PROTO_META[p.project]?.riskLevel||'medium')==='low' ?p.allocation:0),0);
+  const compMed  = allocatedPools.reduce((s,p)=>s+((PROTO_META[p.project]?.riskLevel||'medium')==='medium'?p.allocation:0),0);
+  const compHigh = allocatedPools.reduce((s,p)=>s+((PROTO_META[p.project]?.riskLevel||'medium')==='high'?p.allocation:0),0);
+
+  // Benchmark: vs Aave-only
+  const aavePool = _lastAllPools.find(p=>p.project==='aave-v3');
+  const benchDiff = aavePool ? (weightedAPY - aavePool.apy) : null;
+  const benchHTML = benchDiff !== null ? `
+    <div class="bench-row">
+      <div>
+        <div class="bench-vs ${benchDiff>=0?'bench-pos':'bench-neg'}">${benchDiff>=0?'+':''}${benchDiff.toFixed(2)}%</div>
+        <div class="bench-meta">${l==='fr' ? 'vs Aave seul — gain de diversification' : 'vs Aave alone — diversification gain'}</div>
+      </div>
+      <div style="font-size:11.5px;color:var(--faint);line-height:1.5">
+        ${l==='fr' ? `Aave seul : <strong>${aavePool.apy.toFixed(2)}%</strong>` : `Aave alone: <strong>${aavePool.apy.toFixed(2)}%</strong>`}<br>
+        ${l==='fr' ? `Cette allocation : <strong>${weightedAPY.toFixed(2)}%</strong>` : `This allocation: <strong>${weightedAPY.toFixed(2)}%</strong>`}
+      </div>
+    </div>` : '';
+
+  // Risk composition bars
+  const riskCompHTML = `
+    <div class="risk-comp">
+      <div class="risk-comp-title">${l==='fr' ? 'Composition du risque' : 'Risk composition'}</div>
+      ${compLow>0 ? `<div class="rc-row"><div class="rc-dot" style="background:var(--good)"></div><div class="rc-label">${l==='fr'?'Faible':'Low risk'}</div><div class="rc-bar-track"><div class="rc-bar-fill" style="width:${(compLow*100).toFixed(0)}%;background:var(--good)"></div></div><div class="rc-pct" style="color:var(--good)">${(compLow*100).toFixed(0)}%</div></div>` : ''}
+      ${compMed>0  ? `<div class="rc-row"><div class="rc-dot" style="background:var(--warn)"></div><div class="rc-label">${l==='fr'?'Moyen':'Medium'}</div><div class="rc-bar-track"><div class="rc-bar-fill" style="width:${(compMed*100).toFixed(0)}%;background:var(--warn)"></div></div><div class="rc-pct" style="color:var(--warn)">${(compMed*100).toFixed(0)}%</div></div>` : ''}
+      ${compHigh>0 ? `<div class="rc-row"><div class="rc-dot" style="background:var(--coral)"></div><div class="rc-label">${l==='fr'?'Élevé':'High'}</div><div class="rc-bar-track"><div class="rc-bar-fill" style="width:${(compHigh*100).toFixed(0)}%;background:var(--coral)"></div></div><div class="rc-pct" style="color:var(--coral)">${(compHigh*100).toFixed(0)}%</div></div>` : ''}
+    </div>`;
+
+  // Protocol cards
   const protoCards = allocatedPools.map((p, i) => {
-    const m = PROTO_META[p.project] || {name:p.project, icon:'🏛', color:'var(--dim)', bg:'var(--surface-2)'};
+    const m = PROTO_META[p.project] || {name:p.project, icon:'🏛', color:'var(--dim)', bg:'var(--surface-2)', riskLevel:'medium', riskLabel:'Unknown'};
     const allocUSD = capital * p.allocation;
     const pctStr = (p.allocation*100).toFixed(0)+'%';
     const tvlStr = p.tvlUsd >= 1e9 ? '$'+(p.tvlUsd/1e9).toFixed(1)+'B' : '$'+(p.tvlUsd/1e6).toFixed(0)+'M';
     const color = ALLOC_COLORS[i] || 'var(--dim)';
+    const rl = m.riskLevel || 'medium';
+    const rdot = rl==='low' ? '●' : rl==='high' ? '▲' : '◆';
     return `
-    <div class="proto-card">
+    <div class="proto-card" title="${m.riskDesc||''}">
       <div class="proto-icon" style="background:${m.bg}">
         <span style="font-size:20px">${m.icon}</span>
       </div>
       <div class="proto-info">
         <div class="proto-name">${m.name}</div>
-        <div class="proto-meta">TVL ${tvlStr} · ${p.chain}</div>
+        <div class="proto-meta">
+          TVL ${tvlStr} · ${p.chain}
+          <span class="risk-badge rb-${rl}">${rdot} ${m.riskLabel||rl}</span>
+        </div>
       </div>
       <div class="proto-alloc">
         <div class="alloc-bar-track">
@@ -406,6 +485,33 @@ function renderResults(allocatedPools, capital, risk){
     </div>`;
   }).join('');
 
+  // All available rates (collapsible)
+  const otherPools = _lastAllPools.filter(p => !allocatedPools.find(a=>a.project===p.project)).slice(0,8);
+  const allRatesHTML = _lastAllPools.length > allocatedPools.length ? `
+    <div class="all-rates">
+      <div class="ar-header" onclick="this.nextElementSibling.classList.toggle('open');this.querySelector('.ar-arrow').textContent=this.nextElementSibling.classList.contains('open')?'▲':'▼'">
+        <span>${l==='fr' ? `Toutes les opportunités disponibles (${_lastAllPools.length})` : `All available rates (${_lastAllPools.length})`}</span>
+        <span class="ar-arrow">▼</span>
+      </div>
+      <div class="ar-body">
+        ${_lastAllPools.map(p => {
+          const m = PROTO_META[p.project] || {name:p.project, riskLevel:'medium', riskLabel:'?'};
+          const tvlS = p.tvlUsd >= 1e9 ? '$'+(p.tvlUsd/1e9).toFixed(1)+'B' : '$'+(p.tvlUsd/1e6).toFixed(0)+'M';
+          const isAlloc = !!allocatedPools.find(a=>a.project===p.project);
+          const rl = m.riskLevel||'medium';
+          return `<div class="ar-row" style="${isAlloc?'background:rgba(14,159,110,.04)':''}">
+            <div style="flex:1;min-width:0">
+              <div class="ar-proto">${m.name}${isAlloc?` <span style="font-size:10px;color:var(--good)">✓ ${l==='fr'?'alloué':'allocated'}</span>`:''}</div>
+              <div class="ar-meta"><span class="risk-badge rb-${rl}" style="font-size:9.5px">${rl==='low'?'●':rl==='high'?'▲':'◆'} ${m.riskLabel||rl}</span></div>
+            </div>
+            <div class="ar-chain">${p.chain}</div>
+            <div class="ar-tvl">${tvlS}</div>
+            <div class="ar-apy">${p.apy.toFixed(2)}%</div>
+          </div>`;
+        }).join('')}
+      </div>
+    </div>` : '';
+
   $('resultZone').innerHTML = `
     <div class="summary-card">
       <div class="panel-title" style="margin-bottom:16px">${l==='fr' ? 'Allocation recommandée' : 'Recommended allocation'}</div>
@@ -414,6 +520,8 @@ function renderResults(allocatedPools, capital, risk){
         <div class="sum-stat"><div class="sk">${l==='fr' ? 'Rendement annuel' : 'Annual yield'}</div><div class="sv gold">${fmtUSD(annualYield)}</div></div>
         <div class="sum-stat"><div class="sk">${l==='fr' ? 'Rendement mensuel' : 'Monthly yield'}</div><div class="sv dim">${fmtUSD(monthlyYield)}</div></div>
       </div>
+      ${benchHTML}
+      ${riskCompHTML}
     </div>
 
     <div class="protocols-grid">${protoCards}</div>
@@ -422,10 +530,12 @@ function renderResults(allocatedPools, capital, risk){
       <span style="font-size:24px;flex-shrink:0;margin-top:2px">🦅</span>
       <span class="orny-text">${comment}</span>
     </div>
+
+    ${allRatesHTML}
   `;
 
   $('fetchDot').className = 'fetch-dot live';
-  $('fetchText').textContent = `Live APY · ${allocatedPools.length} protocols · ${new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'})}`;
+  $('fetchText').textContent = `Live APY · ${_lastAllPools.length} ${l==='fr'?'protocoles trouvés':'protocols found'} · ${new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'})}`;
 }
 
 async function calc(){
@@ -438,7 +548,7 @@ async function calc(){
     const pools = await fetchPools();
     const selected = selectPools(pools, asset, chain);
     const allocated = allocate(selected, risk);
-    renderResults(allocated, capital, risk);
+    renderResults(allocated, capital, risk, selected);
   } catch(e) {
     $('fetchDot').className = 'fetch-dot';
     $('fetchText').textContent = 'Could not fetch APY — check connection';

@@ -117,6 +117,24 @@
   .history-card{border-radius:var(--radius);padding:14px 16px;border:1px solid var(--line);background:var(--surface-2);font-size:12.5px;color:var(--dim);line-height:1.6}
   .history-card b{color:var(--text)}
 
+  /* YIELD SECTION */
+  .yield-section{max-width:1060px;margin:0 auto;padding:0 28px 40px}
+  .yield-section h3{font-family:var(--display);font-size:1.15rem;font-weight:500;letter-spacing:-.02em;margin-bottom:6px}
+  .yield-section p{font-size:.85rem;color:var(--dim);margin-bottom:16px}
+  .yield-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:10px}
+  .yield-row{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px;display:flex;align-items:center;gap:12px;transition:box-shadow .15s}
+  .yield-row:hover{box-shadow:var(--shadow)}
+  .yield-proto-icon{width:34px;height:34px;border-radius:8px;background:var(--aqua-pale);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+  .yield-info{flex:1;min-width:0}
+  .yield-proto-name{font-size:13px;font-weight:700;color:var(--text);text-transform:capitalize}
+  .yield-meta{font-size:11px;color:var(--faint);margin-top:2px;display:flex;align-items:center;gap:6px}
+  .yield-apy-block{text-align:right;flex-shrink:0}
+  .yield-apy-num{font-family:var(--mono);font-size:1.15rem;font-weight:700;color:var(--good);line-height:1}
+  .yield-apy-lbl{font-size:10px;color:var(--faint);margin-top:2px}
+  .yield-loading{padding:24px;text-align:center;color:var(--faint);font-size:13.5px}
+  .yield-bar-track{height:3px;background:var(--line);border-radius:99px;overflow:hidden;margin-top:4px}
+  .yield-bar-fill{height:100%;border-radius:99px;background:var(--good)}
+
   /* COMPARISON TABLE */
   .compare-section{max-width:1060px;margin:0 auto;padding:0 28px 72px}
   .compare-section h3{font-family:var(--display);font-size:1.2rem;font-weight:500;letter-spacing:-.02em;margin-bottom:6px}
@@ -204,6 +222,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- Orny + strengths/risks injected here -->
   </div>
 
+</div>
+
+<!-- YIELD OPPORTUNITIES -->
+<div class="yield-section" id="yieldSection">
+  <h3 id="yieldTitle">Earn yield on this stablecoin</h3>
+  <p id="yieldSub">Live APY from DeFiLlama — lending & savings protocols, sorted by TVL.</p>
+  <div id="yieldContent" class="yield-loading">Loading live rates…</div>
 </div>
 
 <!-- COMPARISON TABLE -->
@@ -603,6 +628,7 @@ function renderAll(){
   renderSelector();
   renderMain();
   renderTable();
+  fetchAndRenderYield(_selected);
 }
 
 /* ── FETCH PRICES ────────────────────────────────────────────────────── */
@@ -630,7 +656,77 @@ async function fetchPrices(){
 renderAll();
 fetchPrices();
 
-window.onLangChange = renderAll;
+window.onLangChange = function(l) {
+  // Update yield section labels
+  const yt = document.getElementById('yieldTitle');
+  const ys = document.getElementById('yieldSub');
+  if(yt) yt.textContent = l==='fr' ? `Rendements disponibles sur ce stablecoin` : `Earn yield on this stablecoin`;
+  if(ys) ys.textContent = l==='fr' ? `APY en direct via DeFiLlama — protocoles de prêt et d'épargne, triés par TVL.` : `Live APY from DeFiLlama — lending & savings protocols, sorted by TVL.`;
+  renderAll();
+};
+
+let _yieldCache = null;
+
+async function fetchAndRenderYield(sym) {
+  const zone = document.getElementById('yieldContent');
+  if(!zone) return;
+  zone.innerHTML = `<div class="yield-loading">⟳ Loading live rates for ${sym}…</div>`;
+
+  try {
+    if(!_yieldCache) {
+      const r = await fetch('https://yields.llama.fi/pools');
+      const d = await r.json();
+      _yieldCache = d.data;
+    }
+    const l = getLang();
+    // Find pools for this symbol: exact match or partial (e.g. USDC matches USDC, USDC-USDT, etc.)
+    const pools = _yieldCache
+      .filter(p => {
+        if(p.tvlUsd < 500000) return false;
+        if(p.apy <= 0) return false;
+        const s = (p.symbol||'').toUpperCase();
+        return s === sym || s.startsWith(sym+'-') || s.endsWith('-'+sym) || s === sym+'.E';
+      })
+      .sort((a,b) => b.tvlUsd - a.tvlUsd)
+      .slice(0, 9);
+
+    if(!pools.length) {
+      zone.innerHTML = `<p style="color:var(--faint);text-align:center;padding:16px">${l==='fr'?'Aucune donnée de rendement disponible pour '+sym:'No live yield data available for '+sym}</p>`;
+      return;
+    }
+
+    const maxAPY = Math.max(...pools.map(p=>p.apy));
+    // Protocol emoji map
+    const protoIcons = { 'aave-v3':'🏦','morpho-blue':'🔵','compound-v3':'🌿','spark-savings':'✨','sparklend':'✨','euler':'⚡','fluid':'💧','yearn-finance':'🔷','venus-core-pool':'🪐','pendle':'🔄','clearpool':'🌊','silo-finance':'🏔','exactly-protocol':'🎯','radiant-v2':'💎','seamless-protocol':'🔗' };
+
+    zone.innerHTML = `<div class="yield-grid">${pools.map(p => {
+      const tvlS = p.tvlUsd >= 1e9 ? '$'+(p.tvlUsd/1e9).toFixed(1)+'B' : '$'+(p.tvlUsd/1e6).toFixed(0)+'M';
+      const icon = protoIcons[p.project] || '🏛';
+      const protoName = p.project.replace(/-/g,' ').replace(/\b\w/g,c=>c.toUpperCase());
+      const barPct = Math.round(p.apy/maxAPY*100);
+      const reward = p.rewardTokens?.length ? ` + ${l==='fr'?'récompenses':'rewards'}` : '';
+      return `<div class="yield-row">
+        <div class="yield-proto-icon">${icon}</div>
+        <div class="yield-info">
+          <div class="yield-proto-name">${protoName}</div>
+          <div class="yield-meta">
+            <span>${p.chain}</span>
+            <span>TVL ${tvlS}</span>
+            <span style="color:var(--dim)">${p.symbol}${reward}</span>
+          </div>
+          <div class="yield-bar-track"><div class="yield-bar-fill" style="width:${barPct}%"></div></div>
+        </div>
+        <div class="yield-apy-block">
+          <div class="yield-apy-num">${p.apy.toFixed(2)}%</div>
+          <div class="yield-apy-lbl">APY live</div>
+        </div>
+      </div>`;
+    }).join('')}</div>`;
+  } catch(e) {
+    const z = document.getElementById('yieldContent');
+    if(z) z.innerHTML = `<p style="color:var(--faint);text-align:center;padding:16px">Could not load live data</p>`;
+  }
+}
 </script>
 <script src="lang.js"></script>
 </body>
