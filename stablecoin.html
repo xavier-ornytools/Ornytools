@@ -520,6 +520,18 @@ const DB = {
     risks:['KYC/whitelisting required for some products','Limited permissionless DeFi use','Regulatory RWA uncertainty'],
     risks_fr:['KYC/whitelist requis pour certains produits','Utilisation DeFi sans permission limitée','Incertitude réglementaire autour des RWA'],
   },
+  APXUSD: {
+    name:'apxUSD', issuer:'Apyx Finance', type:'Synthetic (RWA)', typeColor:'#0EA5E9',
+    geckoId:'apxusd',
+    counterparty:35, protocol:42, liquidity:52,
+    depegBase:50,
+    history:'June 2026: dropped to $0.90 (-10%) as STRC collateral fell during BTC drop below $63K. Protocol described it as a "feature, not a bug."',
+    history_fr:'Juin 2026 : chute à 0,90$ (-10%) lors de la baisse du collateral STRC avec BTC sous 63K$. Le protocole a qualifié l\'événement de "feature, pas de bug".',
+    strengths:['Novel preferred equity backing — STRC dividends from Strategy','Companion apyUSD targets 13–15% annual yield','Fast-growing TVL — $476M+ in under 6 months'],
+    strengths_fr:['Adossement innovant en preferred equity — dividendes STRC de Strategy','apyUSD compagnon vise 13–15% de rendement annuel','TVL en forte croissance — 476M$+ en moins de 6 mois'],
+    risks:['Documented -10% depeg in June 2026 tied to BTC drop','Heavy STRC concentration — directly correlated with Bitcoin price','Launched early 2026 — mechanism completely untested across a full market cycle'],
+    risks_fr:['Dépeg documenté de -10% en juin 2026 lié à la baisse du BTC','Forte concentration STRC — directement corrélé au prix du Bitcoin','Lancé début 2026 — mécanisme totalement non testé sur un cycle de marché complet'],
+  },
 };
 
 let _selected = 'USDC';
