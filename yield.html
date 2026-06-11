@@ -159,9 +159,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <img class="nav-logo" src="logo.png" alt="OrnyTools"/>
   <div>
     <div class="nav-brand">Orny<span class="dot">Tools</span></div>
-    <div class="nav-tag">Yield Allocation Optimizer</div>
+    <div class="nav-tag"><span class="t-en">Yield Allocation Optimizer</span><span class="t-fr">Optimiseur de Rendement</span></div>
   </div>
-  <a href="index.html" class="nav-home">← All tools</a>
+  <a href="index.html" class="nav-home"><span class="t-en">← All tools</span><span class="t-fr">← Tous les outils</span></a>
+  <div class="lang-switch" style="margin-left:8px">
+    <button id="btnEN" class="lang-btn active" onclick="setLang('en')">EN</button>
+    <button id="btnFR" class="lang-btn" onclick="setLang('fr')">FR</button>
+  </div>
 </nav>
 
 <div style="padding-top:72px;text-align:center;background:#fff;padding-bottom:0">
@@ -169,9 +173,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </div>
 
 <div class="page-hero">
-  <div class="eyebrow">Yield Allocation Optimizer — Live APY</div>
-  <h1>Where should you put<br>your <em>stablecoins</em>?</h1>
-  <p>Live APY from Aave, Morpho, Spark and Compound. One allocation recommendation, tuned to your risk profile.</p>
+  <div class="eyebrow"><span class="t-en">Yield Allocation Optimizer — Live APY</span><span class="t-fr">Optimiseur de Rendement — APY en direct</span></div>
+  <h1><span class="t-en">Where should you put<br>your <em>stablecoins</em>?</span><span class="t-fr">Où placer vos<br><em>stablecoins</em> ?</span></h1>
+  <p><span class="t-en">Live APY from Aave, Morpho, Spark and Compound. One allocation recommendation, tuned to your risk profile.</span><span class="t-fr">APY en direct depuis DeFiLlama. Une recommandation d'allocation adaptée à votre profil de risque.</span></p>
 </div>
 
 <div class="tool-zone">
@@ -179,28 +183,36 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <!-- INPUTS -->
   <div>
     <div class="panel">
-      <div class="panel-title">Your position</div>
+      <div class="panel-title"><span class="t-en">Your position</span><span class="t-fr">Votre position</span></div>
 
       <div class="field">
-        <label>Asset</label>
+        <label><span class="t-en">Asset</span><span class="t-fr">Actif</span></label>
         <select id="asset">
           <option value="USDC">USDC</option>
           <option value="USDT">USDT</option>
           <option value="DAI">DAI</option>
+          <option value="USDS">USDS</option>
+          <option value="GHO">GHO</option>
+          <option value="crvUSD">crvUSD</option>
           <option value="WETH">WETH (ETH)</option>
+          <option value="wstETH">wstETH</option>
+          <option value="WBTC">WBTC</option>
         </select>
       </div>
 
       <div class="field">
-        <label>Chain</label>
+        <label><span class="t-en">Chain</span><span class="t-fr">Réseau</span></label>
         <select id="chain">
           <option value="Ethereum">Ethereum</option>
           <option value="Arbitrum">Arbitrum</option>
+          <option value="Base">Base</option>
+          <option value="Optimism">Optimism</option>
+          <option value="Polygon">Polygon</option>
         </select>
       </div>
 
       <div class="field with-prefix">
-        <label>Capital to allocate <span class="hint">USD</span></label>
+        <label><span class="t-en">Capital to allocate</span><span class="t-fr">Capital à allouer</span> <span class="hint">USD</span></label>
         <span class="pfx">$</span>
         <input id="capital" value="10000" inputmode="decimal"/>
       </div>
@@ -210,20 +222,20 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <div class="field">
         <label>Risk profile</label>
         <div class="risk-toggle">
-          <button class="risk-btn active-conservative" data-risk="conservative">Conservative</button>
-          <button class="risk-btn" data-risk="moderate">Moderate</button>
-          <button class="risk-btn" data-risk="aggressive">Aggressive</button>
+          <button class="risk-btn active-conservative" data-risk="conservative"><span class="t-en">Conservative</span><span class="t-fr">Conservateur</span></button>
+          <button class="risk-btn" data-risk="moderate"><span class="t-en">Moderate</span><span class="t-fr">Modéré</span></button>
+          <button class="risk-btn" data-risk="aggressive"><span class="t-en">Aggressive</span><span class="t-fr">Agressif</span></button>
         </div>
       </div>
 
       <div class="fetch-status" id="fetchStatus">
         <span class="fetch-dot" id="fetchDot"></span>
-        <span id="fetchText">Loading live APY…</span>
+        <span id="fetchText"><span class="t-en">Loading live APY…</span><span class="t-fr">Chargement APY…</span></span>
       </div>
     </div>
 
     <div class="disclaimer" style="margin-top:12px">
-      APY data via DeFiLlama · updates on load · rates change continuously · not financial advice
+      <span class="t-en">APY data via DeFiLlama · updates on load · rates change continuously · not financial advice</span><span class="t-fr">APY via DeFiLlama · mis à jour au chargement · taux en constante évolution · pas de conseil financier</span>
     </div>
   </div>
 
@@ -240,12 +252,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <div class="back-section">
   <a class="back-link" href="index.html">
     <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 1.5L1.5 9 9 16.5M1.5 9h15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    Back to all tools
+    <span class="t-en">Back to all tools</span><span class="t-fr">Retour aux outils</span>
   </a>
 </div>
 
 <footer>
-  <div class="ft-tag">Allocate smart. <span>Yield more.</span></div>
+  <div class="ft-tag"><span class="t-en">Allocate smart. <span>Yield more.</span></span><span class="t-fr">Allouez intelligemment. <span>Rendez plus.</span></span></div>
   Live APY via DeFiLlama · read-only · no wallet connection · ornytools.xyz<br/>
   <span style="margin-top:8px;display:inline-block">Built by <a href="https://www.linkedin.com/in/xavier-maquin-5576643b9/" target="_blank" rel="noopener" style="color:var(--good);text-decoration:none;font-weight:600">Xavier Maquin</a></span>
 </footer>
@@ -257,11 +269,21 @@ let _poolsCache = null;
 let _currentRisk = 'conservative';
 
 const PROTO_META = {
-  'aave-v3':     { name:'Aave V3',   icon:'🏦', color:'#B6509E', bg:'rgba(182,80,158,.10)' },
-  'morpho-blue': { name:'Morpho',    icon:'🔵', color:'#2470FF', bg:'rgba(36,112,255,.10)' },
-  'spark-savings':{ name:'Spark',    icon:'✨', color:'#E07912', bg:'rgba(224,121,18,.10)' },
-  'sparklend':   { name:'SparkLend', icon:'✨', color:'#E07912', bg:'rgba(224,121,18,.10)' },
-  'compound-v3': { name:'Compound',  icon:'🌿', color:'#00D395', bg:'rgba(0,211,149,.10)' },
+  'aave-v3':          { name:'Aave V3',        icon:'🏦', color:'#B6509E', bg:'rgba(182,80,158,.10)' },
+  'morpho-blue':      { name:'Morpho',          icon:'🔵', color:'#2470FF', bg:'rgba(36,112,255,.10)' },
+  'spark-savings':    { name:'Spark Savings',   icon:'✨', color:'#E07912', bg:'rgba(224,121,18,.10)' },
+  'sparklend':        { name:'SparkLend',       icon:'✨', color:'#E07912', bg:'rgba(224,121,18,.10)' },
+  'compound-v3':      { name:'Compound V3',     icon:'🌿', color:'#00D395', bg:'rgba(0,211,149,.10)' },
+  'euler':            { name:'Euler Finance',   icon:'⚡', color:'#E040FB', bg:'rgba(224,64,251,.10)' },
+  'fluid':            { name:'Fluid',           icon:'💧', color:'#0EA5E9', bg:'rgba(14,165,233,.10)' },
+  'yearn-finance':    { name:'Yearn Finance',   icon:'🔷', color:'#0057FF', bg:'rgba(0,87,255,.10)' },
+  'venus-core-pool':  { name:'Venus',           icon:'🪐', color:'#F7CF47', bg:'rgba(247,207,71,.10)' },
+  'exactly-protocol': { name:'Exactly',         icon:'🎯', color:'#00E5FF', bg:'rgba(0,229,255,.10)' },
+  'radiant-v2':       { name:'Radiant V2',      icon:'💎', color:'#7B61FF', bg:'rgba(123,97,255,.10)' },
+  'silo-finance':     { name:'Silo Finance',    icon:'🏔', color:'#6C9B7D', bg:'rgba(108,155,125,.10)' },
+  'clearpool':        { name:'Clearpool',       icon:'🌊', color:'#00B4D8', bg:'rgba(0,180,216,.10)' },
+  'pendle':           { name:'Pendle',          icon:'🔄', color:'#4ADE80', bg:'rgba(74,222,128,.10)' },
+  'seamless-protocol':{ name:'Seamless',        icon:'🔗', color:'#A855F7', bg:'rgba(168,85,247,.10)' },
 };
 
 const ALLOC_COLORS = ['#0E9F6E','#3A9FD4','#C8841E','#E8765A'];
@@ -289,7 +311,7 @@ function selectPools(pools, asset, chain){
     if(!targets.includes(p.project)) return;
     if(p.symbol !== asset) return;
     if(p.chain !== chain) return;
-    if(p.tvlUsd < 500000) return; // min $500k TVL
+    if(p.tvlUsd < 100000) return; // min $100k TVL
     if(p.apy <= 0) return;
     if(!byProto[p.project] || p.tvlUsd > byProto[p.project].tvlUsd){
       byProto[p.project] = p;
@@ -326,13 +348,20 @@ function ornyComment(risk, pools, weightedAPY, capital){
   const topProto = PROTO_META[pools[0]?.project]?.name || pools[0]?.project;
   const spread = pools.length;
   const annualYield = capital * weightedAPY / 100;
+  const l = getLang();
 
   if(risk === 'conservative'){
-    return `<strong>Orny Approved — conservative allocation.</strong> Spread across ${spread} protocols, weighted by TVL depth. Lower concentration risk at the cost of ~${(pools[0]?.apy - weightedAPY).toFixed(2)}% APY vs full concentration. Expected yield: <strong>${fmtUSD(annualYield)}/year</strong>.`;
+    return l==='fr'
+      ? `<strong>Orny Approuve — allocation conservatrice.</strong> Réparti sur ${spread} protocoles, pondéré par la profondeur TVL. Risque de concentration réduit au prix de ~${(pools[0]?.apy - weightedAPY).toFixed(2)}% APY vs concentration totale. Rendement attendu : <strong>${fmtUSD(annualYield)}/an</strong>.`
+      : `<strong>Orny Approved — conservative allocation.</strong> Spread across ${spread} protocols, weighted by TVL depth. Lower concentration risk at the cost of ~${(pools[0]?.apy - weightedAPY).toFixed(2)}% APY vs full concentration. Expected yield: <strong>${fmtUSD(annualYield)}/year</strong>.`;
   } else if(risk === 'moderate'){
-    return `<strong>Orny High Confidence — balanced allocation.</strong> APY and TVL co-weighted across ${spread} protocols. Captures most of ${topProto}'s yield while keeping ${spread > 2 ? 'healthy diversification' : 'some diversification'}. Expected yield: <strong>${fmtUSD(annualYield)}/year</strong>.`;
+    return l==='fr'
+      ? `<strong>Orny Haute Confiance — allocation équilibrée.</strong> APY et TVL co-pondérés sur ${spread} protocoles. Capture l'essentiel du rendement de ${topProto} tout en conservant ${spread > 2 ? 'une diversification saine' : 'une certaine diversification'}. Rendement attendu : <strong>${fmtUSD(annualYield)}/an</strong>.`
+      : `<strong>Orny High Confidence — balanced allocation.</strong> APY and TVL co-weighted across ${spread} protocols. Captures most of ${topProto}'s yield while keeping ${spread > 2 ? 'healthy diversification' : 'some diversification'}. Expected yield: <strong>${fmtUSD(annualYield)}/year</strong>.`;
   } else {
-    return `<strong>Orny Found An Opportunity — aggressive allocation.</strong> Concentrated toward highest APY (${pools[0]?.apy?.toFixed(2)}% on ${topProto}). Higher smart-contract concentration risk. Only use if you've independently assessed ${topProto}'s protocol risk. Expected yield: <strong>${fmtUSD(annualYield)}/year</strong>.`;
+    return l==='fr'
+      ? `<strong>Orny a Trouvé une Opportunité — allocation agressive.</strong> Concentré vers le meilleur APY (${pools[0]?.apy?.toFixed(2)}% sur ${topProto}). Risque de concentration sur contrat intelligent plus élevé. Utilisez uniquement si vous avez évalué indépendamment le risque de ${topProto}. Rendement attendu : <strong>${fmtUSD(annualYield)}/an</strong>.`
+      : `<strong>Orny Found An Opportunity — aggressive allocation.</strong> Concentrated toward highest APY (${pools[0]?.apy?.toFixed(2)}% on ${topProto}). Higher smart-contract concentration risk. Only use if you've independently assessed ${topProto}'s protocol risk. Expected yield: <strong>${fmtUSD(annualYield)}/year</strong>.`;
   }
 }
 
@@ -342,6 +371,7 @@ function renderResults(allocatedPools, capital, risk){
     return;
   }
 
+  const l = getLang();
   const weightedAPY = allocatedPools.reduce((s,p) => s + p.apy * p.allocation, 0);
   const annualYield = capital * weightedAPY / 100;
   const monthlyYield = annualYield / 12;
@@ -378,11 +408,11 @@ function renderResults(allocatedPools, capital, risk){
 
   $('resultZone').innerHTML = `
     <div class="summary-card">
-      <div class="panel-title" style="margin-bottom:16px">Recommended allocation</div>
+      <div class="panel-title" style="margin-bottom:16px">${l==='fr' ? 'Allocation recommandée' : 'Recommended allocation'}</div>
       <div class="summary-top">
-        <div class="sum-stat"><div class="sk">Expected APY</div><div class="sv green">${weightedAPY.toFixed(2)}%</div></div>
-        <div class="sum-stat"><div class="sk">Annual yield</div><div class="sv gold">${fmtUSD(annualYield)}</div></div>
-        <div class="sum-stat"><div class="sk">Monthly yield</div><div class="sv dim">${fmtUSD(monthlyYield)}</div></div>
+        <div class="sum-stat"><div class="sk">${l==='fr' ? 'APY attendu' : 'Expected APY'}</div><div class="sv green">${weightedAPY.toFixed(2)}%</div></div>
+        <div class="sum-stat"><div class="sk">${l==='fr' ? 'Rendement annuel' : 'Annual yield'}</div><div class="sv gold">${fmtUSD(annualYield)}</div></div>
+        <div class="sum-stat"><div class="sk">${l==='fr' ? 'Rendement mensuel' : 'Monthly yield'}</div><div class="sv dim">${fmtUSD(monthlyYield)}</div></div>
       </div>
     </div>
 
@@ -393,6 +423,9 @@ function renderResults(allocatedPools, capital, risk){
       <span class="orny-text">${comment}</span>
     </div>
   `;
+
+  $('fetchDot').className = 'fetch-dot live';
+  $('fetchText').textContent = `Live APY · ${allocatedPools.length} protocols · ${new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'})}`;
 }
 
 async function calc(){
@@ -406,9 +439,6 @@ async function calc(){
     const selected = selectPools(pools, asset, chain);
     const allocated = allocate(selected, risk);
     renderResults(allocated, capital, risk);
-
-    $('fetchDot').className = 'fetch-dot live';
-    $('fetchText').textContent = `Live APY · ${new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'})}`;
   } catch(e) {
     $('fetchDot').className = 'fetch-dot';
     $('fetchText').textContent = 'Could not fetch APY — check connection';
@@ -428,6 +458,9 @@ document.querySelectorAll('.risk-btn').forEach(btn => {
 
 ['asset','chain','capital'].forEach(id => $(id).addEventListener('input', calc));
 calc();
+
+window.onLangChange = calc;
 </script>
+<script src="lang.js"></script>
 </body>
 </html>

@@ -162,9 +162,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <img class="nav-logo" src="logo.png" alt="OrnyTools"/>
   <div>
     <div class="nav-brand">Orny<span class="dot">Tools</span></div>
-    <div class="nav-tag">DeFi Waste Calculator</div>
+    <div class="nav-tag"><span class="t-en">DeFi Waste Calculator</span><span class="t-fr">Calculateur de Pertes DeFi</span></div>
   </div>
-  <a href="index.html" class="nav-home">← All tools</a>
+  <a href="index.html" class="nav-home"><span class="t-en">← All tools</span><span class="t-fr">← Tous les outils</span></a>
+  <div class="lang-switch" style="margin-left:8px">
+    <button id="btnEN" class="lang-btn active" onclick="setLang('en')">EN</button>
+    <button id="btnFR" class="lang-btn" onclick="setLang('fr')">FR</button>
+  </div>
 </nav>
 
 <div style="padding-top:72px;text-align:center;background:#fff;padding-bottom:0">
@@ -173,8 +177,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <!-- HERO -->
 <div class="page-hero">
-  <div class="hero-eyebrow">DeFi Efficiency Audit</div>
-  <h1>How much money are you<br><em>wasting in DeFi?</em></h1>
+  <div class="hero-eyebrow"><span class="t-en">DeFi Efficiency Audit</span><span class="t-fr">Audit d'Efficacité DeFi</span></div>
+  <h1><span class="t-en">How much money are you<br><em>wasting in DeFi?</em></span><span class="t-fr">Combien perdez-vous<br><em>en DeFi ?</em></span></h1>
   <p>Gas overhead. Slippage creep. Suboptimal trade sizing. Every trade leaks value. Find out how much — and what you could save.</p>
 </div>
 
@@ -183,10 +187,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
   <!-- INPUTS -->
   <div class="panel">
-    <div class="panel-title">Your trading profile</div>
+    <div class="panel-title"><span class="t-en">Your trading profile</span><span class="t-fr">Votre profil de trading</span></div>
 
     <div class="field">
-      <label>Chain</label>
+      <label><span class="t-en">Chain</span><span class="t-fr">Réseau</span></label>
       <select id="chain">
         <option value="arbitrum">Arbitrum</option>
         <option value="eth">Ethereum</option>
@@ -197,13 +201,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
 
     <div class="field with-prefix">
-      <label>Average trade size <span class="hint">USD per trade</span></label>
+      <label><span class="t-en">Average trade size</span><span class="t-fr">Taille moyenne des trades</span> <span class="hint"><span class="t-en">USD per trade</span><span class="t-fr">USD par trade</span></span></label>
       <span class="pfx">$</span>
       <input id="tradeSize" value="500" inputmode="decimal"/>
     </div>
 
     <div class="field">
-      <label>Trades per month <span class="hint" id="tradesHint">20 trades</span></label>
+      <label><span class="t-en">Trades per month</span><span class="t-fr">Trades par mois</span> <span class="hint" id="tradesHint">20 trades</span></label>
       <div class="slider-row">
         <input type="range" id="monthlyTrades" min="1" max="100" value="20"/>
         <span class="slider-val" id="tradesDisplay">20</span>
@@ -213,7 +217,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <hr class="divider"/>
 
     <div class="field">
-      <label>Typical pool fee <span class="hint">% per trade</span></label>
+      <label><span class="t-en">Typical pool fee</span><span class="t-fr">Frais de pool habituels</span> <span class="hint">% <span class="t-en">per trade</span><span class="t-fr">par trade</span></span></label>
       <select id="poolFee">
         <option value="0.05">0.05% — Uniswap V3 stable</option>
         <option value="0.3" selected>0.30% — Standard AMM</option>
@@ -248,12 +252,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <div class="back-section">
   <a class="back-link" href="index.html">
     <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 1.5L1.5 9 9 16.5M1.5 9h15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    Back to all tools
+    <span class="t-en">Back to all tools</span><span class="t-fr">Retour aux outils</span>
   </a>
 </div>
 
 <footer>
-  <div class="ft-tag">Stop leaking. <span>Start optimizing.</span></div>
+  <div class="ft-tag"><span class="t-en">Stop leaking. <span>Start optimizing.</span></span><span class="t-fr">Arrêtez les fuites. <span>Optimisez.</span></span></div>
   Read-only · no wallet connection · estimates based on constant-product AMM model · ornytools.xyz<br/>
   <span style="margin-top:8px;display:inline-block">Built by <a href="https://www.linkedin.com/in/xavier-maquin-5576643b9/" target="_blank" rel="noopener" style="color:var(--coral);text-decoration:none;font-weight:600">Xavier Maquin</a></span>
 </footer>
@@ -399,6 +403,9 @@ $('monthlyTrades').addEventListener('input', function(){
 });
 ['chain','tradeSize','poolFee'].forEach(id => $(id).addEventListener('input', calc));
 calc();
+
+window.onLangChange = function(l) { if(typeof calc==='function') calc(); };
 </script>
+<script src="lang.js"></script>
 </body>
 </html>

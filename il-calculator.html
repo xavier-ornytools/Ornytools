@@ -172,9 +172,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <img class="nav-logo" src="logo.png" alt="OrnyTools"/>
   <div>
     <div class="nav-brand">Orny<span class="dot">Tools</span></div>
-    <div class="nav-tag">Impermanent Loss Calculator</div>
+    <div class="nav-tag"><span class="t-en">Impermanent Loss Calculator</span><span class="t-fr">Calculateur de Perte Impermanente</span></div>
   </div>
-  <a href="index.html" class="nav-home">← All tools</a>
+  <a href="index.html" class="nav-home"><span class="t-en">← All tools</span><span class="t-fr">← Tous les outils</span></a>
+  <div class="lang-switch" style="margin-left:8px">
+    <button id="btnEN" class="lang-btn active" onclick="setLang('en')">EN</button>
+    <button id="btnFR" class="lang-btn" onclick="setLang('fr')">FR</button>
+  </div>
 </nav>
 
 <div style="padding-top:72px;text-align:center;background:#fff;padding-bottom:0">
@@ -183,8 +187,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <!-- HERO -->
 <div class="page-hero">
-  <div class="eyebrow">Impermanent Loss Calculator</div>
-  <h1>How much does your LP position <em>really</em> cost?</h1>
+  <div class="eyebrow"><span class="t-en">Impermanent Loss Calculator</span><span class="t-fr">Calculateur de Perte Impermanente</span></div>
+  <h1><span class="t-en">How much does your LP position <em>really</em> cost?</span><span class="t-fr">Combien coûte <em>vraiment</em> votre position LP ?</span></h1>
   <p>Enter entry and current prices. See your exact IL, your break-even fee APR, and the full IL curve.</p>
 </div>
 
@@ -193,16 +197,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
   <!-- Inputs -->
   <div class="panel">
-    <div class="panel-title">Your LP position</div>
+    <div class="panel-title"><span class="t-en">Your LP position</span><span class="t-fr">Votre position LP</span></div>
 
     <div class="row2">
       <div class="field with-prefix">
-        <label>Token A — entry <span class="hint">$</span></label>
+        <label><span class="t-en">Token A — entry</span><span class="t-fr">Token A — entrée</span> <span class="hint">$</span></label>
         <span class="pfx">$</span>
         <input id="ilA0" class="mono" value="1800" inputmode="decimal"/>
       </div>
       <div class="field with-prefix">
-        <label>Token A — now <span class="hint">$</span></label>
+        <label><span class="t-en">Token A — now</span><span class="t-fr">Token A — actuel</span> <span class="hint">$</span></label>
         <span class="pfx">$</span>
         <input id="ilA1" class="mono" value="2700" inputmode="decimal"/>
       </div>
@@ -210,12 +214,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     <div class="row2">
       <div class="field with-prefix">
-        <label>Token B — entry <span class="hint">$</span></label>
+        <label><span class="t-en">Token B — entry</span><span class="t-fr">Token B — entrée</span> <span class="hint">$</span></label>
         <span class="pfx">$</span>
         <input id="ilB0" class="mono" value="1" inputmode="decimal"/>
       </div>
       <div class="field with-prefix">
-        <label>Token B — now <span class="hint">$</span></label>
+        <label><span class="t-en">Token B — now</span><span class="t-fr">Token B — actuel</span> <span class="hint">$</span></label>
         <span class="pfx">$</span>
         <input id="ilB1" class="mono" value="1" inputmode="decimal"/>
       </div>
@@ -224,23 +228,23 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <hr class="divider"/>
 
     <div class="field with-prefix">
-      <label>Initial investment <span class="hint">optional</span></label>
+      <label><span class="t-en">Initial investment</span><span class="t-fr">Investissement initial</span> <span class="hint"><span class="t-en">optional</span><span class="t-fr">optionnel</span></span></label>
       <span class="pfx">$</span>
       <input id="ilDeposit" class="mono" value="10000" inputmode="decimal"/>
     </div>
 
     <hr class="divider"/>
 
-    <div class="panel-title" style="margin-bottom:16px">Break-even analysis</div>
+    <div class="panel-title" style="margin-bottom:16px"><span class="t-en">Break-even analysis</span><span class="t-fr">Analyse du seuil de rentabilité</span></div>
 
     <div class="row2">
       <div class="field with-prefix">
-        <label>Pool fee APR <span class="hint">%</span></label>
+        <label><span class="t-en">Pool fee APR</span><span class="t-fr">APR des frais de pool</span> <span class="hint">%</span></label>
         <span class="pfx" style="font-family:var(--ui)">%</span>
         <input id="ilFeeApr" class="mono" value="25" inputmode="decimal" style="padding-left:26px"/>
       </div>
       <div class="field">
-        <label>Days in pool</label>
+        <label><span class="t-en">Days in pool</span><span class="t-fr">Jours dans le pool</span></label>
         <input id="ilDays" class="mono" value="30" inputmode="decimal"/>
       </div>
     </div>
@@ -280,8 +284,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- CHART -->
 <div class="chart-section">
   <div class="chart-header">
-    <h3>IL curve — price ratio vs loss</h3>
-    <p>How impermanent loss grows as the price of Token A diverges from entry, with Token B stable.</p>
+    <h3><span class="t-en">IL curve — price ratio vs loss</span><span class="t-fr">Courbe IL — ratio de prix vs perte</span></h3>
+    <p><span class="t-en">How impermanent loss grows as the price of Token A diverges from entry, with Token B stable.</span><span class="t-fr">Comment la perte impermanente croît au fur et à mesure que le prix du Token A diverge de l'entrée, Token B stable.</span></p>
   </div>
   <div class="chart-wrap">
     <canvas id="ilChart"></canvas>
@@ -291,11 +295,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <div class="back-section">
   <a class="back-link" href="index.html">
     <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 1.5L1.5 9 9 16.5M1.5 9h15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    Back to all tools
+    <span class="t-en">Back to all tools</span><span class="t-fr">Retour aux outils</span>
   </a>
 </div>
 <footer>
-  <div class="ft-tag">Precision. <span>Strategy.</span> Freedom.</div>
+  <div class="ft-tag"><span class="t-en">Precision. <span>Strategy.</span> Freedom.</span><span class="t-fr">Précision. <span>Stratégie.</span> Liberté.</span></div>
   IL = 2√k/(1+k) − 1 · exact constant-product formula · ornytools.xyz<br/>
   <span style="margin-top:8px;display:inline-block">Built by <a href="https://www.linkedin.com/in/xavier-maquin-5576643b9/" target="_blank" rel="noopener" style="color:var(--aqua);text-decoration:none;font-weight:600">Xavier Maquin</a></span>
 </footer>
@@ -462,6 +466,9 @@ function calcIL() {
 
 ['ilA0','ilA1','ilB0','ilB1','ilDeposit','ilFeeApr','ilDays'].forEach(id => $(id).addEventListener('input', calcIL));
 calcIL();
+
+window.onLangChange = function(l) { if(typeof calcIL==='function') calcIL(); };
 </script>
+<script src="lang.js"></script>
 </body>
 </html>

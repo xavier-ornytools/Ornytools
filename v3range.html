@@ -186,14 +186,18 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <img class="nav-logo" src="logo.png" alt="OrnyTools"/>
   <div>
     <div class="nav-brand">Orny<span class="dot">Tools</span></div>
-    <div class="nav-tag">V3 Range Optimizer</div>
+    <div class="nav-tag"><span class="t-en">V3 Range Optimizer</span><span class="t-fr">Calculateur de Plage V3</span></div>
   </div>
-  <a href="index.html" class="nav-home">← All tools</a>
+  <a href="index.html" class="nav-home"><span class="t-en">← All tools</span><span class="t-fr">← Tous les outils</span></a>
+  <div class="lang-switch" style="margin-left:8px">
+    <button id="btnEN" class="lang-btn active" onclick="setLang('en')">EN</button>
+    <button id="btnFR" class="lang-btn" onclick="setLang('fr')">FR</button>
+  </div>
 </nav>
 
 <div class="page-hero">
-  <div class="eyebrow">Concentrated Liquidity · Uniswap V3 / Algebra / Camelot</div>
-  <h1>What is the <em>real efficiency</em><br>of this LP range?</h1>
+  <div class="eyebrow"><span class="t-en">Concentrated Liquidity · Uniswap V3 / Algebra / Camelot</span><span class="t-fr">Liquidité Concentrée · Uniswap V3 / Algebra / Camelot</span></div>
+  <h1><span class="t-en">What is the <em>real efficiency</em><br>of this LP range?</span><span class="t-fr">Quelle est la <em>vraie efficacité</em><br>de cette plage LP ?</span></h1>
   <p>Capital efficiency multiplier vs v2, exact token split, IL curve and Orny's verdict on your range width.</p>
 </div>
 
@@ -201,7 +205,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
   <!-- INPUT CARD -->
   <div class="input-card">
-    <div class="ic-title">Pool & Range</div>
+    <div class="ic-title"><span class="t-en">Pool & Range</span><span class="t-fr">Pool & Plage</span></div>
 
     <div class="preset-grid" id="presetGrid">
       <button class="preset-btn active" data-preset="eth-usdc-5">
@@ -219,29 +223,29 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
 
     <div class="field">
-      <label>Current Price <span id="priceUnit">USDC per ETH</span></label>
+      <label><span class="t-en">Current Price</span><span class="t-fr">Prix actuel</span> <span id="priceUnit">USDC per ETH</span></label>
       <input type="number" id="inputPc" placeholder="3400" min="0" step="any"/>
     </div>
 
     <div class="row-2">
       <div class="field">
-        <label>Min Price (Pa) <span id="pctLow"></span></label>
+        <label><span class="t-en">Min Price (Pa)</span><span class="t-fr">Prix min (Pa)</span> <span id="pctLow"></span></label>
         <input type="number" id="inputPa" placeholder="3000" min="0" step="any"/>
       </div>
       <div class="field">
-        <label>Max Price (Pb) <span id="pctHigh"></span></label>
+        <label><span class="t-en">Max Price (Pb)</span><span class="t-fr">Prix max (Pb)</span> <span id="pctHigh"></span></label>
         <input type="number" id="inputPb" placeholder="3800" min="0" step="any"/>
       </div>
     </div>
 
     <div class="field">
-      <label>Investment <span>USD value</span></label>
+      <label><span class="t-en">Investment</span><span class="t-fr">Investissement</span> <span><span class="t-en">USD value</span><span class="t-fr">valeur USD</span></span></label>
       <input type="number" id="inputV" placeholder="10000" min="0" step="any"/>
     </div>
 
     <!-- RANGE VISUAL -->
     <div class="range-bar-wrap">
-      <div class="range-bar-label">Price range visualization</div>
+      <div class="range-bar-label"><span class="t-en">Price range visualization</span><span class="t-fr">Visualisation de la plage</span></div>
       <div class="range-track" id="rangeTrack">
         <div class="range-fill" id="rangeFill"></div>
         <div class="range-tick low"  id="tickLow"  style="left:15%"></div>
@@ -255,7 +259,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </div>
     </div>
 
-    <button class="analyze-btn" onclick="analyze()">Analyze Range →</button>
+    <button class="analyze-btn" onclick="analyze()"><span class="t-en">Analyze Range →</span><span class="t-fr">Analyser la plage →</span></button>
   </div>
 
   <!-- RESULTS -->
@@ -271,12 +275,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <div class="back-section">
   <a class="back-link" href="index.html">
     <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 1.5L1.5 9 9 16.5M1.5 9h15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    Back to all tools
+    <span class="t-en">Back to all tools</span><span class="t-fr">Retour aux outils</span>
   </a>
 </div>
 
 <footer>
-  <div class="ft-tag">Not all <span>ranges</span> are equal.</div>
+  <div class="ft-tag"><span class="t-en">Not all <span>ranges</span> are equal.</span><span class="t-fr">Toutes les <span>plages</span> ne se valent pas.</span></div>
   Applies to Uniswap V3, Algebra, Camelot V3 and any CLAMM · read-only · ornytools.xyz<br/>
   <span style="margin-top:8px;display:inline-block">Built by <a href="https://www.linkedin.com/in/xavier-maquin-5576643b9/" target="_blank" rel="noopener" style="color:var(--purple);text-decoration:none;font-weight:600">Xavier Maquin</a></span>
 </footer>
@@ -601,6 +605,13 @@ function analyze() {
 // Init with default preset
 updateRangeBar();
 updatePctLabels();
+
+window.onLangChange = function(l) {
+  // re-run analyze only if results have been computed (empty-state not visible)
+  var r = document.getElementById('results');
+  if(r && !r.querySelector('.empty-state') && typeof analyze==='function') analyze();
+};
 </script>
+<script src="lang.js"></script>
 </body>
 </html>

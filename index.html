@@ -485,8 +485,12 @@
   </ul>
   <div class="nav-right">
     <div class="btn-theme" title="Toggle theme">🌙</div>
+    <div class="lang-switch">
+      <button id="btnEN" class="lang-btn active" onclick="setLang('en')">EN</button>
+      <button id="btnFR" class="lang-btn" onclick="setLang('fr')">FR</button>
+    </div>
     <button class="btn-launch" onclick="location.href='optimizer.html'">
-      Launch App 🚀
+      <span class="t-en">Launch App 🚀</span><span class="t-fr">Lancer l'App 🚀</span>
     </button>
   </div>
 </nav>
@@ -498,18 +502,18 @@
 
     <!-- Left -->
     <div class="hero-left">
-      <div class="hero-tag">⚡ DeFi Intelligence Platform</div>
+      <div class="hero-tag"><span class="t-en">⚡ DeFi Intelligence Platform</span><span class="t-fr">⚡ Plateforme DeFi</span></div>
       <h1 class="hero-h1">
         The DeFi
-        <span class="blue">Decision Engine</span>
+        <span class="blue"><span class="t-en">Decision Engine</span><span class="t-fr">Moteur de Décision</span></span>
       </h1>
-      <p class="hero-sub">Advanced calculators and risk tools that turn DeFi complexity into clear actions.</p>
+      <p class="hero-sub"><span class="t-en">Advanced calculators and risk tools that turn DeFi complexity into clear actions.</span><span class="t-fr">Calculateurs avancés et outils de risque qui transforment la complexité DeFi en décisions claires.</span></p>
       <div class="hero-ctas">
         <button class="btn-hero-primary" onclick="location.href='optimizer.html'">
-          🚀 Launch Tools
+          <span class="t-en">🚀 Launch Tools</span><span class="t-fr">🚀 Lancer les Outils</span>
         </button>
         <button class="btn-hero-outline" onclick="document.getElementById('tools').scrollIntoView({behavior:'smooth'})">
-          Explore All Tools
+          <span class="t-en">Explore All Tools</span><span class="t-fr">Explorer les Outils</span>
         </button>
       </div>
       <div class="hero-proof">
@@ -520,14 +524,14 @@
           <div class="av" style="background:#d97706">+</div>
         </div>
         <div class="proof-txt">
-          <strong>Join 25,000+ DeFi users</strong>
-          making smarter decisions every day.
+          <strong><span class="t-en">Join 25,000+ DeFi users</span><span class="t-fr">Rejoins 25 000+ utilisateurs DeFi</span></strong>
+          <span class="t-en">making smarter decisions every day.</span><span class="t-fr">qui prennent de meilleures décisions.</span>
         </div>
       </div>
       <div class="hero-badges">
         <div class="hbadge">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-          Secure
+          <span class="t-en">Secure</span><span class="t-fr">Sécurisé</span>
         </div>
         <div class="hbadge">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
@@ -543,7 +547,7 @@
     <!-- Right: mascot + floating stats -->
     <div class="hero-right">
       <div class="hero-img-wrap">
-        <img src="orny-banner.png" alt="OrnyTools — DeFi Decision Engine" />
+        <img src="orny-command.png" alt="OrnyTools — Centre de Commandement DeFi" />
         <div class="stat-float sf-tvl">
           <div class="sf-label">Total Value Locked (TVL)</div>
           <div class="sf-val">$82.4B</div>
@@ -573,35 +577,35 @@
 <!-- ════════════════════════════ INTENT ════════════════════════════ -->
 <section class="intent-section">
   <div class="sec-icon">⚙️</div>
-  <h2 class="sec-title">What are you trying to do today?</h2>
-  <p class="sec-sub">Choose your objective, we'll help you make the right decision.</p>
+  <h2 class="sec-title"><span class="t-en">What are you trying to do today?</span><span class="t-fr">Que souhaitez-vous faire aujourd'hui ?</span></h2>
+  <p class="sec-sub"><span class="t-en">Choose your objective, we'll help you make the right decision.</span><span class="t-fr">Choisissez votre objectif, nous vous aidons à décider.</span></p>
   <div class="intent-grid">
     <div class="intent-card" onclick="location.href='optimizer.html'">
       <div class="intent-ico" style="background:#eff6ff">🔄</div>
       <div class="intent-pre">I want to</div>
       <div class="intent-title">Trade</div>
-      <div class="intent-desc">Find the optimal trade size and minimize slippage</div>
+      <div class="intent-desc"><span class="t-en">Find the optimal trade size and minimize slippage</span><span class="t-fr">Trouvez la taille optimale et minimisez le slippage</span></div>
       <div class="intent-arrow">→</div>
     </div>
     <div class="intent-card" onclick="location.href='il-calculator.html'">
       <div class="intent-ico" style="background:#f0fdf4">💧</div>
       <div class="intent-pre">I want to</div>
       <div class="intent-title">Provide LP</div>
-      <div class="intent-desc">Simulate impermanent loss and optimize returns</div>
+      <div class="intent-desc"><span class="t-en">Simulate impermanent loss and optimize returns</span><span class="t-fr">Simulez la perte impermanente et optimisez vos rendements</span></div>
       <div class="intent-arrow">→</div>
     </div>
     <div class="intent-card" onclick="location.href='leverage.html'">
       <div class="intent-ico" style="background:#fdf4ff">📈</div>
       <div class="intent-pre">I want to</div>
       <div class="intent-title">Leverage</div>
-      <div class="intent-desc">Maximize yield with safe leverage strategies</div>
+      <div class="intent-desc"><span class="t-en">Maximize yield with safe leverage strategies</span><span class="t-fr">Maximisez le rendement avec des stratégies de levier sûres</span></div>
       <div class="intent-arrow">→</div>
     </div>
     <div class="intent-card" onclick="location.href='liquidation.html'">
       <div class="intent-ico" style="background:#fff7ed">🏛️</div>
       <div class="intent-pre">I want to</div>
       <div class="intent-title">Borrow</div>
-      <div class="intent-desc">Understand liquidation risk and safe borrowing limits</div>
+      <div class="intent-desc"><span class="t-en">Understand liquidation risk and safe borrowing limits</span><span class="t-fr">Comprenez le risque de liquidation et vos limites d'emprunt</span></div>
       <div class="intent-arrow">→</div>
     </div>
   </div>
@@ -612,9 +616,9 @@
   <div class="tools-hd">
     <div class="tools-hd-left">
       <span style="font-size:1.25rem">⚡</span>
-      <h2>Powerful tools. Clear decisions.</h2>
+      <h2><span class="t-en">Powerful tools. Clear decisions.</span><span class="t-fr">Des outils puissants. Des décisions claires.</span></h2>
     </div>
-    <a href="#tool" class="view-all" onclick="document.getElementById('tool').scrollIntoView({behavior:'smooth'});return false;">View all tools →</a>
+    <a href="#tool" class="view-all" onclick="document.getElementById('tool').scrollIntoView({behavior:'smooth'});return false;"><span class="t-en">View all tools →</span><span class="t-fr">Voir tous les outils →</span></a>
   </div>
   <div class="tools-grid">
 
@@ -623,11 +627,11 @@
         <div class="tc-ico" style="background:#eff6ff">🔄</div>
         <div class="tc-meta">
           <h3>Trade Optimizer</h3>
-          <p>Find the mathematically optimal trade size based on AMM curve, fees, and slippage.</p>
+          <p><span class="t-en">Find the mathematically optimal trade size based on AMM curve, fees, and slippage.</span><span class="t-fr">Trouvez la taille de trade optimale mathématiquement selon la courbe AMM, les frais et le slippage.</span></p>
         </div>
         <span class="tc-badge badge-best">BEST TRADES</span>
       </div>
-      <button class="open-tool" onclick="location.href='optimizer.html'">Open Tool →</button>
+      <button class="open-tool" onclick="location.href='optimizer.html'"><span class="t-en">Open Tool →</span><span class="t-fr">Ouvrir l'outil →</span></button>
     </div>
 
     <div class="tool-card">
@@ -635,10 +639,10 @@
         <div class="tc-ico" style="background:#fdf4ff">📉</div>
         <div class="tc-meta">
           <h3>IL Calculator</h3>
-          <p>Calculate impermanent loss, fees earned, and total PnL for any price range.</p>
+          <p><span class="t-en">Calculate impermanent loss, fees earned, and total PnL for any price range.</span><span class="t-fr">Calculez la perte impermanente, les frais gagnés et le PnL total pour n'importe quelle plage de prix.</span></p>
         </div>
       </div>
-      <button class="open-tool" onclick="location.href='il-calculator.html'">Open Tool →</button>
+      <button class="open-tool" onclick="location.href='il-calculator.html'"><span class="t-en">Open Tool →</span><span class="t-fr">Ouvrir l'outil →</span></button>
     </div>
 
     <div class="tool-card">
@@ -646,11 +650,11 @@
         <div class="tc-ico" style="background:#fff7ed">🛡️</div>
         <div class="tc-meta">
           <h3>Liquidation Calculator</h3>
-          <p>Know your exact liquidation price and how much buffer you actually have.</p>
+          <p><span class="t-en">Know your exact liquidation price and how much buffer you actually have.</span><span class="t-fr">Connaissez votre prix de liquidation exact et votre marge de sécurité.</span></p>
         </div>
         <span class="tc-badge badge-risk">RISK</span>
       </div>
-      <button class="open-tool" onclick="location.href='liquidation.html'">Open Tool →</button>
+      <button class="open-tool" onclick="location.href='liquidation.html'"><span class="t-en">Open Tool →</span><span class="t-fr">Ouvrir l'outil →</span></button>
     </div>
 
     <div class="tool-card">
@@ -658,10 +662,10 @@
         <div class="tc-ico" style="background:#f0fdf4">💰</div>
         <div class="tc-meta">
           <h3>Leverage Calculator</h3>
-          <p>Calculate real APY, borrow costs, and find the optimal leverage for your strategy.</p>
+          <p><span class="t-en">Calculate real APY, borrow costs, and find the optimal leverage for your strategy.</span><span class="t-fr">Calculez l'APY réel, les coûts d'emprunt et le levier optimal pour votre stratégie.</span></p>
         </div>
       </div>
-      <button class="open-tool" onclick="location.href='leverage.html'">Open Tool →</button>
+      <button class="open-tool" onclick="location.href='leverage.html'"><span class="t-en">Open Tool →</span><span class="t-fr">Ouvrir l'outil →</span></button>
     </div>
 
     <div class="tool-card">
@@ -669,10 +673,10 @@
         <div class="tc-ico" style="background:#eff6ff">📐</div>
         <div class="tc-meta">
           <h3>V3 Range Calculator</h3>
-          <p>Optimize your Uniswap V3 range to maximize fee capture vs impermanent loss.</p>
+          <p><span class="t-en">Optimize your Uniswap V3 range to maximize fee capture vs impermanent loss.</span><span class="t-fr">Optimisez votre plage Uniswap V3 pour maximiser les frais vs la perte impermanente.</span></p>
         </div>
       </div>
-      <button class="open-tool" onclick="location.href='v3range.html'">Open Tool →</button>
+      <button class="open-tool" onclick="location.href='v3range.html'"><span class="t-en">Open Tool →</span><span class="t-fr">Ouvrir l'outil →</span></button>
     </div>
 
     <div class="tool-card">
@@ -680,10 +684,10 @@
         <div class="tc-ico" style="background:#fdf4ff">⚖️</div>
         <div class="tc-meta">
           <h3>Yield Comparator</h3>
-          <p>Compare yields across protocols to find the best risk-adjusted opportunities.</p>
+          <p><span class="t-en">Compare yields across protocols to find the best risk-adjusted opportunities.</span><span class="t-fr">Comparez les rendements entre protocoles pour trouver les meilleures opportunités ajustées au risque.</span></p>
         </div>
       </div>
-      <button class="open-tool" onclick="location.href='yield.html'">Open Tool →</button>
+      <button class="open-tool" onclick="location.href='yield.html'"><span class="t-en">Open Tool →</span><span class="t-fr">Ouvrir l'outil →</span></button>
     </div>
 
     <div class="tool-card">
@@ -691,10 +695,10 @@
         <div class="tc-ico" style="background:#f0fdf4">🪙</div>
         <div class="tc-meta">
           <h3>Stablecoin Analyzer</h3>
-          <p>Compare stablecoins by peg mechanism, yield, risk profile and protocol backing.</p>
+          <p><span class="t-en">Compare stablecoins by peg mechanism, yield, risk profile and protocol backing.</span><span class="t-fr">Comparez les stablecoins par mécanisme de peg, rendement, profil de risque et protocole sous-jacent.</span></p>
         </div>
       </div>
-      <button class="open-tool" onclick="location.href='stablecoin.html'">Open Tool →</button>
+      <button class="open-tool" onclick="location.href='stablecoin.html'"><span class="t-en">Open Tool →</span><span class="t-fr">Ouvrir l'outil →</span></button>
     </div>
 
     <div class="tool-card">
@@ -702,10 +706,10 @@
         <div class="tc-ico" style="background:#fff7ed">🔥</div>
         <div class="tc-meta">
           <h3>DeFi Waste Detector</h3>
-          <p>How much money are you wasting in DeFi? See the numbers most traders never see.</p>
+          <p><span class="t-en">How much money are you wasting in DeFi? See the numbers most traders never see.</span><span class="t-fr">Combien perdez-vous en DeFi ? Les chiffres que la plupart des traders ignorent.</span></p>
         </div>
       </div>
-      <button class="open-tool" onclick="location.href='waste.html'">Open Tool →</button>
+      <button class="open-tool" onclick="location.href='waste.html'"><span class="t-en">Open Tool →</span><span class="t-fr">Ouvrir l'outil →</span></button>
     </div>
 
     <div class="tool-card">
@@ -713,10 +717,10 @@
         <div class="tc-ico" style="background:#eef2ff">🏦</div>
         <div class="tc-meta">
           <h3>Aave V3 Calculator</h3>
-          <p>Health factor, liquidation price, borrow power — with FR/EN toggle and stress test.</p>
+          <p><span class="t-en">Health factor, liquidation price, borrow power — with FR/EN toggle and stress test.</span><span class="t-fr">Facteur de santé, prix de liquidation, pouvoir d'emprunt — avec toggle FR/EN et test de stress.</span></p>
         </div>
       </div>
-      <button class="open-tool" onclick="location.href='aave.html'">Open Tool →</button>
+      <button class="open-tool" onclick="location.href='aave.html'"><span class="t-en">Open Tool →</span><span class="t-fr">Ouvrir l'outil →</span></button>
     </div>
 
     <div class="tool-card">
@@ -738,50 +742,50 @@
   <div class="why-grid">
 
     <div class="why-card">
-      <div class="wc-hd"><span>⚙️</span><h3>Why OrnyTools exists</h3></div>
+      <div class="wc-hd"><span>⚙️</span><h3><span class="t-en">Why OrnyTools exists</span><span class="t-fr">Pourquoi OrnyTools existe</span></h3></div>
       <div class="flow-row">
         <div class="flow-item">
           <div class="flow-ico">🦙</div>
           <div class="flow-name">DeFiLlama</div>
-          <div class="flow-desc">shows data</div>
+          <div class="flow-desc"><span class="t-en">shows data</span><span class="t-fr">montre les données</span></div>
         </div>
         <div class="flow-arrow">→</div>
         <div class="flow-item">
           <div class="flow-ico">🏦</div>
           <div class="flow-name">DeBank</div>
-          <div class="flow-desc">shows wallets</div>
+          <div class="flow-desc"><span class="t-en">shows wallets</span><span class="t-fr">montre les wallets</span></div>
         </div>
         <div class="flow-arrow">→</div>
         <div class="flow-item">
           <div class="flow-ico">🔥</div>
           <div class="flow-name">De.Fi</div>
-          <div class="flow-desc">shows risks</div>
+          <div class="flow-desc"><span class="t-en">shows risks</span><span class="t-fr">montre les risques</span></div>
         </div>
         <div class="flow-arrow">→</div>
         <div class="flow-item active">
           <div class="flow-ico">🧠</div>
           <div class="flow-name">OrnyTools</div>
-          <div class="flow-desc">helps you decide</div>
+          <div class="flow-desc"><span class="t-en">helps you decide</span><span class="t-fr">vous aide à décider</span></div>
         </div>
       </div>
     </div>
 
     <div class="why-card">
-      <div class="wc-hd"><span>💡</span><h3>Orny's Daily Insight</h3></div>
+      <div class="wc-hd"><span>💡</span><h3><span class="t-en">Orny's Daily Insight</span><span class="t-fr">Insight du Jour d'Orny</span></h3></div>
       <div class="insight-quote">
         "Trading a $50 swap in a $50M pool can cost more in gas than in slippage."
       </div>
-      <div class="insight-foot">Most traders never calculate that.</div>
+      <div class="insight-foot"><span class="t-en">Most traders never calculate that.</span><span class="t-fr">La plupart des traders ne calculent jamais ça.</span></div>
     </div>
 
     <div class="why-card">
-      <div class="wc-hd"><span>🗺️</span><h3>Roadmap</h3></div>
+      <div class="wc-hd"><span>🗺️</span><h3><span class="t-en">Roadmap</span><span class="t-fr">Feuille de Route</span></h3></div>
       <div class="road-list">
-        <div class="road-item"><div class="rd rd-done"></div><div class="rd-name">Trade Optimizer</div><div class="rd-status">Completed</div></div>
-        <div class="road-item"><div class="rd rd-done"></div><div class="rd-name">LP Simulator</div><div class="rd-status">Completed</div></div>
-        <div class="road-item"><div class="rd rd-active"></div><div class="rd-name">Risk Engine</div><div class="rd-status active">In Progress</div></div>
-        <div class="road-item"><div class="rd rd-soon"></div><div class="rd-name">Yield Comparator</div><div class="rd-status">Coming Soon</div></div>
-        <div class="road-item"><div class="rd rd-soon"></div><div class="rd-name">DeFi Decision AI</div><div class="rd-status">Future</div></div>
+        <div class="road-item"><div class="rd rd-done"></div><div class="rd-name">Trade Optimizer</div><div class="rd-status"><span class="t-en">Completed</span><span class="t-fr">Terminé</span></div></div>
+        <div class="road-item"><div class="rd rd-done"></div><div class="rd-name">LP Simulator</div><div class="rd-status"><span class="t-en">Completed</span><span class="t-fr">Terminé</span></div></div>
+        <div class="road-item"><div class="rd rd-active"></div><div class="rd-name">Risk Engine</div><div class="rd-status active"><span class="t-en">In Progress</span><span class="t-fr">En cours</span></div></div>
+        <div class="road-item"><div class="rd rd-soon"></div><div class="rd-name">Yield Comparator</div><div class="rd-status"><span class="t-en">Coming Soon</span><span class="t-fr">Bientôt</span></div></div>
+        <div class="road-item"><div class="rd rd-soon"></div><div class="rd-name">DeFi Decision AI</div><div class="rd-status"><span class="t-en">Future</span><span class="t-fr">Futur</span></div></div>
       </div>
     </div>
 
@@ -794,25 +798,25 @@
     <div class="stat-item">
       <div class="stat-icon">👤</div>
       <div class="stat-num">25K+</div>
-      <div class="stat-lbl">Active Users</div>
+      <div class="stat-lbl"><span class="t-en">Active Users</span><span class="t-fr">Utilisateurs Actifs</span></div>
     </div>
     <div class="stat-item">
       <div class="stat-icon">🧮</div>
       <div class="stat-num">100K+</div>
-      <div class="stat-lbl">Calculations Run</div>
+      <div class="stat-lbl"><span class="t-en">Calculations Run</span><span class="t-fr">Calculs Effectués</span></div>
     </div>
     <div class="stat-item">
       <div class="stat-icon">🔗</div>
       <div class="stat-num">50+</div>
-      <div class="stat-lbl">DeFi Protocols</div>
+      <div class="stat-lbl"><span class="t-en">DeFi Protocols</span><span class="t-fr">Protocoles DeFi</span></div>
     </div>
     <div class="stat-item">
       <div class="stat-icon">🛡️</div>
       <div class="stat-num">99.9%</div>
-      <div class="stat-lbl">Uptime</div>
+      <div class="stat-lbl"><span class="t-en">Uptime</span><span class="t-fr">Disponibilité</span></div>
     </div>
     <div class="trusted-col">
-      <div class="trusted-lbl">Trusted by DeFi users worldwide</div>
+      <div class="trusted-lbl"><span class="t-en">Trusted by DeFi users worldwide</span><span class="t-fr">Utilisé par des investisseurs DeFi dans le monde entier</span></div>
       <div class="trusted-logos">
         <div class="tl">Ξ</div>
         <div class="tl">🦄</div>
@@ -837,7 +841,7 @@
 
       <!-- POOL LOADER -->
       <div class="card fetch-card full">
-        <h2>Pool Analysis</h2>
+        <h2><span class="t-en">Pool Analysis</span><span class="t-fr">Analyse de Pool</span></h2>
         <div class="fetch-row">
           <select id="net">
             <option value="eth">Ethereum</option>
@@ -863,7 +867,7 @@
 
       <!-- PARAMETERS -->
       <div class="card">
-        <h2>Pool Parameters</h2>
+        <h2><span class="t-en">Pool Parameters</span><span class="t-fr">Paramètres du Pool</span></h2>
         <div class="field">
           <label>Pair</label>
           <input type="text" id="pairName" placeholder="e.g. USDC / WETH" value="USDC / WETH" />
@@ -887,7 +891,7 @@
 
       <!-- HOW IT WORKS -->
       <div class="card how">
-        <h2>How it works</h2>
+        <h2><span class="t-en">How it works</span><span class="t-fr">Comment ça marche</span></h2>
         <p>Gas is a fixed cost — it kills small trades. Slippage grows with size — it kills large ones. Between both lies a precise sweet spot.</p>
         <p>OrnyTools solves √(2 × gas × TVL) live, using real blockchain data, to give you that number before every trade.</p>
       </div>
@@ -924,7 +928,7 @@
 
       <!-- MY AMOUNT -->
       <div class="card full hidden" id="mySection">
-        <h2>Simulate my trade</h2>
+        <h2><span class="t-en">Simulate my trade</span><span class="t-fr">Simuler mon trade</span></h2>
         <div class="myrow">
           <div class="myinput">
             <label>I want to invest ($)</label>
@@ -941,13 +945,13 @@
 
       <!-- CHART -->
       <div class="card full hidden" id="chartSection">
-        <h2>Cost curve — The U-shape</h2>
+        <h2><span class="t-en">Cost curve — The U-shape</span><span class="t-fr">Courbe de coût — La forme en U</span></h2>
         <div class="chart-wrap"><canvas id="chart"></canvas></div>
       </div>
 
       <!-- SLIDER -->
       <div class="card full hidden" id="sliderSection">
-        <h2>Interactive explorer</h2>
+        <h2><span class="t-en">Interactive explorer</span><span class="t-fr">Explorateur interactif</span></h2>
         <div class="slider-head">
           <span>Trade amount</span>
           <strong id="sliderVal">$50</strong>
@@ -963,7 +967,7 @@
 
       <!-- COMPARATOR -->
       <div class="card full hidden" id="cmpSection">
-        <h2>Scenario comparison</h2>
+        <h2><span class="t-en">Scenario comparison</span><span class="t-fr">Comparaison de scénarios</span></h2>
         <div id="cmpRows"></div>
       </div>
 
@@ -992,9 +996,9 @@
   <div class="banner-inner">
     <img src="orny-banner.png" alt="OrnyTools — Patience. Strategy. Freedom." class="banner-img" />
     <div class="banner-text">
-      <div class="banner-tag">Built for DeFi traders</div>
-      <h2 class="banner-title">Patience.<br>Strategy.<br>Freedom.</h2>
-      <p class="banner-sub">Every basis point saved compounds. Most traders focus on entry price — few think about the cost of the transaction itself. OrnyTools fills that gap: one number, derived live from the blockchain, so you stop leaving money on the table before the trade even starts. The math is simple. The edge is real.</p>
+      <div class="banner-tag"><span class="t-en">Built for DeFi traders</span><span class="t-fr">Conçu pour les traders DeFi</span></div>
+      <h2 class="banner-title"><span class="t-en">Patience.<br>Strategy.<br>Freedom.</span><span class="t-fr">Patience.<br>Stratégie.<br>Liberté.</span></h2>
+      <p class="banner-sub"><span class="t-en">Every basis point saved compounds. Most traders focus on entry price — few think about the cost of the transaction itself. OrnyTools fills that gap: one number, derived live from the blockchain, so you stop leaving money on the table before the trade even starts. The math is simple. The edge is real.</span><span class="t-fr">Chaque point de base économisé se compose. La plupart des traders se concentrent sur le prix d'entrée — peu pensent au coût de la transaction elle-même. OrnyTools comble ce fossé : un chiffre, dérivé en direct de la blockchain, pour que vous arrêtiez de laisser de l'argent sur la table avant même de trader. Le calcul est simple. L'avantage est réel.</span></p>
     </div>
   </div>
 </section>
@@ -1008,7 +1012,7 @@
           <img src="logo.png" alt="OrnyTools" />
           <span>ORNY<em>TOOL</em></span>
         </div>
-        <p class="fbrand-desc">The DeFi Decision Engine.<br>Make better decisions. Every time.</p>
+        <p class="fbrand-desc"><span class="t-en">The DeFi Decision Engine.<br>Make better decisions. Every time.</span><span class="t-fr">Le Moteur de Décision DeFi.<br>Prenez de meilleures décisions. À chaque fois.</span></p>
         <div class="fbrand-socials">
           <div class="fsoc">𝕏</div>
           <div class="fsoc">DC</div>
@@ -1017,7 +1021,7 @@
         </div>
       </div>
       <div class="fcol">
-        <h4>Product</h4>
+        <h4><span class="t-en">Product</span><span class="t-fr">Produit</span></h4>
         <ul>
           <li><a href="#">All Tools</a></li>
           <li><a href="#">Risk Engine</a></li>
@@ -1026,7 +1030,7 @@
         </ul>
       </div>
       <div class="fcol">
-        <h4>Resources</h4>
+        <h4><span class="t-en">Resources</span><span class="t-fr">Ressources</span></h4>
         <ul>
           <li><a href="#">Blog</a></li>
           <li><a href="#">Guides</a></li>
@@ -1035,7 +1039,7 @@
         </ul>
       </div>
       <div class="fcol">
-        <h4>Company</h4>
+        <h4><span class="t-en">Company</span><span class="t-fr">Société</span></h4>
         <ul>
           <li><a href="#">About</a></li>
           <li><a href="#">Contact</a></li>
@@ -1044,8 +1048,8 @@
         </ul>
       </div>
       <div>
-        <h4 style="font-size:.69rem;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;color:var(--text);margin-bottom:14px">Stay Updated</h4>
-        <p class="fnews-desc">Get new tools, insights, and updates delivered to your inbox.</p>
+        <h4 style="font-size:.69rem;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;color:var(--text);margin-bottom:14px"><span class="t-en">Stay Updated</span><span class="t-fr">Restez informé</span></h4>
+        <p class="fnews-desc"><span class="t-en">Get new tools, insights, and updates delivered to your inbox.</span><span class="t-fr">Recevez les nouveaux outils, insights et mises à jour dans votre boîte mail.</span></p>
         <div class="news-form">
           <input type="email" placeholder="Enter your email" />
           <button>→</button>
@@ -1053,7 +1057,7 @@
       </div>
     </div>
     <div class="footer-bottom">
-      © 2024 OrnyTool. All rights reserved. · Live data via <a href="https://www.geckoterminal.com">GeckoTerminal</a> & public RPCs · <a href="https://ornytools.xyz">ornytools.xyz</a>
+      <span class="t-en">© 2024 OrnyTool. All rights reserved.</span><span class="t-fr">© 2024 OrnyTool. Tous droits réservés.</span> · Live data via <a href="https://www.geckoterminal.com">GeckoTerminal</a> & public RPCs · <a href="https://ornytools.xyz">ornytools.xyz</a>
     </div>
   </div>
 </footer>
@@ -1222,5 +1226,6 @@
   function fmt(n){if(n>=1000000)return'$'+(n/1000000).toFixed(1)+'M';if(n>=1000)return'$'+(n/1000).toFixed(1)+'k';if(n>=10)return'$'+Math.round(n);return'$'+n.toFixed(2);}
   function pct(n){return n.toFixed(2)+'%';}
 </script>
+<script src="lang.js"></script>
 </body>
 </html>

@@ -228,26 +228,35 @@
 <body>
 <div class="page">
 
+  <!-- NAVBAR -->
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;flex-wrap:wrap;gap:8px">
+    <a href="../index.html" style="font-size:.82rem;font-weight:600;color:#6b7280;text-decoration:none;padding:6px 12px;border:1px solid #e2e8f0;border-radius:7px;transition:.15s" onmouseover="this.style.borderColor='#6366f1';this.style.color='#6366f1'" onmouseout="this.style.borderColor='#e2e8f0';this.style.color='#6b7280'"><span class="t-en">← All tools</span><span class="t-fr">← Tous les outils</span></a>
+    <div style="display:flex;gap:6px">
+      <button id="btnEN" class="lang-btn active" onclick="setLang('en')">EN</button>
+      <button id="btnFR" class="lang-btn" onclick="setLang('fr')">FR</button>
+    </div>
+  </div>
+
   <!-- HEADER -->
   <header>
-    <div class="badge">Protocole · Lending / Borrowing</div>
+    <div class="badge"><span class="t-fr">Protocole · Lending / Borrowing</span><span class="t-en">Protocol · Lending / Borrowing</span></div>
     <h1>Aave V3</h1>
-    <p>Le protocole de prêt décentralisé de référence. Dépose des cryptos pour générer des intérêts, emprunte en déposant un collatéral — sans KYC, 24h/24, sur 10+ chaînes.</p>
+    <p><span class="t-fr">Le protocole de prêt décentralisé de référence. Dépose des cryptos pour générer des intérêts, emprunte en déposant un collatéral — sans KYC, 24h/24, sur 10+ chaînes.</span><span class="t-en">The leading decentralized lending protocol. Deposit crypto to earn interest, borrow by depositing collateral — no KYC, 24/7, on 10+ chains.</span></p>
     <div class="meta">
       <div class="meta-item">
-        <span class="meta-label">Version</span>
+        <span class="meta-label"><span class="t-fr">Version</span><span class="t-en">Version</span></span>
         <span class="meta-value">V3 (2022)</span>
       </div>
       <div class="meta-item">
-        <span class="meta-label">Chaînes</span>
+        <span class="meta-label"><span class="t-fr">Chaînes</span><span class="t-en">Chains</span></span>
         <span class="meta-value">Ethereum, Arbitrum, Polygon…</span>
       </div>
       <div class="meta-item">
-        <span class="meta-label">Token governance</span>
+        <span class="meta-label"><span class="t-fr">Token governance</span><span class="t-en">Governance token</span></span>
         <span class="meta-value">AAVE</span>
       </div>
       <div class="meta-item">
-        <span class="meta-label">Token de dépôt</span>
+        <span class="meta-label"><span class="t-fr">Token de dépôt</span><span class="t-en">Deposit token</span></span>
         <span class="meta-value">aTokens (ex : aUSDC)</span>
       </div>
     </div>
@@ -257,25 +266,25 @@
   <div class="kpi-strip">
     <div class="kpi">
       <div class="kpi-value">~$15B</div>
-      <div class="kpi-label">TVL total (toutes chaînes)</div>
+      <div class="kpi-label"><span class="t-fr">TVL total (toutes chaînes)</span><span class="t-en">Total TVL (all chains)</span></div>
     </div>
     <div class="kpi">
       <div class="kpi-value">10+</div>
-      <div class="kpi-label">blockchains déployées</div>
+      <div class="kpi-label"><span class="t-fr">blockchains déployées</span><span class="t-en">deployed blockchains</span></div>
     </div>
     <div class="kpi">
       <div class="kpi-value">#1</div>
-      <div class="kpi-label">lending DeFi par TVL</div>
+      <div class="kpi-label"><span class="t-fr">lending DeFi par TVL</span><span class="t-en">DeFi lending by TVL</span></div>
     </div>
     <div class="kpi">
       <div class="kpi-value">2017</div>
-      <div class="kpi-label">fondé (ex-ETHLend)</div>
+      <div class="kpi-label"><span class="t-fr">fondé (ex-ETHLend)</span><span class="t-en">founded (ex-ETHLend)</span></div>
     </div>
   </div>
 
   <!-- VUE D'ENSEMBLE -->
   <div class="section">
-    <div class="section-title">Vue d'ensemble</div>
+    <div class="section-title"><span class="t-fr">Vue d'ensemble</span><span class="t-en">Overview</span></div>
     <p>
       Aave est l'équivalent décentralisé d'une banque de prêt : des déposants fournissent des liquidités (ETH, USDC, WBTC…) dans des pools gérés par des smart contracts, et des emprunteurs puisent dans ces pools en déposant un collatéral supérieur à ce qu'ils empruntent.
     </p>
@@ -289,7 +298,7 @@
 
   <!-- FONCTIONNEMENT -->
   <div class="section">
-    <div class="section-title">Fonctionnement</div>
+    <div class="section-title"><span class="t-fr">Fonctionnement</span><span class="t-en">How it works</span></div>
 
     <div class="diagram">
 <span class="hi">DÉPOSANT</span>                        <span class="hi">EMPRUNTEUR</span>
@@ -355,7 +364,7 @@ solde augmente en continu          surveille son <span class="hi">Health Factor<
 
   <!-- FONCTIONNALITÉS V3 -->
   <div class="section">
-    <div class="section-title">Nouveautés Aave V3</div>
+    <div class="section-title"><span class="t-fr">Nouveautés Aave V3</span><span class="t-en">Aave V3 Features</span></div>
     <div class="features-grid">
       <div class="feature-card">
         <div class="feature-name">eMode — Efficiency Mode</div>
@@ -378,30 +387,30 @@ solde augmente en continu          surveille son <span class="hi">Health Factor<
 
   <!-- RISQUES -->
   <div class="section">
-    <div class="section-title">Risques</div>
+    <div class="section-title"><span class="t-fr">Risques</span><span class="t-en">Risks</span></div>
     <ul class="risk-list">
       <li class="risk-item high">
-        <span class="risk-badge">Élevé</span>
-        <div><strong>Liquidation.</strong> Si le prix du collatéral chute brutalement (crash BTC, ETH), le HF peut passer sous 1.0 avant que tu aies le temps de réagir. Une chute de -30% sur WBTC avec un LTV à 70% suffit à déclencher la liquidation.</div>
+        <span class="risk-badge"><span class="t-fr">Élevé</span><span class="t-en">High</span></span>
+        <div><strong><span class="t-fr">Liquidation.</span><span class="t-en">Liquidation.</span></strong> Si le prix du collatéral chute brutalement (crash BTC, ETH), le HF peut passer sous 1.0 avant que tu aies le temps de réagir. Une chute de -30% sur WBTC avec un LTV à 70% suffit à déclencher la liquidation.</div>
       </li>
       <li class="risk-item high">
         <span class="risk-badge">Élevé</span>
         <div><strong>Risque oracle.</strong> Aave utilise Chainlink pour connaître le prix des actifs. Une manipulation ou une panne d'oracle peut provoquer des liquidations artificielles ou permettre des emprunts excessifs.</div>
       </li>
       <li class="risk-item medium">
-        <span class="risk-badge">Moyen</span>
+        <span class="risk-badge"><span class="t-fr">Moyen</span><span class="t-en">Medium</span></span>
         <div><strong>Smart contract risk.</strong> Aave est massivement audité, mais un bug dans les contrats (~$15B de TVL) serait catastrophique. Plusieurs forks d'Aave ont été exploités par le passé.</div>
       </li>
       <li class="risk-item medium">
-        <span class="risk-badge">Moyen</span>
+        <span class="risk-badge"><span class="t-fr">Moyen</span><span class="t-en">Medium</span></span>
         <div><strong>Risque de taux.</strong> Les taux d'emprunt sont variables et peuvent monter fortement en cas de forte demande. Un emprunt rentable à 2% peut devenir coûteux à 8% sans prévenir.</div>
       </li>
       <li class="risk-item medium">
-        <span class="risk-badge">Moyen</span>
+        <span class="risk-badge"><span class="t-fr">Moyen</span><span class="t-en">Medium</span></span>
         <div><strong>Gouvernance.</strong> La DAO peut modifier les paramètres de risque (LTV, seuils de liquidation, actifs acceptés). Un vote malveillant ou une prise de contrôle de la DAO reste théoriquement possible.</div>
       </li>
       <li class="risk-item low">
-        <span class="risk-badge">Faible</span>
+        <span class="risk-badge"><span class="t-fr">Faible</span><span class="t-en">Low</span></span>
         <div><strong>Risque de liquidité.</strong> En cas de stress extrême, le pool peut être temporairement sous-liquide : tu ne peux pas retirer tes dépôts tant que le taux d'utilisation est à 100%. Rare mais possible sur les pools peu profondes.</div>
       </li>
     </ul>
@@ -409,41 +418,41 @@ solde augmente en continu          surveille son <span class="hi">Health Factor<
 
   <!-- CAS D'USAGE -->
   <div class="section">
-    <div class="section-title">Cas d'usage</div>
+    <div class="section-title"><span class="t-fr">Cas d'usage</span><span class="t-en">Use cases</span></div>
     <div class="usecase-grid">
       <div class="usecase">
-        <strong>Yield sur stables</strong>
-        Déposer USDC ou USDT pour toucher ~3–6% APY sans risque de prix. Alternative aux comptes épargne, accessible depuis 1 USDC.
+        <strong><span class="t-fr">Yield sur stables</span><span class="t-en">Yield on stables</span></strong>
+        <span class="t-fr">Déposer USDC ou USDT pour toucher ~3–6% APY sans risque de prix. Alternative aux comptes épargne, accessible depuis 1 USDC.</span><span class="t-en">Deposit USDC or USDT to earn ~3–6% APY with no price risk. Alternative to savings accounts, accessible from 1 USDC.</span>
       </div>
       <div class="usecase">
         <strong>WBTC collateral</strong>
-        Utiliser son BTC tokenisé comme collatéral pour emprunter des stablecoins sans vendre son BTC. Reste exposé à la hausse BTC, obtient des liquidités.
+        <span class="t-fr">Utiliser son BTC tokenisé comme collatéral pour emprunter des stablecoins sans vendre son BTC. Reste exposé à la hausse BTC, obtient des liquidités.</span><span class="t-en">Use tokenized BTC as collateral to borrow stablecoins without selling BTC. Stays exposed to BTC upside while obtaining liquidity.</span>
       </div>
       <div class="usecase">
-        <strong>Levier wstETH</strong>
-        Déposer wstETH, emprunter ETH, wrapper en wstETH, redéposer. Tant que le yield wstETH > coût d'emprunt ETH, la boucle est profitable. Utilisable en eMode (LTV 93%).
+        <strong><span class="t-fr">Levier wstETH</span><span class="t-en">wstETH leverage</span></strong>
+        <span class="t-fr">Déposer wstETH, emprunter ETH, wrapper en wstETH, redéposer. Tant que le yield wstETH > coût d'emprunt ETH, la boucle est profitable. Utilisable en eMode (LTV 93%).</span><span class="t-en">Deposit wstETH, borrow ETH, wrap to wstETH, redeposit. Profitable as long as wstETH yield > ETH borrow cost. Works in eMode (93% LTV).</span>
       </div>
       <div class="usecase">
         <strong>Flash Loan</strong>
-        Emprunt sans collatéral remboursé dans la même transaction. Utilisé pour l'arbitrage, la gestion de position, les liquidations. Coût : 0,05% du montant.
+        <span class="t-fr">Emprunt sans collatéral remboursé dans la même transaction. Utilisé pour l'arbitrage, la gestion de position, les liquidations. Coût : 0,05% du montant.</span><span class="t-en">Uncollateralized loan repaid in the same transaction. Used for arbitrage, position management, liquidations. Cost: 0.05% of the amount.</span>
       </div>
     </div>
 
     <div class="position-box">
-      <div class="pos-title">⚡ Ta position active — Aave V3 Arbitrum</div>
-      <div class="position-row"><span class="pos-key">Collatéral</span><span class="pos-val">WBTC</span></div>
-      <div class="position-row"><span class="pos-key">Dette</span><span class="pos-val">USDT (taux variable)</span></div>
-      <div class="position-row"><span class="pos-key">Réseau</span><span class="pos-val">Arbitrum (frais réduits)</span></div>
-      <div class="position-row"><span class="pos-key">Surveiller</span><span class="pos-val">Health Factor &gt; 1.5 en permanence</span></div>
-      <div class="position-row"><span class="pos-key">Risque principal</span><span class="pos-val">Chute prix WBTC → liquidation</span></div>
+      <div class="pos-title"><span class="t-fr">⚡ Ta position active — Aave V3 Arbitrum</span><span class="t-en">⚡ Your active position — Aave V3 Arbitrum</span></div>
+      <div class="position-row"><span class="pos-key"><span class="t-fr">Collatéral</span><span class="t-en">Collateral</span></span><span class="pos-val">WBTC</span></div>
+      <div class="position-row"><span class="pos-key"><span class="t-fr">Dette</span><span class="t-en">Debt</span></span><span class="pos-val"><span class="t-fr">USDT (taux variable)</span><span class="t-en">USDT (variable rate)</span></span></div>
+      <div class="position-row"><span class="pos-key"><span class="t-fr">Réseau</span><span class="t-en">Network</span></span><span class="pos-val"><span class="t-fr">Arbitrum (frais réduits)</span><span class="t-en">Arbitrum (low fees)</span></span></div>
+      <div class="position-row"><span class="pos-key"><span class="t-fr">Surveiller</span><span class="t-en">Monitor</span></span><span class="pos-val"><span class="t-fr">Health Factor &gt; 1.5 en permanence</span><span class="t-en">Health Factor &gt; 1.5 at all times</span></span></div>
+      <div class="position-row"><span class="pos-key"><span class="t-fr">Risque principal</span><span class="t-en">Main risk</span></span><span class="pos-val"><span class="t-fr">Chute prix WBTC → liquidation</span><span class="t-en">WBTC price drop → liquidation</span></span></div>
     </div>
   </div>
 
   <!-- SOURCES -->
   <div class="section">
-    <div class="section-title">Sources</div>
+    <div class="section-title"><span class="t-fr">Sources</span><span class="t-en">Sources</span></div>
     <ul class="sources">
-      <li><span class="src-label">Documentation officielle</span><a href="https://docs.aave.com" target="_blank">docs.aave.com</a></li>
+      <li><span class="src-label"><span class="t-fr">Documentation officielle</span><span class="t-en">Official documentation</span></span><a href="https://docs.aave.com" target="_blank">docs.aave.com</a></li>
       <li><span class="src-label">Dashboard positions</span><a href="https://app.aave.com" target="_blank">app.aave.com</a></li>
       <li><span class="src-label">Métriques TVL</span><a href="https://defillama.com/protocol/aave-v3" target="_blank">defillama.com/protocol/aave-v3</a></li>
       <li><span class="src-label">Paramètres de risque</span><a href="https://risk.aave.com" target="_blank">risk.aave.com</a></li>
@@ -453,9 +462,10 @@ solde augmente en continu          surveille son <span class="hi">Health Factor<
   </div>
 
   <footer>
-    Généré le 28 mai 2026 · Vault Alyra DeFi · Xavier — Promo Blaise Pascal
+    <span class="t-fr">Généré le 28 mai 2026 · Vault Alyra DeFi · Xavier — Promo Blaise Pascal</span><span class="t-en">Generated May 28, 2026 · Alyra DeFi Vault · Xavier — Promo Blaise Pascal</span>
   </footer>
 
 </div>
+<script src="../lang.js"></script>
 </body>
 </html>

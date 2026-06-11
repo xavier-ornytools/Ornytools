@@ -335,18 +335,27 @@
 <body>
 <div class="page">
 
+  <!-- NAVBAR -->
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;flex-wrap:wrap;gap:8px">
+    <a href="../index.html" style="font-size:.82rem;font-weight:600;color:#6b7280;text-decoration:none;padding:6px 12px;border:1px solid #e2e8f0;border-radius:7px;transition:.15s" onmouseover="this.style.borderColor='#6366f1';this.style.color='#6366f1'" onmouseout="this.style.borderColor='#e2e8f0';this.style.color='#6b7280'"><span class="t-en">← All tools</span><span class="t-fr">← Tous les outils</span></a>
+    <div style="display:flex;gap:6px">
+      <button id="btnEN" class="lang-btn active" onclick="setLang('en')">EN</button>
+      <button id="btnFR" class="lang-btn" onclick="setLang('fr')">FR</button>
+    </div>
+  </div>
+
   <!-- HEADER -->
   <header>
-    <div class="badge">Protocole · Liquid Staking</div>
+    <div class="badge"><span class="t-fr">Protocole · Liquid Staking</span><span class="t-en">Protocol · Liquid Staking</span></div>
     <h1>Lido</h1>
-    <p>Le plus grand protocole de liquid staking sur Ethereum. Stake sans les 32 ETH requis, récupère des récompenses automatiques, reste liquide dans la DeFi.</p>
+    <p><span class="t-fr">Le plus grand protocole de liquid staking sur Ethereum. Stake sans les 32 ETH requis, récupère des récompenses automatiques, reste liquide dans la DeFi.</span><span class="t-en">The largest liquid staking protocol on Ethereum. Stake without the required 32 ETH, earn automatic rewards, stay liquid in DeFi.</span></p>
     <div class="meta">
       <div class="meta-item">
-        <span class="meta-label">Lancé</span>
+        <span class="meta-label"><span class="t-fr">Lancé</span><span class="t-en">Launched</span></span>
         <span class="meta-value">Déc 2020</span>
       </div>
       <div class="meta-item">
-        <span class="meta-label">Chaîne</span>
+        <span class="meta-label"><span class="t-fr">Chaîne</span><span class="t-en">Chain</span></span>
         <span class="meta-value">Ethereum</span>
       </div>
       <div class="meta-item">
@@ -354,7 +363,7 @@
         <span class="meta-value">stETH / wstETH</span>
       </div>
       <div class="meta-item">
-        <span class="meta-label">Gouvernance</span>
+        <span class="meta-label"><span class="t-fr">Gouvernance</span><span class="t-en">Governance</span></span>
         <span class="meta-value">LDO (DAO)</span>
       </div>
     </div>
@@ -364,25 +373,25 @@
   <div class="kpi-strip">
     <div class="kpi">
       <div class="kpi-value">28,6%</div>
-      <div class="kpi-label">du staking ETH total</div>
+      <div class="kpi-label"><span class="t-fr">du staking ETH total</span><span class="t-en">of total ETH staking</span></div>
     </div>
     <div class="kpi">
       <div class="kpi-value">~9,8M</div>
-      <div class="kpi-label">ETH stakés</div>
+      <div class="kpi-label"><span class="t-fr">ETH stakés</span><span class="t-en">ETH staked</span></div>
     </div>
     <div class="kpi">
       <div class="kpi-value">~306k</div>
-      <div class="kpi-label">validateurs actifs</div>
+      <div class="kpi-label"><span class="t-fr">validateurs actifs</span><span class="t-en">active validators</span></div>
     </div>
     <div class="kpi">
       <div class="kpi-value">~3,5%</div>
-      <div class="kpi-label">APR actuel (estimé)</div>
+      <div class="kpi-label"><span class="t-fr">APR actuel (estimé)</span><span class="t-en">current APR (estimated)</span></div>
     </div>
   </div>
 
   <!-- VUE D'ENSEMBLE -->
   <div class="section">
-    <div class="section-title">Vue d'ensemble</div>
+    <div class="section-title"><span class="t-fr">Vue d'ensemble</span><span class="t-en">Overview</span></div>
     <p>
       Staker de l'ETH sur Ethereum requiert exactement 32 ETH (~75 000 € en 2025) et une infrastructure technique permanente. Lido résout ces deux blocages : il mutualise l'ETH de milliers d'utilisateurs, crée des validateurs de 32 ETH opérés par des professionnels sélectionnés, et te restitue les récompenses sous forme d'un token liquide — <code>stETH</code>.
     </p>
@@ -396,7 +405,7 @@
 
   <!-- FONCTIONNEMENT -->
   <div class="section">
-    <div class="section-title">Fonctionnement</div>
+    <div class="section-title"><span class="t-fr">Fonctionnement</span><span class="t-en">How it works</span></div>
     <ol class="steps">
       <li>Tu déposes de l'ETH dans le smart contract Lido (dès 1 Wei, pas de minimum).</li>
       <li>Lido accumule les dépôts et crée des validateurs de 32 ETH sur la Beacon Chain.</li>
@@ -466,12 +475,12 @@
 
   <!-- RISQUES -->
   <div class="section">
-    <div class="section-title">Risques</div>
+    <div class="section-title"><span class="t-fr">Risques</span><span class="t-en">Risks</span></div>
     <ul class="risk-list">
       <li class="risk-item high">
-        <span class="risk-badge">Élevé</span>
+        <span class="risk-badge"><span class="t-fr">Élevé</span><span class="t-en">High</span></span>
         <div>
-          <strong>Centralisation du staking Ethereum.</strong>
+          <strong><span class="t-fr">Centralisation du staking Ethereum.</span><span class="t-en">Ethereum staking centralization.</span></strong>
           Lido contrôle ~28,6% de tout l'ETH staké. Si ce ratio dépasse 33%, Lido pourrait théoriquement influencer la finalité de la Beacon Chain. Risque systémique pour l'ensemble d'Ethereum.
         </div>
       </li>
@@ -483,28 +492,28 @@
         </div>
       </li>
       <li class="risk-item medium">
-        <span class="risk-badge">Moyen</span>
+        <span class="risk-badge"><span class="t-fr">Moyen</span><span class="t-en">Medium</span></span>
         <div>
           <strong>Dépeg stETH/ETH.</strong>
           stETH peut se négocier sous sa valeur théorique en cas de panique (ex. juin 2022, crise Celsius : stETH est tombé à ~0,94 ETH). Le dépeg se résout historiquement avec le temps.
         </div>
       </li>
       <li class="risk-item medium">
-        <span class="risk-badge">Moyen</span>
+        <span class="risk-badge"><span class="t-fr">Moyen</span><span class="t-en">Medium</span></span>
         <div>
           <strong>Risque de gouvernance (DAO).</strong>
           Les détenteurs de LDO peuvent voter des changements de paramètres (frais, node operators). Concentration possible du pouvoir de vote.
         </div>
       </li>
       <li class="risk-item medium">
-        <span class="risk-badge">Moyen</span>
+        <span class="risk-badge"><span class="t-fr">Moyen</span><span class="t-en">Medium</span></span>
         <div>
           <strong>Slashing des node operators.</strong>
           Si un opérateur commet une faute grave (double attestation, hors-ligne prolongé), son ETH staké est partiellement slashé. Lido dispose d'un fonds d'assurance, mais partiel.
         </div>
       </li>
       <li class="risk-item low">
-        <span class="risk-badge">Faible</span>
+        <span class="risk-badge"><span class="t-fr">Faible</span><span class="t-en">Low</span></span>
         <div>
           <strong>Risque de retrait.</strong>
           Depuis Shapella (avril 2023), les retraits sont activés. On peut sortir de stETH → ETH via le marché secondaire ou le mécanisme de retrait natif Lido (délai variable : quelques jours en période de forte demande).
@@ -515,30 +524,30 @@
 
   <!-- CAS D'USAGE -->
   <div class="section">
-    <div class="section-title">Cas d'usage</div>
+    <div class="section-title"><span class="t-fr">Cas d'usage</span><span class="t-en">Use cases</span></div>
     <div class="usecase-grid">
       <div class="usecase">
-        <strong>Staking passif</strong>
+        <strong><span class="t-fr">Staking passif</span><span class="t-en">Passive staking</span></strong>
         Stake n'importe quelle quantité d'ETH, reçois ~3,5% APR sans effort technique ni lock-up.
       </div>
       <div class="usecase">
         <strong>Collateral Aave</strong>
-        Déposer wstETH sur Aave V3 comme collateral, emprunter des stablecoins. La position génère du yield pendant que l'emprunt tourne.
+        <span class="t-fr">Déposer wstETH sur Aave V3 comme collateral, emprunter des stablecoins. La position génère du yield pendant que l'emprunt tourne.</span><span class="t-en">Deposit wstETH on Aave V3 as collateral, borrow stablecoins. The position generates yield while the loan runs.</span>
       </div>
       <div class="usecase">
-        <strong>Liquidity providing</strong>
-        Fournir de la liquidité dans des pools stETH/ETH (Curve, Balancer) pour cumuler frais de swap + récompenses Lido.
+        <strong><span class="t-fr">Liquidity providing</span><span class="t-en">Liquidity providing</span></strong>
+        <span class="t-fr">Fournir de la liquidité dans des pools stETH/ETH (Curve, Balancer) pour cumuler frais de swap + récompenses Lido.</span><span class="t-en">Provide liquidity in stETH/ETH pools (Curve, Balancer) to accumulate swap fees + Lido rewards.</span>
       </div>
       <div class="usecase">
-        <strong>Levier sur ETH</strong>
-        Boucle wstETH → emprunt ETH → wrap en wstETH → redépôt. Amplifie l'exposition ETH avec un coût d'emprunt inférieur au yield (si spread positif).
+        <strong><span class="t-fr">Levier sur ETH</span><span class="t-en">ETH leverage</span></strong>
+        <span class="t-fr">Boucle wstETH → emprunt ETH → wrap en wstETH → redépôt. Amplifie l'exposition ETH avec un coût d'emprunt inférieur au yield (si spread positif).</span><span class="t-en">Loop wstETH → borrow ETH → wrap to wstETH → redeposit. Amplifies ETH exposure with a borrow cost below yield (if spread is positive).</span>
       </div>
     </div>
   </div>
 
   <!-- SOURCES -->
   <div class="section">
-    <div class="section-title">Sources</div>
+    <div class="section-title"><span class="t-fr">Sources</span><span class="t-en">Sources</span></div>
     <ul class="sources">
       <li>
         <span class="src-label">Documentation officielle</span>
@@ -564,9 +573,10 @@
   </div>
 
   <footer>
-    Généré le 28 mai 2026 · Vault Alyra DeFi · Xavier — Promo Blaise Pascal
+    <span class="t-fr">Généré le 28 mai 2026 · Vault Alyra DeFi · Xavier — Promo Blaise Pascal</span><span class="t-en">Generated May 28, 2026 · Alyra DeFi Vault · Xavier — Promo Blaise Pascal</span>
   </footer>
 
 </div>
+<script src="../lang.js"></script>
 </body>
 </html>

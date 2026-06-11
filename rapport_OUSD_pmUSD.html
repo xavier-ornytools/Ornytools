@@ -157,24 +157,28 @@
 <!-- NAV -->
 <div style="position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(255,255,255,.96);backdrop-filter:blur(12px);border-bottom:1px solid #E4E8F0;padding:10px 24px;display:flex;align-items:center;gap:12px;box-shadow:0 2px 12px rgba(0,0,0,.04);print-color-adjust:exact">
   <div style="font-family:'Fraunces',Georgia,serif;font-size:1rem;font-weight:600;letter-spacing:-.02em">Orny<span style="color:#C8841E">Tools</span></div>
-  <div style="font-size:.6rem;color:#9AA5B4;text-transform:uppercase;letter-spacing:.18em;font-weight:600">Analyse Stablecoins</div>
-  <a href="stablecoin.html" style="margin-left:auto;font-size:.82rem;font-weight:600;color:#6B7280;text-decoration:none;padding:7px 14px;border:1px solid #E4E8F0;border-radius:7px;transition:.15s" onmouseover="this.style.borderColor='#C8841E';this.style.color='#C8841E'" onmouseout="this.style.borderColor='#E4E8F0';this.style.color='#6B7280'">← Stablecoins</a>
-  <a href="index.html" style="font-size:.82rem;font-weight:600;color:#6B7280;text-decoration:none;padding:7px 14px;border:1px solid #E4E8F0;border-radius:7px;transition:.15s" onmouseover="this.style.borderColor='#C8841E';this.style.color='#C8841E'" onmouseout="this.style.borderColor='#E4E8F0';this.style.color='#6B7280'">Accueil</a>
+  <div style="font-size:.6rem;color:#9AA5B4;text-transform:uppercase;letter-spacing:.18em;font-weight:600"><span class="t-fr">Analyse Stablecoins</span><span class="t-en">Stablecoin Analysis</span></div>
+  <a href="stablecoin.html" style="margin-left:auto;font-size:.82rem;font-weight:600;color:#6B7280;text-decoration:none;padding:7px 14px;border:1px solid #E4E8F0;border-radius:7px;transition:.15s" onmouseover="this.style.borderColor='#C8841E';this.style.color='#C8841E'" onmouseout="this.style.borderColor='#E4E8F0';this.style.color='#6B7280'"><span class="t-fr">← Retour aux stablecoins</span><span class="t-en">← Back to stablecoins</span></a>
+  <a href="index.html" style="font-size:.82rem;font-weight:600;color:#6B7280;text-decoration:none;padding:7px 14px;border:1px solid #E4E8F0;border-radius:7px;transition:.15s" onmouseover="this.style.borderColor='#C8841E';this.style.color='#C8841E'" onmouseout="this.style.borderColor='#E4E8F0';this.style.color='#6B7280'"><span class="t-fr">Accueil</span><span class="t-en">Home</span></a>
+  <div style="display:flex;gap:6px;margin-left:8px">
+    <button id="btnEN" class="lang-btn active" onclick="setLang('en')">EN</button>
+    <button id="btnFR" class="lang-btn" onclick="setLang('fr')">FR</button>
+  </div>
 </div>
 <div style="height:60px"></div>
 
 <!-- FOOTER FIXE -->
 <div class="page-footer">
   <span class="footer-brand">Orny<span>Tools</span> · ornytools.xyz</span>
-  <span>Rapport DeFi — 11/06/2026</span>
+  <span><span class="t-fr">Rapport DeFi — 11/06/2026</span><span class="t-en">DeFi Report — 11/06/2026</span></span>
   <span>Not financial advice</span>
 </div>
 
 <!-- ══════════════════════════════════════════════════════ COVER -->
 <div class="cover">
   <div class="cover-brand">Orny<span>Tools</span></div>
-  <h1>Analyse <em>Stablecoins</em><br>OUSD & pmUSD</h1>
-  <p class="cover-sub">Rapport complet — mécanisme de peg, architecture, risques, historique et scores OrnyTools</p>
+  <h1><span class="t-fr">Analyse <em>Stablecoins</em><br>OUSD & pmUSD</span><span class="t-en">Analysis Report — <em>Stablecoins</em><br>OUSD & pmUSD</span></h1>
+  <p class="cover-sub"><span class="t-fr">Rapport complet — mécanisme de peg, architecture, risques, historique et scores OrnyTools</span><span class="t-en">Full report — peg mechanism, architecture, risks, history and OrnyTools scores</span></p>
 
   <div class="cover-scores">
     <div class="cover-score-card">
@@ -192,13 +196,13 @@
   <div class="cover-meta">Date d'analyse : 11/06/2026 · Sources : Pharos Watch, DefiLlama, CoinGecko, docs officiels</div>
   <br/>
   <div class="disclaimer">
-    <strong>⚠ Avertissement :</strong> Ce rapport est produit à des fins éducatives dans le cadre de la formation Alyra Promo Blaise Pascal. Il ne constitue pas un conseil en investissement.
+    <span class="t-fr"><strong>⚠ Avertissement :</strong> Ce rapport est produit à des fins éducatives dans le cadre de la formation Alyra Promo Blaise Pascal. Il ne constitue pas un conseil en investissement.</span><span class="t-en"><strong>⚠ Disclaimer:</strong> This report is produced for educational purposes as part of the Alyra Promo Blaise Pascal training. It does not constitute investment advice.</span>
   </div>
 </div>
 
 <!-- ══════════════════════════════════════════════════════ TOC -->
 <div class="toc-page">
-  <div class="toc-title">Sommaire</div>
+  <div class="toc-title"><span class="t-fr">Sommaire</span><span class="t-en">Table of Contents</span></div>
 
   <div class="toc-item"><span class="toc-num">1</span><span class="toc-text">OUSD <span class="toc-sub">— Origin Dollar</span></span><span class="toc-dot"></span></div>
   <div class="toc-item"><span class="toc-num"></span><span class="toc-text" style="color:var(--dim);font-size:9pt;padding-left:32px">Identité & famille d'actif</span><span class="toc-dot"></span></div>
@@ -222,48 +226,48 @@
 
 <!-- ══════════════════════════════════════════════════════ OUSD -->
 <div class="section-page">
-  <div class="section-eyebrow">Section 1 — Yield-bearing stablecoin · Ethereum</div>
+  <div class="section-eyebrow"><span class="t-fr">Section 1 — Yield-bearing stablecoin · Ethereum</span><span class="t-en">Section 1 — Yield-bearing stablecoin · Ethereum</span></div>
   <div class="section-title">OUSD — Origin Dollar</div>
-  <div class="section-tagline">Stablecoin à rendement automatique émis par Origin Protocol. Le rendement s'accumule directement dans le wallet via rebase — sans staking ni action supplémentaire.</div>
+  <div class="section-tagline"><span class="t-fr">Stablecoin à rendement automatique émis par Origin Protocol. Le rendement s'accumule directement dans le wallet via rebase — sans staking ni action supplémentaire.</span><span class="t-en">Automatic yield-bearing stablecoin issued by Origin Protocol. Yield accumulates directly in the wallet via rebase — no staking or additional action required.</span></div>
 
   <!-- Grade -->
   <div class="grade-banner">
     <div class="grade-big" style="background:rgba(215,119,6,.12);border:2px solid rgba(215,119,6,.3);color:#D97706">C</div>
     <div class="grade-info">
-      <div class="grade-name">Score global : 57/100 — <span style="color:#D97706">Risque modéré</span></div>
+      <div class="grade-name"><span class="t-fr">Score global : 57/100 — <span style="color:#D97706">Risque modéré</span></span><span class="t-en">Overall score: 57/100 — <span style="color:#D97706">Moderate risk</span></span></div>
       <div class="grade-desc">L'exploit de novembre 2020 reste le principal signal négatif. L'architecture actuelle (USDC → Morpho) est plus simple et mieux auditée. La liquidité reste limitée hors Ethereum mainnet.</div>
     </div>
   </div>
 
   <!-- Scores -->
   <div class="bloc">
-    <div class="bloc-title">Scores OrnyTools</div>
+    <div class="bloc-title"><span class="t-fr">Scores OrnyTools</span><span class="t-en">OrnyTools Scores</span></div>
     <div class="score-row">
-      <span class="score-label">Résistance dépeg</span>
+      <span class="score-label"><span class="t-fr">Résistance dépeg</span><span class="t-en">Depeg resistance</span></span>
       <span class="score-num" style="color:#D97706">62</span>
       <div class="bar-track"><div class="bar-fill" style="width:62%;background:#D97706"></div></div>
       <span class="score-grade" style="color:#D97706">C</span>
     </div>
     <div class="score-row">
-      <span class="score-label">Risque contrepartie</span>
+      <span class="score-label"><span class="t-fr">Risque contrepartie</span><span class="t-en">Counterparty risk</span></span>
       <span class="score-num" style="color:#D97706">54</span>
       <div class="bar-track"><div class="bar-fill" style="width:54%;background:#D97706"></div></div>
       <span class="score-grade" style="color:#D97706">C</span>
     </div>
     <div class="score-row">
-      <span class="score-label">Risque protocole</span>
+      <span class="score-label"><span class="t-fr">Risque protocole</span><span class="t-en">Protocol risk</span></span>
       <span class="score-num" style="color:#D97706">64</span>
       <div class="bar-track"><div class="bar-fill" style="width:64%;background:#D97706"></div></div>
       <span class="score-grade" style="color:#D97706">C</span>
     </div>
     <div class="score-row">
-      <span class="score-label">Liquidité</span>
+      <span class="score-label"><span class="t-fr">Liquidité</span><span class="t-en">Liquidity</span></span>
       <span class="score-num" style="color:#E8765A">44</span>
       <div class="bar-track"><div class="bar-fill" style="width:44%;background:#E8765A"></div></div>
       <span class="score-grade" style="color:#E8765A">D</span>
     </div>
     <div class="score-row">
-      <span class="score-label">Score global</span>
+      <span class="score-label"><span class="t-fr">Score global</span><span class="t-en">Overall score</span></span>
       <span class="score-num" style="color:#D97706">57</span>
       <div class="bar-track"><div class="bar-fill" style="width:57%;background:#D97706"></div></div>
       <span class="score-grade" style="color:#D97706">C</span>
@@ -272,9 +276,9 @@
 
   <!-- Bloc 1 -->
   <div class="bloc">
-    <div class="bloc-title">Bloc 1 — Identité</div>
-    <div class="bloc-subtitle">Définition</div>
-    <div class="field-row"><span class="field-key">Définition</span><span class="field-val">OUSD (Origin Dollar) est un stablecoin à rendement émis par Origin Protocol sur Ethereum. Sa caractéristique principale est le mécanisme de <em>rebase</em> : le rendement s'accumule automatiquement sous forme d'augmentation du solde, sans aucune action de l'utilisateur.</span></div>
+    <div class="bloc-title"><span class="t-fr">Bloc 1 — Identité</span><span class="t-en">Block 1 — Identity</span></div>
+    <div class="bloc-subtitle"><span class="t-fr">Définition</span><span class="t-en">Definition</span></div>
+    <div class="field-row"><span class="field-key"><span class="t-fr">Définition</span><span class="t-en">Definition</span></span><span class="field-val">OUSD (Origin Dollar) est un stablecoin à rendement émis par Origin Protocol sur Ethereum. Sa caractéristique principale est le mécanisme de <em>rebase</em> : le rendement s'accumule automatiquement sous forme d'augmentation du solde, sans aucune action de l'utilisateur.</span></div>
     <div class="field-row"><span class="field-key">Famille d'actif</span><span class="field-val">Vault-token / yield-bearing stablecoin</span></div>
     <div class="field-row"><span class="field-key">Ce que la famille implique</span><span class="field-val">La valeur nominale vise 1 USD. Le rendement est distribué via rebase (augmentation du nombre de tokens détenus). Le risque principal est la stratégie sous-jacente de déploiement du collatéral.</span></div>
 
@@ -290,7 +294,7 @@
 
   <!-- Bloc 2 -->
   <div class="bloc">
-    <div class="bloc-title">Bloc 2 — Marché & liquidité</div>
+    <div class="bloc-title"><span class="t-fr">Bloc 2 — Marché & liquidité</span><span class="t-en">Block 2 — Market & liquidity</span></div>
     <div class="bloc-subtitle">Émission / Rédemption</div>
     <div class="field-row"><span class="field-key">Émission</span><span class="field-val">Mint permissionless via le contrat OUSD en déposant du USDC au ratio 1:1. Accessible à tous, sans KYC.</span></div>
     <div class="field-row"><span class="field-key">Rédemption</span><span class="field-val">Redemption primaire 1:1 USDC disponible via le contrat officiel. Exit marché secondaire possible via DEX (liquidité limitée).</span></div>
@@ -308,7 +312,7 @@
 
   <!-- Bloc 3 -->
   <div class="bloc">
-    <div class="bloc-title">Bloc 3 — Architecture & dépendances</div>
+    <div class="bloc-title"><span class="t-fr">Bloc 3 — Architecture & dépendances</span><span class="t-en">Block 3 — Architecture & dependencies</span></div>
     <div class="bloc-subtitle">On-chain footprint</div>
     <div class="field-row"><span class="field-key">Chaîne principale</span><span class="field-val">Ethereum mainnet (token natif ERC-20)</span></div>
     <div class="field-row"><span class="field-key">Modèle multi-chain</span><span class="field-val">Limité — principalement Ethereum. Pas de déploiement natif L2 avec la même mécanique de rebase.</span></div>
@@ -326,7 +330,7 @@
 
   <!-- Bloc 4 -->
   <div class="bloc">
-    <div class="bloc-title">Bloc 4 — Contrôle & risque</div>
+    <div class="bloc-title"><span class="t-fr">Bloc 4 — Contrôle & risque</span><span class="t-en">Block 4 — Control & risk</span></div>
     <div class="bloc-subtitle">Profil de centralisation</div>
     <div class="field-row"><span class="field-key">Contrôle du mint</span><span class="field-val">Permissionless pour les utilisateurs. Origin Protocol contrôle la stratégie de déploiement (choix des protocoles comme Morpho).</span></div>
     <div class="field-row"><span class="field-key">Freeze / Blacklist</span><span class="field-val">Capacité de pause du vault en cas d'urgence (protège contre les exploits). Pas de blacklist individuelle des wallets.</span></div>
@@ -354,7 +358,7 @@
 
   <!-- Bloc 5 -->
   <div class="bloc">
-    <div class="bloc-title">Bloc 5 — Rendement & usage</div>
+    <div class="bloc-title"><span class="t-fr">Bloc 5 — Rendement & usage</span><span class="t-en">Block 5 — Yield & use cases</span></div>
     <div class="field-row"><span class="field-key">Source de rendement</span><span class="field-val">Real yield — intérêts générés par le prêt du USDC dans Morpho (taux de borrow payé par les emprunteurs)</span></div>
     <div class="field-row"><span class="field-key">Sustainability</span><span class="field-val">Durable tant que Morpho a de la demande de borrow. Le yield est variable et baisse en cas de faible utilisation du protocole.</span></div>
     <div class="field-row"><span class="field-key">Risque de compression</span><span class="field-val">Oui — si les taux Morpho baissent (marché bear, faible demande de borrow), l'APY OUSD se comprime.</span></div>
@@ -365,7 +369,7 @@
 
   <!-- Spécifique stablecoin -->
   <div class="bloc">
-    <div class="bloc-title">Spécifique Stablecoin — Mécanisme de peg</div>
+    <div class="bloc-title"><span class="t-fr">Spécifique Stablecoin — Mécanisme de peg</span><span class="t-en">Stablecoin specific — Peg mechanism</span></div>
     <div class="field-row"><span class="field-key">Type</span><span class="field-val">Fiat-backed (via USDC) — backing indirect</span></div>
     <div class="field-row"><span class="field-key">Comment le peg tient</span><span class="field-val">1 OUSD = 1 USDC en réserve. L'arbitrage via redemption primaire maintient le peg : si OUSD < $1, achat + redemption profitable ; si OUSD > $1, mint + vente profitable.</span></div>
     <div class="field-row"><span class="field-key">Bandes d'arbitrage</span><span class="field-val">Théoriquement ±0 (redemption parfaite). En pratique, légère friction de gas crée une bande de ~0.1-0.2% avant arbitrage.</span></div>
@@ -382,15 +386,15 @@
 
 <!-- ══════════════════════════════════════════════════════ pmUSD -->
 <div class="section-page">
-  <div class="section-eyebrow">Section 2 — RWA stablecoin · Gold-backed</div>
+  <div class="section-eyebrow"><span class="t-fr">Section 2 — RWA stablecoin · Or physique</span><span class="t-en">Section 2 — RWA stablecoin · Gold-backed</span></div>
   <div class="section-title">pmUSD — Pharos Money USD</div>
-  <div class="section-tagline">Stablecoin RWA adossé à l'or physique (XAU), avec intégration PSM via Sky Protocol. Noté D par Pharos Watch — historique de dépeg préoccupant.</div>
+  <div class="section-tagline"><span class="t-fr">Stablecoin RWA adossé à l'or physique (XAU), avec intégration PSM via Sky Protocol. Noté D par Pharos Watch — historique de dépeg préoccupant.</span><span class="t-en">RWA stablecoin backed by physical gold (XAU), with PSM integration via Sky Protocol. Rated D by Pharos Watch — concerning depeg history.</span></div>
 
   <!-- Grade -->
   <div class="grade-banner">
     <div class="grade-big" style="background:rgba(220,38,38,.10);border:2px solid rgba(220,38,38,.3);color:#DC2626">F</div>
     <div class="grade-info">
-      <div class="grade-name">Score global : 34/100 — <span style="color:#DC2626">Risque élevé</span></div>
+      <div class="grade-name"><span class="t-fr">Score global : 34/100 — <span style="color:#DC2626">Risque élevé</span></span><span class="t-en">Overall score: 34/100 — <span style="color:#DC2626">High risk</span></span></div>
       <div class="grade-desc">450+ épisodes de dépeg recensés. Liquidité insuffisante. Dépendances multiples (or physique, Sky Protocol PSM). Note D sur Pharos Watch. Fortement déconseillé pour un usage productif en DeFi sans surveillance active.</div>
     </div>
   </div>
@@ -399,31 +403,31 @@
   <div class="bloc">
     <div class="bloc-title">Scores OrnyTools</div>
     <div class="score-row">
-      <span class="score-label">Résistance dépeg</span>
+      <span class="score-label"><span class="t-fr">Résistance dépeg</span><span class="t-en">Depeg resistance</span></span>
       <span class="score-num" style="color:#DC2626">32</span>
       <div class="bar-track"><div class="bar-fill" style="width:32%;background:#DC2626"></div></div>
       <span class="score-grade" style="color:#DC2626">F</span>
     </div>
     <div class="score-row">
-      <span class="score-label">Risque contrepartie</span>
+      <span class="score-label"><span class="t-fr">Risque contrepartie</span><span class="t-en">Counterparty risk</span></span>
       <span class="score-num" style="color:#E8765A">40</span>
       <div class="bar-track"><div class="bar-fill" style="width:40%;background:#E8765A"></div></div>
       <span class="score-grade" style="color:#E8765A">D</span>
     </div>
     <div class="score-row">
-      <span class="score-label">Risque protocole</span>
+      <span class="score-label"><span class="t-fr">Risque protocole</span><span class="t-en">Protocol risk</span></span>
       <span class="score-num" style="color:#E8765A">36</span>
       <div class="bar-track"><div class="bar-fill" style="width:36%;background:#E8765A"></div></div>
       <span class="score-grade" style="color:#E8765A">D</span>
     </div>
     <div class="score-row">
-      <span class="score-label">Liquidité</span>
+      <span class="score-label"><span class="t-fr">Liquidité</span><span class="t-en">Liquidity</span></span>
       <span class="score-num" style="color:#DC2626">28</span>
       <div class="bar-track"><div class="bar-fill" style="width:28%;background:#DC2626"></div></div>
       <span class="score-grade" style="color:#DC2626">F</span>
     </div>
     <div class="score-row">
-      <span class="score-label">Score global</span>
+      <span class="score-label"><span class="t-fr">Score global</span><span class="t-en">Overall score</span></span>
       <span class="score-num" style="color:#DC2626">34</span>
       <div class="bar-track"><div class="bar-fill" style="width:34%;background:#DC2626"></div></div>
       <span class="score-grade" style="color:#DC2626">F</span>
@@ -455,7 +459,7 @@
 
   <!-- Bloc 2 -->
   <div class="bloc">
-    <div class="bloc-title">Bloc 2 — Marché & liquidité</div>
+    <div class="bloc-title"><span class="t-fr">Bloc 2 — Marché & liquidité</span><span class="t-en">Block 2 — Market & liquidity</span></div>
     <div class="bloc-subtitle">Émission / Rédemption</div>
     <div class="field-row"><span class="field-key">Émission</span><span class="field-val">Via PSM Sky Protocol — échange USDC/DAI contre pmUSD au ratio défini par le module de stabilité. La capacité de mint est limitée par les paramètres du PSM.</span></div>
     <div class="field-row"><span class="field-key">Rédemption</span><span class="field-val">Via PSM (si liquidité disponible) ou marché secondaire. En cas de stress, la liquidité du PSM peut être épuisée — forçant une sortie à marché avec slippage.</span></div>
@@ -471,7 +475,7 @@
 
   <!-- Bloc 3 -->
   <div class="bloc">
-    <div class="bloc-title">Bloc 3 — Architecture & dépendances</div>
+    <div class="bloc-title"><span class="t-fr">Bloc 3 — Architecture & dépendances</span><span class="t-en">Block 3 — Architecture & dependencies</span></div>
     <div class="bloc-subtitle">Dépendances critiques</div>
     <div class="field-row"><span class="field-key">Sky Protocol (PSM)</span><span class="field-val">Dépendance critique — le PSM est la mécanique principale de stabilisation. Une modification des paramètres du PSM par la gouvernance Sky impacte directement pmUSD.</span></div>
     <div class="field-row"><span class="field-key">Custodian or physique</span><span class="field-val">Contrepartie off-chain — risque réel de custody failure, de fraude ou d'inaccessibilité de l'or en cas de stress géopolitique ou réglementaire.</span></div>
@@ -483,7 +487,7 @@
 
   <!-- Bloc 4 -->
   <div class="bloc">
-    <div class="bloc-title">Bloc 4 — Contrôle & risque</div>
+    <div class="bloc-title"><span class="t-fr">Bloc 4 — Contrôle & risque</span><span class="t-en">Block 4 — Control & risk</span></div>
     <div class="bloc-subtitle">Scénarios de défaillance</div>
     <table>
       <tr><th>Scénario</th><th>Probabilité</th><th>Impact</th></tr>
@@ -500,7 +504,7 @@
 
   <!-- Bloc 5 -->
   <div class="bloc">
-    <div class="bloc-title">Bloc 5 — Rendement & usage</div>
+    <div class="bloc-title"><span class="t-fr">Bloc 5 — Rendement & usage</span><span class="t-en">Block 5 — Yield & use cases</span></div>
     <div class="field-row"><span class="field-key">Source de rendement</span><span class="field-val">Potentiellement via les frais PSM ou des incentives. La hausse du prix de l'or ne bénéficie pas directement au détenteur (peg USD fixe).</span></div>
     <div class="field-row"><span class="field-key">Cas d'usage typiques</span><span class="field-val">Exposition indirecte à l'or en DeFi · Arbitrage PSM (avec risque de dépeg) · Utilisation comme collatéral si accepté sur les protocoles de prêt</span></div>
     <div class="field-row"><span class="field-key">Intégrations DeFi</span><span class="field-val">Sky Protocol (PSM). Peu d'intégrations majeures recensées — en partie dû aux scores de risque élevés.</span></div>
@@ -508,7 +512,7 @@
 
   <!-- Spécifique stablecoin -->
   <div class="bloc">
-    <div class="bloc-title">Spécifique Stablecoin — Mécanisme de peg</div>
+    <div class="bloc-title"><span class="t-fr">Spécifique Stablecoin — Mécanisme de peg</span><span class="t-en">Stablecoin specific — Peg mechanism</span></div>
     <div class="field-row"><span class="field-key">Type</span><span class="field-val">RWA-backed (or physique XAU)</span></div>
     <div class="field-row"><span class="field-key">Comment le peg tient</span><span class="field-val">Via PSM Sky Protocol : échange 1:1 contre stablecoins USD (USDC/DAI) dans les limites du PSM. Complété par l'arbitrage sur le marché secondaire. En cas d'épuisement du PSM, le peg dépend uniquement de la liquidité secondaire — insuffisante vu le score de 28/100.</span></div>
     <div class="field-row"><span class="field-key">Historique de peg</span><span class="field-val"><strong>450+ épisodes de dépeg</strong> selon Pharos Watch. Ce chiffre est anormalement élevé — à titre de comparaison, USDC a eu < 5 épisodes significatifs depuis 2018. Cela indique un problème structurel, non des incidents ponctuels.</span></div>
@@ -524,9 +528,9 @@
 
 <!-- ══════════════════════════════════════════════════════ COMPARATIF -->
 <div class="section-page">
-  <div class="section-eyebrow">Section 3 — Analyse comparative</div>
+  <div class="section-eyebrow"><span class="t-fr">Section 3 — Analyse comparative</span><span class="t-en">Section 3 — Comparative analysis</span></div>
   <div class="section-title">OUSD vs pmUSD</div>
-  <div class="section-tagline">Comparaison directe sur les dimensions clés.</div>
+  <div class="section-tagline"><span class="t-fr">Comparaison directe sur les dimensions clés.</span><span class="t-en">Direct comparison across key dimensions.</span></div>
 
   <table class="compare-table">
     <tr><th>Critère</th><th>OUSD</th><th>pmUSD</th></tr>
@@ -549,11 +553,11 @@
 
 <!-- ══════════════════════════════════════════════════════ CONCLUSION -->
 <div class="section-page">
-  <div class="section-eyebrow">Section 4 — Synthèse & recommandations</div>
-  <div class="section-title">Conclusion</div>
+  <div class="section-eyebrow"><span class="t-fr">Section 4 — Synthèse & recommandations</span><span class="t-en">Section 4 — Summary & recommendations</span></div>
+  <div class="section-title"><span class="t-fr">Conclusion</span><span class="t-en">Conclusion</span></div>
 
   <div class="bloc">
-    <div class="bloc-title">OUSD — Score 57/100 — C</div>
+    <div class="bloc-title"><span class="t-fr">OUSD — Score 57/100 — C</span><span class="t-en">OUSD — Score 57/100 — C</span></div>
     <p style="font-size:10.5pt;line-height:1.75;margin-bottom:12px">OUSD est un stablecoin à rendement dont l'architecture actuelle (USDC → Morpho) est relativement simple et bien auditée. Son principal atout est la redistribution automatique du yield via rebase — aucune action requise de l'utilisateur. Le score de 57/100 reflète deux faiblesses principales : la dépendance totale à Morpho comme couche de rendement, et l'héritage de l'exploit de 2020 qui pèse sur la confiance dans le protocole.</p>
     <div class="alert alert-warn">
       <div class="alert-title">Recommandation</div>
@@ -562,7 +566,7 @@
   </div>
 
   <div class="bloc">
-    <div class="bloc-title">pmUSD — Score 34/100 — F</div>
+    <div class="bloc-title"><span class="t-fr">pmUSD — Score 34/100 — F</span><span class="t-en">pmUSD — Score 34/100 — F</span></div>
     <p style="font-size:10.5pt;line-height:1.75;margin-bottom:12px">pmUSD présente un profil de risque élevé sur tous les vecteurs. Les 450+ épisodes de dépeg signalent un problème structurel dans le mécanisme de maintien du peg. La liquidité insuffisante (28/100) signifie qu'une sortie en situation de stress peut coûter plusieurs pourcents. Le backing or physique introduit des risques off-chain (custody, attestation) absents des stablecoins fiat majeurs. Le grade D de Pharos Watch confirme cette évaluation.</p>
     <div class="alert alert-danger">
       <div class="alert-title">Recommandation</div>
@@ -571,9 +575,9 @@
   </div>
 
   <div class="bloc" style="margin-top:32px">
-    <div class="bloc-title">Tableau décisionnel</div>
+    <div class="bloc-title"><span class="t-fr">Tableau décisionnel</span><span class="t-en">Decision table</span></div>
     <table>
-      <tr><th>Usage</th><th>OUSD</th><th>pmUSD</th></tr>
+      <tr><th><span class="t-fr">Usage</span><span class="t-en">Use case</span></th><th>OUSD</th><th>pmUSD</th></tr>
       <tr><td>Épargne passive long terme</td><td class="vs-neutral">⚠ Avec surveillance Morpho</td><td class="vs-bad">❌ Non recommandé</td></tr>
       <tr><td>Collatéral sur Aave/Morpho</td><td class="vs-neutral">⚠ Vérifier l'acceptation</td><td class="vs-bad">❌ Non recommandé</td></tr>
       <tr><td>LP sur Curve/Convex</td><td class="vs-neutral">⚠ Pool OUSD/3CRV limitée</td><td class="vs-bad">❌ Liquidité insuffisante</td></tr>
@@ -589,5 +593,6 @@
   </div>
 </div>
 
+<script src="lang.js"></script>
 </body>
 </html>

@@ -442,19 +442,23 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <img class="nav-logo" src="logo.png" alt="OrnyTools" />
   <div>
     <div class="nav-brand">Orny<span class="dot">Tools</span></div>
-    <div class="nav-tag">Trade Size Optimizer</div>
+    <div class="nav-tag"><span class="t-en">Trade Size Optimizer</span><span class="t-fr">Optimiseur de Taille de Trade</span></div>
   </div>
-  <a href="index.html" class="btn-nav" style="text-decoration:none">← All tools</a>
-  <button class="btn-nav" onclick="document.getElementById('tool').scrollIntoView({behavior:'smooth'})">Open tool ↓</button>
+  <a href="index.html" class="btn-nav" style="text-decoration:none"><span class="t-en">← All tools</span><span class="t-fr">← Tous les outils</span></a>
+  <button class="btn-nav" onclick="document.getElementById('tool').scrollIntoView({behavior:'smooth'})"><span class="t-en">Open tool ↓</span><span class="t-fr">Ouvrir l'outil ↓</span></button>
+  <div style="display:flex;gap:5px;margin-left:6px">
+    <button id="btnEN" class="lang-btn active" onclick="setLang('en')">EN</button>
+    <button id="btnFR" class="lang-btn" onclick="setLang('fr')">FR</button>
+  </div>
 </nav>
 
 <!-- HERO — logo centré, propre -->
 <div class="hero-landing">
   <img class="hero-logo-img" src="logo.png" alt="OrnyTools" />
-  <h1>Your trade has an <em>optimal size.</em><br>Most traders never find it.</h1>
-  <p class="hero-desc">Too small: gas eats your profit. Too big: slippage does. <b>OrnyTools finds the exact crossover point</b> — calculated from the real constant-product curve.</p>
+  <h1><span class="t-en">Your trade has an <em>optimal size.</em><br>Most traders never find it.</span><span class="t-fr">Votre trade a une <em>taille optimale.</em><br>La plupart des traders ne la trouvent jamais.</span></h1>
+  <p class="hero-desc"><span class="t-en">Too small: gas eats your profit. Too big: slippage does. <b>OrnyTools finds the exact crossover point</b> — calculated from the real constant-product curve.</span><span class="t-fr">Trop petit : le gas ronge votre profit. Trop grand : le slippage s'en charge. <b>OrnyTools trouve le point de croisement exact</b> — calculé depuis la vraie courbe constant-product.</span></p>
   <div class="scroll-cue" onclick="document.getElementById('tool').scrollIntoView({behavior:'smooth'})">
-    <span>Calculate now</span>
+    <span><span class="t-en">Calculate now</span><span class="t-fr">Calculer maintenant</span></span>
     <div class="scroll-arrow">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
     </div>
@@ -472,9 +476,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
   <!-- Intro strip -->
   <div class="tool-header">
-    <div class="eyebrow">Trade Size Optimizer</div>
-    <h2>Paste your pool. Get <em>the number</em>.</h2>
-    <p class="tool-lede">The size where gas cost equals slippage cost — the bottom of the U-curve. Below it, gas dominates. Above it, slippage takes over. <b>Load a live pool or enter manually.</b></p>
+    <div class="eyebrow"><span class="t-en">Trade Size Optimizer</span><span class="t-fr">Optimiseur de Taille de Trade</span></div>
+    <h2><span class="t-en">Paste your pool. Get <em>the number</em>.</span><span class="t-fr">Collez votre pool. Obtenez <em>le chiffre</em>.</span></h2>
+    <p class="tool-lede"><span class="t-en">The size where gas cost equals slippage cost — the bottom of the U-curve. Below it, gas dominates. Above it, slippage takes over. <b>Load a live pool or enter manually.</b></span><span class="t-fr">La taille où le coût du gas égale le coût du slippage — le bas de la courbe en U. En dessous, le gas domine. Au-dessus, le slippage prend le dessus. <b>Chargez un pool en direct ou saisissez manuellement.</b></span></p>
   </div>
 
   <!-- STEP 1 — Configure + Live result (sticky) -->
@@ -482,9 +486,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     <!-- Inputs -->
     <div class="panel">
-      <div class="panel-title">Pool parameters</div>
+      <div class="panel-title"><span class="t-en">Pool parameters</span><span class="t-fr">Paramètres du pool</span></div>
       <div class="field">
-        <label>Network</label>
+        <label><span class="t-en">Network</span><span class="t-fr">Réseau</span></label>
         <select id="network">
           <option value="eth">Ethereum</option>
           <option value="arbitrum">Arbitrum</option>
@@ -496,14 +500,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </div>
       <div class="reg-wrap" id="regWrap"></div>
       <div class="field">
-        <label>Search pool <span class="hint">by name or token pair</span></label>
+        <label><span class="t-en">Search pool <span class="hint">by name or token pair</span></span><span class="t-fr">Rechercher un pool <span class="hint">par nom ou paire de tokens</span></span></label>
         <div class="search-box">
           <input id="poolSearch" placeholder="WBTC/USDC, ETH/USDC, stETH…" autocomplete="off" spellcheck="false" />
           <div class="search-drop" id="searchDrop"></div>
         </div>
       </div>
       <div class="field">
-        <label>Pool address <span class="hint">or paste directly</span></label>
+        <label><span class="t-en">Pool address <span class="hint">or paste directly</span></span><span class="t-fr">Adresse du pool <span class="hint">ou coller directement</span></span></label>
         <div class="pool-load">
           <input id="poolAddr" placeholder="0x… pool contract" spellcheck="false" />
           <button class="btn" id="loadBtn">Load</button>
@@ -513,29 +517,29 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </div>
       <div class="row2">
         <div class="field with-prefix">
-          <label>Total liquidity (TVL)</label>
+          <label><span class="t-en">Total liquidity (TVL)</span><span class="t-fr">Liquidité totale (TVL)</span></label>
           <span class="pfx">$</span>
           <input id="tvl" class="mono" value="5000000" inputmode="decimal" />
         </div>
         <div class="field with-prefix">
-          <label>Network fee (gas)</label>
+          <label><span class="t-en">Network fee (gas)</span><span class="t-fr">Frais réseau (gas)</span></label>
           <span class="pfx">$</span>
           <input id="gas" class="mono" value="2.50" inputmode="decimal" />
         </div>
       </div>
       <div class="field">
-        <label>Pool fee <span class="hint">% per trade</span></label>
+        <label><span class="t-en">Pool fee <span class="hint">% per trade</span></span><span class="t-fr">Frais de pool <span class="hint">% par trade</span></span></label>
         <input id="fee" class="mono" value="0.30" inputmode="decimal" />
       </div>
       <div class="field">
-        <label>Pool type</label>
+        <label><span class="t-en">Pool type</span><span class="t-fr">Type de pool</span></label>
         <div class="toggle" id="poolType">
           <button data-type="v2" class="active">Constant product (v2)</button>
           <button data-type="v3">Concentrated (v3)</button>
         </div>
       </div>
       <details class="adv">
-        <summary><span class="chev">›</span>Advanced — v3 active liquidity</summary>
+        <summary><span class="chev">›</span><span class="t-en">Advanced — v3 active liquidity</span><span class="t-fr">Avancé — liquidité active v3</span></summary>
         <div class="adv-body">
           <div class="field slider-field" id="v3Field" style="display:none">
             <label>Active liquidity near price <span class="sv" id="v3Val">20% of TVL</span></label>
@@ -560,7 +564,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="result-side">
 
       <div class="result-card">
-        <div class="result-label">Optimal trade size</div>
+        <div class="result-label"><span class="t-en">Optimal trade size</span><span class="t-fr">Taille de trade optimale</span></div>
         <div class="result-big mono" id="optSize">$2,498</div>
         <div class="result-sub">Total cost: <span class="mono" id="optTotalPct">0.50%</span> · <span class="mono" id="optTotalUsd">$12.4</span></div>
         <div class="balance">
@@ -577,14 +581,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </div>
 
       <div class="panel">
-        <div class="panel-title">Breakdown at optimum</div>
+        <div class="panel-title"><span class="t-en">Breakdown at optimum</span><span class="t-fr">Détail à l'optimum</span></div>
         <div class="stat-grid">
-          <div class="stat"><div class="k">Optimal size</div><div class="v gold mono" id="rOpt">$2,498</div></div>
-          <div class="stat"><div class="k">Total cost %</div><div class="v mono" id="rTotPct">0.50%</div></div>
-          <div class="stat"><div class="k">Gas cost</div><div class="v aqua mono" id="rGas">$2.50</div></div>
-          <div class="stat"><div class="k">Slippage</div><div class="v coral mono" id="rSlip">$2.50</div></div>
-          <div class="stat"><div class="k">Pool fee</div><div class="v mono" id="rFee">$7.49</div></div>
-          <div class="stat"><div class="k">Total cost $</div><div class="v mono" id="rTotUsd">$12.49</div></div>
+          <div class="stat"><div class="k"><span class="t-en">Optimal size</span><span class="t-fr">Taille optimale</span></div><div class="v gold mono" id="rOpt">$2,498</div></div>
+          <div class="stat"><div class="k"><span class="t-en">Total cost %</span><span class="t-fr">Coût total %</span></div><div class="v mono" id="rTotPct">0.50%</div></div>
+          <div class="stat"><div class="k"><span class="t-en">Gas cost</span><span class="t-fr">Coût gas</span></div><div class="v aqua mono" id="rGas">$2.50</div></div>
+          <div class="stat"><div class="k"><span class="t-en">Slippage</span><span class="t-fr">Slippage</span></div><div class="v coral mono" id="rSlip">$2.50</div></div>
+          <div class="stat"><div class="k"><span class="t-en">Pool fee</span><span class="t-fr">Frais de pool</span></div><div class="v mono" id="rFee">$7.49</div></div>
+          <div class="stat"><div class="k"><span class="t-en">Total cost $</span><span class="t-fr">Coût total $</span></div><div class="v mono" id="rTotUsd">$12.49</div></div>
         </div>
         <div class="stat-explain" id="explain">
           This size sits at the bottom of the U: trade smaller and fixed gas dominates; trade larger and slippage on a finite pool takes over.
@@ -620,8 +624,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="chart-section">
     <div class="chart-section-head">
       <div>
-        <h3>The U-curve</h3>
-        <p>Below the optimum, fixed gas dominates. Above it, slippage takes over. Hover to read exact values at any size.</p>
+        <h3><span class="t-en">The U-curve</span><span class="t-fr">La courbe en U</span></h3>
+        <p><span class="t-en">Below the optimum, fixed gas dominates. Above it, slippage takes over. Hover to read exact values at any size.</span><span class="t-fr">En dessous de l'optimum, le gas fixe domine. Au-dessus, le slippage prend le dessus. Survolez pour lire les valeurs exactes à n'importe quelle taille.</span></p>
       </div>
       <div class="legend">
         <span><span class="swatch" style="background:var(--aqua)"></span>Gas</span>
@@ -639,8 +643,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <section>
     <div class="sec-head">
       <span class="sec-num">01</span>
-      <h2>Test your trade</h2>
-      <span class="sec-sub">Enter your amount. See the real cost — and whether splitting saves more.</span>
+      <h2><span class="t-en">Test your trade</span><span class="t-fr">Testez votre trade</span></h2>
+      <span class="sec-sub"><span class="t-en">Enter your amount. See the real cost — and whether splitting saves more.</span><span class="t-fr">Entrez votre montant. Voyez le vrai coût — et si diviser économise plus.</span></span>
     </div>
     <div class="panel">
       <div class="sim-layout">
@@ -668,8 +672,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <section>
     <div class="sec-head">
       <span class="sec-num">02</span>
-      <h2>Scenario comparison</h2>
-      <span class="sec-sub">Same pool, different sizes. See where gas and slippage cross.</span>
+      <h2><span class="t-en">Scenario comparison</span><span class="t-fr">Comparaison de scénarios</span></h2>
+      <span class="sec-sub"><span class="t-en">Same pool, different sizes. See where gas and slippage cross.</span><span class="t-fr">Même pool, tailles différentes. Voyez où gas et slippage se croisent.</span></span>
     </div>
     <div class="tbl-wrap">
       <table>
@@ -685,8 +689,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <section>
     <div class="sec-head">
       <span class="sec-num">03</span>
-      <h2>Methodology</h2>
-      <span class="sec-sub">No black box — here's the exact math, and where it stops being reliable.</span>
+      <h2><span class="t-en">Methodology</span><span class="t-fr">Méthodologie</span></h2>
+      <span class="sec-sub"><span class="t-en">No black box — here's the exact math, and where it stops being reliable.</span><span class="t-fr">Aucune boîte noire — voici les maths exactes, et là où elles cessent d'être fiables.</span></span>
     </div>
     <div class="method">
       <div class="panel">
@@ -721,7 +725,7 @@ cost(%) = gas/A + A/(R+A) + fee
     <div style="text-align:center;margin-top:28px">
       <a href="methodology.html" style="display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:var(--dim);text-decoration:none;padding:10px 22px;border:1.5px solid var(--line);border-radius:40px;background:#fff;transition:.15s" onmouseover="this.style.borderColor='var(--gold)';this.style.color='var(--gold)'" onmouseout="this.style.borderColor='var(--line)';this.style.color='var(--dim)'">
         <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><rect x="1" y="1" width="13" height="13" rx="2" stroke="currentColor" stroke-width="1.4"/><path d="M4 5h7M4 7.5h7M4 10h4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
-        Full methodology
+        <span class="t-en">Full methodology</span><span class="t-fr">Méthodologie complète</span>
       </a>
     </div>
   </section>
@@ -831,9 +835,9 @@ cost(%) = gas/A + A/(R+A) + fee
   <div class="banner-inner">
     <img src="orny-banner.png" alt="OrnyTools — Patience. Strategy. Freedom." class="banner-img" />
     <div>
-      <div class="banner-tag">Built for DeFi traders</div>
-      <h2 class="banner-title">Patience.<br>Strategy.<br>Freedom.</h2>
-      <p class="banner-sub">Most traders lose money before the trade even starts — on gas overhead and slippage creep. Every basis point saved compounds. OrnyTools gives you one number so you stop leaving it on the table.</p>
+      <div class="banner-tag"><span class="t-en">Built for DeFi traders</span><span class="t-fr">Conçu pour les traders DeFi</span></div>
+      <h2 class="banner-title"><span class="t-en">Patience.<br>Strategy.<br>Freedom.</span><span class="t-fr">Patience.<br>Stratégie.<br>Liberté.</span></h2>
+      <p class="banner-sub"><span class="t-en">Most traders lose money before the trade even starts — on gas overhead and slippage creep. Every basis point saved compounds. OrnyTools gives you one number so you stop leaving it on the table.</span><span class="t-fr">La plupart des traders perdent de l'argent avant même que le trade commence — sur les frais de gas et la progression du slippage. Chaque point de base économisé se compose. OrnyTools vous donne un seul chiffre pour que vous cessiez de laisser de l'argent sur la table.</span></p>
     </div>
   </div>
 </section>
@@ -841,12 +845,12 @@ cost(%) = gas/A + A/(R+A) + fee
 <div class="back-section">
   <a class="back-link" href="index.html">
     <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 1.5L1.5 9 9 16.5M1.5 9h15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    Back to all tools
+    <span class="t-en">Back to all tools</span><span class="t-fr">Retour à tous les outils</span>
   </a>
 </div>
 <footer>
-  <div class="ft-tag">Patience. <span>Strategy.</span> Freedom.</div>
-  Every basis point saved compounds. OrnyTools gives you the math — you make the move.<br/>
+  <div class="ft-tag"><span class="t-en">Patience. <span>Strategy.</span> Freedom.</span><span class="t-fr">Patience. <span>Stratégie.</span> Liberté.</span></div>
+  <span class="t-en">Every basis point saved compounds. OrnyTools gives you the math — you make the move.</span><span class="t-fr">Chaque point de base économisé se compose. OrnyTools vous donne les maths — vous faites le move.</span><br/>
   Live data via GeckoTerminal &amp; public RPCs · ornytools.xyz<br/>
   <span style="margin-top:8px;display:inline-block">Built by <a href="https://www.linkedin.com/in/xavier-maquin-5576643b9/" target="_blank" rel="noopener" style="color:var(--gold);text-decoration:none;font-weight:600">Xavier Maquin</a></span>
 </footer>
@@ -1807,5 +1811,6 @@ function calcIL() {
 ['ilA0','ilA1','ilB0','ilB1','ilDeposit'].forEach(id => $( id).addEventListener('input', calcIL));
 calcIL();
 </script>
+<script src="lang.js"></script>
 </body>
 </html>
