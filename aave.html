@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta name="description" content="Aave V3 Position Calculator — OrnyTools. Health factor, liquidation price, borrow power. WBTC, ETH, wstETH."/>
+<meta name="robots" content="index,follow"/>
+<link rel="canonical" href="https://ornytools.xyz/aave.html"/>
+<meta property="og:type" content="website"/>
+<meta property="og:site_name" content="OrnyTools"/>
+<meta property="og:title" content="Aave V3 Calculator — OrnyTools"/>
+<meta property="og:description" content="Real-time Aave V3 health factor, liquidation price, and borrow power. Built for WBTC, ETH, wstETH positions."/>
+<meta property="og:url" content="https://ornytools.xyz/aave.html"/>
+<meta property="og:image" content="https://ornytools.xyz/orny-banner.png"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="Aave V3 Calculator — OrnyTools"/>
+<meta name="twitter:description" content="Real-time Aave V3 health factor, liquidation price, and borrow power."/>
+<meta name="twitter:image" content="https://ornytools.xyz/orny-banner.png"/>
+<title>Aave V3 Calculator — OrnyTools</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet"/>
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-5XT34MFV');</script>
+<!-- End Google Tag Manager -->
+<style>
+:root{
+  --blue:#1A56DB;--blue-pale:rgba(26,86,219,.08);
+  --purple:#7C3AED;--purple-pale:rgba(124,58,237,.08);
+  --good:#0E9F6E;--good-pale:rgba(14,159,110,.08);
+  --coral:#E8765A;--coral-pale:rgba(232,118,90,.08);
+  --warn:#F59E0B;--warn-pale:rgba(245,158,11,.08);
+  --text:#111827;--dim:#6B7280;--faint:#9AA5B4;
+  --line:#E4E8F0;--line-soft:#EDF0F5;
+  --surface:#FFFFFF;--surface-2:#F0F2F5;
+  --display:"Fraunces",Georgia,serif;
+  --ui:"Hanken Grotesk",system-ui,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,monospace;
+  --radius:14px;
+  --shadow:0 2px 8px rgba(0,0,0,.07),0 8px 32px rgba(0,0,0,.07);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#fff;color:var(--text);font-family:var(--ui);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+
+.navbar{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(255,255,255,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);padding:10px 24px;display:flex;align-items:center;gap:12px;box-shadow:0 2px 12px rgba(0,0,0,.04)}
+.nav-logo{width:36px;height:36px;object-fit:cover;object-position:center 15%;border-radius:8px}
+.nav-brand{font-family:var(--display);font-size:1.05rem;font-weight:600;letter-spacing:-.02em}
+.nav-brand .dot{color:var(--blue)}
+.nav-tag{font-size:.6rem;color:var(--faint);text-transform:uppercase;letter-spacing:.18em;font-weight:600}
+.nav-home{margin-left:auto;font-size:.82rem;font-weight:600;color:var(--dim);text-decoration:none;padding:7px 14px;border:1px solid var(--line);border-radius:7px;transition:.15s}
+.nav-home:hover{border-color:var(--blue);color:var(--blue)}
+
+/* LANG TOGGLE */
+.lang-btn{font-size:.75rem;font-weight:700;padding:5px 10px;border:1px solid var(--line);border-radius:6px;cursor:pointer;background:#fff;color:var(--dim);transition:.15s;margin-right:4px;font-family:var(--ui)}
+.lang-btn.active{background:var(--blue);color:#fff;border-color:var(--blue)}
+
+.page-hero{padding:96px 28px 40px;text-align:center;background:#fff}
+.eyebrow{font-size:11.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--blue);font-weight:700;margin-bottom:16px}
+.page-hero h1{font-family:var(--display);font-weight:500;font-size:clamp(1.8rem,3.5vw,2.6rem);letter-spacing:-.02em;line-height:1.12;margin-bottom:14px}
+.page-hero h1 em{font-style:italic;color:var(--blue)}
+.page-hero p{color:var(--dim);font-size:1rem;max-width:52ch;margin:0 auto;line-height:1.75}
+
+/* HF GAUGE */
+.hf-zone{max-width:1060px;margin:0 auto;padding:32px 28px 0}
+.hf-card{border-radius:var(--radius);border:2px solid var(--line);background:#fff;box-shadow:var(--shadow);padding:28px 32px;display:flex;align-items:center;gap:32px;flex-wrap:wrap}
+.hf-big{display:flex;flex-direction:column;align-items:center;min-width:130px}
+.hf-label{font-size:10.5px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--faint);margin-bottom:6px}
+.hf-num{font-family:var(--mono);font-size:3.8rem;font-weight:700;line-height:1;transition:color .3s}
+.hf-sub{font-size:12px;margin-top:6px;font-weight:600}
+
+.hf-bar-wrap{flex:1;min-width:200px}
+.hf-bar-track{height:12px;background:var(--line);border-radius:99px;overflow:hidden;margin-bottom:10px;position:relative}
+.hf-bar-fill{height:100%;border-radius:99px;transition:width .4s,background .4s}
+.hf-markers{display:flex;justify-content:space-between;font-size:10.5px;color:var(--faint);font-family:var(--mono)}
+.hf-status{font-size:14px;font-weight:700;margin-top:10px}
+
+.hf-stats{display:flex;gap:20px;flex-wrap:wrap}
+.hfstat{background:var(--surface-2);border:1px solid var(--line);border-radius:10px;padding:14px 18px;text-align:center;min-width:130px}
+.hfstat .sk{font-size:10.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);margin-bottom:6px}
+.hfstat .sv{font-family:var(--mono);font-size:1.3rem;font-weight:700}
+
+/* MAIN LAYOUT */
+.calc-layout{max-width:1060px;margin:0 auto;padding:24px 28px 80px;display:grid;grid-template-columns:1fr 400px;gap:24px;align-items:start}
+
+/* PANELS */
+.panel{background:#fff;border:1.5px solid var(--line);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow)}
+.panel-title{font-size:10.5px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--faint);margin-bottom:20px}
+
+/* COLLATERAL ROWS */
+.collateral-list{display:flex;flex-direction:column;gap:14px}
+.col-row{display:grid;grid-template-columns:140px 1fr 1fr auto;gap:10px;align-items:end}
+.field{display:flex;flex-direction:column;gap:6px}
+.field label{font-size:12px;font-weight:600;color:var(--dim)}
+.field select,.field input{background:var(--surface-2);border:1.5px solid var(--line);border-radius:8px;padding:10px 12px;font-family:var(--mono);font-size:14px;color:var(--text);outline:none;transition:.15s}
+.field select:focus,.field input:focus{border-color:var(--blue);background:#fff}
+.field .pfx-wrap{position:relative}
+.field .pfx-wrap input{padding-left:24px}
+.field .pfx-wrap .pfx{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--faint);font-size:13px;font-family:var(--mono)}
+.del-btn{width:34px;height:38px;border:1.5px solid var(--line);border-radius:8px;background:#fff;color:var(--faint);cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;transition:.15s;flex-shrink:0;align-self:end}
+.del-btn:hover{border-color:var(--coral);color:var(--coral)}
+.add-btn{display:inline-flex;align-items:center;gap:6px;margin-top:10px;font-size:13px;font-weight:600;color:var(--blue);background:var(--blue-pale);border:1.5px dashed rgba(26,86,219,.25);border-radius:8px;padding:9px 16px;cursor:pointer;transition:.15s}
+.add-btn:hover{background:rgba(26,86,219,.14);border-color:var(--blue)}
+
+/* DEBT ROWS */
+.debt-list{display:flex;flex-direction:column;gap:12px}
+.debt-row{display:grid;grid-template-columns:140px 1fr auto;gap:10px;align-items:end}
+
+/* PRICE PILL */
+.price-pill{font-size:11px;font-weight:600;color:var(--good);background:var(--good-pale);border-radius:6px;padding:2px 7px;display:inline-flex;align-items:center;gap:4px}
+.price-pill.loading{color:var(--faint);background:var(--line-soft)}
+.price-pill.err{color:var(--coral);background:var(--coral-pale)}
+
+/* RIGHT SIDE */
+.right-col{display:flex;flex-direction:column;gap:16px;position:sticky;top:80px}
+
+/* SUMMARY CARDS */
+.sum-card{border-radius:var(--radius);border:1.5px solid var(--line);background:#fff;padding:20px;box-shadow:var(--shadow)}
+.sum-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--line-soft)}
+.sum-row:last-child{border-bottom:none}
+.sum-row .k{font-size:13px;color:var(--dim)}
+.sum-row .v{font-family:var(--mono);font-size:14px;font-weight:700}
+
+/* SCENARIO */
+.scenario-card{border-radius:var(--radius);border:1.5px solid var(--line);background:#fff;padding:20px;box-shadow:var(--shadow)}
+.scen-title{font-size:10.5px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--faint);margin-bottom:14px}
+.scen-slider-wrap{margin-bottom:16px}
+.scen-slider-wrap label{font-size:12px;font-weight:600;color:var(--dim);display:flex;justify-content:space-between;margin-bottom:8px}
+input[type=range]{width:100%;accent-color:var(--coral)}
+.scen-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.scen-stat{background:var(--surface-2);border-radius:8px;padding:10px 12px}
+.scen-stat .sk{font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--faint)}
+.scen-stat .sv{font-family:var(--mono);font-size:1.1rem;font-weight:700;margin-top:3px}
+
+/* ORNY VERDICT */
+.verdict-card{border-radius:var(--radius);padding:18px;border:1.5px solid}
+.verdict-card.safe{border-color:rgba(14,159,110,.3);background:var(--good-pale)}
+.verdict-card.caution{border-color:rgba(245,158,11,.35);background:var(--warn-pale)}
+.verdict-card.danger{border-color:rgba(232,118,90,.4);background:var(--coral-pale)}
+.verdict-card.critical{border-color:rgba(220,20,60,.45);background:rgba(220,20,60,.06)}
+.verd-head{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.verd-label{font-size:10.5px;font-weight:800;letter-spacing:.16em;text-transform:uppercase}
+.verdict-card.safe .verd-label{color:var(--good)}
+.verdict-card.caution .verd-label{color:var(--warn)}
+.verdict-card.danger .verd-label{color:var(--coral)}
+.verdict-card.critical .verd-label{color:crimson}
+.verd-body{font-size:13px;color:var(--dim);line-height:1.65;font-style:italic}
+.verd-body strong{color:var(--text);font-style:normal}
+
+/* PARAMS TABLE */
+.params-section{max-width:1060px;margin:0 auto;padding:0 28px 72px}
+.params-section h3{font-family:var(--display);font-size:1.15rem;font-weight:500;letter-spacing:-.02em;margin-bottom:6px}
+.params-section p{font-size:.85rem;color:var(--dim);margin-bottom:18px}
+.ptable{width:100%;border-collapse:collapse;background:#fff;border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);border:1px solid var(--line)}
+.ptable th{font-size:10.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);padding:11px 14px;text-align:left;border-bottom:1px solid var(--line);background:var(--surface-2)}
+.ptable th:not(:first-child){text-align:right}
+.ptable td{padding:11px 14px;font-size:13px;border-bottom:1px solid var(--line-soft);color:var(--text)}
+.ptable td:not(:first-child){font-family:var(--mono);text-align:right}
+.ptable tr:last-child td{border-bottom:none}
+
+/* FOOTER */
+.back-section{padding:40px 28px;text-align:center;border-top:1px solid var(--line);background:var(--surface-2)}
+.back-link{display:inline-flex;align-items:center;gap:10px;text-decoration:none;color:var(--text);font-weight:700;font-size:15px;padding:14px 32px;border:1.5px solid var(--line);border-radius:40px;background:#fff;transition:.18s;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+.back-link:hover{border-color:var(--blue);color:var(--blue)}
+footer{padding:36px 0;text-align:center;color:var(--faint);font-size:13px;border-top:1px solid var(--line)}
+.ft-tag{font-family:var(--display);font-style:italic;font-size:17px;color:var(--dim);margin-bottom:8px}
+.ft-tag span{color:var(--blue)}
+
+@media(max-width:900px){.calc-layout{grid-template-columns:1fr}.right-col{position:static}}
+@media(max-width:640px){.col-row{grid-template-columns:1fr 1fr;gap:8px}.col-row .field:first-child{grid-column:1/-1}.debt-row{grid-template-columns:1fr 1fr}}
+@media(max-width:480px){.navbar{padding:8px 14px}.page-hero{padding:80px 16px 32px}.hf-zone,.calc-layout,.params-section{padding-left:14px;padding-right:14px}.hf-card{padding:18px}}
+</style>
+</head>
+<body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5XT34MFV" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+
+<nav class="navbar">
+  <img class="nav-logo" src="logo.png" alt="OrnyTools"/>
+  <div>
+    <div class="nav-brand">Orny<span class="dot">Tools</span></div>
+    <div class="nav-tag" id="navTag">Aave V3 Calculator</div>
+  </div>
+  <button class="lang-btn active" id="btnEN" onclick="setLang('en')">EN</button>
+  <button class="lang-btn" id="btnFR" onclick="setLang('fr')">FR</button>
+  <a href="index.html" class="nav-home" id="navBack">← All tools</a>
+</nav>
+
+<!-- HERO -->
+<div class="page-hero">
+  <div class="eyebrow" id="eyebrow">Aave V3 · Arbitrum / Ethereum</div>
+  <h1 id="heroTitle">Is your <em>position</em><br>safe right now?</h1>
+  <p id="heroSub">Enter your collateral and debt — get your health factor, liquidation price, and a stress test at any price drop.</p>
+</div>
+
+<!-- HF GAUGE -->
+<div class="hf-zone">
+  <div class="hf-card">
+    <div class="hf-big">
+      <div class="hf-label" id="hfLabel">Health Factor</div>
+      <div class="hf-num" id="hfNum">—</div>
+      <div class="hf-sub" id="hfSub">Enter position</div>
+    </div>
+    <div class="hf-bar-wrap">
+      <div class="hf-bar-track">
+        <div class="hf-bar-fill" id="hfBar" style="width:0%"></div>
+      </div>
+      <div class="hf-markers">
+        <span>0</span><span>1.0<br><small style="font-size:9px">LIQD.</small></span><span>1.5<br><small style="font-size:9px">SAFE</small></span><span>2.0+</span>
+      </div>
+      <div class="hf-status" id="hfStatus"></div>
+    </div>
+    <div class="hf-stats">
+      <div class="hfstat">
+        <div class="sk" id="collLabel">Collateral value</div>
+        <div class="sv" id="hfCollVal">—</div>
+      </div>
+      <div class="hfstat">
+        <div class="sk" id="debtLabel">Total debt</div>
+        <div class="sv" id="hfDebtVal">—</div>
+      </div>
+      <div class="hfstat">
+        <div class="sk" id="liqLabel">Liq. price (1st col.)</div>
+        <div class="sv" id="hfLiqPrice">—</div>
+      </div>
+      <div class="hfstat">
+        <div class="sk" id="availLabel">Available to borrow</div>
+        <div class="sv" id="hfAvail">—</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CALC LAYOUT -->
+<div class="calc-layout">
+  <!-- LEFT: inputs -->
+  <div style="display:flex;flex-direction:column;gap:20px">
+
+    <!-- Collateral -->
+    <div class="panel">
+      <div class="panel-title" id="colPanelTitle">Collateral assets</div>
+      <div class="collateral-list" id="collateralList"></div>
+      <button class="add-btn" id="addColBtn" onclick="addCollateral()">+ <span id="addColText">Add collateral</span></button>
+    </div>
+
+    <!-- Debt -->
+    <div class="panel">
+      <div class="panel-title" id="debtPanelTitle">Borrowed assets</div>
+      <div class="debt-list" id="debtList"></div>
+      <button class="add-btn" id="addDebtBtn" onclick="addDebt()">+ <span id="addDebtText">Add debt</span></button>
+    </div>
+
+  </div>
+
+  <!-- RIGHT: results -->
+  <div class="right-col">
+
+    <div class="verdict-card" id="verdictCard" style="display:none">
+      <div class="verd-head"><span style="font-size:20px">🦅</span><span class="verd-label" id="verdLabel"></span></div>
+      <div class="verd-body" id="verdBody"></div>
+    </div>
+
+    <div class="sum-card">
+      <div class="panel-title" id="sumTitle">Position summary</div>
+      <div class="sum-row"><span class="k" id="sk1">Collateral (USD)</span><span class="v" id="svCollUSD">—</span></div>
+      <div class="sum-row"><span class="k" id="sk2">Effective threshold</span><span class="v" id="svThresh">—</span></div>
+      <div class="sum-row"><span class="k" id="sk3">Weighted threshold value</span><span class="v" id="svWTV">—</span></div>
+      <div class="sum-row"><span class="k" id="sk4">Total debt (USD)</span><span class="v" id="svDebtUSD">—</span></div>
+      <div class="sum-row"><span class="k" id="sk5">Health factor</span><span class="v" id="svHF">—</span></div>
+      <div class="sum-row"><span class="k" id="sk6">LTV used / max LTV</span><span class="v" id="svLTV">—</span></div>
+      <div class="sum-row"><span class="k" id="sk7">Borrow power used</span><span class="v" id="svBorrowPct">—</span></div>
+    </div>
+
+    <div class="scenario-card">
+      <div class="scen-title" id="scenTitle">Stress test — price drop</div>
+      <div class="scen-slider-wrap">
+        <label><span id="scenSliderLabel">If collateral drops by</span> <strong id="dropPct" style="color:var(--coral)">30%</strong></label>
+        <input type="range" id="dropSlider" min="5" max="90" value="30" oninput="updateScenario()"/>
+      </div>
+      <div class="scen-grid">
+        <div class="scen-stat"><div class="sk" id="scenHFLabel">New HF</div><div class="sv" id="scenHF">—</div></div>
+        <div class="scen-stat"><div class="sk" id="scenLiqLabel">Liquidation?</div><div class="sv" id="scenLiq">—</div></div>
+        <div class="scen-stat"><div class="sk" id="scenNewCollLabel">New col. value</div><div class="sv" id="scenNewColl">—</div></div>
+        <div class="scen-stat"><div class="sk" id="scenSafetyLabel">Buffer left</div><div class="sv" id="scenSafety">—</div></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- PARAMS TABLE -->
+<div class="params-section">
+  <h3 id="paramsTitle">Aave V3 — Asset parameters</h3>
+  <p id="paramsSub">Official Aave V3 risk parameters. LTV = max you can borrow. Liquidation threshold = where your HF is calculated. Liquidation bonus = discount for liquidators.</p>
+  <table class="ptable">
+    <thead>
+      <tr>
+        <th id="th1">Asset</th>
+        <th id="th2">Max LTV</th>
+        <th id="th3">Liq. Threshold</th>
+        <th id="th4">Liq. Bonus</th>
+        <th id="th5">Category</th>
+      </tr>
+    </thead>
+    <tbody id="paramsBody"></tbody>
+  </table>
+</div>
+
+<div class="back-section">
+  <a class="back-link" href="index.html">
+    <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 1.5L1.5 9 9 16.5M1.5 9h15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <span id="backText">Back to all tools</span>
+  </a>
+</div>
+
+<footer>
+  <div class="ft-tag" id="footerTag">Your position, <span>calculated.</span></div>
+  <span id="footerSub">Parameters from Aave V3 governance · live prices via CoinGecko · read-only · ornytools.xyz</span><br/>
+  <span style="margin-top:8px;display:inline-block">Built by <a href="https://www.linkedin.com/in/xavier-maquin-5576643b9/" target="_blank" rel="noopener" style="color:var(--blue);text-decoration:none;font-weight:600">Xavier Maquin</a></span>
+</footer>
+
+<script>
+/* ── TRANSLATIONS ──────────────────────────────────────────────────────── */
+const LANG = {
+  en: {
+    navTag:'Aave V3 Calculator', navBack:'← All tools', eyebrow:'Aave V3 · Arbitrum / Ethereum',
+    heroTitle:'Is your <em>position</em><br>safe right now?',
+    heroSub:'Enter your collateral and debt — get your health factor, liquidation price, and a stress test at any price drop.',
+    hfLabel:'Health Factor', collLabel:'Collateral value', debtLabel:'Total debt',
+    liqLabel:'Liq. price (1st col.)', availLabel:'Available to borrow',
+    colPanelTitle:'Collateral assets', addColText:'Add collateral',
+    debtPanelTitle:'Borrowed assets', addDebtText:'Add debt',
+    sumTitle:'Position summary',
+    sk1:'Collateral (USD)', sk2:'Effective threshold', sk3:'Weighted threshold value',
+    sk4:'Total debt (USD)', sk5:'Health factor', sk6:'LTV used / max LTV', sk7:'Borrow power used',
+    scenTitle:'Stress test — price drop', scenSliderLabel:'If collateral drops by',
+    scenHFLabel:'New HF', scenLiqLabel:'Liquidation?', scenNewCollLabel:'New col. value', scenSafetyLabel:'Buffer left',
+    paramsTitle:'Aave V3 — Asset parameters',
+    paramsSub:'Official Aave V3 risk parameters. LTV = max you can borrow. Liquidation threshold = where your HF is calculated.',
+    th1:'Asset', th2:'Max LTV', th3:'Liq. Threshold', th4:'Liq. Bonus', th5:'Category',
+    backText:'Back to all tools',
+    footerTag:'Your position, <span>calculated.</span>',
+    footerSub:'Parameters from Aave V3 governance · live prices via CoinGecko · read-only · ornytools.xyz',
+    assetLbl:'Asset', amountLbl:'Amount', priceLbl:'Price (USD)',
+    hfSafe:'Safe zone', hfCaution:'Monitor closely', hfDanger:'Danger — close to liquidation', hfCritical:'CRITICAL — liquidation imminent',
+    verdSafe:'Safe Position', verdCaution:'Monitor closely', verdDanger:'High risk', verdCritical:'Critical risk',
+    noDebt:'No debt entered', enterPos:'Enter position',
+    liqAt:'Liquidation at',
+  },
+  fr: {
+    navTag:'Calculateur Aave V3', navBack:'← Tous les outils', eyebrow:'Aave V3 · Arbitrum / Ethereum',
+    heroTitle:'Votre <em>position</em><br>est-elle en sécurité ?',
+    heroSub:'Entrez vos collatéraux et dettes — obtenez votre facteur de santé, prix de liquidation, et un stress test.',
+    hfLabel:'Facteur de santé', collLabel:'Valeur collatéral', debtLabel:'Dette totale',
+    liqLabel:'Prix liq. (1er col.)', availLabel:'Emprunt disponible',
+    colPanelTitle:'Actifs en collatéral', addColText:'Ajouter un collatéral',
+    debtPanelTitle:'Actifs empruntés', addDebtText:'Ajouter une dette',
+    sumTitle:'Résumé de position',
+    sk1:'Collatéral (USD)', sk2:'Seuil effectif', sk3:'Valeur seuil pondérée',
+    sk4:'Dette totale (USD)', sk5:'Facteur de santé', sk6:'LTV utilisé / LTV max', sk7:'Pouvoir d\'emprunt utilisé',
+    scenTitle:'Stress test — chute de prix', scenSliderLabel:'Si le collatéral chute de',
+    scenHFLabel:'Nouveau FS', scenLiqLabel:'Liquidation ?', scenNewCollLabel:'Nouveau col.', scenSafetyLabel:'Marge restante',
+    paramsTitle:'Aave V3 — Paramètres des actifs',
+    paramsSub:'Paramètres de risque officiels Aave V3. LTV = max empruntable. Seuil de liquidation = base de calcul du FS.',
+    th1:'Actif', th2:'LTV max', th3:'Seuil liq.', th4:'Bonus liq.', th5:'Catégorie',
+    backText:'Retour aux outils',
+    footerTag:'Votre position, <span>calculée.</span>',
+    footerSub:'Paramètres Aave V3 officiels · prix en direct CoinGecko · lecture seule · ornytools.xyz',
+    assetLbl:'Actif', amountLbl:'Quantité', priceLbl:'Prix (USD)',
+    hfSafe:'Zone sûre', hfCaution:'À surveiller', hfDanger:'Danger — proche de la liquidation', hfCritical:'CRITIQUE — liquidation imminente',
+    verdSafe:'Position sûre', verdCaution:'À surveiller', verdDanger:'Risque élevé', verdCritical:'Risque critique',
+    noDebt:'Aucune dette saisie', enterPos:'Saisissez votre position',
+    liqAt:'Liquidation à',
+  }
+};
+
+let lang = 'en';
+
+function setLang(l) {
+  lang = l;
+  document.getElementById('btnEN').classList.toggle('active', l === 'en');
+  document.getElementById('btnFR').classList.toggle('active', l === 'fr');
+  const t = LANG[l];
+  const ids = ['navTag','navBack','eyebrow','colPanelTitle','debtPanelTitle',
+    'sumTitle','sk1','sk2','sk3','sk4','sk5','sk6','sk7',
+    'scenTitle','scenSliderLabel','scenHFLabel','scenLiqLabel','scenNewCollLabel','scenSafetyLabel',
+    'paramsTitle','paramsSub','th1','th2','th3','th4','th5','backText',
+    'collLabel','debtLabel','liqLabel','availLabel','hfLabel','addColText','addDebtText'];
+  ids.forEach(id => {
+    const el = document.getElementById(id);
+    if(el) el.innerHTML = t[id] || t[id.replace(/Label$/,'Lbl')] || '';
+  });
+  document.getElementById('heroTitle').innerHTML = t.heroTitle;
+  document.getElementById('heroSub').innerHTML = t.heroSub;
+  document.getElementById('footerTag').innerHTML = t.footerTag;
+  document.getElementById('footerSub').innerHTML = t.footerSub;
+  rerender();
+}
+
+/* ── AAVE V3 ASSET PARAMS ─────────────────────────────────────────────── */
+const ASSETS = {
+  WBTC:   { label:'WBTC',    geckoId:'wrapped-bitcoin',  ltv:0.73, liqThresh:0.78, liqBonus:0.05, cat:'Volatile', color:'#F7931A' },
+  WETH:   { label:'WETH',    geckoId:'ethereum',         ltv:0.80, liqThresh:0.825,liqBonus:0.05, cat:'Volatile', color:'#627EEA' },
+  WSTETH: { label:'wstETH',  geckoId:'wrapped-steth',    ltv:0.75, liqThresh:0.80, liqBonus:0.06, cat:'LST',      color:'#00A3FF' },
+  RETH:   { label:'rETH',    geckoId:'rocket-pool-eth',  ltv:0.67, liqThresh:0.74, liqBonus:0.075,cat:'LST',      color:'#FF6B00' },
+  LINK:   { label:'LINK',    geckoId:'chainlink',        ltv:0.53, liqThresh:0.68, liqBonus:0.075,cat:'Volatile', color:'#2A5ADA' },
+  ARB:    { label:'ARB',     geckoId:'arbitrum',         ltv:0.58, liqThresh:0.73, liqBonus:0.10, cat:'Volatile', color:'#28A0F0' },
+  USDC:   { label:'USDC',    geckoId:'usd-coin',         ltv:0.81, liqThresh:0.86, liqBonus:0.045,cat:'Stablecoin',color:'#2775CA' },
+  USDT:   { label:'USDT',    geckoId:'tether',           ltv:0.76, liqThresh:0.79, liqBonus:0.045,cat:'Stablecoin',color:'#26A17B' },
+  DAI:    { label:'DAI',     geckoId:'dai',              ltv:0.76, liqThresh:0.80, liqBonus:0.05, cat:'Stablecoin',color:'#F4B731' },
+  USDS:   { label:'USDS',    geckoId:'usds',             ltv:0.77, liqThresh:0.80, liqBonus:0.05, cat:'Stablecoin',color:'#F4B731' },
+  GHO:    { label:'GHO',     geckoId:'gho',              ltv:0.00, liqThresh:0.00, liqBonus:0.00, cat:'Borrow only',color:'#B6509E' },
+};
+
+const BORROW_ASSETS = ['USDC','USDT','DAI','USDS','GHO','WETH','WBTC'];
+
+let _prices = {};
+
+/* ── COLLATERAL & DEBT STATE ──────────────────────────────────────────── */
+let collaterals = [{ id: Date.now(), asset:'WBTC', amount:'0.5' }];
+let debts       = [{ id: Date.now()+1, asset:'USDT', amount:'10000' }];
+
+/* ── FORMAT HELPERS ─────────────────────────────────────────────────────── */
+function fmtUSD(n) {
+  if(!isFinite(n)) return '—';
+  if(n >= 1e6) return '$' + (n/1e6).toFixed(2) + 'M';
+  if(n >= 1e3) return '$' + n.toLocaleString('en-US', {maximumFractionDigits:0});
+  if(n >= 1)   return '$' + n.toFixed(2);
+  return '$' + n.toFixed(4);
+}
+function fmtHF(n) {
+  if(!isFinite(n)) return '∞';
+  if(n > 99) return '99+';
+  return n.toFixed(2);
+}
+function fmtPct(n) {
+  if(!isFinite(n)) return '—';
+  return (n*100).toFixed(1) + '%';
+}
+
+/* ── RENDER ROWS ─────────────────────────────────────────────────────────── */
+function makeAssetOptions(list, selected) {
+  return list.map(k => `<option value="${k}"${k===selected?' selected':''}>${ASSETS[k]?.label || k}</option>`).join('');
+}
+
+function renderCollateralRows() {
+  const t = LANG[lang];
+  const list = document.getElementById('collateralList');
+  list.innerHTML = collaterals.map((row, i) => {
+    const p = _prices[row.asset];
+    const pStr = p ? fmtUSD(p) : '...';
+    const pillCls = p ? 'price-pill' : 'price-pill loading';
+    return `<div class="col-row">
+      <div class="field">
+        ${i===0 ? `<label>${t.assetLbl || 'Asset'}</label>` : ''}
+        <select onchange="updateCollateral(${row.id},'asset',this.value)">${makeAssetOptions(Object.keys(ASSETS).filter(k=>ASSETS[k].ltv>0), row.asset)}</select>
+      </div>
+      <div class="field">
+        ${i===0 ? `<label>${t.amountLbl || 'Amount'}</label>` : ''}
+        <input type="number" value="${row.amount}" step="any" min="0" oninput="updateCollateral(${row.id},'amount',this.value)"/>
+      </div>
+      <div class="field">
+        ${i===0 ? `<label>${t.priceLbl || 'Price (USD)'}</label>` : ''}
+        <div class="pfx-wrap"><span class="pfx">$</span>
+          <input type="number" value="${p ? p.toFixed(2) : ''}" step="any" min="0" placeholder="auto" oninput="overridePrice('${row.asset}',this.value)"/>
+        </div>
+      </div>
+      ${collaterals.length > 1 ? `<button class="del-btn" onclick="removeCollateral(${row.id})">×</button>` : '<div></div>'}
+    </div>`;
+  }).join('');
+}
+
+function renderDebtRows() {
+  const t = LANG[lang];
+  const list = document.getElementById('debtList');
+  list.innerHTML = debts.map((row, i) => {
+    const p = _prices[row.asset] || 1;
+    return `<div class="debt-row">
+      <div class="field">
+        ${i===0 ? `<label>${t.assetLbl || 'Asset'}</label>` : ''}
+        <select onchange="updateDebt(${row.id},'asset',this.value)">${makeAssetOptions(BORROW_ASSETS, row.asset)}</select>
+      </div>
+      <div class="field">
+        ${i===0 ? `<label>${t.amountLbl || 'Amount'}</label>` : ''}
+        <input type="number" value="${row.amount}" step="any" min="0" oninput="updateDebt(${row.id},'amount',this.value)"/>
+      </div>
+      ${debts.length > 1 ? `<button class="del-btn" onclick="removeDebt(${row.id})">×</button>` : '<div></div>'}
+    </div>`;
+  }).join('');
+}
+
+function addCollateral() {
+  collaterals.push({ id: Date.now(), asset:'WETH', amount:'1' });
+  rerender();
+}
+function removeCollateral(id) {
+  collaterals = collaterals.filter(r => r.id !== id);
+  rerender();
+}
+function updateCollateral(id, key, val) {
+  const row = collaterals.find(r => r.id === id);
+  if(row) { row[key] = val; fetchMissingPrices(); compute(); }
+}
+function addDebt() {
+  debts.push({ id: Date.now(), asset:'USDC', amount:'1000' });
+  rerender();
+}
+function removeDebt(id) {
+  debts = debts.filter(r => r.id !== id);
+  rerender();
+}
+function updateDebt(id, key, val) {
+  const row = debts.find(r => r.id === id);
+  if(row) { row[key] = val; fetchMissingPrices(); compute(); }
+}
+
+/* ── PRICE OVERRIDE ──────────────────────────────────────────────────── */
+function overridePrice(asset, val) {
+  const n = parseFloat(val);
+  if(n > 0) _prices[asset] = n;
+  compute();
+}
+
+/* ── COMPUTE POSITION ────────────────────────────────────────────────── */
+function compute() {
+  const t = LANG[lang];
+
+  // Collateral totals
+  let totalCollUSD = 0, totalWTV = 0, totalMaxBorrow = 0;
+  collaterals.forEach(row => {
+    const a = ASSETS[row.asset];
+    if(!a) return;
+    const p = _prices[row.asset] || 0;
+    const amt = parseFloat(row.amount) || 0;
+    const usd = amt * p;
+    totalCollUSD += usd;
+    totalWTV     += usd * a.liqThresh;
+    totalMaxBorrow += usd * a.ltv;
+  });
+
+  // Debt total
+  let totalDebtUSD = 0;
+  debts.forEach(row => {
+    const p = _prices[row.asset] || (row.asset.includes('USD') ? 1 : 0);
+    const amt = parseFloat(row.amount) || 0;
+    totalDebtUSD += amt * p;
+  });
+
+  const HF   = totalDebtUSD > 0 ? totalWTV / totalDebtUSD : Infinity;
+  const LTV  = totalCollUSD > 0 ? totalDebtUSD / totalCollUSD : 0;
+  const maxLTV = totalCollUSD > 0 ? totalMaxBorrow / totalCollUSD : 0;
+  const avail = Math.max(0, totalMaxBorrow - totalDebtUSD);
+
+  // Liq price for first collateral
+  let liqPrice = null;
+  if(collaterals.length > 0 && totalDebtUSD > 0) {
+    const firstRow = collaterals[0];
+    const a = ASSETS[firstRow.asset];
+    const amt = parseFloat(firstRow.amount) || 0;
+    if(a && amt > 0) {
+      const otherCollWTV = collaterals.slice(1).reduce((s, r) => {
+        const aa = ASSETS[r.asset]; const pp = _prices[r.asset] || 0;
+        return s + (parseFloat(r.amount)||0) * pp * (aa?.liqThresh||0);
+      }, 0);
+      liqPrice = (totalDebtUSD - otherCollWTV) / (amt * a.liqThresh);
+      if(liqPrice < 0) liqPrice = 0;
+    }
+  }
+
+  // Update HF gauge
+  const hfEl    = document.getElementById('hfNum');
+  const hfBar   = document.getElementById('hfBar');
+  const hfSub   = document.getElementById('hfSub');
+  const hfStat  = document.getElementById('hfStatus');
+  const vCard   = document.getElementById('verdictCard');
+
+  if(totalDebtUSD === 0) {
+    hfEl.textContent = '∞';
+    hfEl.style.color = 'var(--good)';
+    hfBar.style.width = '100%';
+    hfBar.style.background = 'var(--good)';
+    hfSub.textContent = t.noDebt || 'No debt';
+    hfSub.style.color = 'var(--good)';
+    hfStat.textContent = '';
+    vCard.style.display = 'none';
+  } else if(!isFinite(HF) || totalCollUSD === 0) {
+    hfEl.textContent = '—';
+    hfEl.style.color = 'var(--faint)';
+    hfSub.textContent = t.enterPos || 'Enter position';
+    hfStat.textContent = '';
+    vCard.style.display = 'none';
+  } else {
+    hfEl.textContent = fmtHF(HF);
+    const barPct = Math.min(100, (HF / 2) * 100);
+    hfBar.style.width = barPct + '%';
+    let hfColor, hfStatusText, verdClass, verdLabel, verdMsg;
+    if(HF >= 2.0) {
+      hfColor='var(--good)'; hfStatusText=t.hfSafe;
+      verdClass='safe'; verdLabel=t.verdSafe;
+      verdMsg = `<strong>HF ${fmtHF(HF)}</strong> — ${t.verdSafe}. Your position has a comfortable buffer. Current collateral is ${fmtPct(LTV)} LTV vs ${fmtPct(maxLTV)} max.`;
+    } else if(HF >= 1.5) {
+      hfColor='var(--good)'; hfStatusText=t.hfSafe;
+      verdClass='safe'; verdLabel=t.verdSafe;
+      verdMsg = `<strong>HF ${fmtHF(HF)}</strong> — ${t.verdSafe}. Position is healthy. A ${((1-1/HF)*100).toFixed(0)}% price drop would trigger liquidation.`;
+    } else if(HF >= 1.2) {
+      hfColor='var(--warn)'; hfStatusText=t.hfCaution;
+      verdClass='caution'; verdLabel=t.verdCaution;
+      verdMsg = `<strong>HF ${fmtHF(HF)}</strong> — ${t.verdCaution}. Buffer is thin. A ${((1-1/HF)*100).toFixed(0)}% price drop reaches liquidation. Consider repaying debt or adding collateral.`;
+    } else if(HF >= 1.05) {
+      hfColor='var(--coral)'; hfStatusText=t.hfDanger;
+      verdClass='danger'; verdLabel=t.verdDanger;
+      verdMsg = `<strong>HF ${fmtHF(HF)}</strong> — ${t.verdDanger}. Only a ${((1-1/HF)*100).toFixed(0)}% move triggers liquidation. Act now: repay debt or add collateral immediately.`;
+    } else {
+      hfColor='crimson'; hfStatusText=t.hfCritical;
+      verdClass='critical'; verdLabel=t.verdCritical;
+      verdMsg = `<strong>HF ${fmtHF(HF)}</strong> — ${t.verdCritical}. Liquidation is imminent or already happening. Emergency action required.`;
+    }
+    hfEl.style.color = hfColor;
+    hfBar.style.background = hfColor;
+    hfSub.textContent = hfStatusText;
+    hfSub.style.color = hfColor;
+    hfStat.innerHTML = liqPrice ? `${t.liqAt || 'Liq. at'} <strong style="color:${hfColor}">${fmtUSD(liqPrice)}</strong>` : '';
+    vCard.className = 'verdict-card ' + verdClass;
+    vCard.style.display = 'block';
+    document.getElementById('verdLabel').textContent = verdLabel;
+    document.getElementById('verdBody').innerHTML = verdMsg;
+  }
+
+  // Update top stats
+  document.getElementById('hfCollVal').textContent = fmtUSD(totalCollUSD);
+  document.getElementById('hfDebtVal').textContent = fmtUSD(totalDebtUSD);
+  document.getElementById('hfLiqPrice').textContent = liqPrice ? fmtUSD(liqPrice) : '—';
+  document.getElementById('hfAvail').textContent = fmtUSD(avail);
+
+  // Summary panel
+  const effThresh = totalCollUSD > 0 ? totalWTV / totalCollUSD : 0;
+  document.getElementById('svCollUSD').textContent  = fmtUSD(totalCollUSD);
+  document.getElementById('svThresh').textContent   = fmtPct(effThresh);
+  document.getElementById('svWTV').textContent      = fmtUSD(totalWTV);
+  document.getElementById('svDebtUSD').textContent  = fmtUSD(totalDebtUSD);
+  document.getElementById('svHF').textContent       = totalDebtUSD > 0 ? fmtHF(HF) : '∞';
+  document.getElementById('svLTV').textContent      = `${fmtPct(LTV)} / ${fmtPct(maxLTV)}`;
+  document.getElementById('svBorrowPct').textContent = maxLTV > 0 ? fmtPct(LTV / maxLTV) : '—';
+
+  updateScenario();
+}
+
+/* ── SCENARIO / STRESS TEST ─────────────────────────────────────────── */
+function updateScenario() {
+  const pct = parseFloat(document.getElementById('dropSlider').value) / 100;
+  document.getElementById('dropPct').textContent = Math.round(pct*100) + '%';
+
+  let totalCollUSD = 0, totalWTV = 0, totalMaxBorrow = 0;
+  collaterals.forEach(row => {
+    const a = ASSETS[row.asset]; if(!a) return;
+    const p = (_prices[row.asset] || 0) * (1 - pct);
+    const amt = parseFloat(row.amount) || 0;
+    const usd = amt * p;
+    totalCollUSD += usd;
+    totalWTV     += usd * a.liqThresh;
+    totalMaxBorrow += usd * a.ltv;
+  });
+  let totalDebtUSD = 0;
+  debts.forEach(row => {
+    const p = _prices[row.asset] || (row.asset.includes('USD') ? 1 : 0);
+    totalDebtUSD += (parseFloat(row.amount)||0) * p;
+  });
+  const newHF = totalDebtUSD > 0 ? totalWTV / totalDebtUSD : Infinity;
+  const liqd  = isFinite(newHF) && newHF < 1.0;
+  const buffer = Math.max(0, totalWTV - totalDebtUSD);
+
+  const scenHFEl  = document.getElementById('scenHF');
+  scenHFEl.textContent = isFinite(newHF) ? fmtHF(newHF) : '∞';
+  scenHFEl.style.color = newHF < 1 ? 'crimson' : newHF < 1.5 ? 'var(--warn)' : 'var(--good)';
+
+  const liqEl = document.getElementById('scenLiq');
+  liqEl.textContent = liqd ? '⚠ YES' : '✓ NO';
+  liqEl.style.color = liqd ? 'crimson' : 'var(--good)';
+
+  document.getElementById('scenNewColl').textContent = fmtUSD(totalCollUSD);
+  document.getElementById('scenSafety').textContent  = fmtUSD(buffer);
+}
+
+/* ── PARAMS TABLE ───────────────────────────────────────────────────── */
+function renderParamsTable() {
+  const tbody = document.getElementById('paramsBody');
+  tbody.innerHTML = Object.entries(ASSETS)
+    .filter(([, a]) => a.ltv > 0)
+    .map(([sym, a]) => `
+      <tr>
+        <td><strong>${a.label}</strong> <span style="font-size:11px;color:var(--faint)">${sym}</span></td>
+        <td>${fmtPct(a.ltv)}</td>
+        <td>${fmtPct(a.liqThresh)}</td>
+        <td>${fmtPct(a.liqBonus)}</td>
+        <td style="font-size:12px;color:var(--dim)">${a.cat}</td>
+      </tr>`).join('');
+}
+
+/* ── FETCH PRICES ───────────────────────────────────────────────────── */
+async function fetchMissingPrices() {
+  const needed = new Set();
+  collaterals.forEach(r => needed.add(ASSETS[r.asset]?.geckoId));
+  debts.forEach(r => { if(!r.asset.includes('USD') && r.asset !== 'GHO') needed.add(ASSETS[r.asset]?.geckoId); });
+  needed.delete(undefined);
+  if(!needed.size) { compute(); return; }
+  try {
+    const ids = [...needed].join(',');
+    const res = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${ids}&vs_currencies=usd`);
+    const data = await res.json();
+    Object.entries(ASSETS).forEach(([sym, a]) => {
+      const p = data[a.geckoId]?.usd;
+      if(p) _prices[sym] = p;
+    });
+    // Stablecoins default to 1 if not fetched
+    ['USDC','USDT','DAI','USDS','GHO'].forEach(s => { if(!_prices[s]) _prices[s] = 1; });
+    compute();
+  } catch(e) {
+    ['USDC','USDT','DAI','USDS','GHO'].forEach(s => { if(!_prices[s]) _prices[s] = 1; });
+    compute();
+  }
+}
+
+/* ── MAIN RENDER ──────────────────────────────────────────────────── */
+function rerender() {
+  renderCollateralRows();
+  renderDebtRows();
+  compute();
+}
+
+// Init
+renderParamsTable();
+_prices = { USDC:1, USDT:1, DAI:1, USDS:1, GHO:1 };
+rerender();
+fetchMissingPrices();
+</script>
+</body>
+</html>
