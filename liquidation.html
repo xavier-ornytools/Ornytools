@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<meta name="description" content="RedZone — Aave Liquidation Calculator by OrnyTools. Know exactly when you get liquidated before it happens."/>
+<meta name="description" content="RedZone — Aave V3 Liquidation Calculator. Multi-chain: Ethereum, Arbitrum, Base, Optimism, Polygon, Avalanche. Know your liquidation price before the market moves."/>
 <meta name="robots" content="index,follow"/>
 <link rel="canonical" href="https://ornytools.xyz/liquidation.html"/>
 <meta property="og:type" content="website"/>
 <meta property="og:site_name" content="OrnyTools"/>
-<meta property="og:title" content="RedZone — Aave Liquidation Calculator — OrnyTools"/>
-<meta property="og:description" content="Your exact Aave liquidation price, health factor and % drop to liquidation — with live price. Before the market moves against you."/>
+<meta property="og:title" content="RedZone — Aave V3 Liquidation Calculator — OrnyTools"/>
+<meta property="og:description" content="Your exact liquidation price, Health Factor and buffer on Aave V3 — Ethereum, Arbitrum, Base, Optimism, Polygon, Avalanche. Live prices."/>
 <meta property="og:url" content="https://ornytools.xyz/liquidation.html"/>
 <meta property="og:image" content="https://ornytools.xyz/orny-banner.png"/>
 <meta name="twitter:card" content="summary_large_image"/>
@@ -18,167 +18,200 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet"/>
 <style>
-  :root{
-    --coral:#E8765A;--coral-pale:rgba(232,118,90,.08);--coral-mid:rgba(232,118,90,.18);
-    --good:#0E9F6E;--good-pale:rgba(14,159,110,.08);
-    --warn:#F59E0B;--warn-pale:rgba(245,158,11,.08);
-    --gold:#C8841E;--gold-pale:rgba(200,132,30,.08);
-    --text:#111827;--dim:#6B7280;--faint:#9AA5B4;
-    --line:#E4E8F0;--line-soft:#EDF0F5;
-    --surface:#FFFFFF;--surface-2:#F0F2F5;
-    --display:"Fraunces",Georgia,serif;
-    --ui:"Hanken Grotesk",system-ui,sans-serif;
-    --mono:"JetBrains Mono",ui-monospace,monospace;
-    --radius:14px;
-    --shadow:0 2px 8px rgba(0,0,0,.07),0 8px 32px rgba(0,0,0,.07);
-  }
-  *{box-sizing:border-box;margin:0;padding:0}
-  html{scroll-behavior:smooth}
-  body{background:#fff;color:var(--text);font-family:var(--ui);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+:root{
+  --coral:#E8765A;--coral-pale:rgba(232,118,90,.08);
+  --good:#0E9F6E;--good-pale:rgba(14,159,110,.08);
+  --warn:#F59E0B;--warn-pale:rgba(245,158,11,.08);
+  --gold:#C8841E;--gold-pale:rgba(200,132,30,.08);
+  --text:#111827;--dim:#6B7280;--faint:#9AA5B4;
+  --line:#E4E8F0;--line-soft:#EDF0F5;
+  --surface:#FFFFFF;--surface-2:#F0F2F5;
+  --display:"Fraunces",Georgia,serif;
+  --ui:"Hanken Grotesk",system-ui,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,monospace;
+  --radius:14px;
+  --shadow:0 2px 8px rgba(0,0,0,.07),0 8px 32px rgba(0,0,0,.07);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:#fff;color:var(--text);font-family:var(--ui);-webkit-font-smoothing:antialiased;overflow-x:hidden}
 
-  /* NAV */
-  .navbar{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(255,255,255,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);padding:10px 24px;display:flex;align-items:center;gap:12px;box-shadow:0 2px 12px rgba(0,0,0,.04)}
-  .nav-logo{width:36px;height:36px;object-fit:cover;object-position:center 15%;border-radius:8px}
-  .nav-brand{font-family:var(--display);font-size:1.05rem;font-weight:600;letter-spacing:-.02em}
-  .nav-brand .dot{color:var(--gold)}
-  .nav-tag{font-size:.6rem;color:var(--faint);text-transform:uppercase;letter-spacing:.18em;font-weight:600}
-  .nav-home{margin-left:auto;font-size:.82rem;font-weight:600;color:var(--dim);text-decoration:none;padding:7px 14px;border:1px solid var(--line);border-radius:7px;transition:.15s}
-  .nav-home:hover{border-color:var(--coral);color:var(--coral)}
+/* NAV */
+.navbar{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(255,255,255,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);padding:10px 24px;display:flex;align-items:center;gap:12px;box-shadow:0 2px 12px rgba(0,0,0,.04)}
+.nav-logo{width:36px;height:36px;object-fit:cover;object-position:center 15%;border-radius:8px}
+.nav-brand{font-family:var(--display);font-size:1.05rem;font-weight:600;letter-spacing:-.02em}
+.nav-brand .dot{color:var(--gold)}
+.nav-tag{font-size:.6rem;color:var(--faint);text-transform:uppercase;letter-spacing:.18em;font-weight:600}
+.nav-home{margin-left:auto;font-size:.82rem;font-weight:600;color:var(--dim);text-decoration:none;padding:7px 14px;border:1px solid var(--line);border-radius:7px;transition:.15s}
+.nav-home:hover{border-color:var(--coral);color:var(--coral)}
 
-  /* HERO */
-  .page-hero{padding-top:110px;padding-bottom:36px;text-align:center;background:#fff;padding-left:28px;padding-right:28px}
-  .eyebrow{font-size:11.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--coral);font-weight:700;margin-bottom:14px}
-  .page-hero h1{font-family:var(--display);font-weight:500;font-size:clamp(1.7rem,3vw,2.3rem);letter-spacing:-.02em;line-height:1.12;margin-bottom:12px}
-  .page-hero h1 em{font-style:italic;color:var(--coral)}
-  .page-hero p{color:var(--dim);font-size:.97rem;max-width:46ch;margin:0 auto;line-height:1.75}
+/* HERO */
+.page-hero{padding-top:110px;padding-bottom:36px;text-align:center;background:#fff;padding-left:28px;padding-right:28px}
+.eyebrow{font-size:11.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--coral);font-weight:700;margin-bottom:14px}
+.page-hero h1{font-family:var(--display);font-weight:500;font-size:clamp(1.7rem,3vw,2.3rem);letter-spacing:-.02em;line-height:1.12;margin-bottom:12px}
+.page-hero h1 em{font-style:italic;color:var(--coral)}
+.page-hero p{color:var(--dim);font-size:.97rem;max-width:52ch;margin:0 auto;line-height:1.75}
+.chain-pills-hero{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin-top:16px}
+.chain-pill-hero{font-size:11px;font-weight:700;padding:4px 10px;border-radius:99px;border:1px solid var(--line);background:var(--surface-2);color:var(--dim)}
 
-  /* LAYOUT */
-  .config-zone{display:grid;grid-template-columns:1fr 380px;gap:28px;align-items:start;padding:36px 28px 72px;max-width:1100px;margin:0 auto}
+/* LAYOUT */
+.config-zone{display:grid;grid-template-columns:1fr 390px;gap:28px;align-items:start;padding:36px 28px 72px;max-width:1120px;margin:0 auto}
 
-  /* PANEL (inputs) */
-  .panel{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:28px;box-shadow:var(--shadow)}
-  .panel-title{font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--faint);margin-bottom:18px}
-  .field{margin-bottom:14px}
-  .field label{display:flex;justify-content:space-between;align-items:center;font-size:12.5px;color:var(--dim);margin-bottom:7px;font-weight:500}
-  .field label .hint{color:var(--faint);font-weight:400;font-size:11px}
-  .field input{width:100%;background:var(--surface-2);border:1px solid var(--line);color:var(--text);font-family:var(--mono);font-size:15px;padding:11px 13px;border-radius:9px;outline:none;transition:border-color .15s,box-shadow .15s}
-  .field input:focus{border-color:var(--coral);box-shadow:0 0 0 3px rgba(232,118,90,.12)}
-  .with-prefix{position:relative}
-  .with-prefix .pfx{position:absolute;left:13px;bottom:11px;color:var(--faint);font-family:var(--mono);font-size:15px;pointer-events:none;z-index:1}
-  .with-prefix input{padding-left:26px}
-  .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-  .divider{border:none;border-top:1px solid var(--line-soft);margin:18px 0}
+/* PANEL */
+.panel{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow)}
+.panel-title{font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--faint);margin-bottom:16px}
 
-  /* PRESETS */
-  .presets{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:18px}
-  .preset-btn{font-size:12px;font-weight:600;padding:6px 13px;border-radius:99px;border:1px solid var(--line);background:var(--surface-2);color:var(--dim);cursor:pointer;transition:.15s;font-family:var(--ui)}
-  .preset-btn:hover,.preset-btn.active{border-color:var(--coral);color:var(--coral);background:var(--coral-pale)}
+/* CHAIN TABS */
+.chain-tabs{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:14px}
+.chain-btn{font-size:11.5px;font-weight:700;padding:5px 11px;border-radius:7px;border:1.5px solid var(--line);background:var(--surface-2);color:var(--dim);cursor:pointer;transition:.15s;font-family:var(--ui);display:flex;align-items:center;gap:4px}
+.chain-btn:hover{border-color:var(--text);color:var(--text)}
+.chain-btn.active{background:var(--text);color:#fff;border-color:var(--text)}
+.chain-dot{width:7px;height:7px;border-radius:50%;display:inline-block;flex-shrink:0}
 
-  /* PRICE ROW with refresh button */
-  .price-row{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:end}
-  .refresh-btn{height:42px;padding:0 12px;border:1px solid var(--line);border-radius:9px;background:var(--surface-2);color:var(--dim);cursor:pointer;font-size:13px;font-family:var(--ui);transition:.15s;white-space:nowrap;display:flex;align-items:center;gap:5px}
-  .refresh-btn:hover{border-color:var(--coral);color:var(--coral)}
-  .refresh-btn.loading{opacity:.6;pointer-events:none}
+/* TOKEN PRESETS */
+.presets{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}
+.preset-btn{font-size:12px;font-weight:600;padding:6px 12px;border-radius:99px;border:1px solid var(--line);background:var(--surface-2);color:var(--dim);cursor:pointer;transition:.15s;font-family:var(--ui)}
+.preset-btn:hover,.preset-btn.active{border-color:var(--coral);color:var(--coral);background:var(--coral-pale)}
 
-  /* ADVANCED TOGGLE */
-  .adv-toggle{font-size:12px;color:var(--faint);cursor:pointer;user-select:none;display:inline-flex;align-items:center;gap:5px;padding:4px 0;margin-top:2px}
-  .adv-toggle:hover{color:var(--dim)}
-  .adv-toggle .arrow{transition:transform .2s;display:inline-block}
-  .adv-toggle.open .arrow{transform:rotate(180deg)}
-  .adv-fields{display:none}
-  .adv-fields.open{display:block}
+.divider{border:none;border-top:1px solid var(--line-soft);margin:16px 0}
 
-  /* RESULT SIDE */
-  .result-side{position:sticky;top:80px;display:flex;flex-direction:column;gap:14px}
+/* FIELDS */
+.field{margin-bottom:13px}
+.field label{display:flex;justify-content:space-between;align-items:center;font-size:12.5px;color:var(--dim);margin-bottom:6px;font-weight:500}
+.field label .hint{color:var(--faint);font-weight:400;font-size:11px}
+.field input{width:100%;background:var(--surface-2);border:1px solid var(--line);color:var(--text);font-family:var(--mono);font-size:15px;padding:10px 12px;border-radius:9px;outline:none;transition:border-color .15s,box-shadow .15s}
+.field input:focus{border-color:var(--coral);box-shadow:0 0 0 3px rgba(232,118,90,.12)}
+.field input[readonly]{opacity:.65;cursor:default}
+.with-prefix{position:relative}
+.with-prefix .pfx{position:absolute;left:12px;bottom:10px;color:var(--faint);font-family:var(--mono);font-size:15px;pointer-events:none;z-index:1}
+.with-prefix input{padding-left:24px}
 
-  /* GAUGE CARD */
-  .gauge-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:24px 20px 18px;box-shadow:var(--shadow);text-align:center}
-  .hf-svg{display:block;margin:0 auto;overflow:visible}
-  .gauge-status{font-size:13px;color:var(--dim);margin-top:8px;min-height:18px;font-weight:500}
+/* PRICE ROW */
+.price-row{display:grid;grid-template-columns:1fr auto;gap:7px;align-items:end}
+.refresh-btn{height:40px;padding:0 11px;border:1px solid var(--line);border-radius:9px;background:var(--surface-2);color:var(--dim);cursor:pointer;font-size:12.5px;font-family:var(--ui);transition:.15s;display:flex;align-items:center;gap:5px}
+.refresh-btn:hover{border-color:var(--coral);color:var(--coral)}
+.refresh-btn.loading{opacity:.5;pointer-events:none}
 
-  /* PRICE SCALE */
-  .price-scale-wrap{margin-top:16px;border-top:1px solid var(--line);padding-top:16px}
-  .ps-label{font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);margin-bottom:10px}
-  .price-scale{position:relative;height:36px;background:linear-gradient(90deg,var(--coral-pale) 0%,var(--surface-2) 40%,var(--good-pale) 100%);border-radius:8px;overflow:visible}
-  .ps-bar{display:none}
-  .ps-marker{position:absolute;top:-4px;bottom:-4px;width:3px;border-radius:3px;transform:translateX(-50%)}
-  .ps-marker.liq{background:var(--coral);z-index:2}
-  .ps-marker.cur{background:var(--good);z-index:2}
-  .ps-label-liq{position:absolute;top:100%;margin-top:5px;transform:translateX(-50%);font-size:10px;font-family:var(--mono);color:var(--coral);font-weight:700;white-space:nowrap}
-  .ps-label-cur{position:absolute;top:100%;margin-top:5px;transform:translateX(-50%);font-size:10px;font-family:var(--mono);color:var(--good);font-weight:700;white-space:nowrap}
-  .ps-buffer{position:absolute;top:50%;transform:translateY(-50%);font-size:10px;font-weight:700;color:var(--dim);pointer-events:none}
+/* PARAM CHIPS */
+.param-chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.param-chip{font-size:10.5px;font-weight:700;padding:3px 8px;border-radius:99px;border:1px solid var(--line);background:var(--surface-2);color:var(--dim);font-family:var(--mono)}
+.param-chip.ltv-chip{border-color:rgba(14,159,110,.3);color:var(--good)}
+.param-chip.lt-chip{border-color:rgba(232,118,90,.3);color:var(--coral)}
+.param-chip.pen-chip{border-color:rgba(200,132,30,.3);color:var(--gold)}
 
-  /* BREAKDOWN */
-  .breakdown-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px;box-shadow:var(--shadow)}
-  .br-row{display:flex;justify-content:space-between;align-items:center;font-size:13px;color:var(--dim);padding:5px 0}
-  .br-row+.br-row{border-top:1px solid var(--line-soft)}
-  .br-row span{font-size:12.5px}
-  .br-row b{font-family:var(--mono);color:var(--text);font-size:13.5px}
-  .br-row.danger b{color:var(--coral)}
+/* ADVANCED TOGGLE */
+.adv-toggle{font-size:12px;color:var(--faint);cursor:pointer;user-select:none;display:inline-flex;align-items:center;gap:5px;padding:4px 0;margin-top:2px}
+.adv-toggle:hover{color:var(--dim)}
+.adv-toggle .arrow{transition:transform .2s;display:inline-block}
+.adv-toggle.open .arrow{transform:rotate(180deg)}
+.adv-fields{display:none}
+.adv-fields.open{display:block}
 
-  /* ALERT CARD */
-  .alert-card{border-radius:var(--radius);padding:18px 20px;border:1.5px solid}
-  .alert-card.safe{background:var(--good-pale);border-color:rgba(14,159,110,.3)}
-  .alert-card.warn{background:var(--warn-pale);border-color:rgba(245,158,11,.35)}
-  .alert-card.danger{background:var(--coral-pale);border-color:rgba(232,118,90,.4)}
-  .alert-title{font-size:10.5px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;margin-bottom:8px}
-  .alert-card.safe .alert-title{color:var(--good)}
-  .alert-card.warn .alert-title{color:var(--warn)}
-  .alert-card.danger .alert-title{color:var(--coral)}
-  .alert-text{font-size:13px;line-height:1.65;color:var(--text)}
+/* RESULT SIDE */
+.result-side{position:sticky;top:80px;display:flex;flex-direction:column;gap:12px}
 
-  /* ACTION CARD */
-  .action-card{background:var(--surface-2);border:1px solid var(--line);border-radius:var(--radius);padding:16px 18px}
-  .ac-title{font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);margin-bottom:10px}
-  .ac-row{display:flex;justify-content:space-between;align-items:center;font-size:13px;color:var(--dim);margin-bottom:6px}
-  .ac-row:last-child{margin-bottom:0}
-  .ac-row b{font-family:var(--mono);color:var(--text)}
+/* GAUGE CARD */
+.gauge-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:22px 18px 16px;box-shadow:var(--shadow);text-align:center}
+.hf-svg{display:block;margin:0 auto;overflow:visible}
+.gauge-status{font-size:13px;color:var(--dim);margin-top:6px;min-height:18px;font-weight:500}
 
-  /* SIMULATOR SECTION */
-  .sim-section{background:var(--surface-2);border-top:1px solid var(--line);padding:48px 28px 56px}
-  .sim-inner{max-width:760px;margin:0 auto}
-  .sim-title{font-family:var(--display);font-size:1.25rem;font-weight:500;letter-spacing:-.015em;margin-bottom:6px}
-  .sim-sub{font-size:.875rem;color:var(--dim);margin-bottom:28px;line-height:1.6}
-  .sim-slider-row{display:flex;align-items:center;gap:16px;margin-bottom:24px}
-  .sim-slider{flex:1;-webkit-appearance:none;height:6px;border-radius:99px;background:linear-gradient(90deg,var(--good) 0%,var(--warn) 40%,var(--coral) 80%);outline:none;cursor:pointer}
-  .sim-slider::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:#fff;border:2.5px solid var(--coral);box-shadow:0 2px 6px rgba(0,0,0,.15);cursor:grab}
-  .sim-slider::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:#fff;border:2.5px solid var(--coral);cursor:grab}
-  .sim-pct{font-family:var(--mono);font-size:1.05rem;font-weight:700;color:var(--coral);min-width:48px;text-align:right}
-  .sim-result{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:20px 24px;display:grid;grid-template-columns:repeat(3,1fr);gap:16px;box-shadow:0 1px 4px rgba(0,0,0,.05)}
-  .sr-cell{text-align:center}
-  .sr-label{font-size:10.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);margin-bottom:6px}
-  .sr-val{font-family:var(--mono);font-size:1.35rem;font-weight:700;color:var(--text)}
-  .sr-val.good{color:var(--good)}
-  .sr-val.warn{color:var(--warn)}
-  .sr-val.danger{color:var(--coral)}
+/* PRICE SCALE */
+.price-scale-wrap{margin-top:14px;border-top:1px solid var(--line);padding-top:14px}
+.ps-section-label{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);margin-bottom:9px}
+.price-scale{position:relative;height:32px;background:linear-gradient(90deg,var(--coral-pale) 0%,var(--surface-2) 45%,var(--good-pale) 100%);border-radius:7px;overflow:visible;margin-bottom:26px}
+.ps-marker{position:absolute;top:-4px;bottom:-4px;width:3px;border-radius:3px;transform:translateX(-50%)}
+.ps-marker.liq{background:var(--coral);z-index:2}
+.ps-marker.cur{background:var(--good);z-index:2}
+.ps-label-liq{position:absolute;top:100%;margin-top:4px;transform:translateX(-50%);font-size:9.5px;font-family:var(--mono);color:var(--coral);font-weight:700;white-space:nowrap}
+.ps-label-cur{position:absolute;top:100%;margin-top:4px;transform:translateX(-50%);font-size:9.5px;font-family:var(--mono);color:var(--good);font-weight:700;white-space:nowrap}
+.ps-buffer{position:absolute;top:50%;transform:translateX(-50%) translateY(-50%);font-size:9.5px;font-weight:700;color:var(--dim);pointer-events:none}
 
-  /* BACK + FOOTER */
-  .back-section{padding:40px 28px;text-align:center;border-top:1px solid var(--line);background:#fff}
-  .back-link{display:inline-flex;align-items:center;gap:10px;text-decoration:none;color:var(--text);font-weight:700;font-size:15px;padding:14px 32px;border:1.5px solid var(--line);border-radius:40px;background:#fff;transition:.18s;box-shadow:0 2px 8px rgba(0,0,0,.05)}
-  .back-link:hover{border-color:var(--coral);color:var(--coral)}
-  footer{padding:36px 0;text-align:center;color:var(--faint);font-size:13px;border-top:1px solid var(--line)}
-  .ft-tag{font-family:var(--display);font-style:italic;font-size:17px;color:var(--dim);margin-bottom:8px}
-  .ft-tag span{color:var(--coral)}
+/* BREAKDOWN */
+.breakdown-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:16px 18px;box-shadow:var(--shadow)}
+.br-row{display:flex;justify-content:space-between;align-items:center;font-size:12.5px;color:var(--dim);padding:4.5px 0}
+.br-row+.br-row{border-top:1px solid var(--line-soft)}
+.br-row b{font-family:var(--mono);color:var(--text);font-size:13px}
+.br-row.danger b{color:var(--coral)}
+.br-row.good b{color:var(--good)}
+.br-row.warn b{color:var(--warn)}
 
-  @media(max-width:860px){
-    .config-zone{grid-template-columns:1fr}
-    .result-side{position:static}
-    .sim-result{grid-template-columns:1fr 1fr}
-  }
-  @media(max-width:560px){
-    .row2{grid-template-columns:1fr}
-    .price-row{grid-template-columns:1fr}
-    .refresh-btn{display:none}
-    .sim-result{grid-template-columns:1fr}
-  }
-  @media(max-width:480px){
-    .navbar{padding:8px 14px}
-    .nav-home{padding:6px 10px;font-size:.75rem}
-    .page-hero{padding-top:86px;padding-left:16px;padding-right:16px}
-    .config-zone{padding:24px 14px 48px}
-    .panel{padding:18px 14px}
-    .sim-section{padding:32px 16px 40px}
-  }
+/* LTV BAR (inside breakdown) */
+.ltv-bar-wrap{padding:6px 0 2px}
+.ltv-bar-track{position:relative;height:7px;background:var(--line);border-radius:99px;margin-bottom:6px;overflow:visible}
+.ltv-bar-fill{height:100%;border-radius:99px;transition:.3s;min-width:2px}
+.ltv-mark{position:absolute;top:-4px;bottom:-4px;width:2px;transform:translateX(-50%);border-radius:2px}
+.ltv-mark.maxltv{background:var(--warn)}
+.ltv-mark.lt{background:var(--coral)}
+.ltv-bar-labels{display:flex;justify-content:space-between;font-size:9.5px;font-family:var(--mono);color:var(--faint)}
+
+/* ALERT CARD */
+.alert-card{border-radius:var(--radius);padding:16px 18px;border:1.5px solid}
+.alert-card.safe{background:var(--good-pale);border-color:rgba(14,159,110,.3)}
+.alert-card.warn{background:var(--warn-pale);border-color:rgba(245,158,11,.35)}
+.alert-card.danger{background:var(--coral-pale);border-color:rgba(232,118,90,.4)}
+.alert-title{font-size:10px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;margin-bottom:7px}
+.alert-card.safe .alert-title{color:var(--good)}
+.alert-card.warn .alert-title{color:var(--warn)}
+.alert-card.danger .alert-title{color:var(--coral)}
+.alert-text{font-size:12.5px;line-height:1.65;color:var(--text)}
+
+/* ACTION CARD */
+.action-card{background:var(--surface-2);border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px}
+.ac-title{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);margin-bottom:9px}
+.ac-row{display:flex;justify-content:space-between;align-items:center;font-size:12.5px;color:var(--dim);margin-bottom:5px}
+.ac-row:last-child{margin-bottom:0}
+.ac-row b{font-family:var(--mono);color:var(--text);font-size:12px}
+
+/* DISCLAIMER */
+.disclaimer{font-size:10.5px;color:var(--faint);line-height:1.55;padding:8px 0 0;border-top:1px solid var(--line-soft);margin-top:8px}
+.disclaimer a{color:var(--faint);text-underline-offset:2px}
+
+/* SIMULATOR */
+.sim-section{background:var(--surface-2);border-top:1px solid var(--line);padding:48px 28px 56px}
+.sim-inner{max-width:760px;margin:0 auto}
+.sim-title{font-family:var(--display);font-size:1.25rem;font-weight:500;letter-spacing:-.015em;margin-bottom:6px}
+.sim-sub{font-size:.875rem;color:var(--dim);margin-bottom:26px;line-height:1.6}
+.sim-slider-row{display:flex;align-items:center;gap:14px;margin-bottom:20px}
+.sim-slider{flex:1;-webkit-appearance:none;height:6px;border-radius:99px;background:linear-gradient(90deg,var(--good) 0%,var(--warn) 40%,var(--coral) 80%);outline:none;cursor:pointer}
+.sim-slider::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:#fff;border:2.5px solid var(--coral);box-shadow:0 2px 6px rgba(0,0,0,.15);cursor:grab}
+.sim-slider::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:#fff;border:2.5px solid var(--coral);cursor:grab}
+.sim-pct{font-family:var(--mono);font-size:1rem;font-weight:700;color:var(--coral);min-width:52px;text-align:right}
+.sim-result{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:18px 22px;display:grid;grid-template-columns:repeat(4,1fr);gap:14px;box-shadow:0 1px 4px rgba(0,0,0,.05)}
+.sr-cell{text-align:center}
+.sr-label{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);margin-bottom:5px}
+.sr-val{font-family:var(--mono);font-size:1.2rem;font-weight:700;color:var(--text)}
+.sr-val.good{color:var(--good)}
+.sr-val.warn{color:var(--warn)}
+.sr-val.danger{color:var(--coral)}
+
+/* BACK + FOOTER */
+.back-section{padding:36px 28px;text-align:center;border-top:1px solid var(--line);background:#fff}
+.back-link{display:inline-flex;align-items:center;gap:10px;text-decoration:none;color:var(--text);font-weight:700;font-size:15px;padding:13px 30px;border:1.5px solid var(--line);border-radius:40px;background:#fff;transition:.18s;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+.back-link:hover{border-color:var(--coral);color:var(--coral)}
+footer{padding:32px 0;text-align:center;color:var(--faint);font-size:13px;border-top:1px solid var(--line)}
+.ft-tag{font-family:var(--display);font-style:italic;font-size:16px;color:var(--dim);margin-bottom:7px}
+.ft-tag span{color:var(--coral)}
+
+@media(max-width:900px){
+  .config-zone{grid-template-columns:1fr}
+  .result-side{position:static}
+  .sim-result{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:580px){
+  .price-row{grid-template-columns:1fr}
+  .refresh-btn{display:none}
+  .sim-result{grid-template-columns:1fr 1fr}
+  .chain-btn span.chain-name{display:none}
+}
+@media(max-width:480px){
+  .navbar{padding:8px 14px}
+  .nav-home{padding:6px 10px;font-size:.75rem}
+  .page-hero{padding-top:86px;padding-left:16px;padding-right:16px}
+  .config-zone{padding:22px 14px 48px}
+  .panel{padding:16px 13px}
+  .sim-section{padding:30px 16px 40px}
+  .sim-result{grid-template-columns:1fr 1fr}
+}
 </style>
 <!-- Google Tag Manager -->
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -205,26 +238,34 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 <!-- HERO -->
 <div class="page-hero">
-  <div class="eyebrow"><span class="t-en">RedZone — Aave V3 Liquidation Calculator</span><span class="t-fr">RedZone — Calculateur de Liquidation Aave V3</span></div>
-  <h1><span class="t-en">Are you in the <em>RedZone</em>?</span><span class="t-fr">Êtes-vous dans la <em>RedZone</em> ?</span></h1>
-  <p><span class="t-en">Enter your position. See your Health Factor, exact liquidation price, and how far the market can drop before wiping you out.</span><span class="t-fr">Saisissez votre position. Obtenez votre Health Factor, le prix de liquidation exact, et de combien le marché peut baisser avant de vous liquider.</span></p>
+  <div class="eyebrow">RedZone — Aave V3 Liquidation Calculator</div>
+  <h1><span class="t-en">Are you in the <em>RedZone</em>?</span><span class="t-fr">Êtes-vous dans la <em>RedZone</em>&nbsp;?</span></h1>
+  <p><span class="t-en">Health Factor, exact liquidation price, and buffer — live prices, 6 chains, 35+ assets.</span><span class="t-fr">Health Factor, prix de liquidation exact et marge — prix live, 6 blockchains, 35+ actifs.</span></p>
+  <div class="chain-pills-hero">
+    <span class="chain-pill-hero">⬡ Ethereum</span>
+    <span class="chain-pill-hero">↑ Arbitrum</span>
+    <span class="chain-pill-hero">⬟ Base</span>
+    <span class="chain-pill-hero">⭕ Optimism</span>
+    <span class="chain-pill-hero">⬟ Polygon</span>
+    <span class="chain-pill-hero">▲ Avalanche</span>
+  </div>
 </div>
 
 <!-- TOOL -->
 <div class="config-zone">
 
-  <!-- INPUTS -->
+  <!-- LEFT: INPUTS -->
   <div class="panel">
-    <div class="panel-title"><span class="t-en">Your position on Aave V3</span><span class="t-fr">Votre position sur Aave V3</span></div>
+    <div class="panel-title"><span class="t-en">Your Aave V3 position</span><span class="t-fr">Votre position Aave V3</span></div>
 
-    <!-- Presets -->
-    <div class="presets">
-      <button class="preset-btn active" data-key="WBTC">WBTC</button>
-      <button class="preset-btn" data-key="ETH">ETH</button>
-      <button class="preset-btn" data-key="wstETH">wstETH</button>
-      <button class="preset-btn" data-key="LINK">LINK</button>
-      <button class="preset-btn" data-key="Custom"><span class="t-en">Custom</span><span class="t-fr">Manuel</span></button>
-    </div>
+    <!-- Chain selector -->
+    <div id="chainTabs" class="chain-tabs"></div>
+
+    <!-- Token presets (rendered by JS) -->
+    <div id="presets" class="presets"></div>
+
+    <!-- Parameter chips -->
+    <div class="param-chips" id="paramChips" style="margin-bottom:14px"></div>
 
     <hr class="divider"/>
 
@@ -237,20 +278,20 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       <input id="colAmount" type="number" value="1" min="0" step="any"/>
     </div>
 
-    <!-- Current price + refresh -->
+    <!-- Price -->
     <div class="field">
       <label>
         <span><span class="t-en">Current price</span><span class="t-fr">Prix actuel</span></span>
-        <span id="priceStatus" style="font-size:11px;color:var(--good);font-weight:600"></span>
+        <span id="priceStatus" style="font-size:11px;font-weight:600"></span>
       </label>
       <div class="price-row">
-        <div class="with-prefix" style="position:relative">
+        <div class="with-prefix">
           <span class="pfx">$</span>
           <input id="colPrice" type="number" value="105000" min="0" step="any" style="padding-left:22px"/>
         </div>
         <button class="refresh-btn" id="refreshBtn" onclick="refreshPrice()">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.5 15a9 9 0 11-2.8-7.5L23 10"/></svg>
-          <span class="t-en">Live</span><span class="t-fr">Live</span>
+          Live
         </button>
       </div>
     </div>
@@ -258,7 +299,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     <!-- Debt -->
     <div class="field with-prefix">
       <label>
-        <span><span class="t-en">Total debt</span><span class="t-fr">Dette totale</span></span>
+        <span><span class="t-en">Total debt (all assets)</span><span class="t-fr">Dette totale (tous actifs)</span></span>
         <span class="hint">USD</span>
       </label>
       <span class="pfx">$</span>
@@ -268,23 +309,29 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     <!-- Advanced toggle -->
     <div class="adv-toggle" id="advToggle" onclick="toggleAdv()">
       <span class="arrow">▾</span>
-      <span class="t-en">Advanced parameters (LT · Penalty)</span>
-      <span class="t-fr">Paramètres avancés (Seuil · Pénalité)</span>
+      <span class="t-en">Advanced (LT · Max LTV · Penalty)</span>
+      <span class="t-fr">Avancé (Seuil · LTV max · Pénalité)</span>
     </div>
-
     <div class="adv-fields" id="advFields">
-      <div style="margin-top:12px">
+      <div style="margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:10px">
         <div class="field">
           <label>
-            <span><span class="t-en">Liquidation Threshold</span><span class="t-fr">Seuil de liquidation</span></span>
-            <span class="hint" id="ltHint">WBTC Aave V3 = 78%</span>
+            <span><span class="t-en">Liq. Threshold</span><span class="t-fr">Seuil liquidation</span></span>
+            <span class="hint" id="ltHint">78%</span>
           </label>
           <input id="ltPct" type="number" value="78" min="1" max="99" step="0.1"/>
         </div>
         <div class="field">
           <label>
-            <span><span class="t-en">Liquidation Penalty</span><span class="t-fr">Pénalité de liquidation</span></span>
-            <span class="hint">Aave = 10%</span>
+            <span>Max LTV</span>
+            <span class="hint" id="maxLtvHint">73%</span>
+          </label>
+          <input id="maxLtvPct" type="number" value="73" min="1" max="99" step="0.1"/>
+        </div>
+        <div class="field">
+          <label>
+            <span><span class="t-en">Liq. Penalty</span><span class="t-fr">Pénalité</span></span>
+            <span class="hint">%</span>
           </label>
           <input id="penaltyPct" type="number" value="10" min="0" max="50" step="0.1"/>
         </div>
@@ -292,51 +339,29 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     </div>
   </div>
 
-  <!-- RESULTS -->
+  <!-- RIGHT: RESULTS -->
   <div class="result-side">
 
     <!-- HF Gauge -->
     <div class="gauge-card">
-
       <svg class="hf-svg" viewBox="0 0 220 125" width="220" height="125">
         <!--
-          Center: (110,110), Radius: 95
-          Arc start: M 15 110  (f=0, left)
-          Arc end:   205 110   (f=1, right)
-          sweep=0 = counterclockwise = goes UPWARD (upper semicircle)
-          Zone boundaries (x=110+95·cos(π(1-f)), y=110−95·sin(π(1-f))):
-            f=0.25 (HF=1):   cos135°=−.7071, sin135°=.7071  → (43, 43)
-            f=0.375(HF=1.5): cos112.5°=−.3827,sin112.5°=.9239 → (74, 22)
-            f=0.5  (HF=2):   cos90°=0, sin90°=1              → (110, 15)
+          Center (110,110), radius 95, sweep=0 (counterclockwise = upper arc)
+          f=0.25(HF=1): (43,43) · f=0.375(HF=1.5): (74,22) · f=0.5(HF=2): (110,15)
         -->
-        <!-- Background track -->
         <path d="M 15 110 A 95 95 0 0 0 205 110" fill="none" stroke="#E4E8F0" stroke-width="16" stroke-linecap="round"/>
-        <!-- Zone: red (HF 0–1) -->
-        <path d="M 15 110 A 95 95 0 0 0 43 43" fill="none" stroke="var(--coral)" stroke-width="16" stroke-linecap="round" opacity="0.22"/>
-        <!-- Zone: orange (HF 1–1.5) -->
-        <path d="M 43 43 A 95 95 0 0 0 74 22" fill="none" stroke="var(--warn)" stroke-width="16" opacity="0.22"/>
-        <!-- Zone: yellow (HF 1.5–2) -->
-        <path d="M 74 22 A 95 95 0 0 0 110 15" fill="none" stroke="#FACC15" stroke-width="16" opacity="0.22"/>
-        <!-- Zone: green (HF 2–4) -->
-        <path d="M 110 15 A 95 95 0 0 0 205 110" fill="none" stroke="var(--good)" stroke-width="16" opacity="0.22"/>
-
-        <!-- Active fill arc (JS-controlled) -->
+        <path d="M 15 110 A 95 95 0 0 0 43 43"   fill="none" stroke="var(--coral)" stroke-width="16" stroke-linecap="round" opacity=".22"/>
+        <path d="M 43 43 A 95 95 0 0 0 74 22"    fill="none" stroke="var(--warn)"  stroke-width="16" opacity=".22"/>
+        <path d="M 74 22 A 95 95 0 0 0 110 15"   fill="none" stroke="#FACC15"      stroke-width="16" opacity=".22"/>
+        <path d="M 110 15 A 95 95 0 0 0 205 110" fill="none" stroke="var(--good)"  stroke-width="16" opacity=".22"/>
         <path id="hfArcFill" d="M 15 110 A 95 95 0 0 0 15.01 110" fill="none" stroke="var(--good)" stroke-width="16" stroke-linecap="round"/>
-
-        <!-- Separator ticks: radial lines at r=83→103 -->
-        <!-- HF=1 (135°): inner (51,51) outer (37,37) -->
-        <line x1="51" y1="51" x2="37" y2="37" stroke="rgba(255,255,255,0.9)" stroke-width="3" stroke-linecap="round"/>
-        <!-- HF=1.5 (112.5°): inner (78,33) outer (71,15) -->
-        <line x1="78" y1="33" x2="71" y2="15" stroke="rgba(255,255,255,0.9)" stroke-width="3" stroke-linecap="round"/>
-        <!-- HF=2 (90°): inner (110,27) outer (110,7) -->
-        <line x1="110" y1="27" x2="110" y2="7" stroke="rgba(255,255,255,0.9)" stroke-width="3" stroke-linecap="round"/>
-
-        <!-- Tick labels (outside arc at r=108) -->
+        <!-- separator ticks -->
+        <line x1="51" y1="51" x2="37" y2="37" stroke="rgba(255,255,255,.9)" stroke-width="3" stroke-linecap="round"/>
+        <line x1="78" y1="33" x2="71" y2="15" stroke="rgba(255,255,255,.9)" stroke-width="3" stroke-linecap="round"/>
+        <line x1="110" y1="27" x2="110" y2="7" stroke="rgba(255,255,255,.9)" stroke-width="3" stroke-linecap="round"/>
         <text x="30" y="34" text-anchor="middle" font-size="9" fill="var(--coral)" font-weight="700" font-family="JetBrains Mono">1.0</text>
-        <text x="66" y="10" text-anchor="middle" font-size="9" fill="var(--warn)" font-weight="700" font-family="JetBrains Mono">1.5</text>
-        <text x="110" y="3" text-anchor="middle" font-size="9" fill="var(--good)" font-weight="700" font-family="JetBrains Mono">2.0</text>
-
-        <!-- HF value -->
+        <text x="66" y="10" text-anchor="middle" font-size="9" fill="var(--warn)"  font-weight="700" font-family="JetBrains Mono">1.5</text>
+        <text x="110" y="3" text-anchor="middle" font-size="9" fill="var(--good)"  font-weight="700" font-family="JetBrains Mono">2.0</text>
         <text id="gaugeVal" x="110" y="101" text-anchor="middle" font-size="38" font-weight="700" font-family="'JetBrains Mono',monospace" fill="#111827">—</text>
         <text x="110" y="117" text-anchor="middle" font-size="9" font-weight="700" letter-spacing="1.5" fill="#9AA5B4">HEALTH FACTOR</text>
       </svg>
@@ -345,8 +370,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
       <!-- Price scale -->
       <div class="price-scale-wrap" id="priceScaleWrap" style="display:none">
-        <div class="ps-label"><span class="t-en">Price buffer to liquidation</span><span class="t-fr">Marge de prix avant liquidation</span></div>
-        <div class="price-scale" id="priceScale" style="margin-bottom:28px">
+        <div class="ps-section-label"><span class="t-en">Buffer to liquidation</span><span class="t-fr">Marge avant liquidation</span></div>
+        <div class="price-scale" id="priceScale">
           <div class="ps-marker liq" id="psLiq" style="left:20%"></div>
           <div class="ps-marker cur" id="psCur" style="left:75%"></div>
           <span class="ps-label-liq" id="psLiqLabel" style="left:20%">$0</span>
@@ -358,7 +383,26 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
     <!-- Breakdown -->
     <div class="breakdown-card">
+      <!-- LTV bar -->
+      <div class="br-row">
+        <span><span class="t-en">Current LTV</span><span class="t-fr">LTV actuel</span></span>
+        <b id="rLtvPct">—</b>
+      </div>
+      <div id="ltvBarWrap" class="ltv-bar-wrap" style="display:none">
+        <div class="ltv-bar-track">
+          <div class="ltv-bar-fill" id="ltvBarFill" style="width:0%;background:var(--good)"></div>
+          <div class="ltv-mark maxltv" id="ltvMarkMaxLtv" style="left:73%"></div>
+          <div class="ltv-mark lt" id="ltvMarkLt" style="left:78%"></div>
+        </div>
+        <div class="ltv-bar-labels">
+          <span>0%</span>
+          <span id="ltvMaxLabel" style="color:var(--warn)"><span class="t-en">Max LTV</span><span class="t-fr">LTV max</span> <span id="ltvMaxPctLabel">73%</span></span>
+          <span id="ltvLtLabel" style="color:var(--coral)">LT <span id="ltvLtPctLabel">78%</span></span>
+          <span>100%</span>
+        </div>
+      </div>
       <div class="br-row"><span><span class="t-en">Collateral value</span><span class="t-fr">Valeur du collateral</span></span><b id="rColUSD">—</b></div>
+      <div class="br-row good"><span><span class="t-en">Max borrowable</span><span class="t-fr">Emprunt restant possible</span></span><b id="rMaxBorrow">—</b></div>
       <div class="br-row danger"><span><span class="t-en">Liquidation price</span><span class="t-fr">Prix de liquidation</span></span><b id="rLiqPrice">—</b></div>
       <div class="br-row danger"><span><span class="t-en">Drop to liquidation</span><span class="t-fr">Baisse avant liquidation</span></span><b id="rDrop">—</b></div>
       <div class="br-row"><span><span class="t-en">Penalty at liquidation</span><span class="t-fr">Pénalité à la liquidation</span></span><b id="rPenalty">—</b></div>
@@ -370,32 +414,30 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       <div class="alert-text" id="alertText"></div>
     </div>
 
-    <!-- Action: how to fix -->
+    <!-- Action card -->
     <div class="action-card" id="actionCard" style="display:none">
       <div class="ac-title"><span class="t-en">To reach HF 2.0</span><span class="t-fr">Pour atteindre HF 2,0</span></div>
-      <div class="ac-row">
-        <span><span class="t-en">Repay</span><span class="t-fr">Rembourser</span></span>
-        <b id="actionRepay">—</b>
-      </div>
-      <div class="ac-row">
-        <span><span class="t-en">Or add collateral</span><span class="t-fr">Ou ajouter du collateral</span></span>
-        <b id="actionAdd">—</b>
+      <div class="ac-row"><span><span class="t-en">Repay</span><span class="t-fr">Rembourser</span></span><b id="actionRepay">—</b></div>
+      <div class="ac-row"><span><span class="t-en">Or add collateral</span><span class="t-fr">Ou ajouter du collateral</span></span><b id="actionAdd">—</b></div>
+      <div class="disclaimer">
+        <span class="t-en">Parameters are approximate. Always verify on <a href="https://app.aave.com" target="_blank" rel="noopener">app.aave.com</a>.</span>
+        <span class="t-fr">Paramètres indicatifs. Vérifiez sur <a href="https://app.aave.com" target="_blank" rel="noopener">app.aave.com</a>.</span>
       </div>
     </div>
 
   </div>
 </div>
 
-<!-- PRICE SIMULATOR -->
+<!-- SIMULATOR -->
 <div class="sim-section">
   <div class="sim-inner">
     <h2 class="sim-title"><span class="t-en">Price drop simulator</span><span class="t-fr">Simulateur de baisse de prix</span></h2>
-    <p class="sim-sub"><span class="t-en">Drag the slider to see what happens to your position if the market drops.</span><span class="t-fr">Faites glisser le curseur pour voir l'impact d'une baisse du marché sur votre position.</span></p>
+    <p class="sim-sub"><span class="t-en">Drag to simulate a market crash. See the impact on your Health Factor and liquidation risk in real time.</span><span class="t-fr">Glissez pour simuler un crash du marché. Impact sur votre HF et risque de liquidation en temps réel.</span></p>
 
     <div class="sim-slider-row">
       <span style="font-size:12px;color:var(--faint);font-weight:600">0%</span>
-      <input type="range" class="sim-slider" id="simSlider" min="0" max="70" value="0" step="1"/>
-      <span style="font-size:12px;color:var(--faint);font-weight:600">−70%</span>
+      <input type="range" class="sim-slider" id="simSlider" min="0" max="80" value="0" step="1"/>
+      <span style="font-size:12px;color:var(--faint);font-weight:600">−80%</span>
       <span class="sim-pct" id="simPct">−0%</span>
     </div>
 
@@ -407,6 +449,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       <div class="sr-cell">
         <div class="sr-label">Health Factor</div>
         <div class="sr-val" id="simHF">—</div>
+      </div>
+      <div class="sr-cell">
+        <div class="sr-label"><span class="t-en">Simulated LTV</span><span class="t-fr">LTV simulé</span></div>
+        <div class="sr-val" id="simLtv">—</div>
       </div>
       <div class="sr-cell">
         <div class="sr-label"><span class="t-en">Status</span><span class="t-fr">Statut</span></div>
@@ -427,335 +473,421 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <footer>
   <div class="ft-tag"><span class="t-en">RedZone — <span>know your risk</span> before the market does.</span><span class="t-fr">RedZone — <span>connaissez votre risque</span> avant le marché.</span></div>
   <span class="t-en">HF = (Collateral × LT) / Debt · Read-only · no wallet connection</span><span class="t-fr">HF = (Collateral × Seuil) / Dette · Lecture seule · sans connexion</span> · ornytools.xyz<br/>
-  <span style="margin-top:8px;display:inline-block">Built by <a href="https://www.linkedin.com/in/xavier-maquin-5576643b9/" target="_blank" rel="noopener" style="color:var(--coral);text-decoration:none;font-weight:600">Xavier Maquin</a></span>
+  <span style="margin-top:7px;display:inline-block">Built by <a href="https://www.linkedin.com/in/xavier-maquin-5576643b9/" target="_blank" rel="noopener" style="color:var(--coral);text-decoration:none;font-weight:600">Xavier Maquin</a></span>
 </footer>
 
 <script>
 const $ = id => document.getElementById(id);
 
-/* ── PRESETS ─────────────────────────────────────────────── */
-const PRESETS = {
-  WBTC:   { lt:78,   penalty:10, sym:'₿', hint:'BTC',    ltHint:'WBTC Aave V3 = 78%',    gecko:'wrapped-bitcoin', default:105000 },
-  ETH:    { lt:82.5, penalty:10, sym:'Ξ', hint:'ETH',    ltHint:'ETH Aave V3 = 82.5%',   gecko:'ethereum',        default:3800   },
-  wstETH: { lt:80,   penalty:10, sym:'Ξ', hint:'wstETH', ltHint:'wstETH Aave V3 = 80%',  gecko:'ethereum',        default:3800   },
-  LINK:   { lt:67.5, penalty:7,  sym:'⬡', hint:'LINK',   ltHint:'LINK Aave V3 = 67.5%',  gecko:'chainlink',       default:18     },
-  Custom: { lt:null, penalty:10, sym:'◈', hint:'token',  ltHint:'',                       gecko:null,              default:null   },
+/* ── CHAIN + TOKEN DATA (Aave V3 risk params, indicative) ─── */
+// lt = Liquidation Threshold %, ltv = Max LTV %, penalty = Liq Bonus %
+// gecko = CoinGecko price ID, def = fallback price USD
+const CHAINS = {
+  ethereum: {
+    name:'Ethereum', dot:'#627EEA',
+    tokens:{
+      WBTC:   {lt:78,  ltv:73,  penalty:10,  sym:'₿',  hint:'WBTC',    gecko:'wrapped-bitcoin',             def:105000},
+      WETH:   {lt:83,  ltv:80.5,penalty:5,   sym:'Ξ',  hint:'WETH',    gecko:'ethereum',                    def:3800},
+      wstETH: {lt:81,  ltv:79,  penalty:6,   sym:'Ξ',  hint:'wstETH',  gecko:'wrapped-steth',               def:4400},
+      rETH:   {lt:77,  ltv:74,  penalty:7.5, sym:'Ξ',  hint:'rETH',    gecko:'rocket-pool-eth',             def:4200},
+      cbETH:  {lt:77,  ltv:74,  penalty:7.5, sym:'Ξ',  hint:'cbETH',   gecko:'coinbase-wrapped-staked-eth', def:3900},
+      weETH:  {lt:75,  ltv:72,  penalty:7.5, sym:'Ξ',  hint:'weETH',   gecko:'ether-fi-staked-eth',         def:4100},
+      LINK:   {lt:73,  ltv:68,  penalty:7.5, sym:'⬡',  hint:'LINK',    gecko:'chainlink',                   def:18},
+      UNI:    {lt:77,  ltv:65,  penalty:9,   sym:'🦄', hint:'UNI',     gecko:'uniswap',                     def:12},
+      AAVE:   {lt:73,  ltv:66,  penalty:7.5, sym:'A',  hint:'AAVE',    gecko:'aave',                        def:200},
+      Custom: {lt:null,ltv:null,penalty:10,  sym:'◈',  hint:'token',   gecko:null,                          def:null},
+    }
+  },
+  arbitrum: {
+    name:'Arbitrum', dot:'#28A0F0',
+    tokens:{
+      WBTC:   {lt:78,  ltv:73,  penalty:10,  sym:'₿',  hint:'WBTC',   gecko:'wrapped-bitcoin',              def:105000},
+      WETH:   {lt:82.5,ltv:80,  penalty:5,   sym:'Ξ',  hint:'WETH',   gecko:'ethereum',                     def:3800},
+      wstETH: {lt:80,  ltv:75,  penalty:7.5, sym:'Ξ',  hint:'wstETH', gecko:'wrapped-steth',                def:4400},
+      weETH:  {lt:72,  ltv:67,  penalty:7.5, sym:'Ξ',  hint:'weETH',  gecko:'ether-fi-staked-eth',          def:4100},
+      cbBTC:  {lt:73,  ltv:65,  penalty:10,  sym:'₿',  hint:'cbBTC',  gecko:'coinbase-wrapped-btc',         def:105000},
+      ARB:    {lt:70,  ltv:60,  penalty:10,  sym:'↑',  hint:'ARB',    gecko:'arbitrum',                     def:1.2},
+      LINK:   {lt:70,  ltv:60,  penalty:7.5, sym:'⬡',  hint:'LINK',   gecko:'chainlink',                    def:18},
+      GMX:    {lt:40,  ltv:30,  penalty:15,  sym:'G',  hint:'GMX',    gecko:'gmx',                          def:35},
+      Custom: {lt:null,ltv:null,penalty:10,  sym:'◈',  hint:'token',  gecko:null,                           def:null},
+    }
+  },
+  base: {
+    name:'Base', dot:'#0052FF',
+    tokens:{
+      WETH:   {lt:83,  ltv:80,  penalty:5,   sym:'Ξ',  hint:'WETH',   gecko:'ethereum',                     def:3800},
+      wstETH: {lt:81,  ltv:79,  penalty:6,   sym:'Ξ',  hint:'wstETH', gecko:'wrapped-steth',                def:4400},
+      cbETH:  {lt:79,  ltv:74.5,penalty:7.5, sym:'Ξ',  hint:'cbETH',  gecko:'coinbase-wrapped-staked-eth',  def:3900},
+      cbBTC:  {lt:73,  ltv:65,  penalty:10,  sym:'₿',  hint:'cbBTC',  gecko:'coinbase-wrapped-btc',         def:105000},
+      weETH:  {lt:75,  ltv:72,  penalty:7.5, sym:'Ξ',  hint:'weETH',  gecko:'ether-fi-staked-eth',          def:4100},
+      USDC:   {lt:80,  ltv:77,  penalty:5,   sym:'$',  hint:'USDC',   gecko:'usd-coin',                     def:1},
+      Custom: {lt:null,ltv:null,penalty:10,  sym:'◈',  hint:'token',  gecko:null,                           def:null},
+    }
+  },
+  optimism: {
+    name:'Optimism', dot:'#FF0420',
+    tokens:{
+      WETH:   {lt:82.5,ltv:80,  penalty:5,   sym:'Ξ',  hint:'WETH',   gecko:'ethereum',                     def:3800},
+      WBTC:   {lt:78,  ltv:73,  penalty:10,  sym:'₿',  hint:'WBTC',   gecko:'wrapped-bitcoin',              def:105000},
+      wstETH: {lt:81,  ltv:79,  penalty:6,   sym:'Ξ',  hint:'wstETH', gecko:'wrapped-steth',                def:4400},
+      OP:     {lt:65,  ltv:57.5,penalty:10,  sym:'⭕', hint:'OP',     gecko:'optimism',                     def:2.5},
+      LINK:   {lt:75,  ltv:70,  penalty:7.5, sym:'⬡',  hint:'LINK',   gecko:'chainlink',                    def:18},
+      USDC:   {lt:80,  ltv:77,  penalty:5,   sym:'$',  hint:'USDC',   gecko:'usd-coin',                     def:1},
+      Custom: {lt:null,ltv:null,penalty:10,  sym:'◈',  hint:'token',  gecko:null,                           def:null},
+    }
+  },
+  polygon: {
+    name:'Polygon', dot:'#8247E5',
+    tokens:{
+      WBTC:   {lt:75,  ltv:70,  penalty:10,  sym:'₿',  hint:'WBTC',   gecko:'wrapped-bitcoin',              def:105000},
+      WETH:   {lt:82.5,ltv:80,  penalty:5,   sym:'Ξ',  hint:'WETH',   gecko:'ethereum',                     def:3800},
+      wstETH: {lt:81,  ltv:79,  penalty:6,   sym:'Ξ',  hint:'wstETH', gecko:'wrapped-steth',                def:4400},
+      MATIC:  {lt:75,  ltv:68,  penalty:10,  sym:'⬟', hint:'MATIC',  gecko:'matic-network',                 def:0.7},
+      LINK:   {lt:73,  ltv:68,  penalty:7.5, sym:'⬡',  hint:'LINK',   gecko:'chainlink',                    def:18},
+      USDC:   {lt:80,  ltv:77,  penalty:5,   sym:'$',  hint:'USDC',   gecko:'usd-coin',                     def:1},
+      Custom: {lt:null,ltv:null,penalty:10,  sym:'◈',  hint:'token',  gecko:null,                           def:null},
+    }
+  },
+  avalanche: {
+    name:'Avalanche', dot:'#E84142',
+    tokens:{
+      WAVAX:  {lt:70,  ltv:65,  penalty:10,  sym:'▲',  hint:'WAVAX',  gecko:'avalanche-2',                  def:40},
+      sAVAX:  {lt:70,  ltv:65,  penalty:10,  sym:'▲',  hint:'sAVAX',  gecko:'benqi-liquid-staked-avax',     def:42},
+      WETHe:  {lt:82.5,ltv:80,  penalty:5,   sym:'Ξ',  hint:'WETH.e', gecko:'ethereum',                     def:3800},
+      WBTCe:  {lt:75,  ltv:70,  penalty:10,  sym:'₿',  hint:'WBTC.e', gecko:'wrapped-bitcoin',              def:105000},
+      USDC:   {lt:85,  ltv:80,  penalty:5,   sym:'$',  hint:'USDC',   gecko:'usd-coin',                     def:1},
+      Custom: {lt:null,ltv:null,penalty:10,  sym:'◈',  hint:'token',  gecko:null,                           def:null},
+    }
+  },
 };
 
-let _activePreset = 'WBTC';
+let _chain  = 'arbitrum'; // default = Arbitrum (Xavier's chain)
+let _token  = 'WBTC';
 const _priceCache = {};
 
 /* ── HELPERS ──────────────────────────────────────────────── */
-function fmtUSD(v, decimals=0){
+function fmtUSD(v, dec=0){
   if(!isFinite(v)||v<0) return '—';
   if(v>=1e6) return '$'+(v/1e6).toFixed(2)+'M';
-  return '$'+v.toLocaleString('en-US',{minimumFractionDigits:decimals,maximumFractionDigits:decimals});
+  return '$'+v.toLocaleString('en-US',{minimumFractionDigits:dec,maximumFractionDigits:dec});
 }
-function fmtNum(v, d=2){ return isFinite(v) ? v.toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d}) : '—'; }
-function L(){ return (typeof getLang==='function') ? getLang() : 'en'; }
+function fmtNum(v,d=2){ return isFinite(v)?v.toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d}):'—'; }
+function L(){ return (typeof getLang==='function')?getLang():'en'; }
 
-/* ── PRESET BUTTONS ───────────────────────────────────────── */
-document.querySelectorAll('.preset-btn').forEach(btn => {
-  btn.addEventListener('click', async () => {
-    document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    _activePreset = btn.dataset.key;
-    const p = PRESETS[_activePreset];
+function getToken(){ return CHAINS[_chain]?.tokens[_token] || null; }
 
-    // Update LT / penalty / symbol
-    if(p.lt !== null) {
-      $('ltPct').value = p.lt;
-    }
-    $('penaltyPct').value = p.penalty;
-    $('colSym').textContent = p.sym;
-    $('symHint').textContent = p.hint;
-    $('ltHint').textContent = p.ltHint;
-
-    // Fetch live price
-    if(p.gecko) {
+/* ── RENDER CHAIN TABS ────────────────────────────────────── */
+function renderChainTabs(){
+  const el = $('chainTabs');
+  el.innerHTML = Object.entries(CHAINS).map(([key,c])=>
+    `<button class="chain-btn${key===_chain?' active':''}" data-chain="${key}">
+      <span class="chain-dot" style="background:${c.dot}"></span>
+      <span class="chain-name">${c.name}</span>
+    </button>`
+  ).join('');
+  el.querySelectorAll('.chain-btn').forEach(btn=>{
+    btn.addEventListener('click', async ()=>{
+      _chain = btn.dataset.chain;
+      const tokens = CHAINS[_chain].tokens;
+      _token = Object.keys(tokens)[0]; // select first token of new chain
+      renderChainTabs();
+      renderTokens();
+      renderParamChips();
+      applyTokenToForm();
       await refreshPrice();
-    } else {
-      $('priceStatus').textContent = '';
-      calc();
-    }
+    });
   });
-});
+}
+
+/* ── RENDER TOKEN PRESETS ─────────────────────────────────── */
+function renderTokens(){
+  const el = $('presets');
+  const tokens = CHAINS[_chain].tokens;
+  el.innerHTML = Object.keys(tokens).map(key=>{
+    const isCustom = !tokens[key].gecko;
+    return `<button class="preset-btn${key===_token?' active':''}" data-token="${key}">${isCustom?('<span class="t-en">Custom</span><span class="t-fr">Manuel</span>'):key}</button>`;
+  }).join('');
+  el.querySelectorAll('.preset-btn').forEach(btn=>{
+    btn.addEventListener('click', async ()=>{
+      _token = btn.dataset.token;
+      el.querySelectorAll('.preset-btn').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      renderParamChips();
+      applyTokenToForm();
+      const t = getToken();
+      if(t?.gecko) await refreshPrice(); else { $('priceStatus').textContent=''; calc(); }
+    });
+  });
+}
+
+/* ── RENDER PARAM CHIPS ───────────────────────────────────── */
+function renderParamChips(){
+  const t = getToken();
+  const l = L();
+  if(!t||!t.lt){ $('paramChips').innerHTML=''; return; }
+  $('paramChips').innerHTML =
+    `<span class="param-chip ltv-chip">Max LTV ${t.ltv}%</span>` +
+    `<span class="param-chip lt-chip">${l==='fr'?'Seuil':'LT'} ${t.lt}%</span>` +
+    `<span class="param-chip pen-chip">${l==='fr'?'Pénalité':'Penalty'} ${t.penalty}%</span>`;
+}
+
+/* ── APPLY TOKEN TO FORM INPUTS ───────────────────────────── */
+function applyTokenToForm(){
+  const t = getToken(); if(!t) return;
+  if(t.lt!==null)    $('ltPct').value    = t.lt;
+  if(t.ltv!==null)   $('maxLtvPct').value= t.ltv;
+  if(t.penalty!==null) $('penaltyPct').value= t.penalty;
+  $('colSym').textContent  = t.sym;
+  $('symHint').textContent = t.hint;
+  $('ltHint').textContent  = t.lt   ? t.lt+'%'   : '—';
+  $('maxLtvHint').textContent= t.ltv ? t.ltv+'%' : '—';
+  if(t.def) $('colPrice').value = t.def;
+}
 
 /* ── LIVE PRICE FETCH ─────────────────────────────────────── */
 async function fetchPrice(gecko){
   if(!gecko) return null;
-  if(_priceCache[gecko] && Date.now() - _priceCache[gecko].ts < 60000) return _priceCache[gecko].v;
-  try {
+  if(_priceCache[gecko] && Date.now()-_priceCache[gecko].ts < 60000) return _priceCache[gecko].v;
+  try{
     const r = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${gecko}&vs_currencies=usd`);
-    if(!r.ok) throw new Error('API error');
+    if(!r.ok) throw '';
     const d = await r.json();
     const v = d[gecko]?.usd || null;
-    if(v) _priceCache[gecko] = { v, ts: Date.now() };
+    if(v) _priceCache[gecko] = {v, ts:Date.now()};
     return v;
-  } catch { return null; }
+  }catch{ return null; }
 }
 
 async function refreshPrice(){
-  const p = PRESETS[_activePreset];
-  if(!p.gecko) return;
+  const t = getToken(); if(!t?.gecko) return;
   const btn = $('refreshBtn');
   btn.classList.add('loading');
-  $('priceStatus').textContent = L()==='fr' ? 'chargement…' : 'fetching…';
+  $('priceStatus').textContent = L()==='fr'?'chargement…':'fetching…';
   $('priceStatus').style.color = 'var(--faint)';
-  const price = await fetchPrice(p.gecko);
+  const price = await fetchPrice(t.gecko);
   btn.classList.remove('loading');
-  if(price) {
-    $('colPrice').value = price;
-    $('priceStatus').innerHTML = '<span style="color:var(--good)">● live</span>';
-    calc();
-  } else {
-    $('priceStatus').textContent = L()==='fr' ? 'erreur API' : 'API error';
-    $('priceStatus').style.color = 'var(--coral)';
-    calc();
-  }
-}
-
-/* ── ADVANCED TOGGLE ──────────────────────────────────────── */
-function toggleAdv(){
-  const t = $('advToggle'), f = $('advFields');
-  t.classList.toggle('open');
-  f.classList.toggle('open');
-}
-
-/* ── SVG GAUGE ────────────────────────────────────────────── */
-function arcEndPoint(f){
-  // center (110,110), radius 95, upper semicircle (sweep=0 = counterclockwise = going UP)
-  const angle = Math.PI * (1 - f);   // angle from positive x-axis
-  const x = 110 + 95 * Math.cos(angle);
-  const y = 110 - 95 * Math.sin(angle);
-  return { x: x.toFixed(2), y: y.toFixed(2) };
-}
-
-function updateGauge(hf){
-  const f = Math.min(Math.max(hf / 4, 0), 0.999); // 0.999 avoids degenerate arc at f=1
-
-  // Compute arc path
-  let pathD;
-  if(f < 0.005){
-    pathD = 'M 15 110 A 95 95 0 0 0 15.01 110'; // near-zero arc
-  } else {
-    const ep = arcEndPoint(f);
-    // Arc is always ≤ 180° (from 0 to 180° sweep), so large-arc is always 0
-    pathD = `M 15 110 A 95 95 0 0 0 ${ep.x} ${ep.y}`;
-  }
-
-  const arcEl = $('hfArcFill');
-  arcEl.setAttribute('d', pathD);
-
-  // Color by zone
-  const color = hf >= 2 ? 'var(--good)' : hf >= 1.5 ? 'var(--warn)' : hf >= 1 ? 'var(--coral)' : '#DC2626';
-  arcEl.setAttribute('stroke', color);
-
-  // Value text
-  const valEl = $('gaugeVal');
-  valEl.textContent = hf > 99 ? '∞' : (hf >= 0 ? fmtNum(hf, 2) : '—');
-  valEl.setAttribute('fill', color);
-}
-
-/* ── PRICE SCALE ──────────────────────────────────────────── */
-function updatePriceScale(currentPrice, liqPrice){
-  const wrap = $('priceScaleWrap');
-  if(!isFinite(liqPrice) || !isFinite(currentPrice) || liqPrice <= 0 || currentPrice <= 0){
-    wrap.style.display = 'none';
-    return;
-  }
-  wrap.style.display = 'block';
-
-  // Compute positions: liqPrice is always to the left of currentPrice
-  const lo = liqPrice * 0.75;
-  const hi = currentPrice * 1.18;
-  const range = hi - lo;
-  const liqPct = Math.max(5, Math.min(40, ((liqPrice - lo) / range) * 100));
-  const curPct = Math.max(60, Math.min(92, ((currentPrice - lo) / range) * 100));
-
-  $('psLiq').style.left = liqPct + '%';
-  $('psCur').style.left = curPct + '%';
-  $('psLiqLabel').style.left = liqPct + '%';
-  $('psCurLabel').style.left = curPct + '%';
-
-  const fmt = v => v >= 1000 ? '$'+(v/1000).toFixed(0)+'k' : '$'+v.toFixed(0);
-  $('psLiqLabel').textContent = fmt(liqPrice);
-  $('psCurLabel').textContent = fmt(currentPrice);
-
-  const dropPct = ((currentPrice - liqPrice) / currentPrice * 100).toFixed(1);
-  const midPct = ((liqPct + curPct) / 2).toFixed(1);
-  $('psBuffer').textContent = '−'+dropPct+'%';
-  $('psBuffer').style.left = midPct + '%';
-  $('psBuffer').style.transform = 'translateX(-50%) translateY(-50%)';
-}
-
-/* ── SIMULATOR ────────────────────────────────────────────── */
-function updateSim(currentPrice, lt, colAmt, debt){
-  const dropPct = parseFloat($('simSlider').value) || 0;
-  $('simPct').textContent = '−'+dropPct+'%';
-
-  const simPrice = currentPrice * (1 - dropPct/100);
-  const simColUSD = colAmt * simPrice;
-  const simColLT = simColUSD * lt;
-  const simHF = debt > 0 ? simColLT / debt : Infinity;
-
-  $('simPrice').textContent = fmtUSD(simPrice, 0);
-
-  const hfStr = simHF > 99 ? '∞' : fmtNum(simHF, 2);
-  const hfEl = $('simHF');
-  hfEl.textContent = hfStr;
-  hfEl.className = 'sr-val' + (simHF >= 2 ? ' good' : simHF >= 1.5 ? ' warn' : simHF >= 1 ? ' danger' : ' danger');
-
-  const l = L();
-  const statusEl = $('simStatus');
-  if(simHF >= 2){
-    statusEl.textContent = l==='fr' ? 'Sûr ✓' : 'Safe ✓';
-    statusEl.className = 'sr-val good';
-  } else if(simHF >= 1.5){
-    statusEl.textContent = l==='fr' ? 'Attention ⚠' : 'Watch out ⚠';
-    statusEl.className = 'sr-val warn';
-  } else if(simHF >= 1){
-    statusEl.textContent = l==='fr' ? 'Danger ⚠' : 'Danger ⚠';
-    statusEl.className = 'sr-val danger';
-  } else {
-    statusEl.textContent = l==='fr' ? 'Liquidation ✗' : 'Liquidated ✗';
-    statusEl.className = 'sr-val danger';
-  }
-}
-
-/* ── MAIN CALC ────────────────────────────────────────────── */
-function calc(){
-  const l = L();
-  const colAmt   = parseFloat($('colAmount').value) || 0;
-  const colPrice = parseFloat($('colPrice').value)  || 0;
-  const debt     = parseFloat($('debtUSD').value)   || 0;
-  const lt       = parseFloat($('ltPct').value)     / 100 || 0;
-  const penalty  = parseFloat($('penaltyPct').value)/ 100 || 0.10;
-
-  if(!(colAmt>0 && colPrice>0 && lt>0)){
-    $('gaugeVal').textContent = '—';
-    $('gaugeVal').setAttribute('fill','#9AA5B4');
-    $('hfArcFill').setAttribute('d','M 15 110 A 95 95 0 0 0 15.01 110');
-    $('gaugeStatus').textContent = '';
-    $('alertCard').style.display = 'none';
-    $('actionCard').style.display = 'none';
-    $('priceScaleWrap').style.display = 'none';
-    ['rColUSD','rLiqPrice','rDrop','rPenalty'].forEach(id => $(id).textContent = '—');
-    return;
-  }
-
-  const colUSD   = colAmt * colPrice;
-  const colLT    = colUSD * lt;
-  const hf       = debt > 0 ? colLT / debt : 999;
-  const liqPrice = debt > 0 ? debt / (colAmt * lt) : 0;
-  const dropPct  = debt > 0 ? ((colPrice - liqPrice) / colPrice) * 100 : 100;
-  const lossAtLiq = debt > 0 ? (colAmt * liqPrice * penalty) : 0;
-
-  // Update gauge
-  updateGauge(debt > 0 ? hf : 4);
-
-  // Gauge status
-  $('gaugeStatus').textContent = debt <= 0
-    ? (l==='fr' ? 'Pas de dette — pas de risque' : 'No debt — no risk')
-    : hf >= 2   ? (l==='fr' ? 'Zone sûre' : 'Safe zone')
-    : hf >= 1.5 ? (l==='fr' ? 'À surveiller' : 'Monitor closely')
-    : hf >= 1   ? (l==='fr' ? '⚠ Danger — agissez' : '⚠ Danger — act now')
-    :             (l==='fr' ? '⚠ Position liquidable' : '⚠ Already liquidatable');
-
-  // Price scale
-  if(debt > 0) updatePriceScale(colPrice, liqPrice);
-  else $('priceScaleWrap').style.display = 'none';
-
-  // Breakdown
-  $('rColUSD').textContent   = fmtUSD(colUSD);
-  $('rLiqPrice').textContent = debt > 0 ? fmtUSD(liqPrice) : '—';
-  $('rDrop').textContent     = debt > 0 ? '−'+dropPct.toFixed(1)+'%' : '—';
-  $('rPenalty').textContent  = debt > 0 ? fmtUSD(lossAtLiq) : '—';
-
-  // Alert
-  if(debt > 0){
-    const alertCard = $('alertCard');
-    alertCard.style.display = 'block';
-    if(hf >= 2){
-      alertCard.className = 'alert-card safe';
-      $('alertTitle').textContent = l==='fr' ? 'Position sûre' : 'Position safe';
-      $('alertText').textContent = l==='fr'
-        ? `Il faut une baisse de ${dropPct.toFixed(1)}% pour vous liquider. Health Factor confortable à ${fmtNum(hf,2)}.`
-        : `${dropPct.toFixed(1)}% price drop needed for liquidation. Health Factor comfortable at ${fmtNum(hf,2)}.`;
-    } else if(hf >= 1.5){
-      alertCard.className = 'alert-card warn';
-      $('alertTitle').textContent = l==='fr' ? 'À surveiller' : 'Monitor closely';
-      $('alertText').textContent = l==='fr'
-        ? `Seulement ${dropPct.toFixed(1)}% avant la liquidation. Envisagez de rembourser de la dette ou d'ajouter du collateral.`
-        : `Only ${dropPct.toFixed(1)}% drop to liquidation. Consider repaying debt or adding collateral.`;
-    } else if(hf >= 1){
-      alertCard.className = 'alert-card danger';
-      $('alertTitle').textContent = l==='fr' ? '⚠ Risque de liquidation — agissez' : '⚠ Liquidation risk — act now';
-      $('alertText').textContent = l==='fr'
-        ? `HF = ${fmtNum(hf,2)}. Une baisse de ${dropPct.toFixed(1)}% liquide votre position. Pénalité estimée : ${fmtUSD(lossAtLiq)}.`
-        : `HF = ${fmtNum(hf,2)}. A ${dropPct.toFixed(1)}% drop liquidates you. Estimated penalty: ${fmtUSD(lossAtLiq)}.`;
-    } else {
-      alertCard.className = 'alert-card danger';
-      $('alertTitle').textContent = l==='fr' ? '⚠ Position sous-collatéralisée' : '⚠ Undercollateralised';
-      $('alertText').textContent = l==='fr'
-        ? 'Votre position peut déjà être liquidée. Remboursez immédiatement.'
-        : 'Your position can already be liquidated. Repay immediately.';
-    }
-  } else {
-    $('alertCard').style.display = 'none';
-  }
-
-  // Action card: how to reach HF 2.0
-  if(debt > 0 && hf < 2){
-    $('actionCard').style.display = 'block';
-    // Need: colLT / debt = 2.0 → colLT_needed = 2 * debt
-    const colLT_needed = 2 * debt;
-    // Option A: repay debt → (colUSD * lt) / newDebt = 2 → newDebt = colLT/2 → repay = debt - newDebt
-    const debtToRepay = Math.max(0, debt - colLT / 2);
-    // Option B: add collateral → (newColLT) / debt = 2 → newColUSD = 2*debt/lt → addUSD = newColUSD - colUSD
-    const addUSD = Math.max(0, (2 * debt / lt) - colUSD);
-    const addUnits = addUSD / colPrice;
-    const p = PRESETS[_activePreset];
-    const sym = p ? p.hint : 'token';
-    $('actionRepay').textContent = fmtUSD(debtToRepay);
-    $('actionAdd').textContent = fmtUSD(addUSD) + ' (' + fmtNum(addUnits, 4) + ' ' + sym + ')';
-  } else {
-    $('actionCard').style.display = 'none';
-  }
-
-  // Update simulator
-  if(debt > 0 && colAmt > 0 && colPrice > 0 && lt > 0){
-    updateSim(colPrice, lt, colAmt, debt);
-  }
-}
-
-/* ── INPUT LISTENERS ──────────────────────────────────────── */
-['colAmount','colPrice','debtUSD','ltPct','penaltyPct'].forEach(id => $(id).addEventListener('input', calc));
-
-$('simSlider').addEventListener('input', function(){
-  const colAmt   = parseFloat($('colAmount').value) || 0;
-  const colPrice = parseFloat($('colPrice').value)  || 0;
-  const debt     = parseFloat($('debtUSD').value)   || 0;
-  const lt       = parseFloat($('ltPct').value) / 100 || 0;
-  if(colAmt > 0 && colPrice > 0 && debt > 0 && lt > 0) updateSim(colPrice, lt, colAmt, debt);
-});
-
-/* ── INIT ─────────────────────────────────────────────────── */
-window.onLangChange = function(){ calc(); };
-
-// Start: fetch live price then calc
-(async function(){
-  const p = PRESETS[_activePreset];
-  $('priceStatus').textContent = L()==='fr' ? 'chargement…' : 'fetching…';
-  $('priceStatus').style.color = 'var(--faint)';
-  const price = await fetchPrice(p.gecko);
   if(price){
     $('colPrice').value = price;
     $('priceStatus').innerHTML = '<span style="color:var(--good)">● live</span>';
   } else {
-    // Keep default (p.default) — already set in input value
-    $('priceStatus').textContent = L()==='fr' ? 'prix estimé' : 'est. price';
-    $('priceStatus').style.color = 'var(--warn)';
+    $('priceStatus').textContent = L()==='fr'?'erreur API':'API error';
+    $('priceStatus').style.color = 'var(--coral)';
+  }
+  calc();
+}
+
+/* ── ADVANCED TOGGLE ──────────────────────────────────────── */
+function toggleAdv(){
+  $('advToggle').classList.toggle('open');
+  $('advFields').classList.toggle('open');
+}
+
+/* ── SVG GAUGE ────────────────────────────────────────────── */
+function arcEndPoint(f){
+  const angle = Math.PI*(1-f);
+  return { x:(110+95*Math.cos(angle)).toFixed(2), y:(110-95*Math.sin(angle)).toFixed(2) };
+}
+function updateGauge(hf){
+  const f = Math.min(Math.max(hf/4, 0), 0.999);
+  let pathD;
+  if(f < 0.005) pathD = 'M 15 110 A 95 95 0 0 0 15.01 110';
+  else { const ep=arcEndPoint(f); pathD=`M 15 110 A 95 95 0 0 0 ${ep.x} ${ep.y}`; }
+  const arc = $('hfArcFill');
+  arc.setAttribute('d', pathD);
+  const color = hf>=2?'var(--good)':hf>=1.5?'var(--warn)':hf>=1?'var(--coral)':'#DC2626';
+  arc.setAttribute('stroke', color);
+  const valEl=$('gaugeVal');
+  valEl.textContent = hf>99?'∞':fmtNum(hf,2);
+  valEl.setAttribute('fill', color);
+}
+
+/* ── PRICE SCALE ──────────────────────────────────────────── */
+function updatePriceScale(cur, liq){
+  const wrap=$('priceScaleWrap');
+  if(!isFinite(liq)||!isFinite(cur)||liq<=0||cur<=0){ wrap.style.display='none'; return; }
+  wrap.style.display='block';
+  const lo=liq*0.75, hi=cur*1.18, rng=hi-lo;
+  const liqPct=Math.max(5,Math.min(40,((liq-lo)/rng)*100));
+  const curPct=Math.max(60,Math.min(92,((cur-lo)/rng)*100));
+  $('psLiq').style.left=liqPct+'%'; $('psCur').style.left=curPct+'%';
+  $('psLiqLabel').style.left=liqPct+'%'; $('psCurLabel').style.left=curPct+'%';
+  const fmt=v=>v>=1000?'$'+(v/1000).toFixed(0)+'k':'$'+v.toFixed(0);
+  $('psLiqLabel').textContent=fmt(liq); $('psCurLabel').textContent=fmt(cur);
+  const drop=((cur-liq)/cur*100).toFixed(1);
+  $('psBuffer').textContent='−'+drop+'%';
+  $('psBuffer').style.left=((liqPct+curPct)/2).toFixed(1)+'%';
+}
+
+/* ── LTV BAR ──────────────────────────────────────────────── */
+function updateLtvBar(ltvPct, maxLtv, lt){
+  const wrap=$('ltvBarWrap');
+  if(!isFinite(ltvPct)||ltvPct<0){ wrap.style.display='none'; return; }
+  wrap.style.display='block';
+  const fill=$('ltvBarFill');
+  const pct=Math.min(ltvPct,100);
+  fill.style.width=pct+'%';
+  fill.style.background=ltvPct>=lt?'var(--coral)':ltvPct>=maxLtv?'var(--warn)':'var(--good)';
+  $('ltvMarkMaxLtv').style.left=maxLtv+'%';
+  $('ltvMarkLt').style.left=lt+'%';
+  $('ltvMaxPctLabel').textContent=maxLtv+'%';
+  $('ltvLtPctLabel').textContent=lt+'%';
+}
+
+/* ── SIMULATOR ────────────────────────────────────────────── */
+function updateSim(curPrice, lt, colAmt, debt){
+  const drop=parseFloat($('simSlider').value)||0;
+  $('simPct').textContent='−'+drop+'%';
+  const simP=curPrice*(1-drop/100);
+  const simCol=colAmt*simP;
+  const simHF=debt>0?(simCol*lt/debt):Infinity;
+  const simLtv=simCol>0?(debt/simCol*100):0;
+  $('simPrice').textContent=fmtUSD(simP,0);
+  const hfEl=$('simHF');
+  hfEl.textContent=simHF>99?'∞':fmtNum(simHF,2);
+  hfEl.className='sr-val'+(simHF>=2?' good':simHF>=1.5?' warn':' danger');
+  $('simLtv').textContent=simLtv.toFixed(1)+'%';
+  const l=L();
+  const sEl=$('simStatus');
+  if(simHF>=2){sEl.textContent=l==='fr'?'Sûr ✓':'Safe ✓';sEl.className='sr-val good';}
+  else if(simHF>=1.5){sEl.textContent=l==='fr'?'Attention ⚠':'Watch ⚠';sEl.className='sr-val warn';}
+  else if(simHF>=1){sEl.textContent=l==='fr'?'Danger ⚠':'Danger ⚠';sEl.className='sr-val danger';}
+  else{sEl.textContent=l==='fr'?'Liquidation ✗':'Liquidated ✗';sEl.className='sr-val danger';}
+}
+
+/* ── MAIN CALC ────────────────────────────────────────────── */
+function calc(){
+  const l=L();
+  const colAmt   = parseFloat($('colAmount').value)||0;
+  const colPrice = parseFloat($('colPrice').value) ||0;
+  const debt     = parseFloat($('debtUSD').value)  ||0;
+  const lt       = parseFloat($('ltPct').value)/100||0;
+  const maxLtv   = parseFloat($('maxLtvPct').value)/100||0;
+  const penalty  = parseFloat($('penaltyPct').value)/100||0.10;
+
+  const clearAll=()=>{
+    $('gaugeVal').textContent='—';
+    $('gaugeVal').setAttribute('fill','#9AA5B4');
+    $('hfArcFill').setAttribute('d','M 15 110 A 95 95 0 0 0 15.01 110');
+    $('gaugeStatus').textContent='';
+    $('alertCard').style.display='none';
+    $('actionCard').style.display='none';
+    $('priceScaleWrap').style.display='none';
+    $('ltvBarWrap').style.display='none';
+    ['rLtvPct','rColUSD','rMaxBorrow','rLiqPrice','rDrop','rPenalty'].forEach(id=>$(id).textContent='—');
+  };
+
+  if(!(colAmt>0&&colPrice>0&&lt>0)){ clearAll(); return; }
+
+  const colUSD   = colAmt*colPrice;
+  const colLT    = colUSD*lt;
+  const hf       = debt>0 ? colLT/debt : 999;
+  const liqPrice = debt>0 ? debt/(colAmt*lt) : 0;
+  const dropPct  = debt>0 ? ((colPrice-liqPrice)/colPrice)*100 : 100;
+  const lossLiq  = debt>0 ? colAmt*liqPrice*penalty : 0;
+  const ltvPct   = colUSD>0 ? (debt/colUSD)*100 : 0;
+  const maxBorrow= Math.max(0, colUSD*maxLtv - debt);
+
+  // Gauge
+  updateGauge(debt>0?hf:4);
+
+  // Status text
+  $('gaugeStatus').textContent = debt<=0
+    ? (l==='fr'?'Pas de dette — pas de risque':'No debt — no risk')
+    : hf>=2   ? (l==='fr'?'Zone sûre':'Safe zone')
+    : hf>=1.5 ? (l==='fr'?'À surveiller':'Monitor closely')
+    : hf>=1   ? (l==='fr'?'⚠ Danger — agissez':'⚠ Danger — act now')
+    :           (l==='fr'?'⚠ Position liquidable':'⚠ Already liquidatable');
+
+  // Price scale
+  if(debt>0) updatePriceScale(colPrice, liqPrice);
+  else $('priceScaleWrap').style.display='none';
+
+  // LTV bar
+  $('rLtvPct').textContent = debt>0 ? ltvPct.toFixed(1)+'%' : '—';
+  if(debt>0 && lt>0 && maxLtv>0) updateLtvBar(ltvPct, maxLtv*100, lt*100);
+  else $('ltvBarWrap').style.display='none';
+
+  // Breakdown
+  $('rColUSD').textContent   = fmtUSD(colUSD);
+  $('rMaxBorrow').textContent= debt>0 ? (maxBorrow>0?'+'+fmtUSD(maxBorrow):'0 (maxed out)') : '+'+fmtUSD(colUSD*maxLtv);
+  $('rLiqPrice').textContent = debt>0 ? fmtUSD(liqPrice) : '—';
+  $('rDrop').textContent     = debt>0 ? '−'+dropPct.toFixed(1)+'%' : '—';
+  $('rPenalty').textContent  = debt>0 ? fmtUSD(lossLiq) : '—';
+
+  // Alert
+  if(debt>0){
+    const ac=$('alertCard');
+    ac.style.display='block';
+    if(hf>=2){
+      ac.className='alert-card safe';
+      $('alertTitle').textContent=l==='fr'?'Position sûre':'Safe position';
+      $('alertText').textContent=l==='fr'
+        ?`Baisse nécessaire : ${dropPct.toFixed(1)}%. HF = ${fmtNum(hf,2)}. LTV actuel ${ltvPct.toFixed(1)}% (max ${(maxLtv*100).toFixed(1)}%).`
+        :`${dropPct.toFixed(1)}% drop needed for liquidation. HF = ${fmtNum(hf,2)}. Current LTV ${ltvPct.toFixed(1)}% vs max ${(maxLtv*100).toFixed(1)}%.`;
+    } else if(hf>=1.5){
+      ac.className='alert-card warn';
+      $('alertTitle').textContent=l==='fr'?'À surveiller':'Monitor closely';
+      $('alertText').textContent=l==='fr'
+        ?`Seulement ${dropPct.toFixed(1)}% avant la liquidation. LTV ${ltvPct.toFixed(1)}% — proche du seuil.`
+        :`Only ${dropPct.toFixed(1)}% to liquidation. LTV ${ltvPct.toFixed(1)}% — close to threshold.`;
+    } else if(hf>=1){
+      ac.className='alert-card danger';
+      $('alertTitle').textContent=l==='fr'?'⚠ Risque immédiat — agissez':'⚠ Immediate risk — act now';
+      $('alertText').textContent=l==='fr'
+        ?`HF ${fmtNum(hf,2)}. Baisse de ${dropPct.toFixed(1)}% = liquidation. Pénalité estimée : ${fmtUSD(lossLiq)}.`
+        :`HF ${fmtNum(hf,2)}. ${dropPct.toFixed(1)}% drop = liquidation. Estimated penalty: ${fmtUSD(lossLiq)}.`;
+    } else {
+      ac.className='alert-card danger';
+      $('alertTitle').textContent=l==='fr'?'⚠ Position sous-collatéralisée':'⚠ Undercollateralised';
+      $('alertText').textContent=l==='fr'
+        ?'Votre position est déjà liquidable. Remboursez immédiatement sur Aave.'
+        :'Your position can already be liquidated. Repay on Aave immediately.';
+    }
+  } else $('alertCard').style.display='none';
+
+  // Action card
+  if(debt>0 && hf<2){
+    $('actionCard').style.display='block';
+    const t = getToken();
+    const sym = t?.hint||'token';
+    const debtToRepay = Math.max(0, debt - colLT/2);
+    const addUSD = Math.max(0, (2*debt/lt) - colUSD);
+    $('actionRepay').textContent=fmtUSD(debtToRepay);
+    $('actionAdd').textContent  = fmtUSD(addUSD)+' ('+fmtNum(addUSD/colPrice,4)+' '+sym+')';
+  } else $('actionCard').style.display='none';
+
+  // Simulator
+  if(debt>0&&colAmt>0&&colPrice>0&&lt>0) updateSim(colPrice,lt,colAmt,debt);
+}
+
+/* ── INPUT LISTENERS ──────────────────────────────────────── */
+['colAmount','colPrice','debtUSD','ltPct','maxLtvPct','penaltyPct'].forEach(id=>$(id).addEventListener('input',calc));
+
+$('simSlider').addEventListener('input',function(){
+  const ca=parseFloat($('colAmount').value)||0, cp=parseFloat($('colPrice').value)||0;
+  const d=parseFloat($('debtUSD').value)||0, lt=parseFloat($('ltPct').value)/100||0;
+  if(ca>0&&cp>0&&d>0&&lt>0) updateSim(cp,lt,ca,d);
+});
+
+/* ── LANG CHANGE ──────────────────────────────────────────── */
+window.onLangChange=function(){ renderParamChips(); calc(); };
+
+/* ── INIT ─────────────────────────────────────────────────── */
+(async function(){
+  renderChainTabs();
+  renderTokens();
+  renderParamChips();
+  applyTokenToForm();
+  $('priceStatus').textContent=L()==='fr'?'chargement…':'fetching…';
+  $('priceStatus').style.color='var(--faint)';
+  const t=getToken();
+  const price = await fetchPrice(t?.gecko);
+  if(price){
+    $('colPrice').value=price;
+    $('priceStatus').innerHTML='<span style="color:var(--good)">● live</span>';
+  } else {
+    $('priceStatus').textContent=L()==='fr'?'prix estimé':'est. price';
+    $('priceStatus').style.color='var(--warn)';
   }
   calc();
 })();
