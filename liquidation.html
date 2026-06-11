@@ -176,7 +176,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <div class="page-hero">
   <div class="eyebrow"><span class="t-en">RedZone — Aave V3 Liquidation Calculator</span><span class="t-fr">RedZone — Calculateur de Liquidation Aave V3</span></div>
   <h1><span class="t-en">Are you in the <em>RedZone</em>?</span><span class="t-fr">Êtes-vous dans la <em>RedZone</em> ?</span></h1>
-  <p>Enter your collateral and debt. Get your health factor, your exact liquidation price, and how many % the market needs to drop to wipe you out.</p>
+  <p><span class="t-en">Enter your collateral and debt. Get your health factor, your exact liquidation price, and how many % the market needs to drop to wipe you out.</span><span class="t-fr">Saisissez votre collateral et votre dette. Obtenez votre Health Factor, votre prix de liquidation exact, et de combien le marché doit baisser pour vous liquider.</span></p>
 </div>
 
 <!-- TOOL -->
@@ -235,17 +235,17 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="result-card">
       <div class="result-label">Health Factor</div>
       <div class="result-big" id="hfVal" style="color:var(--good)">—</div>
-      <div class="result-sub" id="hfSub">Enter your position above</div>
+      <div class="result-sub" id="hfSub"><span class="t-en">Enter your position above</span><span class="t-fr">Renseignez votre position</span></div>
       <div class="hf-bar-wrap">
         <div class="hf-bar-track"><div class="hf-bar-fill" id="hfBar" style="width:0%;background:var(--good)"></div></div>
       </div>
 
       <div class="breakdown">
-        <div class="br-row"><span>Collateral (USD)</span><b id="rColUSD">—</b></div>
-        <div class="br-row"><span>Collateral × LT</span><b id="rColLT">—</b></div>
-        <div class="br-row"><span>Liquidation price</span><b id="rLiqPrice" style="color:var(--coral)">—</b></div>
-        <div class="br-row"><span>Drop to liquidation</span><b id="rDrop">—</b></div>
-        <div class="br-row"><span>Loss at liquidation</span><b id="rPenalty" style="color:var(--coral)">—</b></div>
+        <div class="br-row"><span><span class="t-en">Collateral (USD)</span><span class="t-fr">Collateral (USD)</span></span><b id="rColUSD">—</b></div>
+        <div class="br-row"><span><span class="t-en">Collateral × LT</span><span class="t-fr">Collateral × Seuil</span></span><b id="rColLT">—</b></div>
+        <div class="br-row"><span><span class="t-en">Liquidation price</span><span class="t-fr">Prix de liquidation</span></span><b id="rLiqPrice" style="color:var(--coral)">—</b></div>
+        <div class="br-row"><span><span class="t-en">Drop to liquidation</span><span class="t-fr">Baisse avant liquidation</span></span><b id="rDrop">—</b></div>
+        <div class="br-row"><span><span class="t-en">Loss at liquidation</span><span class="t-fr">Perte à la liquidation</span></span><b id="rPenalty" style="color:var(--coral)">—</b></div>
       </div>
     </div>
 
@@ -329,6 +329,7 @@ document.querySelectorAll('.preset-btn').forEach(btn => {
 fetchPrice('wrapped-bitcoin').then(p => setPriceLive(p));
 
 function calc(){
+  const l = getLang ? getLang() : 'en';
   const colAmt    = parseFloat($('colAmount').value)  || 0;
   const colPrice  = parseFloat($('colPrice').value)   || 0;
   const debt      = parseFloat($('debtUSD').value)    || 0;
@@ -357,10 +358,15 @@ function calc(){
   $('hfVal').style.color = hfColor;
   $('hfBar').style.width = barW.toFixed(0)+'%';
   $('hfBar').style.background = barColor;
-  $('hfSub').textContent = hf >= 1.5 ? 'Safe — monitor as price moves'
-    : hf >= 1.2 ? 'Warning — reduce debt or add collateral'
-    : hf >= 1   ? 'Danger — liquidation imminent'
-    : 'Already liquidatable';
+  $('hfSub').textContent = l==='fr'
+    ? (hf >= 1.5 ? 'Sûr — surveillez l\'évolution des prix'
+      : hf >= 1.2 ? 'Attention — remboursez ou ajoutez du collateral'
+      : hf >= 1   ? 'Danger — liquidation imminente'
+      : 'Déjà liquidatable')
+    : (hf >= 1.5 ? 'Safe — monitor as price moves'
+      : hf >= 1.2 ? 'Warning — reduce debt or add collateral'
+      : hf >= 1   ? 'Danger — liquidation imminent'
+      : 'Already liquidatable');
 
   $('rColUSD').textContent   = fmtUSD(colUSD);
   $('rColLT').textContent    = fmtUSD(colLT);
@@ -374,20 +380,28 @@ function calc(){
   const text = $('alertText');
   if(hf >= 2){
     card.className='alert-card safe';
-    title.textContent='Position safe';
-    text.textContent=`${dropPct.toFixed(1)}% price drop needed to reach liquidation. Health factor is comfortable at ${hf.toFixed(2)}.`;
+    title.textContent = l==='fr' ? 'Position sûre' : 'Position safe';
+    text.textContent = l==='fr'
+      ? `${dropPct.toFixed(1)}% de baisse nécessaires pour atteindre la liquidation. Health Factor confortable à ${hf.toFixed(2)}.`
+      : `${dropPct.toFixed(1)}% price drop needed to reach liquidation. Health factor is comfortable at ${hf.toFixed(2)}.`;
   } else if(hf >= 1.5){
     card.className='alert-card warn';
-    title.textContent='Monitor closely';
-    text.textContent=`Only ${dropPct.toFixed(1)}% away from liquidation. Consider repaying some debt or adding collateral to reach HF > 2.`;
+    title.textContent = l==='fr' ? 'À surveiller' : 'Monitor closely';
+    text.textContent = l==='fr'
+      ? `Seulement ${dropPct.toFixed(1)}% avant la liquidation. Envisagez de rembourser une partie de la dette ou d'ajouter du collateral pour atteindre HF > 2.`
+      : `Only ${dropPct.toFixed(1)}% away from liquidation. Consider repaying some debt or adding collateral to reach HF > 2.`;
   } else if(hf >= 1){
     card.className='alert-card danger';
-    title.textContent='⚠ Liquidation risk — act now';
-    text.textContent=`HF = ${hf.toFixed(2)}. A ${dropPct.toFixed(1)}% drop liquidates your position. You lose ~${fmtUSD(lossAtLiq)} in penalty fees alone.`;
+    title.textContent = l==='fr' ? '⚠ Risque de liquidation — agissez' : '⚠ Liquidation risk — act now';
+    text.textContent = l==='fr'
+      ? `HF = ${hf.toFixed(2)}. Une baisse de ${dropPct.toFixed(1)}% liquide votre position. Vous perdez ~${fmtUSD(lossAtLiq)} en pénalités seules.`
+      : `HF = ${hf.toFixed(2)}. A ${dropPct.toFixed(1)}% drop liquidates your position. You lose ~${fmtUSD(lossAtLiq)} in penalty fees alone.`;
   } else {
     card.className='alert-card danger';
-    title.textContent='⚠ Position undercollateralised';
-    text.textContent='Your position can already be liquidated. Repay debt immediately.';
+    title.textContent = l==='fr' ? '⚠ Position sous-collatéralisée' : '⚠ Position undercollateralised';
+    text.textContent = l==='fr'
+      ? 'Votre position peut déjà être liquidée. Remboursez votre dette immédiatement.'
+      : 'Your position can already be liquidated. Repay debt immediately.';
   }
 }
 

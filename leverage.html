@@ -263,17 +263,17 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="result-side">
 
     <div class="result-card">
-      <div class="result-label">Effective Leverage</div>
+      <div class="result-label"><span class="t-en">Effective Leverage</span><span class="t-fr">Levier Effectif</span></div>
       <div class="result-big" id="resLeverage">—</div>
-      <div class="result-sub" id="resSub">Enter your position above</div>
+      <div class="result-sub" id="resSub"><span class="t-en">Enter your position above</span><span class="t-fr">Renseignez votre position</span></div>
 
       <div class="breakdown">
-        <div class="br-row purple"><span>Total collateral</span><b id="resTotalCol">—</b></div>
-        <div class="br-row danger"><span>Total debt (USD)</span><b id="resTotalDebt">—</b></div>
-        <div class="br-row danger"><span>Liquidation price</span><b id="resLiqPrice">—</b></div>
-        <div class="br-row"><span>Drop to liquidation</span><b id="resDrop">—</b></div>
-        <div class="br-row"><span>Net APY</span><b id="resNetApy">—</b></div>
-        <div class="br-row"><span>Break-even collateral APY</span><b id="resBreakEven">—</b></div>
+        <div class="br-row purple"><span><span class="t-en">Total collateral</span><span class="t-fr">Collateral total</span></span><b id="resTotalCol">—</b></div>
+        <div class="br-row danger"><span><span class="t-en">Total debt (USD)</span><span class="t-fr">Dette totale (USD)</span></span><b id="resTotalDebt">—</b></div>
+        <div class="br-row danger"><span><span class="t-en">Liquidation price</span><span class="t-fr">Prix de liquidation</span></span><b id="resLiqPrice">—</b></div>
+        <div class="br-row"><span><span class="t-en">Drop to liquidation</span><span class="t-fr">Baisse avant liquidation</span></span><b id="resDrop">—</b></div>
+        <div class="br-row"><span><span class="t-en">Net APY</span><span class="t-fr">APY Net</span></span><b id="resNetApy">—</b></div>
+        <div class="br-row"><span><span class="t-en">Break-even collateral APY</span><span class="t-fr">APY seuil de rentabilité</span></span><b id="resBreakEven">—</b></div>
       </div>
     </div>
 
@@ -288,16 +288,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- LOOP TABLE -->
 <div class="loop-table-wrap">
   <div style="max-width:900px;margin:0 auto">
-    <h3>Step-by-step breakdown</h3>
-    <p>Each loop: deposit → borrow at LTV → rebuy collateral.</p>
+    <h3><span class="t-en">Step-by-step breakdown</span><span class="t-fr">Décomposition étape par étape</span></h3>
+    <p><span class="t-en">Each loop: deposit → borrow at LTV → rebuy collateral.</span><span class="t-fr">Chaque loop : dépôt → emprunt au LTV → rachat du collateral.</span></p>
     <table class="ltable" id="loopTable">
       <thead>
         <tr>
           <th>Loop</th>
-          <th>Deposited (USD)</th>
-          <th>Borrowed (USD)</th>
-          <th>Cumul. collateral</th>
-          <th>Cumul. debt</th>
+          <th><span class="t-en">Deposited (USD)</span><span class="t-fr">Déposé (USD)</span></th>
+          <th><span class="t-en">Borrowed (USD)</span><span class="t-fr">Emprunté (USD)</span></th>
+          <th><span class="t-en">Cumul. collateral</span><span class="t-fr">Collateral cumulé</span></th>
+          <th><span class="t-en">Cumul. debt</span><span class="t-fr">Dette cumulée</span></th>
           <th>Health Factor</th>
         </tr>
       </thead>
@@ -381,6 +381,7 @@ $('loopMinus').addEventListener('click', () => { if(loops>1){loops--;$('loopVal'
 $('loopPlus').addEventListener('click',  () => { if(loops<10){loops++;$('loopVal').textContent=loops;calc();} });
 
 function calc(){
+  const l = getLang ? getLang() : 'en';
   const colAmt   = parseFloat($('colAmount').value)  || 0;
   const price    = parseFloat($('colPrice').value)   || 0;
   const ltv      = parseFloat($('ltv').value)        / 100 || 0;
@@ -432,16 +433,22 @@ function calc(){
   const text  = $('alertText');
   if(hf >= 2){
     card.className = 'alert-card good';
-    title.textContent = 'Position healthy';
-    text.textContent = `${dropPct.toFixed(1)}% drop needed to get liquidated. Net APY: ${fmtPct(netApy)}. You need the asset to appreciate at least ${breakEven.toFixed(2)}%/yr to cover borrow costs.`;
+    title.textContent = l==='fr' ? 'Position saine' : 'Position healthy';
+    text.textContent = l==='fr'
+      ? `${dropPct.toFixed(1)}% de baisse nécessaires pour atteindre la liquidation. APY net : ${fmtPct(netApy)}. Le collateral doit s'apprécier d'au moins ${breakEven.toFixed(2)}%/an pour couvrir les coûts d'emprunt.`
+      : `${dropPct.toFixed(1)}% drop needed to get liquidated. Net APY: ${fmtPct(netApy)}. You need the asset to appreciate at least ${breakEven.toFixed(2)}%/yr to cover borrow costs.`;
   } else if(hf >= 1.5){
     card.className = 'alert-card warn';
-    title.textContent = 'Monitor closely';
-    text.textContent = `Only ${dropPct.toFixed(1)}% away from liquidation with ${fmtX(leverage)} leverage. Consider fewer loops or a higher LT asset.`;
+    title.textContent = l==='fr' ? 'À surveiller' : 'Monitor closely';
+    text.textContent = l==='fr'
+      ? `Seulement ${dropPct.toFixed(1)}% avant la liquidation avec un levier ${fmtX(leverage)}. Envisagez moins de loops ou un actif à seuil de liquidation plus élevé.`
+      : `Only ${dropPct.toFixed(1)}% away from liquidation with ${fmtX(leverage)} leverage. Consider fewer loops or a higher LT asset.`;
   } else {
     card.className = 'alert-card danger';
-    title.textContent = '⚠ High liquidation risk';
-    text.textContent = `HF = ${hf.toFixed(2)}. A ${dropPct.toFixed(1)}% drop liquidates you. Reduce loops or borrow less per step.`;
+    title.textContent = l==='fr' ? '⚠ Risque de liquidation élevé' : '⚠ High liquidation risk';
+    text.textContent = l==='fr'
+      ? `HF = ${hf.toFixed(2)}. Une baisse de ${dropPct.toFixed(1)}% vous liquide. Réduisez les loops ou empruntez moins par étape.`
+      : `HF = ${hf.toFixed(2)}. A ${dropPct.toFixed(1)}% drop liquidates you. Reduce loops or borrow less per step.`;
   }
 
   // Table

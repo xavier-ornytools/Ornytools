@@ -186,18 +186,18 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="sec" id="overview">
     <div class="sec-num"><span class="t-en">01 — Overview</span><span class="t-fr">01 — Vue d'ensemble</span></div>
     <h2><span class="t-en">What the optimizer solves</span><span class="t-fr">Ce que l'optimiseur résout</span></h2>
-    <p>Every swap on an AMM carries two competing costs: a <strong>fixed gas cost</strong> that dominates small trades, and a <strong>slippage cost</strong> that grows with trade size. Plotted against trade size, their sum forms a U-curve with a minimum — the optimal trade size.</p>
-    <p>The optimizer finds the exact bottom of that U-curve for any pool, using the full constant-product math rather than a linearized approximation.</p>
+    <p><span class="t-en">Every swap on an AMM carries two competing costs: a <strong>fixed gas cost</strong> that dominates small trades, and a <strong>slippage cost</strong> that grows with trade size. Plotted against trade size, their sum forms a U-curve with a minimum — the optimal trade size.</span><span class="t-fr">Chaque swap sur un AMM implique deux coûts concurrents : un <strong>coût de gas fixe</strong> qui domine les petits trades, et un <strong>coût de slippage</strong> qui croît avec la taille du trade. Tracée en fonction de la taille du trade, leur somme forme une courbe en U avec un minimum — la taille de trade optimale.</span></p>
+    <p><span class="t-en">The optimizer finds the exact bottom of that U-curve for any pool, using the full constant-product math rather than a linearized approximation.</span><span class="t-fr">L'optimiseur trouve le bas exact de cette courbe en U pour n'importe quelle pool, en utilisant les maths constant-product complètes plutôt qu'une approximation linéarisée.</span></p>
 
     <div class="callout gold">
-      <b>The key insight:</b> the optimal size is <em>not</em> a function of gas alone. It depends on pool depth, fee tier, and — for V3 — the active liquidity at the current price. Two pools with the same TVL can have optimal sizes that differ by 5–10×.
+      <span class="t-en"><b>The key insight:</b> the optimal size is <em>not</em> a function of gas alone. It depends on pool depth, fee tier, and — for V3 — the active liquidity at the current price. Two pools with the same TVL can have optimal sizes that differ by 5–10×.</span><span class="t-fr"><b>L'insight clé :</b> la taille optimale n'est <em>pas</em> uniquement fonction du gas. Elle dépend de la profondeur de la pool, du niveau de frais, et — pour V3 — de la liquidité active au prix actuel. Deux pools avec le même TVL peuvent avoir des tailles optimales qui diffèrent de 5 à 10×.</span>
     </div>
 
-    <p>The total cost function minimized is:</p>
+    <p><span class="t-en">The total cost function minimized is:</span><span class="t-fr">La fonction de coût total minimisée est :</span></p>
     <pre class="formula"><span class="hl">C(A)</span> = G/A  +  A/(R+A)  +  fee
 <span class="comment">         ↑        ↑            ↑
       gas %   slippage %   pool fee %</span></pre>
-    <p>where <code>A</code> is the trade size (USD), <code>G</code> is the gas cost (USD, fixed), <code>R</code> is the effective one-sided reserve (USD), and <code>fee</code> is the pool fee as a fraction.</p>
+    <p><span class="t-en">where <code>A</code> is the trade size (USD), <code>G</code> is the gas cost (USD, fixed), <code>R</code> is the effective one-sided reserve (USD), and <code>fee</code> is the pool fee as a fraction.</span><span class="t-fr">où <code>A</code> est la taille de trade (USD), <code>G</code> est le coût de gas (USD, fixe), <code>R</code> est la réserve unilatérale effective (USD), et <code>fee</code> est le frais de pool en fraction.</span></p>
   </div>
 
   <hr class="sec-div"/>
@@ -207,7 +207,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="sec-num"><span class="t-en">02 — The analytical formula</span><span class="t-fr">02 — La formule analytique</span></div>
     <h2><span class="t-en">Why <code>√(G·TVL)</code> underestimates</span><span class="t-fr">Pourquoi <code>√(G·TVL)</code> sous-estime</span></h2>
 
-    <p>A commonly cited shortcut for the optimal trade size is the closed-form solution derived by linearizing slippage. Assuming <code>A ≪ R</code> (trade size much smaller than pool depth):</p>
+    <p><span class="t-en">A commonly cited shortcut for the optimal trade size is the closed-form solution derived by linearizing slippage. Assuming <code>A ≪ R</code> (trade size much smaller than pool depth):</span><span class="t-fr">Un raccourci souvent cité pour la taille de trade optimale est la solution analytique dérivée en linéarisant le slippage. En supposant <code>A ≪ R</code> (taille de trade bien inférieure à la profondeur de la pool) :</span></p>
 
     <pre class="formula">Approximate slippage:  A/(R+A)  ≈  A/R   (when A ≪ R)
 
@@ -217,38 +217,38 @@ dC/dA = −G/A²  +  1/R  = 0
 
 <span class="hl">A_opt ≈ √(G·R)  =  √(G · TVL/2)</span></pre>
 
-    <p>For example, with <code>G = $2.50</code> and <code>TVL = $5M</code>:</p>
+    <p><span class="t-en">For example, with <code>G = $2.50</code> and <code>TVL = $5M</code>:</span><span class="t-fr">Par exemple, avec <code>G = $2,50</code> et <code>TVL = $5M</code> :</span></p>
     <pre class="formula">A_opt = √(2.50 × 2,500,000) = √6,250,000 ≈ <span class="hl">$2,500</span></pre>
 
     <h3><span class="t-en">Where the approximation breaks down</span><span class="t-fr">Où l'approximation s'effondre</span></h3>
-    <p>The formula uses <code>A/R</code> for slippage. The exact constant-product formula is <code>A/(R+A)</code>. These diverge as <code>A</code> approaches <code>R</code> — which happens in three real-world situations:</p>
+    <p><span class="t-en">The formula uses <code>A/R</code> for slippage. The exact constant-product formula is <code>A/(R+A)</code>. These diverge as <code>A</code> approaches <code>R</code> — which happens in three real-world situations:</span><span class="t-fr">La formule utilise <code>A/R</code> pour le slippage. La formule constant-product exacte est <code>A/(R+A)</code>. Ces deux formules divergent lorsque <code>A</code> se rapproche de <code>R</code> — ce qui se produit dans trois situations réelles :</span></p>
 
     <table class="cmp-table">
       <thead><tr><th><span class="t-en">Situation</span><span class="t-fr">Situation</span></th><th><span class="t-en">Effect on R_effective</span><span class="t-fr">Effet sur R_effective</span></th><th><span class="t-en">Formula error</span><span class="t-fr">Erreur de formule</span></th></tr></thead>
       <tbody>
         <tr>
-          <td>Unbalanced pool (price has moved)</td>
+          <td><span class="t-en">Unbalanced pool (price has moved)</span><span class="t-fr">Pool déséquilibrée (prix a bougé)</span></td>
           <td>R &lt; TVL/2</td>
-          <td class="bad">Overestimates A_opt</td>
+          <td class="bad"><span class="t-en">Overestimates A_opt</span><span class="t-fr">Surestime A_opt</span></td>
         </tr>
         <tr>
-          <td>V3 concentrated liquidity</td>
+          <td><span class="t-en">V3 concentrated liquidity</span><span class="t-fr">Liquidité concentrée V3</span></td>
           <td>R_active ≪ TVL/2 (5–20% typical)</td>
-          <td class="bad">Overestimates A_opt by 3–10×</td>
+          <td class="bad"><span class="t-en">Overestimates A_opt by 3–10×</span><span class="t-fr">Surestime A_opt de 3 à 10×</span></td>
         </tr>
         <tr>
-          <td>Deep pool, tiny trade</td>
+          <td><span class="t-en">Deep pool, tiny trade</span><span class="t-fr">Pool profonde, petit trade</span></td>
           <td>A/R → 0</td>
-          <td class="good">Formula is accurate</td>
+          <td class="good"><span class="t-en">Formula is accurate</span><span class="t-fr">Formule précise</span></td>
         </tr>
       </tbody>
     </table>
 
     <div class="callout warn">
-      <b>The V3 problem:</b> A pool showing $50M TVL may have only $2–5M of active liquidity near the current price. Plugging $50M into the formula gives an optimal size 3–5× too large, landing you in the slippage-dominated zone.
+      <span class="t-en"><b>The V3 problem:</b> A pool showing $50M TVL may have only $2–5M of active liquidity near the current price. Plugging $50M into the formula gives an optimal size 3–5× too large, landing you in the slippage-dominated zone.</span><span class="t-fr"><b>Le problème V3 :</b> Une pool affichant $50M de TVL peut n'avoir que $2–5M de liquidité active près du prix actuel. Entrer $50M dans la formule donne une taille optimale 3 à 5× trop grande, vous plaçant dans la zone dominée par le slippage.</span>
     </div>
 
-    <p>The formula also assumes a balanced pool (50/50 token split). Any price movement creates an imbalanced pool where the effective one-sided depth <code>R</code> differs from <code>TVL/2</code>. These compounding errors are why empirical measurements show the analytical formula can underestimate slippage by a factor of 3–5× on live V3 pools.</p>
+    <p><span class="t-en">The formula also assumes a balanced pool (50/50 token split). Any price movement creates an imbalanced pool where the effective one-sided depth <code>R</code> differs from <code>TVL/2</code>. These compounding errors are why empirical measurements show the analytical formula can underestimate slippage by a factor of 3–5× on live V3 pools.</span><span class="t-fr">La formule suppose également une pool équilibrée (répartition 50/50 des tokens). Tout mouvement de prix crée une pool déséquilibrée où la profondeur unilatérale effective <code>R</code> diffère de <code>TVL/2</code>. Ces erreurs cumulées expliquent pourquoi les mesures empiriques montrent que la formule analytique peut sous-estimer le slippage d'un facteur 3 à 5× sur des pools V3 actives.</span></p>
   </div>
 
   <hr class="sec-div"/>
@@ -258,7 +258,7 @@ dC/dA = −G/A²  +  1/R  = 0
     <div class="sec-num"><span class="t-en">03 — Exact solver</span><span class="t-fr">03 — Solveur exact</span></div>
     <h2><span class="t-en">Constant-product ternary search</span><span class="t-fr">Recherche ternaire constant-product</span></h2>
 
-    <p>Rather than approximating, OrnyTools minimizes the exact cost function numerically via <strong>ternary search</strong> — a derivative-free method for unimodal functions that converges in O(log n) iterations.</p>
+    <p><span class="t-en">Rather than approximating, OrnyTools minimizes the exact cost function numerically via <strong>ternary search</strong> — a derivative-free method for unimodal functions that converges in O(log n) iterations.</span><span class="t-fr">Plutôt qu'approximer, OrnyTools minimise la fonction de coût exacte numériquement via une <strong>recherche ternaire</strong> — une méthode sans dérivée pour les fonctions unimodales qui converge en O(log n) itérations.</span></p>
 
     <h3><span class="t-en">The exact cost model</span><span class="t-fr">Le modèle de coût exact</span></h3>
     <pre class="formula"><span class="comment">// Exact slippage from constant-product AMM (x·y = k)</span>
@@ -272,7 +272,7 @@ fee_cost(A)         = fee × A
 <span class="hl">C(A) = G/A  +  A/(R+A)  +  fee</span>   <span class="comment">← cost per dollar traded</span></pre>
 
     <h3><span class="t-en">Ternary search</span><span class="t-fr">Recherche ternaire</span></h3>
-    <p>The cost function <code>C(A)</code> is strictly unimodal on <code>(0, ∞)</code>: it decreases from infinity as gas dominates at small A, reaches a minimum, then increases as slippage dominates at large A. This guarantees ternary search converges to the global minimum.</p>
+    <p><span class="t-en">The cost function <code>C(A)</code> is strictly unimodal on <code>(0, ∞)</code>: it decreases from infinity as gas dominates at small A, reaches a minimum, then increases as slippage dominates at large A. This guarantees ternary search converges to the global minimum.</span><span class="t-fr">La fonction de coût <code>C(A)</code> est strictement unimodale sur <code>(0, ∞)</code> : elle décroît depuis l'infini lorsque le gas domine pour les petits A, atteint un minimum, puis croît lorsque le slippage domine pour les grands A. Cela garantit que la recherche ternaire converge vers le minimum global.</span></p>
 
     <pre class="formula"><span class="comment">// Ternary search on [lo, hi] — O(log n) evaluations</span>
 lo = 0.01, hi = R × 0.5
@@ -287,10 +287,10 @@ while hi − lo &gt; 0.01:
 
 <span class="hl">A_opt = (lo + hi) / 2</span></pre>
 
-    <p>The search converges to $0.01 precision in under 50 iterations. There is no closed-form derivative required, and the result is exact for any <code>R</code> value — including the small active-liquidity values typical of tight V3 ranges.</p>
+    <p><span class="t-en">The search converges to $0.01 precision in under 50 iterations. There is no closed-form derivative required, and the result is exact for any <code>R</code> value — including the small active-liquidity values typical of tight V3 ranges.</span><span class="t-fr">La recherche converge à une précision de $0,01 en moins de 50 itérations. Aucune dérivée analytique n'est requise, et le résultat est exact pour toute valeur de <code>R</code> — y compris les faibles valeurs de liquidité active typiques des ranges V3 serrés.</span></p>
 
     <h3><span class="t-en">Fee tier inclusion</span><span class="t-fr">Inclusion des frais de tier</span></h3>
-    <p>The pool fee <code>fee × A</code> is a linear term in total cost. Its <strong>derivative is constant</strong>, so it does not shift the minimum of the cost-per-dollar curve — it only raises the floor uniformly. The fee is included in the displayed total cost but does not change <code>A_opt</code>. This is a known property of proportional fee models and applies equally to 0.05%, 0.3% and 1% fee tiers.</p>
+    <p><span class="t-en">The pool fee <code>fee × A</code> is a linear term in total cost. Its <strong>derivative is constant</strong>, so it does not shift the minimum of the cost-per-dollar curve — it only raises the floor uniformly. The fee is included in the displayed total cost but does not change <code>A_opt</code>. This is a known property of proportional fee models and applies equally to 0.05%, 0.3% and 1% fee tiers.</span><span class="t-fr">Le frais de pool <code>fee × A</code> est un terme linéaire dans le coût total. Sa <strong>dérivée est constante</strong>, donc il ne déplace pas le minimum de la courbe de coût-par-dollar — il ne fait que relever le plancher uniformément. Le frais est inclus dans le coût total affiché mais ne modifie pas <code>A_opt</code>. C'est une propriété connue des modèles de frais proportionnels et s'applique également aux niveaux de frais de 0,05%, 0,3% et 1%.</span></p>
   </div>
 
   <hr class="sec-div"/>
@@ -300,23 +300,23 @@ while hi − lo &gt; 0.01:
     <div class="sec-num"><span class="t-en">04 — V3 on-chain liquidity</span><span class="t-fr">04 — Liquidité V3 on-chain</span></div>
     <h2><span class="t-en">From <code>slot0()</code> to virtual reserves</span><span class="t-fr">De <code>slot0()</code> aux réserves virtuelles</span></h2>
 
-    <p>For Uniswap V3 pools, TVL shown on GeckoTerminal or DefiLlama includes all liquidity across all price ranges — most of which is inactive. The engine reads the <strong>real active liquidity</strong> directly from the contract via raw <code>eth_call</code>, without any third-party library.</p>
+    <p><span class="t-en">For Uniswap V3 pools, TVL shown on GeckoTerminal or DefiLlama includes all liquidity across all price ranges — most of which is inactive. The engine reads the <strong>real active liquidity</strong> directly from the contract via raw <code>eth_call</code>, without any third-party library.</span><span class="t-fr">Pour les pools Uniswap V3, le TVL affiché sur GeckoTerminal ou DefiLlama inclut toutes les liquidités sur toutes les plages de prix — dont la majorité est inactive. Le moteur lit la <strong>vraie liquidité active</strong> directement depuis le contrat via un <code>eth_call</code> brut, sans librairie tierce.</span></p>
 
     <div class="steps">
       <div class="step">
         <div class="step-num">1</div>
         <div class="step-body"><strong>Read slot0() — selector <code>0x3850c7bd</code></strong><br/>
-        Returns a packed tuple. The first 160 bits encode <code>sqrtPriceX96</code> — the square root of the current price in Q64.96 fixed-point format.</div>
+        <span class="t-en">Returns a packed tuple. The first 160 bits encode <code>sqrtPriceX96</code> — the square root of the current price in Q64.96 fixed-point format.</span><span class="t-fr">Retourne un tuple compressé. Les 160 premiers bits encodent <code>sqrtPriceX96</code> — la racine carrée du prix actuel en format virgule fixe Q64.96.</span></div>
       </div>
       <div class="step">
         <div class="step-num">2</div>
         <div class="step-body"><strong>Read liquidity() — selector <code>0x1a686502</code></strong><br/>
-        Returns the active liquidity <code>L</code> at the current price. This is the liquidity that earns fees on the next swap — a real-time measure of depth, not a TVL proxy.</div>
+        <span class="t-en">Returns the active liquidity <code>L</code> at the current price. This is the liquidity that earns fees on the next swap — a real-time measure of depth, not a TVL proxy.</span><span class="t-fr">Retourne la liquidité active <code>L</code> au prix actuel. C'est la liquidité qui génère des frais sur le prochain swap — une mesure de profondeur en temps réel, pas un proxy TVL.</span></div>
       </div>
       <div class="step">
         <div class="step-num">3</div>
-        <div class="step-body"><strong>Derive virtual reserves</strong><br/>
-        The V3 virtual reserve model gives the amount of each token providing the active liquidity <code>L</code>:</div>
+        <div class="step-body"><strong><span class="t-en">Derive virtual reserves</span><span class="t-fr">Dériver les réserves virtuelles</span></strong><br/>
+        <span class="t-en">The V3 virtual reserve model gives the amount of each token providing the active liquidity <code>L</code>:</span><span class="t-fr">Le modèle de réserves virtuelles V3 donne le montant de chaque token fournissant la liquidité active <code>L</code> :</span></div>
       </div>
     </div>
 
@@ -330,14 +330,14 @@ sqrtP  = sqrtPriceX96 / 2^96
 <span class="comment">// Convert to USD using GeckoTerminal spot prices p0, p1</span>
 R_eff = (x_virtual × p0 + y_virtual × p1) / 2</pre>
 
-    <p><code>R_eff</code> is the effective one-sided depth — the value used in the cost function. It directly represents the pool's capacity to absorb a swap near the current price, accounting for tick concentration.</p>
+    <p><span class="t-en"><code>R_eff</code> is the effective one-sided depth — the value used in the cost function. It directly represents the pool's capacity to absorb a swap near the current price, accounting for tick concentration.</span><span class="t-fr"><code>R_eff</code> est la profondeur unilatérale effective — la valeur utilisée dans la fonction de coût. Elle représente directement la capacité de la pool à absorber un swap près du prix actuel, en tenant compte de la concentration des ticks.</span></p>
 
     <div class="callout aqua">
-      <b>Why this matters:</b> for a pool with $50M TVL but a tight ±1% range, <code>R_eff</code> may be $3–8M. Using TVL directly overestimates depth by 6–15× and produces an optimal size far into the slippage-heavy zone.
+      <span class="t-en"><b>Why this matters:</b> for a pool with $50M TVL but a tight ±1% range, <code>R_eff</code> may be $3–8M. Using TVL directly overestimates depth by 6–15× and produces an optimal size far into the slippage-heavy zone.</span><span class="t-fr"><b>Pourquoi c'est important :</b> pour une pool avec $50M de TVL mais un range ±1% serré, <code>R_eff</code> peut être de $3–8M. Utiliser le TVL directement surestime la profondeur de 6 à 15× et produit une taille optimale bien dans la zone dominée par le slippage.</span>
     </div>
 
     <h3><span class="t-en">RPC fallback chain</span><span class="t-fr">Chaîne de fallback RPC</span></h3>
-    <p>All on-chain reads go through a <strong>fallback RPC array</strong> per chain. If the primary endpoint fails or returns <code>0x</code>, the engine retries on the next endpoint. Ethereum uses three public nodes (publicnode, llamarpc, cloudflare). Arbitrum and Base each use two. If all endpoints fail, the engine falls back to the TVL-based slider estimate and flags the lower confidence accordingly.</p>
+    <p><span class="t-en">All on-chain reads go through a <strong>fallback RPC array</strong> per chain. If the primary endpoint fails or returns <code>0x</code>, the engine retries on the next endpoint. Ethereum uses three public nodes (publicnode, llamarpc, cloudflare). Arbitrum and Base each use two. If all endpoints fail, the engine falls back to the TVL-based slider estimate and flags the lower confidence accordingly.</span><span class="t-fr">Toutes les lectures on-chain passent par un <strong>tableau de fallback RPC</strong> par chaîne. Si l'endpoint principal échoue ou retourne <code>0x</code>, le moteur réessaie sur l'endpoint suivant. Ethereum utilise trois nœuds publics (publicnode, llamarpc, cloudflare). Arbitrum et Base en utilisent chacun deux. Si tous les endpoints échouent, le moteur bascule vers l'estimation basée sur le slider TVL et signale le score de confiance réduit en conséquence.</span></p>
   </div>
 
   <hr class="sec-div"/>
@@ -347,23 +347,23 @@ R_eff = (x_virtual × p0 + y_virtual × p1) / 2</pre>
     <div class="sec-num"><span class="t-en">05 — Orny confidence score</span><span class="t-fr">05 — Score de confiance Orny</span></div>
     <h2><span class="t-en">How the confidence score is computed</span><span class="t-fr">Comment le score de confiance est calculé</span></h2>
 
-    <p>The score reflects the engine's certainty that the recommended size is close to the true optimum, given the quality of the inputs. It starts at a base of <strong>88%</strong> and adjusts for known error sources:</p>
+    <p><span class="t-en">The score reflects the engine's certainty that the recommended size is close to the true optimum, given the quality of the inputs. It starts at a base of <strong>88%</strong> and adjusts for known error sources:</span><span class="t-fr">Le score reflète la certitude du moteur que la taille recommandée est proche de l'optimum réel, compte tenu de la qualité des données d'entrée. Il commence à une base de <strong>88%</strong> et s'ajuste selon les sources d'erreur connues :</span></p>
 
     <table class="conf-table">
       <tbody>
-        <tr><td>+4 pts</td><td><span class="tag-ok">Positive</span></td><td>TVL ≥ $10M — deep pool, slippage model is accurate across a wide size range</td></tr>
-        <tr><td>−5 pts</td><td><span class="tag-warn">Caution</span></td><td>TVL $500k–$1M — moderate depth, reserve estimate may drift with price</td></tr>
-        <tr><td>−12 pts</td><td><span class="tag-bad">Negative</span></td><td>TVL &lt; $500k — thin pool, constant-product approximation degrades</td></tr>
-        <tr><td>+4 pts</td><td><span class="tag-ok">Positive</span></td><td>V3 depth read on-chain — <code>R_eff</code> is the real active liquidity, not TVL-based</td></tr>
-        <tr><td>−5 pts</td><td><span class="tag-warn">Caution</span></td><td>V3 pool with slider estimate — TVL proxy introduces a systematic error</td></tr>
-        <tr><td>−8 pts</td><td><span class="tag-bad">Negative</span></td><td>Trade &gt; 8% of pool depth — the first-order constant-product model degrades at high price impact; tick boundaries become relevant</td></tr>
+        <tr><td>+4 pts</td><td><span class="tag-ok">Positive</span></td><td><span class="t-en">TVL ≥ $10M — deep pool, slippage model is accurate across a wide size range</span><span class="t-fr">TVL ≥ $10M — pool profonde, le modèle de slippage est précis sur une large plage de tailles</span></td></tr>
+        <tr><td>−5 pts</td><td><span class="tag-warn">Caution</span></td><td><span class="t-en">TVL $500k–$1M — moderate depth, reserve estimate may drift with price</span><span class="t-fr">TVL $500k–$1M — profondeur modérée, l'estimation de réserve peut dériver avec le prix</span></td></tr>
+        <tr><td>−12 pts</td><td><span class="tag-bad">Negative</span></td><td><span class="t-en">TVL &lt; $500k — thin pool, constant-product approximation degrades</span><span class="t-fr">TVL &lt; $500k — pool peu profonde, l'approximation constant-product se dégrade</span></td></tr>
+        <tr><td>+4 pts</td><td><span class="tag-ok">Positive</span></td><td><span class="t-en">V3 depth read on-chain — <code>R_eff</code> is the real active liquidity, not TVL-based</span><span class="t-fr">Profondeur V3 lue on-chain — <code>R_eff</code> est la vraie liquidité active, pas basée sur le TVL</span></td></tr>
+        <tr><td>−5 pts</td><td><span class="tag-warn">Caution</span></td><td><span class="t-en">V3 pool with slider estimate — TVL proxy introduces a systematic error</span><span class="t-fr">Pool V3 avec estimation par slider — le proxy TVL introduit une erreur systématique</span></td></tr>
+        <tr><td>−8 pts</td><td><span class="tag-bad">Negative</span></td><td><span class="t-en">Trade &gt; 8% of pool depth — the first-order constant-product model degrades at high price impact; tick boundaries become relevant</span><span class="t-fr">Trade &gt; 8% de la profondeur de pool — le modèle constant-product du premier ordre se dégrade à fort impact de prix ; les limites de tick deviennent pertinentes</span></td></tr>
       </tbody>
     </table>
 
-    <p>The score is clamped to [52%, 97%]. A score of 97% is never reached — the remaining 3% accounts for unknowable factors (pool imbalance at execution time, MEV, network latency). A score below 65% triggers a <strong>Orny Warning</strong> and a recommendation to use a deeper pool or on-chain data.</p>
+    <p><span class="t-en">The score is clamped to [52%, 97%]. A score of 97% is never reached — the remaining 3% accounts for unknowable factors (pool imbalance at execution time, MEV, network latency). A score below 65% triggers a <strong>Orny Warning</strong> and a recommendation to use a deeper pool or on-chain data.</span><span class="t-fr">Le score est borné à [52%, 97%]. Un score de 97% n'est jamais atteint — les 3% restants correspondent aux facteurs inconnaissables (déséquilibre de pool au moment d'exécution, MEV, latence réseau). Un score inférieur à 65% déclenche un <strong>Avertissement Orny</strong> et une recommandation d'utiliser une pool plus profonde ou des données on-chain.</span></p>
 
     <div class="callout good">
-      <b>Best-case configuration:</b> V3 pool with on-chain active liquidity read, TVL ≥ $10M, trade size ≤ 5% of depth → confidence 92%. The on-chain read is the single highest-value action the user can take.
+      <span class="t-en"><b>Best-case configuration:</b> V3 pool with on-chain active liquidity read, TVL ≥ $10M, trade size ≤ 5% of depth → confidence 92%. The on-chain read is the single highest-value action the user can take.</span><span class="t-fr"><b>Configuration optimale :</b> Pool V3 avec lecture on-chain de la liquidité active, TVL ≥ $10M, taille de trade ≤ 5% de la profondeur → confiance 92%. La lecture on-chain est l'action à plus forte valeur ajoutée que l'utilisateur peut effectuer.</span>
     </div>
   </div>
 
@@ -375,16 +375,16 @@ R_eff = (x_virtual × p0 + y_virtual × p1) / 2</pre>
     <h2><span class="t-en">What the model does not capture</span><span class="t-fr">Ce que le modèle ne capture pas</span></h2>
 
     <ul>
-      <li><strong>Single-hop only.</strong> The optimizer models a direct swap on one pool. Aggregators (1inch, Paraswap) split volume across multiple pools, reducing effective slippage for large trades. For sizes where splitting is optimal, the simulator's "split recommendation" tab provides an estimate.</li>
-      <li><strong>Balanced reserve assumption.</strong> The model assumes <code>R = TVL / 2</code> for V2 pools (equal token values). Pools that have drifted from 50/50 due to price movement have different effective depths per side. The on-chain V3 read corrects for this; V2 remains approximate.</li>
-      <li><strong>Static tick range.</strong> V3 liquidity is distributed across price ticks. The <code>liquidity()</code> call returns the active liquidity at the current tick only. For large trades that cross multiple ticks, the real average depth is lower. The −8pt confidence penalty at high price-impact sizes partially accounts for this.</li>
-      <li><strong>No MEV model.</strong> Sandwich attacks and backrunning add an effective cost that depends on mempool conditions and block builder behavior. This is not modelable from on-chain data alone. Use private mempools (Flashbots Protect, MEV Blocker) for sensitive trades.</li>
-      <li><strong>Gas price is user-supplied.</strong> The model uses the gas cost entered by the user. On Ethereum mainnet, the actual gas cost varies with block congestion. On Arbitrum and Base, gas costs are near-deterministic and the defaults ($0.05 and $0.02 respectively) are reliable.</li>
-      <li><strong>Token prices via GeckoTerminal.</strong> The USD conversion for V3 reserve calculation uses GeckoTerminal spot prices fetched at load time. Rapid price movements between fetch and execution introduce a small reserve estimation error.</li>
+      <li><span class="t-en"><strong>Single-hop only.</strong> The optimizer models a direct swap on one pool. Aggregators (1inch, Paraswap) split volume across multiple pools, reducing effective slippage for large trades. For sizes where splitting is optimal, the simulator's "split recommendation" tab provides an estimate.</span><span class="t-fr"><strong>Single-hop uniquement.</strong> L'optimiseur modélise un swap direct sur une seule pool. Les agrégateurs (1inch, Paraswap) répartissent le volume sur plusieurs pools, réduisant le slippage effectif pour les grands trades. Pour les tailles où le découpage est optimal, l'onglet "split recommendation" du simulateur fournit une estimation.</span></li>
+      <li><span class="t-en"><strong>Balanced reserve assumption.</strong> The model assumes <code>R = TVL / 2</code> for V2 pools (equal token values). Pools that have drifted from 50/50 due to price movement have different effective depths per side. The on-chain V3 read corrects for this; V2 remains approximate.</span><span class="t-fr"><strong>Hypothèse de réserve équilibrée.</strong> Le modèle suppose <code>R = TVL / 2</code> pour les pools V2 (valeurs de tokens égales). Les pools qui ont dérivé du 50/50 en raison des mouvements de prix ont des profondeurs effectives différentes par côté. La lecture on-chain V3 corrige cela ; V2 reste approximatif.</span></li>
+      <li><span class="t-en"><strong>Static tick range.</strong> V3 liquidity is distributed across price ticks. The <code>liquidity()</code> call returns the active liquidity at the current tick only. For large trades that cross multiple ticks, the real average depth is lower. The −8pt confidence penalty at high price-impact sizes partially accounts for this.</span><span class="t-fr"><strong>Plage de tick statique.</strong> La liquidité V3 est distribuée sur des ticks de prix. L'appel <code>liquidity()</code> retourne uniquement la liquidité active au tick actuel. Pour les grands trades qui franchissent plusieurs ticks, la profondeur moyenne réelle est plus faible. La pénalité de confiance de −8pt pour les tailles à fort impact de prix en tient partiellement compte.</span></li>
+      <li><span class="t-en"><strong>No MEV model.</strong> Sandwich attacks and backrunning add an effective cost that depends on mempool conditions and block builder behavior. This is not modelable from on-chain data alone. Use private mempools (Flashbots Protect, MEV Blocker) for sensitive trades.</span><span class="t-fr"><strong>Pas de modèle MEV.</strong> Les attaques sandwich et le backrunning ajoutent un coût effectif qui dépend des conditions du mempool et du comportement des block builders. Cela n'est pas modélisable à partir des seules données on-chain. Utilisez des mempools privés (Flashbots Protect, MEV Blocker) pour les trades sensibles.</span></li>
+      <li><span class="t-en"><strong>Gas price is user-supplied.</strong> The model uses the gas cost entered by the user. On Ethereum mainnet, the actual gas cost varies with block congestion. On Arbitrum and Base, gas costs are near-deterministic and the defaults ($0.05 and $0.02 respectively) are reliable.</span><span class="t-fr"><strong>Prix du gas fourni par l'utilisateur.</strong> Le modèle utilise le coût de gas saisi par l'utilisateur. Sur Ethereum mainnet, le coût de gas réel varie avec la congestion des blocs. Sur Arbitrum et Base, les coûts de gas sont quasi-déterministes et les valeurs par défaut ($0,05 et $0,02 respectivement) sont fiables.</span></li>
+      <li><span class="t-en"><strong>Token prices via GeckoTerminal.</strong> The USD conversion for V3 reserve calculation uses GeckoTerminal spot prices fetched at load time. Rapid price movements between fetch and execution introduce a small reserve estimation error.</span><span class="t-fr"><strong>Prix des tokens via GeckoTerminal.</strong> La conversion USD pour le calcul des réserves V3 utilise les prix spot GeckoTerminal récupérés au chargement. Les mouvements de prix rapides entre la récupération et l'exécution introduisent une petite erreur d'estimation de réserve.</span></li>
     </ul>
 
     <div class="callout warn">
-      <b>In summary:</b> OrnyTools gives you the mathematically correct answer for the inputs you provide. The quality of the output is bounded by the quality of the inputs — especially pool depth. On-chain V3 data is always more reliable than TVL-based estimates.
+      <span class="t-en"><b>In summary:</b> OrnyTools gives you the mathematically correct answer for the inputs you provide. The quality of the output is bounded by the quality of the inputs — especially pool depth. On-chain V3 data is always more reliable than TVL-based estimates.</span><span class="t-fr"><b>En résumé :</b> OrnyTools vous donne la réponse mathématiquement correcte pour les données que vous fournissez. La qualité de la sortie est bornée par la qualité des entrées — notamment la profondeur de la pool. Les données V3 on-chain sont toujours plus fiables que les estimations basées sur le TVL.</span>
     </div>
   </div>
 

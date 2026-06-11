@@ -216,53 +216,53 @@
   <div class="section">
     <div class="section-title"><span class="t-fr">Vue d'ensemble</span><span class="t-en">Overview</span></div>
     <p>
-      Le staking Ethereum génère des récompenses (~3,5% APR), mais l'ETH staké en solo est illiquide et requiert 32 ETH. Lido résout le premier problème avec <strong>stETH</strong> (ETH staké liquide), mais stETH utilise un mécanisme de <em>rebase</em> — son solde augmente chaque jour — ce qui le rend incompatible avec de nombreux protocoles DeFi.
+      <span class="t-fr">Le staking Ethereum génère des récompenses (~3,5% APR), mais l'ETH staké en solo est illiquide et requiert 32 ETH. Lido résout le premier problème avec <strong>stETH</strong> (ETH staké liquide), mais stETH utilise un mécanisme de <em>rebase</em> — son solde augmente chaque jour — ce qui le rend incompatible avec de nombreux protocoles DeFi.</span><span class="t-en">Ethereum staking generates rewards (~3.5% APR), but solo-staked ETH is illiquid and requires 32 ETH. Lido solves the first problem with <strong>stETH</strong> (liquid staked ETH), but stETH uses a <em>rebase</em> mechanism — its balance increases every day — which makes it incompatible with many DeFi protocols.</span>
     </p>
     <p>
-      <strong>wstETH</strong> (Wrapped staked ETH) résout ce problème : c'est une enveloppe autour de stETH dont le solde <em>ne change jamais</em>. À la place, c'est le taux de conversion qui augmente. 1 wstETH vaut aujourd'hui plus d'1 ETH — et ce ratio monte en permanence au fil des récompenses de staking.
+      <span class="t-fr"><strong>wstETH</strong> (Wrapped staked ETH) résout ce problème : c'est une enveloppe autour de stETH dont le solde <em>ne change jamais</em>. À la place, c'est le taux de conversion qui augmente. 1 wstETH vaut aujourd'hui plus d'1 ETH — et ce ratio monte en permanence au fil des récompenses de staking.</span><span class="t-en"><strong>wstETH</strong> (Wrapped staked ETH) solves this problem: it is a wrapper around stETH whose balance <em>never changes</em>. Instead, it is the exchange rate that increases. 1 wstETH is worth more than 1 ETH today — and this ratio rises continuously as staking rewards accrue.</span>
     </p>
     <p>
-      C'est cet actif que la quasi-totalité des protocoles DeFi (Aave, Uniswap, Curve, bridges L2) utilise, car il est prévisible, standard ERC-20, et disponible nativement sur Arbitrum, Optimism, Polygon et d'autres chaînes.
+      <span class="t-fr">C'est cet actif que la quasi-totalité des protocoles DeFi (Aave, Uniswap, Curve, bridges L2) utilise, car il est prévisible, standard ERC-20, et disponible nativement sur Arbitrum, Optimism, Polygon et d'autres chaînes.</span><span class="t-en">This is the asset used by virtually all DeFi protocols (Aave, Uniswap, Curve, L2 bridges), because it is predictable, standard ERC-20, and available natively on Arbitrum, Optimism, Polygon, and other chains.</span>
     </p>
   </div>
 
   <!-- stETH vs wstETH -->
   <div class="section">
     <div class="section-title"><span class="t-fr">stETH vs wstETH — la différence clé</span><span class="t-en">stETH vs wstETH — the key difference</span></div>
-    <p>Lido émet deux tokens représentant le même sous-jacent (ETH staké). Seul le mécanisme d'accumulation des récompenses diffère :</p>
+    <p><span class="t-fr">Lido émet deux tokens représentant le même sous-jacent (ETH staké). Seul le mécanisme d'accumulation des récompenses diffère :</span><span class="t-en">Lido issues two tokens representing the same underlying asset (staked ETH). Only the reward accumulation mechanism differs:</span></p>
 
     <div class="token-compare">
       <div class="token-col a">
         <div class="token-col-name">stETH — a-token</div>
-        <div class="token-row"><span class="tr-key">Modèle</span><span>Rebasing</span></div>
-        <div class="token-row"><span class="tr-key">Récompenses</span><span>Solde augmente chaque jour</span></div>
-        <div class="token-row"><span class="tr-key">1 stETH =</span><span>≈ 1 ETH (toujours)</span></div>
-        <div class="token-row"><span class="tr-key">Usage</span><span>Wallet, hodl simple</span></div>
-        <div class="token-row"><span class="tr-key">Problème</span><span>Incompatible avec certains protocoles DeFi (balance variable)</span></div>
+        <div class="token-row"><span class="tr-key"><span class="t-fr">Modèle</span><span class="t-en">Model</span></span><span>Rebasing</span></div>
+        <div class="token-row"><span class="tr-key"><span class="t-fr">Récompenses</span><span class="t-en">Rewards</span></span><span><span class="t-fr">Solde augmente chaque jour</span><span class="t-en">Balance increases every day</span></span></div>
+        <div class="token-row"><span class="tr-key">1 stETH =</span><span>≈ 1 ETH (<span class="t-fr">toujours</span><span class="t-en">always</span>)</span></div>
+        <div class="token-row"><span class="tr-key"><span class="t-fr">Usage</span><span class="t-en">Use</span></span><span><span class="t-fr">Wallet, hodl simple</span><span class="t-en">Wallet, simple hold</span></span></div>
+        <div class="token-row"><span class="tr-key"><span class="t-fr">Problème</span><span class="t-en">Issue</span></span><span><span class="t-fr">Incompatible avec certains protocoles DeFi (balance variable)</span><span class="t-en">Incompatible with some DeFi protocols (variable balance)</span></span></div>
       </div>
       <div class="token-col c">
         <div class="token-col-name">wstETH — c-token</div>
-        <div class="token-row"><span class="tr-key">Modèle</span><span>Taux de change variable</span></div>
-        <div class="token-row"><span class="tr-key">Récompenses</span><span>Taux de conversion monte</span></div>
-        <div class="token-row"><span class="tr-key">1 wstETH =</span><span>x ETH (ratio croissant)</span></div>
-        <div class="token-row"><span class="tr-key">Usage</span><span>DeFi, collateral, bridges, L2</span></div>
-        <div class="token-row"><span class="tr-key">Avantage</span><span>Solde fixe → compatible partout</span></div>
+        <div class="token-row"><span class="tr-key"><span class="t-fr">Modèle</span><span class="t-en">Model</span></span><span><span class="t-fr">Taux de change variable</span><span class="t-en">Variable exchange rate</span></span></div>
+        <div class="token-row"><span class="tr-key"><span class="t-fr">Récompenses</span><span class="t-en">Rewards</span></span><span><span class="t-fr">Taux de conversion monte</span><span class="t-en">Exchange rate rises</span></span></div>
+        <div class="token-row"><span class="tr-key">1 wstETH =</span><span>x ETH (<span class="t-fr">ratio croissant</span><span class="t-en">rising ratio</span>)</span></div>
+        <div class="token-row"><span class="tr-key"><span class="t-fr">Usage</span><span class="t-en">Use</span></span><span>DeFi, collateral, bridges, L2</span></div>
+        <div class="token-row"><span class="tr-key"><span class="t-fr">Avantage</span><span class="t-en">Advantage</span></span><span><span class="t-fr">Solde fixe → compatible partout</span><span class="t-en">Fixed balance → compatible everywhere</span></span></div>
       </div>
     </div>
 
     <div class="diagram" style="margin-top:1.25rem">
-<span class="hi">Exemple concret — taux de conversion dans le temps</span>
+<span class="hi"><span class="t-fr">Exemple concret — taux de conversion dans le temps</span><span class="t-en">Concrete example — exchange rate over time</span></span>
 
 Jan 2023 :  1 wstETH = 1.08 stETH = 1.08 ETH
 Jan 2024 :  1 wstETH = 1.14 stETH = 1.14 ETH
-Jan 2025 :  1 wstETH = 1.20 stETH = 1.20 ETH   <span class="ok">← taux monte</span>
+Jan 2025 :  1 wstETH = 1.20 stETH = 1.20 ETH   <span class="ok">← <span class="t-fr">taux monte</span><span class="t-en">rate rises</span></span>
 
-<span class="dim">Le nombre de wstETH dans ton wallet ne bouge pas.</span>
-<span class="dim">C'est la valeur de chaque wstETH qui augmente.</span>
+<span class="dim"><span class="t-fr">Le nombre de wstETH dans ton wallet ne bouge pas.</span><span class="t-en">The number of wstETH in your wallet never changes.</span></span>
+<span class="dim"><span class="t-fr">C'est la valeur de chaque wstETH qui augmente.</span><span class="t-en">It is the value of each wstETH that increases.</span></span>
     </div>
 
     <p style="margin-top:0.75rem;font-size:0.875rem;color:var(--text-light)">
-      Formule : <code>wstETH = stETH ÷ taux_de_conversion</code> — au wrap, puis <code>stETH récupéré = wstETH × taux_actuel</code> au unwrap.
+      <span class="t-fr">Formule : <code>wstETH = stETH ÷ taux_de_conversion</code> — au wrap, puis <code>stETH récupéré = wstETH × taux_actuel</code> au unwrap.</span><span class="t-en">Formula: <code>wstETH = stETH ÷ exchange_rate</code> — at wrap, then <code>stETH received = wstETH × current_rate</code> at unwrap.</span>
     </p>
   </div>
 
@@ -270,22 +270,22 @@ Jan 2025 :  1 wstETH = 1.20 stETH = 1.20 ETH   <span class="ok">← taux monte</
   <div class="section">
     <div class="section-title"><span class="t-fr">Comment obtenir du wstETH</span><span class="t-en">How to get wstETH</span></div>
     <ol class="steps">
-      <li><div><strong>Via Lido</strong> — le chemin direct : déposer de l'ETH sur <code>stake.lido.fi</code>, recevoir du stETH, puis le wrapper en wstETH en un clic sur la même interface.</div></li>
-      <li><div><strong>Via un DEX</strong> — acheter directement du wstETH contre de l'ETH sur Uniswap ou Curve. Plus rapide, mais tu paies le spread du marché secondaire.</div></li>
-      <li><div><strong>Via un bridge</strong> — wstETH existe en natif sur Arbitrum, Optimism, Polygon. Utiliser le bridge officiel Lido ou un bridge tiers pour le transférer depuis Ethereum.</div></li>
+      <li><div><strong>Via Lido</strong> — <span class="t-fr">le chemin direct : déposer de l'ETH sur <code>stake.lido.fi</code>, recevoir du stETH, puis le wrapper en wstETH en un clic sur la même interface.</span><span class="t-en">the direct path: deposit ETH on <code>stake.lido.fi</code>, receive stETH, then wrap it to wstETH in one click on the same interface.</span></div></li>
+      <li><div><strong>Via <span class="t-fr">un</span><span class="t-en">a</span> DEX</strong> — <span class="t-fr">acheter directement du wstETH contre de l'ETH sur Uniswap ou Curve. Plus rapide, mais tu paies le spread du marché secondaire.</span><span class="t-en">buy wstETH directly against ETH on Uniswap or Curve. Faster, but you pay the secondary market spread.</span></div></li>
+      <li><div><strong>Via <span class="t-fr">un</span><span class="t-en">a</span> bridge</strong> — <span class="t-fr">wstETH existe en natif sur Arbitrum, Optimism, Polygon. Utiliser le bridge officiel Lido ou un bridge tiers pour le transférer depuis Ethereum.</span><span class="t-en">wstETH exists natively on Arbitrum, Optimism, Polygon. Use the official Lido bridge or a third-party bridge to transfer it from Ethereum.</span></div></li>
     </ol>
 
     <div class="diagram" style="margin-top:0.5rem">
 <span class="hi">ETH</span>
- <span class="dim">↓</span> stake sur Lido
-<span class="hi">stETH</span>  (rebase, solde monte chaque jour)
- <span class="dim">↓</span> wrap sur Lido / app.lido.fi
-<span class="hi">wstETH</span> (non-rebase, valeur monte)
- <span class="dim">↓</span> utiliser dans la DeFi
+ <span class="dim">↓</span> <span class="t-fr">stake sur Lido</span><span class="t-en">stake on Lido</span>
+<span class="hi">stETH</span>  (<span class="t-fr">rebase, solde monte chaque jour</span><span class="t-en">rebase, balance increases every day</span>)
+ <span class="dim">↓</span> wrap <span class="t-fr">sur Lido</span><span class="t-en">on Lido</span> / app.lido.fi
+<span class="hi">wstETH</span> (<span class="t-fr">non-rebase, valeur monte</span><span class="t-en">non-rebase, value rises</span>)
+ <span class="dim">↓</span> <span class="t-fr">utiliser dans la DeFi</span><span class="t-en">use in DeFi</span>
   <span class="ok">Aave V3 (collateral)</span>
   <span class="ok">Uniswap (LP)</span>
   <span class="ok">Curve (pool wstETH/ETH)</span>
-  <span class="ok">Bridge → Arbitrum natif</span>
+  <span class="ok">Bridge → <span class="t-fr">Arbitrum natif</span><span class="t-en">Arbitrum native</span></span>
     </div>
   </div>
 
@@ -295,27 +295,27 @@ Jan 2025 :  1 wstETH = 1.20 stETH = 1.20 ETH   <span class="ok">← taux monte</
     <div class="proto-grid">
       <div class="proto-card">
         <div class="proto-name">Aave V3</div>
-        <div class="proto-desc">Collateral accepté (LTV ~70–80%). En eMode ETH-correlated : LTV jusqu'à 93%. Emprunter ETH ou stables contre wstETH.</div>
+        <div class="proto-desc"><span class="t-fr">Collateral accepté (LTV ~70–80%). En eMode ETH-correlated : LTV jusqu'à 93%. Emprunter ETH ou stables contre wstETH.</span><span class="t-en">Accepted collateral (LTV ~70–80%). In ETH-correlated eMode: LTV up to 93%. Borrow ETH or stablecoins against wstETH.</span></div>
       </div>
       <div class="proto-card">
         <div class="proto-name">Aave — eMode</div>
-        <div class="proto-desc">Mode haute efficacité pour actifs corrélés à ETH. wstETH + ETH emprunt = LTV 93% au lieu de 80%. Capital quasi-total déployable.</div>
+        <div class="proto-desc"><span class="t-fr">Mode haute efficacité pour actifs corrélés à ETH. wstETH + ETH emprunt = LTV 93% au lieu de 80%. Capital quasi-total déployable.</span><span class="t-en">High-efficiency mode for ETH-correlated assets. wstETH + ETH borrow = LTV 93% instead of 80%. Nearly full capital deployment.</span></div>
       </div>
       <div class="proto-card">
         <div class="proto-name">Uniswap V3</div>
-        <div class="proto-desc">Pool wstETH/ETH en liquidité concentrée. Faible divergence de prix entre les deux actifs → risque d'impermanent loss limité.</div>
+        <div class="proto-desc"><span class="t-fr">Pool wstETH/ETH en liquidité concentrée. Faible divergence de prix entre les deux actifs → risque d'impermanent loss limité.</span><span class="t-en">wstETH/ETH pool with concentrated liquidity. Low price divergence between the two assets → limited impermanent loss risk.</span></div>
       </div>
       <div class="proto-card">
         <div class="proto-name">Curve</div>
-        <div class="proto-desc">Pools stETH/ETH et wstETH/ETH avec faible slippage. Récompenses en LDO + frais de swap. Historiquement le pool le plus liquide.</div>
+        <div class="proto-desc"><span class="t-fr">Pools stETH/ETH et wstETH/ETH avec faible slippage. Récompenses en LDO + frais de swap. Historiquement le pool le plus liquide.</span><span class="t-en">stETH/ETH and wstETH/ETH pools with low slippage. Rewards in LDO + swap fees. Historically the most liquid pool.</span></div>
       </div>
       <div class="proto-card">
-        <div class="proto-name">Arbitrum (natif)</div>
-        <div class="proto-desc">wstETH déployé nativement. Toutes les stratégies disponibles avec des frais de gas 10× moins élevés qu'Ethereum mainnet.</div>
+        <div class="proto-name"><span class="t-fr">Arbitrum (natif)</span><span class="t-en">Arbitrum (native)</span></div>
+        <div class="proto-desc"><span class="t-fr">wstETH déployé nativement. Toutes les stratégies disponibles avec des frais de gas 10× moins élevés qu'Ethereum mainnet.</span><span class="t-en">wstETH deployed natively. All strategies available with gas fees 10× lower than Ethereum mainnet.</span></div>
       </div>
       <div class="proto-card">
-        <div class="proto-name">Levier en boucle</div>
-        <div class="proto-desc">Déposer wstETH → emprunter ETH → wrapper en wstETH → redéposer. Rentable si APR wstETH &gt; taux emprunt ETH (spread positif).</div>
+        <div class="proto-name"><span class="t-fr">Levier en boucle</span><span class="t-en">Loop leverage</span></div>
+        <div class="proto-desc"><span class="t-fr">Déposer wstETH → emprunter ETH → wrapper en wstETH → redéposer. Rentable si APR wstETH &gt; taux emprunt ETH (spread positif).</span><span class="t-en">Deposit wstETH → borrow ETH → wrap to wstETH → redeposit. Profitable if wstETH APR &gt; ETH borrow rate (positive spread).</span></div>
       </div>
     </div>
   </div>
@@ -326,23 +326,23 @@ Jan 2025 :  1 wstETH = 1.20 stETH = 1.20 ETH   <span class="ok">← taux monte</
     <ul class="risk-list">
       <li class="risk-item high">
         <span class="risk-badge"><span class="t-fr">Élevé</span><span class="t-en">High</span></span>
-        <div><strong>Smart contract Lido.</strong> wstETH dépend des contrats Lido (~$20B de TVL). Un exploit sur le protocole Lido impacterait directement la valeur de wstETH.</div>
+        <div><strong>Smart contract Lido.</strong> <span class="t-fr">wstETH dépend des contrats Lido (~$20B de TVL). Un exploit sur le protocole Lido impacterait directement la valeur de wstETH.</span><span class="t-en">wstETH depends on Lido's contracts (~$20B TVL). An exploit on the Lido protocol would directly impact the value of wstETH.</span></div>
       </li>
       <li class="risk-item high">
         <span class="risk-badge"><span class="t-fr">Élevé</span><span class="t-en">High</span></span>
-        <div><strong>Centralisation Lido.</strong> Lido contrôle ~29% de tout l'ETH staké. Si ce ratio dépasse 33%, Lido pourrait influencer la finalité d'Ethereum — risque systémique pour le réseau entier.</div>
+        <div><strong>Centralisation Lido.</strong> <span class="t-fr">Lido contrôle ~29% de tout l'ETH staké. Si ce ratio dépasse 33%, Lido pourrait influencer la finalité d'Ethereum — risque systémique pour le réseau entier.</span><span class="t-en">Lido controls ~29% of all staked ETH. If this ratio exceeds 33%, Lido could influence Ethereum's finality — a systemic risk for the entire network.</span></div>
       </li>
       <li class="risk-item medium">
         <span class="risk-badge"><span class="t-fr">Moyen</span><span class="t-en">Medium</span></span>
-        <div><strong>Dépeg wstETH/ETH.</strong> wstETH suit stETH. En juin 2022 (crise Celsius), stETH est tombé à ~0,94 ETH. wstETH aurait subi la même décote. Le dépeg se résorbe avec le temps mais crée des risques de liquidation si utilisé comme collateral.</div>
+        <div><strong>Dépeg wstETH/ETH.</strong> <span class="t-fr">wstETH suit stETH. En juin 2022 (crise Celsius), stETH est tombé à ~0,94 ETH. wstETH aurait subi la même décote. Le dépeg se résorbe avec le temps mais crée des risques de liquidation si utilisé comme collateral.</span><span class="t-en">wstETH tracks stETH. In June 2022 (Celsius crisis), stETH fell to ~0.94 ETH. wstETH would have suffered the same discount. The depeg resolves over time but creates liquidation risk when used as collateral.</span></div>
       </li>
       <li class="risk-item medium">
         <span class="risk-badge"><span class="t-fr">Moyen</span><span class="t-en">Medium</span></span>
-        <div><strong>Slashing des node operators.</strong> Si un validateur opéré par Lido est slashé (faute grave), les pertes sont mutualisées entre tous les détenteurs de stETH/wstETH. Fonds d'assurance partiel.</div>
+        <div><strong>Slashing des node operators.</strong> <span class="t-fr">Si un validateur opéré par Lido est slashé (faute grave), les pertes sont mutualisées entre tous les détenteurs de stETH/wstETH. Fonds d'assurance partiel.</span><span class="t-en">If a Lido-operated validator is slashed (serious misconduct), losses are shared among all stETH/wstETH holders. Partial insurance fund.</span></div>
       </li>
       <li class="risk-item low">
         <span class="risk-badge"><span class="t-fr">Faible</span><span class="t-en">Low</span></span>
-        <div><strong>Risque de liquidité.</strong> En période de stress, vendre du wstETH en grande quantité peut induire du slippage. Les pools Curve/Uniswap sont profondes mais pas infinies.</div>
+        <div><strong><span class="t-fr">Risque de liquidité.</span><span class="t-en">Liquidity risk.</span></strong> <span class="t-fr">En période de stress, vendre du wstETH en grande quantité peut induire du slippage. Les pools Curve/Uniswap sont profondes mais pas infinies.</span><span class="t-en">During periods of stress, selling large amounts of wstETH can cause slippage. Curve/Uniswap pools are deep but not infinite.</span></div>
       </li>
     </ul>
   </div>
@@ -378,10 +378,10 @@ Jan 2025 :  1 wstETH = 1.20 stETH = 1.20 ETH   <span class="ok">← taux monte</
         <tr><th>Token</th><th><span class="t-fr">Protocole</span><span class="t-en">Protocol</span></th><th><span class="t-fr">Modèle</span><span class="t-en">Model</span></th><th><span class="t-fr">Part de marché</span><span class="t-en">Market share</span></th><th><span class="t-fr">Décentralisation</span><span class="t-en">Decentralization</span></th></tr>
       </thead>
       <tbody>
-        <tr><td><code>wstETH</code></td><td>Lido</td><td>c-token</td><td>~75%</td><td>⚠️ node operators centralisés</td></tr>
-        <tr><td><code>rETH</code></td><td>RocketPool</td><td>c-token</td><td>~8%</td><td>✅ nœuds permissionless</td></tr>
+        <tr><td><code>wstETH</code></td><td>Lido</td><td>c-token</td><td>~75%</td><td>⚠️ <span class="t-fr">node operators centralisés</span><span class="t-en">centralized node operators</span></td></tr>
+        <tr><td><code>rETH</code></td><td>RocketPool</td><td>c-token</td><td>~8%</td><td>✅ <span class="t-fr">nœuds permissionless</span><span class="t-en">permissionless nodes</span></td></tr>
         <tr><td><code>cbETH</code></td><td>Coinbase</td><td>c-token</td><td>~8%</td><td>❌ custodial</td></tr>
-        <tr><td><code>swETH</code></td><td>Swell</td><td>c-token</td><td>&lt;2%</td><td>⚠️ en développement</td></tr>
+        <tr><td><code>swETH</code></td><td>Swell</td><td>c-token</td><td>&lt;2%</td><td>⚠️ <span class="t-fr">en développement</span><span class="t-en">in development</span></td></tr>
       </tbody>
     </table>
   </div>
@@ -391,11 +391,11 @@ Jan 2025 :  1 wstETH = 1.20 stETH = 1.20 ETH   <span class="ok">← taux monte</
     <div class="section-title"><span class="t-fr">Sources</span><span class="t-en">Sources</span></div>
     <ul class="sources">
       <li><span class="src-label"><span class="t-fr">Interface Lido (stake + wrap)</span><span class="t-en">Lido interface (stake + wrap)</span></span><a href="https://stake.lido.fi" target="_blank">stake.lido.fi</a></li>
-      <li><span class="src-label">Documentation wstETH</span><a href="https://docs.lido.fi/contracts/wsteth" target="_blank">docs.lido.fi/contracts/wsteth</a></li>
-      <li><span class="src-label">Taux de conversion en temps réel</span><a href="https://dune.com/lido" target="_blank">dune.com/lido</a></li>
-      <li><span class="src-label">TVL & métriques</span><a href="https://defillama.com/protocol/lido" target="_blank">defillama.com/protocol/lido</a></li>
-      <li><span class="src-label">Contrat wstETH (Ethereum)</span><a href="https://etherscan.io/token/0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0" target="_blank">Etherscan — wstETH</a></li>
-      <li><span class="src-label">Vault Alyra (formation)</span><code>S2-Depots-Tokenises.md</code> · <code>S2-Wrappers.md</code> · <code>Lido.md</code></li>
+      <li><span class="src-label"><span class="t-fr">Documentation wstETH</span><span class="t-en">wstETH documentation</span></span><a href="https://docs.lido.fi/contracts/wsteth" target="_blank">docs.lido.fi/contracts/wsteth</a></li>
+      <li><span class="src-label"><span class="t-fr">Taux de conversion en temps réel</span><span class="t-en">Real-time exchange rate</span></span><a href="https://dune.com/lido" target="_blank">dune.com/lido</a></li>
+      <li><span class="src-label"><span class="t-fr">TVL & métriques</span><span class="t-en">TVL & metrics</span></span><a href="https://defillama.com/protocol/lido" target="_blank">defillama.com/protocol/lido</a></li>
+      <li><span class="src-label"><span class="t-fr">Contrat wstETH (Ethereum)</span><span class="t-en">wstETH contract (Ethereum)</span></span><a href="https://etherscan.io/token/0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0" target="_blank">Etherscan — wstETH</a></li>
+      <li><span class="src-label"><span class="t-fr">Vault Alyra (formation)</span><span class="t-en">Alyra vault (course)</span></span><code>S2-Depots-Tokenises.md</code> · <code>S2-Wrappers.md</code> · <code>Lido.md</code></li>
     </ul>
   </div>
 

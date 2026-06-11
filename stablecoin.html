@@ -262,8 +262,11 @@ const DB = {
     counterparty:65, protocol:87, liquidity:95,
     depegBase:88,
     history:'Mar 2023 (SVB crisis): brief -12% depeg, recovered in 48h.',
+    history_fr:'Mars 2023 (crise SVB) : bref dépeg à -12%, récupéré en 48h.',
     strengths:['Monthly reserve audits by Deloitte','Regulated US entity (FinCEN)','Most widely accepted in DeFi'],
+    strengths_fr:['Audits mensuels des réserves par Deloitte','Entité américaine réglementée (FinCEN)','Le plus largement accepté en DeFi'],
     risks:['Circle has banking exposure','USDC addresses can be blacklisted','USD banking system dependency'],
+    risks_fr:['Circle a une exposition bancaire','Les adresses USDC peuvent être blacklistées','Dépendance au système bancaire USD'],
   },
   USDT: {
     name:'Tether', issuer:'Tether Limited (BVI)', type:'Fiat-backed', typeColor:'#26A17B',
@@ -271,8 +274,11 @@ const DB = {
     counterparty:42, protocol:80, liquidity:98,
     depegBase:82,
     history:'Multiple brief depeg episodes. May 2022: -5% during LUNA crisis.',
+    history_fr:'Plusieurs brefs épisodes de dépeg. Mai 2022 : -5% lors de la crise LUNA.',
     strengths:['Highest global trading volume','Longest track record (since 2014)','Accepted on all CEX and DEX'],
+    strengths_fr:['Volume de trading mondial le plus élevé','Track record le plus long (depuis 2014)','Accepté sur tous les CEX et DEX'],
     risks:['Limited reserve transparency','Offshore entity, less regulated','Regulatory uncertainty (DOJ investigations)'],
+    risks_fr:['Transparence des réserves limitée','Entité offshore, moins réglementée','Incertitude réglementaire (enquêtes DOJ)'],
   },
   DAI: {
     name:'DAI', issuer:'MakerDAO (decentralized)', type:'Overcollateralized', typeColor:'#F4B731',
@@ -280,8 +286,11 @@ const DB = {
     counterparty:74, protocol:80, liquidity:83,
     depegBase:85,
     history:'Black Thursday 2020: brief deviation. SVB 2023: -0.3% (USDC backing).',
+    history_fr:'Black Thursday 2020 : brève déviation. SVB 2023 : -0,3% (collatéralisation USDC).',
     strengths:['Decentralized governance','Battle-tested since 2017','No single point of failure'],
+    strengths_fr:['Gouvernance décentralisée','Battle-tested depuis 2017','Aucun point de défaillance unique'],
     risks:['~50% backed by USDC (USDC risk inherited)','Governance decisions can change collateral','Smart contract complexity'],
+    risks_fr:['~50% collatéralisé en USDC (risque USDC hérité)','Les décisions de gouvernance peuvent modifier le collateral','Complexité des smart contracts'],
   },
   USDE: {
     name:'USDe (Ethena)', issuer:'Ethena Labs', type:'Synthetic', typeColor:'#8B5CF6',
@@ -289,8 +298,11 @@ const DB = {
     counterparty:38, protocol:52, liquidity:68,
     depegBase:72,
     history:'Launched Feb 2024. No major depeg yet — untested in prolonged bear market.',
+    history_fr:'Lancé en fév. 2024. Aucun dépeg majeur — non testé en marché baissier prolongé.',
     strengths:['High yield via sUSDe (~15-30% APY)','Novel delta-neutral mechanism','Rapidly growing TVL'],
+    strengths_fr:['Rendement élevé via sUSDe (~15-30% APY)','Mécanisme delta-neutre innovant','TVL en croissance rapide'],
     risks:['Negative funding rates can compress backing','CEX counterparty risk (Binance, Bybit, OKX)','Mechanism untested in bear market'],
+    risks_fr:['Les taux de financement négatifs peuvent comprimer la collatéralisation','Risque de contrepartie CEX (Binance, Bybit, OKX)','Mécanisme non testé en marché baissier'],
   },
   LUSD: {
     name:'LUSD', issuer:'Liquity Protocol', type:'Overcollateralized', typeColor:'#2FBF71',
@@ -298,8 +310,11 @@ const DB = {
     counterparty:92, protocol:84, liquidity:52,
     depegBase:90,
     history:'Consistently trades 1.00–1.10 due to redemption floor. No depeg below $1.',
+    history_fr:'Échange régulièrement entre 1,00 et 1,10 grâce au plancher de rachat. Jamais de dépeg sous $1.',
     strengths:['Immutable contracts — no admin keys','ETH-only collateral, fully transparent','Hard $1 floor via redemptions'],
+    strengths_fr:['Contrats immuables — aucune clé admin','Collateral ETH uniquement, totalement transparent','Plancher dur à $1 via les rachats'],
     risks:['Less DeFi integrations than USDC/DAI','Can trade above $1 (1.10 soft ceiling)','ETH-concentrated collateral risk'],
+    risks_fr:['Moins d\'intégrations DeFi que USDC/DAI','Peut s\'échanger au-dessus de $1 (plafond souple à 1,10)','Risque de concentration du collateral en ETH'],
   },
   FRAX: {
     name:'FRAX', issuer:'Frax Finance', type:'Hybrid', typeColor:'#111827',
@@ -307,8 +322,11 @@ const DB = {
     counterparty:56, protocol:71, liquidity:70,
     depegBase:78,
     history:'May 2022 minor depeg during LUNA crisis. Transitioning to 100% collateralized.',
+    history_fr:'Mai 2022 : léger dépeg lors de la crise LUNA. Transition vers une collatéralisation à 100%.',
     strengths:['Deep Curve liquidity pools','Evolving toward full collateralization','Capital efficient model'],
+    strengths_fr:['Pools de liquidité Curve profonds','Évolution vers une collatéralisation complète','Modèle efficace en capital'],
     risks:['Algorithmic component still active','USDC collateral dependency','Complex multi-token system (FXS)'],
+    risks_fr:['Composante algorithmique toujours active','Dépendance au collateral USDC','Système multi-token complexe (FXS)'],
   },
   PYUSD: {
     name:'PayPal USD', issuer:'Paxos / PayPal', type:'Fiat-backed', typeColor:'#003087',
@@ -316,8 +334,11 @@ const DB = {
     counterparty:68, protocol:72, liquidity:48,
     depegBase:86,
     history:'Launched Aug 2023. No depeg events. Limited DeFi adoption so far.',
+    history_fr:'Lancé en août 2023. Aucun dépeg. Adoption DeFi limitée à ce stade.',
     strengths:['Regulated issuer (Paxos, NY DFS)','PayPal distribution network','Monthly reserve attestations'],
+    strengths_fr:['Émetteur réglementé (Paxos, NY DFS)','Réseau de distribution PayPal','Attestations mensuelles des réserves'],
     risks:['Very limited DeFi integrations','PayPal can freeze/burn tokens','Low on-chain liquidity'],
+    risks_fr:['Intégrations DeFi très limitées','PayPal peut geler/brûler les tokens','Faible liquidité on-chain'],
   },
   crvUSD: {
     name:'crvUSD', issuer:'Curve Finance', type:'Overcollateralized', typeColor:'#FF0420',
@@ -325,8 +346,11 @@ const DB = {
     counterparty:78, protocol:74, liquidity:60,
     depegBase:82,
     history:'Launched May 2023. Designed to self-stabilize via LLAMMA mechanism.',
+    history_fr:'Lancé en mai 2023. Conçu pour s\'auto-stabiliser via le mécanisme LLAMMA.',
     strengths:['Novel LLAMMA soft-liquidation mechanism','Deep Curve native liquidity','ETH/wstETH/WBTC collateral'],
+    strengths_fr:['Mécanisme innovant de liquidation douce LLAMMA','Liquidité native Curve profonde','Collateral ETH/wstETH/WBTC'],
     risks:['Newer protocol, less battle-tested','Complex mechanism','Concentrated Curve ecosystem dependency'],
+    risks_fr:['Protocole plus récent, moins battle-tested','Mécanisme complexe','Dépendance concentrée à l\'écosystème Curve'],
   },
   USDS: {
     name:'USDS (Sky)', issuer:'Sky DAO (ex-MakerDAO)', type:'Overcollateralized', typeColor:'#F4B731',
@@ -334,8 +358,11 @@ const DB = {
     counterparty:72, protocol:78, liquidity:72,
     depegBase:87,
     history:'2024: DAI upgraded to USDS. No depeg. Inherits MakerDAO 7-year track record.',
+    history_fr:'2024 : DAI migré vers USDS. Aucun dépeg. Hérite du track record de 7 ans de MakerDAO.',
     strengths:['DAI upgrade — 7yr battle-tested heritage','Sky Savings Rate (SSR) yield built-in','Governance moving toward decentralization'],
+    strengths_fr:['Migration DAI — 7 ans de battle-test','Sky Savings Rate (SSR) intégré','Gouvernance en cours de décentralisation'],
     risks:['SSR incentives could dilute backing','Complex migration from DAI/USDC ecosystem','Transition governance risk'],
+    risks_fr:['Les incitations SSR pourraient diluer la collatéralisation','Migration complexe depuis l\'écosystème DAI/USDC','Risque de gouvernance en période de transition'],
   },
   GHO: {
     name:'GHO', issuer:'Aave DAO', type:'Overcollateralized', typeColor:'#B6509E',
@@ -343,8 +370,11 @@ const DB = {
     counterparty:76, protocol:72, liquidity:58,
     depegBase:80,
     history:'Launched Jul 2023. Multiple rate adjustments to maintain peg. Stabilized late 2023.',
+    history_fr:'Lancé en juil. 2023. Plusieurs ajustements de taux pour maintenir l\'ancrage. Stabilisé fin 2023.',
     strengths:['Backed by Aave V3 collateral','Governance-adjustable rate','stkAAVE discount mechanism'],
+    strengths_fr:['Collatéralisé par les actifs Aave V3','Taux ajustable par la gouvernance','Mécanisme de remise stkAAVE'],
     risks:['Peg required active governance intervention','Less DeFi integrations than top stables','Dependent on Aave protocol health'],
+    risks_fr:['L\'ancrage a nécessité une intervention active de la gouvernance','Moins d\'intégrations DeFi que les top stablecoins','Dépend de la santé du protocole Aave'],
   },
   FDUSD: {
     name:'First Digital USD', issuer:'First Digital (HK)', type:'Fiat-backed', typeColor:'#1A56DB',
@@ -352,8 +382,11 @@ const DB = {
     counterparty:55, protocol:75, liquidity:70,
     depegBase:84,
     history:'Launched 2023. T-bill backed. No major depeg. Primarily Binance ecosystem.',
+    history_fr:'Lancé en 2023. Collatéralisé en bons du Trésor. Aucun dépeg majeur. Principalement écosystème Binance.',
     strengths:['T-bill backed reserves','Hong Kong regulated entity','High Binance trading volume'],
+    strengths_fr:['Réserves en bons du Trésor','Entité réglementée à Hong Kong','Volume de trading élevé sur Binance'],
     risks:['Binance-concentrated ecosystem','Limited on-chain DeFi liquidity','Less Western regulatory transparency'],
+    risks_fr:['Écosystème concentré sur Binance','Liquidité DeFi on-chain limitée','Moins de transparence réglementaire côté occidental'],
   },
   TUSD: {
     name:'TrueUSD', issuer:'Techteryx (Cayman)', type:'Fiat-backed', typeColor:'#002868',
@@ -361,8 +394,11 @@ const DB = {
     counterparty:30, protocol:62, liquidity:50,
     depegBase:66,
     history:'2023: ownership dispute + attestation provider change caused trust crisis. Multiple minor depeg episodes.',
+    history_fr:'2023 : litige de propriété + changement de prestataire d\'attestation → crise de confiance. Plusieurs épisodes de dépeg mineurs.',
     strengths:['Real-time attestations (historical pioneer)','Widely listed on CEX','Long track record since 2018'],
+    strengths_fr:['Attestations en temps réel (pionnier historique)','Largement listé sur les CEX','Long track record depuis 2018'],
     risks:['Ownership controversy (2023 Techteryx disputes)','Attestation reliability questioned','Declining market relevance'],
+    risks_fr:['Controverse sur la propriété (litiges Techteryx 2023)','Fiabilité des attestations remise en question','Pertinence de marché en déclin'],
   },
   USDP: {
     name:'Pax Dollar', issuer:'Paxos (US)', type:'Fiat-backed', typeColor:'#00935F',
@@ -370,8 +406,11 @@ const DB = {
     counterparty:72, protocol:78, liquidity:40,
     depegBase:89,
     history:'No depeg events. NY DFS regulated. Low DeFi adoption.',
+    history_fr:'Aucun dépeg. Réglementé par le NY DFS. Faible adoption DeFi.',
     strengths:['NY DFS regulated (strict)','Monthly Withum reserve audits','Paxos institutional reputation'],
+    strengths_fr:['Réglementé par le NY DFS (strict)','Audits mensuels des réserves par Withum','Réputation institutionnelle de Paxos'],
     risks:['Very low DeFi liquidity and integrations','Limited organic demand','Low circulating supply'],
+    risks_fr:['Liquidité DeFi et intégrations très faibles','Demande organique limitée','Faible offre en circulation'],
   },
   GUSD: {
     name:'Gemini Dollar', issuer:'Gemini Trust (US)', type:'Fiat-backed', typeColor:'#00DCFA',
@@ -379,8 +418,11 @@ const DB = {
     counterparty:74, protocol:76, liquidity:36,
     depegBase:89,
     history:'No depeg events. NY DFS regulated. Very low on-chain activity.',
+    history_fr:'Aucun dépeg. Réglementé NY DFS. Activité on-chain très faible.',
     strengths:['NY DFS regulated exchange-issued','Weekly reserve attestations','Native ERC-20 since 2018'],
+    strengths_fr:['Émis par un exchange réglementé NY DFS','Attestations hebdomadaires des réserves','ERC-20 natif depuis 2018'],
     risks:['Very low DeFi liquidity','Gemini exchange dependency','Niche adoption outside Gemini'],
+    risks_fr:['Liquidité DeFi très faible','Dépendance à l\'exchange Gemini','Adoption de niche hors Gemini'],
   },
   DOLA: {
     name:'DOLA', issuer:'Inverse Finance DAO', type:'Overcollateralized', typeColor:'#38A169',
@@ -388,8 +430,11 @@ const DB = {
     counterparty:60, protocol:58, liquidity:46,
     depegBase:73,
     history:'Mar 2022: $15M flash loan hack, brief depeg. Protocol rebuilt, debt repaid via revenue.',
+    history_fr:'Mars 2022 : hack par flash loan de 15M$, bref dépeg. Protocole reconstruit, dette remboursée via les revenus.',
     strengths:['DAO-governed, permissionless','DBR (Borrow Rights) innovation','Deep Curve/Velodrome liquidity'],
+    strengths_fr:['Gouverné par DAO, sans permission','Innovation DBR (Droits d\'emprunt)','Liquidité profonde sur Curve/Velodrome'],
     risks:['Protocol suffered major 2022 hack','Small TVL relative to supply','Less battle-tested than top stables'],
+    risks_fr:['Protocole victime d\'un hack majeur en 2022','TVL faible par rapport à l\'offre','Moins battle-tested que les top stablecoins'],
   },
   SDAI: {
     name:'sDAI', issuer:'Sky / MakerDAO', type:'Yield-bearing', typeColor:'#FFA500',
@@ -397,8 +442,11 @@ const DB = {
     counterparty:74, protocol:82, liquidity:62,
     depegBase:87,
     history:'Wraps DAI with DSR yield (5-8%). Tracks DAI 1:1 + yield accrual. No depeg.',
+    history_fr:'Enveloppe DAI avec rendement DSR (5-8%). Suit DAI 1:1 + accumulation du yield. Aucun dépeg.',
     strengths:['Native DSR rate — passive DeFi yield','ERC4626 composable standard','Rapidly growing TVL'],
+    strengths_fr:['Taux DSR natif — yield DeFi passif','Standard ERC4626 composable','TVL en croissance rapide'],
     risks:['Inherits all DAI and USDC risks','DSR rate can be lowered by governance','Less liquid than raw DAI'],
+    risks_fr:['Hérite de tous les risques DAI et USDC','Le taux DSR peut être réduit par la gouvernance','Moins liquide que le DAI brut'],
   },
   SUSDE: {
     name:'sUSDe', issuer:'Ethena Labs', type:'Yield-bearing', typeColor:'#A78BFA',
@@ -406,8 +454,11 @@ const DB = {
     counterparty:35, protocol:50, liquidity:55,
     depegBase:70,
     history:'Launched 2024. ~20-30% APY in bull cycle. Mechanism untested in prolonged bear market.',
+    history_fr:'Lancé en 2024. ~20-30% APY en cycle haussier. Mécanisme non testé en marché baissier prolongé.',
     strengths:['Industry-leading yield in bull markets','ERC4626 composable standard','Redeemable for USDe 1:1'],
+    strengths_fr:['Rendement leader du secteur en marché haussier','Standard ERC4626 composable','Rachetable en USDe 1:1'],
     risks:['Negative funding compresses collateral','CEX custody risk (Binance, Bybit, OKX)','Cooldown unstaking period'],
+    risks_fr:['Le financement négatif comprime la collatéralisation','Risque de custody CEX (Binance, Bybit, OKX)','Période de cooldown au dé-staking'],
   },
   EURC: {
     name:'EURC (Circle)', issuer:'Circle (US)', type:'Fiat-backed (EUR)', typeColor:'#003087',
@@ -415,8 +466,11 @@ const DB = {
     counterparty:68, protocol:82, liquidity:50,
     depegBase:87,
     history:'Launched 2023 by Circle. First major EUR stablecoin from regulated US issuer. No depeg.',
+    history_fr:'Lancé en 2023 par Circle. Premier stablecoin EUR majeur d\'un émetteur américain réglementé. Aucun dépeg.',
     strengths:['Circle regulatory track record','Monthly Deloitte audits','Growing DeFi integrations'],
+    strengths_fr:['Track record réglementaire de Circle','Audits mensuels par Deloitte','Intégrations DeFi en croissance'],
     risks:['EUR/USD FX risk for USD portfolios','Lower liquidity vs USD stables','Banking system exposure'],
+    risks_fr:['Risque de change EUR/USD pour les portefeuilles en USD','Liquidité inférieure aux stablecoins USD','Exposition au système bancaire'],
   },
   EURS: {
     name:'EURS', issuer:'STASIS (Malta)', type:'Fiat-backed (EUR)', typeColor:'#0032A0',
@@ -424,8 +478,11 @@ const DB = {
     counterparty:50, protocol:64, liquidity:38,
     depegBase:83,
     history:'Oldest EUR stablecoin (2018). Limited DeFi adoption. EU-based issuer.',
+    history_fr:'Plus ancien stablecoin EUR (2018). Adoption DeFi limitée. Émetteur basé en UE.',
     strengths:['Longest EUR track record','EU-based company (GDPR compliant)','Real EUR reserves'],
+    strengths_fr:['Plus long track record en EUR','Société basée en UE (conforme RGPD)','Réserves en EUR réels'],
     risks:['Very low DeFi liquidity','Malta: less regulatory certainty','Declining market adoption'],
+    risks_fr:['Liquidité DeFi très faible','Malte : moins de certitude réglementaire','Adoption de marché en déclin'],
   },
   USDD: {
     name:'USDD', issuer:'TRON DAO Reserve', type:'Algorithmic', typeColor:'#EF0027',
@@ -433,8 +490,11 @@ const DB = {
     counterparty:22, protocol:33, liquidity:50,
     depegBase:58,
     history:'Launched May 2022 during LUNA collapse. Multiple depeg episodes (-1% to -5%).',
+    history_fr:'Lancé en mai 2022 pendant l\'effondrement LUNA. Plusieurs épisodes de dépeg (-1% à -5%).',
     strengths:['High APY incentives on TRON','200%+ over-collateralization claimed','Widely listed on CEX'],
+    strengths_fr:['Incitations APY élevées sur TRON','Sur-collatéralisation revendiquée à 200%+','Largement listé sur les CEX'],
     risks:['Algorithmic design similar to LUNA','TRON DAO centralized control','Multiple documented depeg events'],
+    risks_fr:['Design algorithmique similaire à LUNA','Contrôle centralisé du TRON DAO','Plusieurs épisodes de dépeg documentés'],
   },
   OUSD: {
     name:'OUSD', issuer:'Origin Protocol', type:'Yield-bearing', typeColor:'#1A44C2',
@@ -442,8 +502,11 @@ const DB = {
     counterparty:48, protocol:55, liquidity:38,
     depegBase:71,
     history:'Nov 2020: $7M hack via flash loan. Protocol rebuilt. Limited liquidity since. See full analysis: rapport_OUSD_pmUSD.html',
+    history_fr:'Nov. 2020 : hack de 7M$ par flash loan. Protocole reconstruit. Liquidité limitée depuis. Voir analyse : rapport_OUSD_pmUSD.html',
     strengths:['Automated yield via rebase mechanism','ETH-native transparent reserves','Rebuilt after 2020 hack'],
+    strengths_fr:['Yield automatisé via mécanisme de rebase','Réserves transparentes natives ETH','Reconstruit après le hack de 2020'],
     risks:['Suffered major hack (Nov 2020)','Very low on-chain liquidity','Yield depends on underlying vault strategies'],
+    risks_fr:['A subi un hack majeur (nov. 2020)','Liquidité on-chain très faible','Le yield dépend des stratégies de vault sous-jacentes'],
   },
   USDY: {
     name:'USDY (Ondo)', issuer:'Ondo Finance', type:'RWA-backed', typeColor:'#6366F1',
@@ -451,8 +514,11 @@ const DB = {
     counterparty:60, protocol:68, liquidity:45,
     depegBase:85,
     history:'Launched 2023. T-bill backed yield token. No depeg. Growing institutional adoption.',
+    history_fr:'Lancé en 2023. Token de yield collatéralisé en bons du Trésor. Aucun dépeg. Adoption institutionnelle croissante.',
     strengths:['T-bill backed — real-world yield','Institutional-grade Ondo team','Transparent RWA reports'],
+    strengths_fr:['Collatéralisé en bons du Trésor — yield du monde réel','Équipe Ondo de niveau institutionnel','Rapports RWA transparents'],
     risks:['KYC/whitelisting required for some products','Limited permissionless DeFi use','Regulatory RWA uncertainty'],
+    risks_fr:['KYC/whitelist requis pour certains produits','Utilisation DeFi sans permission limitée','Incertitude réglementaire autour des RWA'],
   },
 };
 
@@ -535,7 +601,17 @@ function renderMain(){
   const priceStr = price ? `$${price.toFixed(4)}` : '…';
   const devStr   = price ? `${dev>=0?'+':''}${dev.toFixed(3)}%` : '';
 
-  const factors = [
+  const l = getLang ? getLang() : 'en';
+  const s = l === 'fr' && d.strengths_fr ? d.strengths_fr : d.strengths;
+  const r = l === 'fr' && d.risks_fr ? d.risks_fr : d.risks;
+  const hist = l === 'fr' && d.history_fr ? d.history_fr : d.history;
+
+  const factors = l === 'fr' ? [
+    { key:'Risque de Dépeg',      score:Math.round(depeg),        desc:`Déviation du prix en direct par rapport à $1 + événements de dépeg historiques. Actuel : ${priceStr} ${devStr}` },
+    { key:'Risque de Contrepartie', score:d.counterparty,         desc:'Transparence de l\'émetteur, statut réglementaire, capacité à geler/censurer les fonds.' },
+    { key:'Risque Protocole',     score:d.protocol,               desc:'Audits des smart contracts, complexité du code, ancienneté battle-tested, profondeur TVL.' },
+    { key:'Risque de Liquidité',  score:d.liquidity,              desc:'Offre en circulation, profondeur DEX on-chain, nombre d\'intégrations de protocoles.' },
+  ] : [
     { key:'Depeg Risk',         score:Math.round(depeg),        desc:`Live price deviation from $1 + historical depeg events. Current: ${priceStr} ${devStr}` },
     { key:'Counterparty Risk',  score:d.counterparty,           desc:'Issuer transparency, regulatory status, and ability to freeze/censor funds.' },
     { key:'Protocol Risk',      score:d.protocol,               desc:'Smart contract audits, code complexity, time battle-tested, TVL depth.' },
@@ -578,7 +654,7 @@ function renderMain(){
       </div>
     </div>
     <div class="history-card" style="margin-top:14px">
-      <b>${getLang()==='fr' ? 'Historique des dépeg :' : 'Historical depeg events:'}</b> ${d.history}
+      <b>${l === 'fr' ? 'Historique des dépeg :' : 'Historical depeg events:'}</b> ${hist}
     </div>
   `;
 
@@ -592,12 +668,12 @@ function renderMain(){
       <div class="orny-body">${comment}</div>
     </div>
     <div class="sr-card">
-      <div class="sr-title green">${getLang()==='fr' ? 'Points forts' : 'Strengths'}</div>
-      <div class="sr-list">${d.strengths.map(s=>`<div class="sr-item"><span class="ic" style="color:var(--good)">✓</span><span>${s}</span></div>`).join('')}</div>
+      <div class="sr-title green">${l === 'fr' ? 'Points forts' : 'Strengths'}</div>
+      <div class="sr-list">${s.map(x=>`<div class="sr-item"><span class="ic" style="color:var(--good)">✓</span><span>${x}</span></div>`).join('')}</div>
     </div>
     <div class="sr-card">
-      <div class="sr-title red">${getLang()==='fr' ? 'Risques clés' : 'Key risks'}</div>
-      <div class="sr-list">${d.risks.map(r=>`<div class="sr-item"><span class="ic" style="color:var(--coral)">⚠</span><span>${r}</span></div>`).join('')}</div>
+      <div class="sr-title red">${l === 'fr' ? 'Risques clés' : 'Key risks'}</div>
+      <div class="sr-list">${r.map(x=>`<div class="sr-item"><span class="ic" style="color:var(--coral)">⚠</span><span>${x}</span></div>`).join('')}</div>
     </div>
   `;
 }

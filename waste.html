@@ -179,7 +179,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <div class="page-hero">
   <div class="hero-eyebrow"><span class="t-en">DeFi Efficiency Audit</span><span class="t-fr">Audit d'Efficacité DeFi</span></div>
   <h1><span class="t-en">How much money are you<br><em>wasting in DeFi?</em></span><span class="t-fr">Combien perdez-vous<br><em>en DeFi ?</em></span></h1>
-  <p>Gas overhead. Slippage creep. Suboptimal trade sizing. Every trade leaks value. Find out how much — and what you could save.</p>
+  <p><span class="t-en">Gas overhead. Slippage creep. Suboptimal trade sizing. Every trade leaks value. Find out how much — and what you could save.</span><span class="t-fr">Frais de gas cachés. Slippage. Mauvais sizing. Chaque trade perd de la valeur. Découvrez combien — et ce que vous pourriez économiser.</span></p>
 </div>
 
 <!-- TOOL -->
@@ -239,12 +239,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <!-- SOCIAL PROOF STRIP -->
 <div class="social-strip">
-  <h2>The numbers most traders never see</h2>
-  <p>On a $500 trade with $2.50 gas and a $5M pool, you're paying 0.82% per swap. The optimal size cuts that to 0.50%. Compounded over 240 trades a year, that's real money.</p>
+  <h2><span class="t-en">The numbers most traders never see</span><span class="t-fr">Les chiffres que la plupart des traders ne voient jamais</span></h2>
+  <p><span class="t-en">On a $500 trade with $2.50 gas and a $5M pool, you're paying 0.82% per swap. The optimal size cuts that to 0.50%. Compounded over 240 trades a year, that's real money.</span><span class="t-fr">Sur un trade de 500 $ avec 2,50 $ de gas et un pool de 5 M$, vous payez 0,82% par swap. La taille optimale réduit ça à 0,50%. Sur 240 trades par an, c'est du capital réel.</span></p>
   <div class="stat-pills">
-    <div class="stat-pill"><span class="sp-val">0.3%</span><span class="sp-label">Avg savings per trade</span></div>
-    <div class="stat-pill"><span class="sp-val">240×</span><span class="sp-label">Typical trades per year</span></div>
-    <div class="stat-pill"><span class="sp-val">$420</span><span class="sp-label">Median annual waste</span></div>
+    <div class="stat-pill"><span class="sp-val">0.3%</span><span class="sp-label"><span class="t-en">Avg savings per trade</span><span class="t-fr">Écon. moy. par trade</span></span></div>
+    <div class="stat-pill"><span class="sp-val">240×</span><span class="sp-label"><span class="t-en">Typical trades per year</span><span class="t-fr">Trades typiques/an</span></span></div>
+    <div class="stat-pill"><span class="sp-val">$420</span><span class="sp-label"><span class="t-en">Median annual waste</span><span class="t-fr">Perte annuelle médiane</span></span></div>
   </div>
 </div>
 
@@ -303,11 +303,22 @@ function gradeFromWastePct(pct){
 
 function ornyComment(grade, annualWaste, savings, chain){
   const chainName = NAME[chain];
-  if(grade==='A+') return `<strong>Orny Approved.</strong> Your trading profile is near-optimal on ${chainName}. You're already maximizing execution efficiency — very few DeFi traders are at this level.`;
-  if(grade==='A')  return `<strong>Orny High Confidence.</strong> Your execution is solid. The ~${fmtUSD(annualWaste)} annual drag is hard to eliminate entirely. Fine-tuning your trade size could recover most of it.`;
-  if(grade==='B+'||grade==='B') return `<strong>Orny Found An Opportunity.</strong> You could recover ~${fmtUSD(savings)} per year by sizing your trades closer to the gas/slippage equilibrium point. Small adjustment, meaningful compounding.`;
-  if(grade==='C+'||grade==='C') return `<strong>Orny Warning.</strong> ${fmtUSD(annualWaste)} leaks out of your portfolio annually in pure execution friction. The Trade Size Optimizer will show you exactly where to trade on ${chainName}.`;
-  return `<strong>Orny Warning — act now.</strong> Over ${fmtUSD(annualWaste)}/year in execution waste. Your current trade size is far from the gas/slippage optimum on ${chainName}. Use the Trade Size Optimizer immediately.`;
+  const l = getLang ? getLang() : 'en';
+  if(grade==='A+') return l==='fr'
+    ? `<strong>Orny Approuvé.</strong> Votre profil de trading est quasi-optimal sur ${chainName}. Vous maximisez déjà l'efficacité d'exécution — très peu de traders DeFi atteignent ce niveau.`
+    : `<strong>Orny Approved.</strong> Your trading profile is near-optimal on ${chainName}. You're already maximizing execution efficiency — very few DeFi traders are at this level.`;
+  if(grade==='A') return l==='fr'
+    ? `<strong>Orny Haute Confiance.</strong> Votre exécution est solide. Le coût annuel de ~${fmtUSD(annualWaste)} est difficile à éliminer totalement. Affiner votre taille de trade pourrait en récupérer l'essentiel.`
+    : `<strong>Orny High Confidence.</strong> Your execution is solid. The ~${fmtUSD(annualWaste)} annual drag is hard to eliminate entirely. Fine-tuning your trade size could recover most of it.`;
+  if(grade==='B+'||grade==='B') return l==='fr'
+    ? `<strong>Orny a trouvé une opportunité.</strong> Vous pourriez récupérer ~${fmtUSD(savings)} par an en rapprochant vos trades du point d'équilibre gas/slippage. Petit ajustement, fort impact au cumul.`
+    : `<strong>Orny Found An Opportunity.</strong> You could recover ~${fmtUSD(savings)} per year by sizing your trades closer to the gas/slippage equilibrium point. Small adjustment, meaningful compounding.`;
+  if(grade==='C+'||grade==='C') return l==='fr'
+    ? `<strong>Orny Alerte.</strong> ${fmtUSD(annualWaste)} s'échappent annuellement de votre portefeuille en friction d'exécution pure. L'optimiseur de taille de trade vous montrera exactement où trader sur ${chainName}.`
+    : `<strong>Orny Warning.</strong> ${fmtUSD(annualWaste)} leaks out of your portfolio annually in pure execution friction. The Trade Size Optimizer will show you exactly where to trade on ${chainName}.`;
+  return l==='fr'
+    ? `<strong>Orny Alerte — agissez maintenant.</strong> Plus de ${fmtUSD(annualWaste)}/an en pertes d'exécution. Votre taille de trade actuelle est très loin de l'optimum gas/slippage sur ${chainName}. Utilisez l'optimiseur de taille immédiatement.`
+    : `<strong>Orny Warning — act now.</strong> Over ${fmtUSD(annualWaste)}/year in execution waste. Your current trade size is far from the gas/slippage optimum on ${chainName}. Use the Trade Size Optimizer immediately.`;
 }
 
 function calc(){
@@ -316,7 +327,8 @@ function calc(){
   const mth   = parseInt($('monthlyTrades').value) || 0;
   const fee   = parseFloat($('poolFee').value) || 0.3;
 
-  if(!(A>0 && mth>0)){ $('resultSide').innerHTML=`<div class="result-placeholder"><div class="ph-icon">🦅</div><p>Enter your trading profile<br>and Orny will calculate<br>your DeFi efficiency score.</p></div>`; return; }
+  const l = getLang ? getLang() : 'en';
+  if(!(A>0 && mth>0)){ $('resultSide').innerHTML=`<div class="result-placeholder"><div class="ph-icon">🦅</div><p>${l==='fr' ? 'Entrez votre profil de trading<br>et Orny calculera<br>votre score d\'efficacité DeFi.' : 'Enter your trading profile<br>and Orny will calculate<br>your DeFi efficiency score.'}</p></div>`; return; }
 
   const gas = GAS[chain];
   const R   = TVL[chain] / 2;
@@ -352,23 +364,23 @@ function calc(){
 
   $('resultSide').innerHTML = `
     <div class="grade-card ${g.cls}">
-      <div class="grade-label">Efficiency Grade</div>
+      <div class="grade-label">${l==='fr' ? "Note d'efficacité" : 'Efficiency Grade'}</div>
       <div class="grade-big" style="color:${g.color}">${g.letter}</div>
-      <div style="font-size:13px;color:var(--dim)">You're wasting <strong style="color:${g.color}">${wastePct.toFixed(2)}%</strong> of your trading volume</div>
+      <div style="font-size:13px;color:var(--dim)">${l==='fr' ? 'Vous perdez' : "You're wasting"} <strong style="color:${g.color}">${wastePct.toFixed(2)}%</strong> ${l==='fr' ? 'de votre volume de trading' : 'of your trading volume'}</div>
     </div>
 
     <div class="loss-card">
-      <div class="loss-label">Estimated Annual Loss</div>
+      <div class="loss-label">${l==='fr' ? 'Perte annuelle estimée' : 'Estimated Annual Loss'}</div>
       <div class="loss-big">${fmtUSD(annualWaste)}</div>
       <div class="loss-sub">${tradesPerYear} trades × ${fmtUSD(A)} avg · ${NAME[chain]}</div>
       <div class="loss-breakdown">
-        <div class="lb-row"><span>Gas inefficiency</span><b>${fmtUSD(gasLoss)}</b></div>
-        <div class="lb-row"><span>Slippage drag</span><b>${fmtUSD(slipLoss)}</b></div>
-        <div class="lb-row"><span>Suboptimal sizing</span><b>${fmtUSD(sizeLoss)}</b></div>
-        <div class="lb-row savings"><span>Potential savings</span><b>+${fmtUSD(potentialSavings)}</b></div>
+        <div class="lb-row"><span>${l==='fr' ? 'Inefficacité de gas' : 'Gas inefficiency'}</span><b>${fmtUSD(gasLoss)}</b></div>
+        <div class="lb-row"><span>${l==='fr' ? 'Pertes par slippage' : 'Slippage drag'}</span><b>${fmtUSD(slipLoss)}</b></div>
+        <div class="lb-row"><span>${l==='fr' ? 'Sizing sous-optimal' : 'Suboptimal sizing'}</span><b>${fmtUSD(sizeLoss)}</b></div>
+        <div class="lb-row savings"><span>${l==='fr' ? 'Économies potentiables' : 'Potential savings'}</span><b>+${fmtUSD(potentialSavings)}</b></div>
       </div>
       <div class="savings-wrap">
-        <div class="sbar-label"><span>Waste</span><span>${savingsPct.toFixed(0)}% recoverable</span></div>
+        <div class="sbar-label"><span>${l==='fr' ? 'Perte' : 'Waste'}</span><span>${savingsPct.toFixed(0)}% ${l==='fr' ? 'récupérable' : 'recoverable'}</span></div>
         <div class="sbar-track"><div class="sbar-fill" style="width:${Math.min(savingsPct,100).toFixed(0)}%"></div></div>
       </div>
     </div>
@@ -380,19 +392,22 @@ function calc(){
 
     <button class="share-btn" id="shareBtn" onclick="shareResult('${g.letter}', '${fmtUSD(annualWaste)}', '${fmtUSD(potentialSavings)}')">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
-      Share my result
+      ${l==='fr' ? 'Partager mon résultat' : 'Share my result'}
     </button>
   `;
 }
 
 function shareResult(grade, loss, savings){
-  const text = `I just audited my DeFi trading efficiency on OrnyTools.\n\nEfficiency Grade: ${grade}\nEstimated annual loss: ${loss}\nPotential savings: ${savings}\n\nCheck yours → ornytools.xyz/waste.html`;
+  const l = getLang ? getLang() : 'en';
+  const text = l==='fr'
+    ? `Je viens d'auditer l'efficacité de mon trading DeFi sur OrnyTools.\n\nNote d'efficacité : ${grade}\nPerte annuelle estimée : ${loss}\nÉconomies potentiables : ${savings}\n\nCalculez la vôtre → ornytools.xyz/waste.html`
+    : `I just audited my DeFi trading efficiency on OrnyTools.\n\nEfficiency Grade: ${grade}\nEstimated annual loss: ${loss}\nPotential savings: ${savings}\n\nCheck yours → ornytools.xyz/waste.html`;
   navigator.clipboard.writeText(text).then(()=>{
     const btn = $('shareBtn');
     if(!btn)return;
     btn.className='share-btn copied';
-    btn.innerHTML='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Copied to clipboard!';
-    setTimeout(()=>{ btn.className='share-btn'; btn.innerHTML='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg> Share my result'; }, 2500);
+    btn.innerHTML=`<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> ${l==='fr' ? 'Copié !' : 'Copied to clipboard!'}`;
+    setTimeout(()=>{ btn.className='share-btn'; btn.innerHTML=`<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg> ${l==='fr' ? 'Partager mon résultat' : 'Share my result'}`; }, 2500);
   });
 }
 

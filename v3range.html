@@ -198,7 +198,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <div class="page-hero">
   <div class="eyebrow"><span class="t-en">Concentrated Liquidity · Uniswap V3 / Algebra / Camelot</span><span class="t-fr">Liquidité Concentrée · Uniswap V3 / Algebra / Camelot</span></div>
   <h1><span class="t-en">What is the <em>real efficiency</em><br>of this LP range?</span><span class="t-fr">Quelle est la <em>vraie efficacité</em><br>de cette plage LP ?</span></h1>
-  <p>Capital efficiency multiplier vs v2, exact token split, IL curve and Orny's verdict on your range width.</p>
+  <p><span class="t-en">Capital efficiency multiplier vs v2, exact token split, IL curve and Orny's verdict on your range width.</span><span class="t-fr">Multiplicateur d'efficacité vs v2, répartition exacte des tokens, courbe IL et verdict Orny sur la largeur de votre plage.</span></p>
 </div>
 
 <div class="main-wrap">
@@ -266,7 +266,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="result-col" id="results">
     <div class="empty-state">
       <div class="es-icon">📐</div>
-      <p>Enter a price range and investment<br>to see your concentrated liquidity analysis.</p>
+      <p><span class="t-en">Enter a price range and investment<br>to see your concentrated liquidity analysis.</span><span class="t-fr">Saisissez une plage de prix et un capital<br>pour voir votre analyse de liquidité concentrée.</span></p>
     </div>
   </div>
 
@@ -395,13 +395,14 @@ function ilPct(L, Pa, Pb, x0, y0, p) {
 
 /* ── ANALYZE ─────────────────────────────────────────────────────────── */
 function analyze() {
+  const l = getLang ? getLang() : 'en';
   const Pc = parseFloat(document.getElementById('inputPc').value);
   const Pa = parseFloat(document.getElementById('inputPa').value);
   const Pb = parseFloat(document.getElementById('inputPb').value);
   const V  = parseFloat(document.getElementById('inputV').value) || 10000;
 
   if (!Pc || !Pa || !Pb || Pa >= Pb || Pa <= 0 || Pb <= 0 || Pc <= Pa || Pc >= Pb) {
-    alert('Check your inputs: Pa < Current Price < Pb, all positive.');
+    alert(l==='fr' ? 'Vérifiez vos paramètres : Pa < Prix actuel < Pb, tous positifs.' : 'Check your inputs: Pa < Current Price < Pb, all positive.');
     return;
   }
 
@@ -428,20 +429,28 @@ function analyze() {
   let ornyState, ornyLabel, ornyMsg;
   if (minSide < 5) {
     ornyState = 'tight';
-    ornyLabel = 'Orny Warning — Very Tight Range';
-    ornyMsg = `<strong>Range width: ${pctBelow.toFixed(1)}% / +${pctAbove.toFixed(1)}%.</strong> Highly concentrated = maximum fee capture, but you'll exit range with any significant move. Gas costs to rebalance will eat your gains unless you're monitoring constantly. Suitable only for stablecoin pairs or professional market makers.`;
+    ornyLabel = l==='fr' ? 'Alerte Orny — Plage très serrée' : 'Orny Warning — Very Tight Range';
+    ornyMsg = l==='fr'
+      ? `<strong>Largeur de plage : ${pctBelow.toFixed(1)}% / +${pctAbove.toFixed(1)}%.</strong> Très concentrée = capture maximale des frais, mais vous sortez de plage au moindre mouvement significatif. Les coûts de gas pour rééquilibrer dévoreront vos gains si vous ne surveillez pas en permanence. Réservé aux paires de stablecoins ou aux market makers professionnels.`
+      : `<strong>Range width: ${pctBelow.toFixed(1)}% / +${pctAbove.toFixed(1)}%.</strong> Highly concentrated = maximum fee capture, but you'll exit range with any significant move. Gas costs to rebalance will eat your gains unless you're monitoring constantly. Suitable only for stablecoin pairs or professional market makers.`;
   } else if (minSide < 15) {
     ornyState = 'caution';
-    ornyLabel = 'Orny Caution — Tight Range';
-    ornyMsg = `<strong>Range width: ${pctBelow.toFixed(1)}% / +${pctAbove.toFixed(1)}%.</strong> ${mult.toFixed(1)}x capital efficiency means strong fee APR — but you need active management. If price exits range, fees stop and you crystallize IL. Consider setting a rebalancing alert at ±${(minSide * 0.8).toFixed(0)}%.`;
+    ornyLabel = l==='fr' ? 'Orny Prudence — Plage serrée' : 'Orny Caution — Tight Range';
+    ornyMsg = l==='fr'
+      ? `<strong>Largeur de plage : ${pctBelow.toFixed(1)}% / +${pctAbove.toFixed(1)}%.</strong> ${mult.toFixed(1)}x d'efficacité capitale = fort APR de frais — mais vous devez gérer activement. Si le prix sort de plage, les frais s'arrêtent et l'IL se cristallise. Envisagez une alerte de rééquilibrage à ±${(minSide * 0.8).toFixed(0)}%.`
+      : `<strong>Range width: ${pctBelow.toFixed(1)}% / +${pctAbove.toFixed(1)}%.</strong> ${mult.toFixed(1)}x capital efficiency means strong fee APR — but you need active management. If price exits range, fees stop and you crystallize IL. Consider setting a rebalancing alert at ±${(minSide * 0.8).toFixed(0)}%.`;
   } else if (minSide < 40) {
     ornyState = 'safe';
-    ornyLabel = 'Orny Approved — Balanced Range';
-    ornyMsg = `<strong>Range width: ${pctBelow.toFixed(1)}% / +${pctAbove.toFixed(1)}%.</strong> ${mult.toFixed(1)}x efficiency vs full-range v2. Good balance between fee capture and staying in range through normal volatility. This is the sweet spot for most active LP strategies.`;
+    ornyLabel = l==='fr' ? 'Orny Approuvé — Plage équilibrée' : 'Orny Approved — Balanced Range';
+    ornyMsg = l==='fr'
+      ? `<strong>Largeur de plage : ${pctBelow.toFixed(1)}% / +${pctAbove.toFixed(1)}%.</strong> ${mult.toFixed(1)}x vs full-range v2. Bon équilibre entre capture de frais et maintien en plage malgré la volatilité normale. C'est le sweet spot pour la plupart des stratégies LP actives.`
+      : `<strong>Range width: ${pctBelow.toFixed(1)}% / +${pctAbove.toFixed(1)}%.</strong> ${mult.toFixed(1)}x efficiency vs full-range v2. Good balance between fee capture and staying in range through normal volatility. This is the sweet spot for most active LP strategies.`;
   } else {
     ornyState = 'safe';
-    ornyLabel = 'Orny Approved — Wide Range';
-    ornyMsg = `<strong>Range width: ${pctBelow.toFixed(1)}% / +${pctAbove.toFixed(1)}%.</strong> ${mult.toFixed(1)}x vs v2 — conservative efficiency. You'll stay in range through major moves, which is ideal for set-and-forget. For higher APR, consider a tighter sub-range with a portion of capital.`;
+    ornyLabel = l==='fr' ? 'Orny Approuvé — Plage large' : 'Orny Approved — Wide Range';
+    ornyMsg = l==='fr'
+      ? `<strong>Largeur de plage : ${pctBelow.toFixed(1)}% / +${pctAbove.toFixed(1)}%.</strong> ${mult.toFixed(1)}x vs v2 — efficacité conservatrice. Vous resterez en plage même lors de mouvements majeurs, idéal pour une approche "set-and-forget". Pour un APR plus élevé, envisagez une sous-plage plus serrée avec une partie du capital.`
+      : `<strong>Range width: ${pctBelow.toFixed(1)}% / +${pctAbove.toFixed(1)}%.</strong> ${mult.toFixed(1)}x vs v2 — conservative efficiency. You'll stay in range through major moves, which is ideal for set-and-forget. For higher APR, consider a tighter sub-range with a portion of capital.`;
   }
 
   // Chart data
@@ -465,31 +474,33 @@ function analyze() {
   document.getElementById('results').innerHTML = `
     <div class="mult-card">
       <div>
-        <div class="mult-label">Capital Efficiency vs V2</div>
+        <div class="mult-label">${l==='fr' ? 'Efficacité capitale vs V2' : 'Capital Efficiency vs V2'}</div>
         <div class="mult-num">${mult.toFixed(1)}x</div>
       </div>
       <div class="mult-desc">
-        For the same capital, this concentrated position earns <strong>${mult.toFixed(1)}× more in fees</strong> than a full-range Uniswap V2 position — while price stays in range [${fmt(Pa,0)} – ${fmt(Pb,0)}].
+        ${l==='fr'
+          ? `À capital égal, cette position concentrée génère <strong>${mult.toFixed(1)}× plus en frais</strong> qu'une position Uniswap V2 full-range — tant que le prix reste dans la plage [${fmt(Pa,0)} – ${fmt(Pb,0)}].`
+          : `For the same capital, this concentrated position earns <strong>${mult.toFixed(1)}× more in fees</strong> than a full-range Uniswap V2 position — while price stays in range [${fmt(Pa,0)} – ${fmt(Pb,0)}].`}
       </div>
     </div>
 
     <div class="metrics-row">
       <div class="metric-box">
         <div class="mb-val" style="color:var(--purple)">${pctBelow.toFixed(1)}% / +${pctAbove.toFixed(1)}%</div>
-        <div class="mb-key">Range width</div>
+        <div class="mb-key">${l==='fr' ? 'Largeur de plage' : 'Range width'}</div>
       </div>
       <div class="metric-box">
         <div class="mb-val">${fmt(x0, x0 < 0.01 ? 6 : x0 < 1 ? 4 : 3)} ${t0}</div>
-        <div class="mb-key">Token 0 amount</div>
+        <div class="mb-key">${l==='fr' ? 'Quantité token 0' : 'Token 0 amount'}</div>
       </div>
       <div class="metric-box">
         <div class="mb-val">${fmt(y0, y0 > 100 ? 0 : 2)} ${t1}</div>
-        <div class="mb-key">Token 1 amount</div>
+        <div class="mb-key">${l==='fr' ? 'Quantité token 1' : 'Token 1 amount'}</div>
       </div>
     </div>
 
     <div class="split-card">
-      <div class="split-title">Token split at current price</div>
+      <div class="split-title">${l==='fr' ? 'Répartition des tokens au prix actuel' : 'Token split at current price'}</div>
       <div class="split-bar-track">
         <div class="split-bar-inner" style="width:${pctX}%"></div>
       </div>
@@ -500,16 +511,16 @@ function analyze() {
     </div>
 
     <div class="il-card">
-      <div class="il-title">Impermanent loss scenarios</div>
+      <div class="il-title">${l==='fr' ? 'Scénarios de perte impermanente' : 'Impermanent loss scenarios'}</div>
       <table class="il-table">
-        <thead><tr><th>Price</th><th>Move</th><th>IL (V3)</th><th>IL (V2)</th><th>Status</th></tr></thead>
+        <thead><tr><th>${l==='fr' ? 'Prix' : 'Price'}</th><th>${l==='fr' ? 'Mouvement' : 'Move'}</th><th>IL (V3)</th><th>IL (V2)</th><th>${l==='fr' ? 'Statut' : 'Status'}</th></tr></thead>
         <tbody>
           ${[
             { price: Pc*0.5,  label:`$${fmt(Pc*0.5,0)}` },
             { price: Pc*0.7,  label:`$${fmt(Pc*0.7,0)}` },
             { price: Pa,      label:`$${fmt(Pa,0)} — Pa` },
             { price: (Pa+Pc)/2, label:`$${fmt((Pa+Pc)/2,0)}` },
-            { price: Pc,      label:`$${fmt(Pc,0)} — now` },
+            { price: Pc,      label:`$${fmt(Pc,0)} — ${l==='fr' ? 'maintenant' : 'now'}` },
             { price: (Pb+Pc)/2, label:`$${fmt((Pb+Pc)/2,0)}` },
             { price: Pb,      label:`$${fmt(Pb,0)} — Pb` },
             { price: Pc*1.5,  label:`$${fmt(Pc*1.5,0)}` },
@@ -525,7 +536,7 @@ function analyze() {
               <td style="font-size:11px;color:${row.price < Pc ? 'var(--coral)':'var(--good)'}">${movePct > 0 ? '+':''}${movePct}%</td>
               <td style="color:${ilColor(v3)}">${fmtPct(v3)}</td>
               <td style="color:${ilColor(v2)}">${fmtPct(v2)}</td>
-              <td><span class="${isIn?'in-range':'out-range'}">${isIn?'In':'Out'}</span></td>
+              <td><span class="${isIn?'in-range':'out-range'}">${isIn?(l==='fr'?'Dedans':'In'):(l==='fr'?'Dehors':'Out')}</span></td>
             </tr>`;
           }).join('')}
         </tbody>
@@ -533,8 +544,8 @@ function analyze() {
     </div>
 
     <div class="chart-card">
-      <div class="chart-title">IL Curve</div>
-      <div class="chart-sub">V3 concentrated (purple) vs V2 full-range (grey) — dashed lines mark your Pa / Pb.</div>
+      <div class="chart-title">${l==='fr' ? 'Courbe IL' : 'IL Curve'}</div>
+      <div class="chart-sub">${l==='fr' ? 'V3 concentré (violet) vs V2 full-range (gris) — les pointillés marquent Pa / Pb.' : 'V3 concentrated (purple) vs V2 full-range (grey) — dashed lines mark your Pa / Pb.'}</div>
       <canvas id="ilChart" height="200"></canvas>
     </div>
 

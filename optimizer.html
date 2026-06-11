@@ -510,7 +510,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <label><span class="t-en">Pool address <span class="hint">or paste directly</span></span><span class="t-fr">Adresse du pool <span class="hint">ou coller directement</span></span></label>
         <div class="pool-load">
           <input id="poolAddr" placeholder="0x… pool contract" spellcheck="false" />
-          <button class="btn" id="loadBtn">Load</button>
+          <button class="btn" id="loadBtn"><span class="t-en">Load</span><span class="t-fr">Charger</span></button>
         </div>
         <div class="status" id="loadStatus"></div>
         <div id="feeCompare" style="display:none"></div>
@@ -534,28 +534,28 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <div class="field">
         <label><span class="t-en">Pool type</span><span class="t-fr">Type de pool</span></label>
         <div class="toggle" id="poolType">
-          <button data-type="v2" class="active">Constant product (v2)</button>
-          <button data-type="v3">Concentrated (v3)</button>
+          <button data-type="v2" class="active"><span class="t-en">Constant product (v2)</span><span class="t-fr">Constant product (v2)</span></button>
+          <button data-type="v3"><span class="t-en">Concentrated (v3)</span><span class="t-fr">Concentrée (v3)</span></button>
         </div>
       </div>
       <details class="adv">
         <summary><span class="chev">›</span><span class="t-en">Advanced — v3 active liquidity</span><span class="t-fr">Avancé — liquidité active v3</span></summary>
         <div class="adv-body">
           <div class="field slider-field" id="v3Field" style="display:none">
-            <label>Active liquidity near price <span class="sv" id="v3Val">20% of TVL</span></label>
+            <label><span class="t-en">Active liquidity near price</span><span class="t-fr">Liquidité active près du prix</span> <span class="sv" id="v3Val">20% of TVL</span></label>
             <input type="range" id="v3frac" min="2" max="100" value="20" />
-            <p class="note-inline">In v3, only a fraction of TVL sits at the current price. The slider is a manual estimate — the button below reads the real figure from the contract.</p>
-            <button class="btn" id="chainBtn" style="width:100%;margin-top:8px">⛓ Read on-chain liquidity</button>
+            <p class="note-inline"><span class="t-en">In v3, only a fraction of TVL sits at the current price. The slider is a manual estimate — the button below reads the real figure from the contract.</span><span class="t-fr">En v3, seule une fraction du TVL est au prix actuel. Le slider est une estimation manuelle — le bouton ci-dessous lit la vraie valeur depuis le contrat.</span></p>
+            <button class="btn" id="chainBtn" style="width:100%;margin-top:8px"><span class="t-en">⛓ Read on-chain liquidity</span><span class="t-fr">⛓ Lire la liquidité on-chain</span></button>
             <div class="status" id="chainStatus"></div>
             <div class="onchain" id="v3chain" style="display:none">
-              <div class="oc-row"><span>Effective depth at price</span><b class="mono" id="ocDepth">—</b></div>
-              <div class="oc-row"><span>Active liquidity (notional)</span><b class="mono" id="ocActive">—</b></div>
-              <div class="oc-row"><span>Concentration vs TVL</span><b class="mono hi" id="ocConc">—</b></div>
-              <div class="oc-row"><span>Spot price</span><b class="mono" id="ocPrice">—</b></div>
+              <div class="oc-row"><span><span class="t-en">Effective depth at price</span><span class="t-fr">Profondeur effective au prix</span></span><b class="mono" id="ocDepth">—</b></div>
+              <div class="oc-row"><span><span class="t-en">Active liquidity (notional)</span><span class="t-fr">Liquidité active (notionnelle)</span></span><b class="mono" id="ocActive">—</b></div>
+              <div class="oc-row"><span><span class="t-en">Concentration vs TVL</span><span class="t-fr">Concentration vs TVL</span></span><b class="mono hi" id="ocConc">—</b></div>
+              <div class="oc-row"><span><span class="t-en">Spot price</span><span class="t-fr">Prix spot</span></span><b class="mono" id="ocPrice">—</b></div>
               <p class="note-inline" id="ocExplain"></p>
             </div>
           </div>
-          <p class="note-inline" id="v2Note">Constant-product assumes a balanced 50/50 pool, single-hop swap. Switch to v3 to model concentrated liquidity.</p>
+          <p class="note-inline" id="v2Note"><span class="t-en">Constant-product assumes a balanced 50/50 pool, single-hop swap. Switch to v3 to model concentrated liquidity.</span><span class="t-fr">Le constant-product suppose un pool équilibré 50/50, swap en une étape. Passez en v3 pour modéliser la liquidité concentrée.</span></p>
         </div>
       </details>
     </div>
@@ -566,7 +566,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <div class="result-card">
         <div class="result-label"><span class="t-en">Optimal trade size</span><span class="t-fr">Taille de trade optimale</span></div>
         <div class="result-big mono" id="optSize">$2,498</div>
-        <div class="result-sub">Total cost: <span class="mono" id="optTotalPct">0.50%</span> · <span class="mono" id="optTotalUsd">$12.4</span></div>
+        <div class="result-sub"><span class="t-en">Total cost:</span><span class="t-fr">Coût total :</span> <span class="mono" id="optTotalPct">0.50%</span> · <span class="mono" id="optTotalUsd">$12.4</span></div>
         <div class="balance">
           <div class="bcell">
             <div class="k"><span class="swatch" style="background:var(--aqua)"></span>Gas</div>
@@ -577,7 +577,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <div class="v" id="balSlip" style="color:var(--coral)">$2.50</div>
           </div>
         </div>
-        <div class="balance-note"><span class="eq" id="balEq">≈ balanced</span> — at optimum: gas cost = slippage cost.</div>
+        <div class="balance-note"><span class="eq" id="balEq">≈ balanced</span> — <span class="t-en">at optimum: gas cost = slippage cost.</span><span class="t-fr">à l'optimum : coût gas = coût slippage.</span></div>
       </div>
 
       <div class="panel">
@@ -600,19 +600,19 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <div class="orny-header">
           <div class="orny-badge">
             <span style="font-size:20px">🦅</span>
-            <span class="lbl" id="ornyStateLabel">Orny Thinking…</span>
+            <span class="lbl" id="ornyStateLabel"><span class="t-en">Orny Thinking…</span><span class="t-fr">Orny Analyse…</span></span>
           </div>
           <div class="orny-score-wrap">
-            <div class="sc-label">Confidence</div>
+            <div class="sc-label"><span class="t-en">Confidence</span><span class="t-fr">Confiance</span></div>
             <div class="sc-val" id="ornyScore">—</div>
           </div>
         </div>
         <div class="orny-insights" id="ornyInsights"></div>
         <div class="orny-metrics">
-          <div class="o-metric"><div class="mk">Cost Efficiency</div><div class="mv" id="ornyEfficiency">—</div></div>
-          <div class="o-metric"><div class="mk">Expected Slippage</div><div class="mv" id="ornySlippage">—</div></div>
-          <div class="o-metric"><div class="mk">Risk Level</div><div class="mv" id="ornyRisk">—</div></div>
-          <div class="o-metric"><div class="mk">Recommended Size</div><div class="mv c-good mono" id="ornyOptSize">—</div></div>
+          <div class="o-metric"><div class="mk"><span class="t-en">Cost Efficiency</span><span class="t-fr">Efficacité du coût</span></div><div class="mv" id="ornyEfficiency">—</div></div>
+          <div class="o-metric"><div class="mk"><span class="t-en">Expected Slippage</span><span class="t-fr">Slippage attendu</span></div><div class="mv" id="ornySlippage">—</div></div>
+          <div class="o-metric"><div class="mk"><span class="t-en">Risk Level</span><span class="t-fr">Niveau de risque</span></div><div class="mv" id="ornyRisk">—</div></div>
+          <div class="o-metric"><div class="mk"><span class="t-en">Recommended Size</span><span class="t-fr">Taille recommandée</span></div><div class="mv c-good mono" id="ornyOptSize">—</div></div>
         </div>
         <div class="orny-action" id="ornyAction">—</div>
       </div>
@@ -649,18 +649,18 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="panel">
       <div class="sim-layout">
         <div>
-          <div class="sim-input-label">I want to swap</div>
+          <div class="sim-input-label"><span class="t-en">I want to swap</span><span class="t-fr">Je veux swapper</span></div>
           <div class="sim-input-big">
             <span class="pfx">$</span>
             <input id="myTrade" class="mono" value="500" inputmode="decimal" />
           </div>
-          <div class="sim-context" id="simContext">vs optimal: <span id="simVsOpt" class="mono">—</span></div>
+          <div class="sim-context" id="simContext"><span class="t-en">vs optimal:</span><span class="t-fr">vs optimal :</span> <span id="simVsOpt" class="mono">—</span></div>
         </div>
         <div>
           <div class="sim-results">
-            <div class="stat"><div class="k">Total cost</div><div class="v mono" id="simTotUsd">—</div></div>
-            <div class="stat"><div class="k">As % of trade</div><div class="v mono" id="simTotPct">—</div></div>
-            <div class="stat"><div class="k">vs optimal</div><div class="v mono" id="simDelta">—</div></div>
+            <div class="stat"><div class="k"><span class="t-en">Total cost</span><span class="t-fr">Coût total</span></div><div class="v mono" id="simTotUsd">—</div></div>
+            <div class="stat"><div class="k"><span class="t-en">As % of trade</span><span class="t-fr">En % du trade</span></div><div class="v mono" id="simTotPct">—</div></div>
+            <div class="stat"><div class="k"><span class="t-en">vs optimal</span><span class="t-fr">vs optimal</span></div><div class="v mono" id="simDelta">—</div></div>
           </div>
           <div class="sim-tip" id="simSavings"></div>
         </div>
@@ -678,7 +678,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="tbl-wrap">
       <table>
         <thead>
-          <tr><th>Trade size</th><th>Gas $</th><th>Slippage $</th><th>Fee $</th><th>Total $</th><th>Total %</th><th>Verdict</th></tr>
+          <tr>
+            <th><span class="t-en">Trade size</span><span class="t-fr">Taille du trade</span></th>
+            <th><span class="t-en">Gas $</span><span class="t-fr">Gas $</span></th>
+            <th><span class="t-en">Slippage $</span><span class="t-fr">Slippage $</span></th>
+            <th><span class="t-en">Fee $</span><span class="t-fr">Frais $</span></th>
+            <th><span class="t-en">Total $</span><span class="t-fr">Total $</span></th>
+            <th><span class="t-en">Total %</span><span class="t-fr">Total %</span></th>
+            <th><span class="t-en">Verdict</span><span class="t-fr">Verdict</span></th>
+          </tr>
         </thead>
         <tbody id="scenarioBody"></tbody>
       </table>
@@ -694,8 +702,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
     <div class="method">
       <div class="panel">
-        <p><b>Gas</b> is a fixed dollar cost — as a share of your trade, it shrinks the bigger you go. <b>Slippage</b> is the price you move against yourself on a finite pool — it grows with size. The optimizer finds where the sum of the two is lowest.</p>
-        <p>OrnyTools uses the <b>exact constant-product formula</b> (x·y=k) — not the <span class="mono">√(2·gas·TVL)</span> shortcut that overstates optimal size by up to 2×.</p>
+        <p><span class="t-en"><b>Gas</b> is a fixed dollar cost — as a share of your trade, it shrinks the bigger you go. <b>Slippage</b> is the price you move against yourself on a finite pool — it grows with size. The optimizer finds where the sum of the two is lowest.</span><span class="t-fr"><b>Le gas</b> est un coût fixe en dollars — en part de votre trade, il diminue plus vous tradez grand. <b>Le slippage</b> est le prix que vous vous faites contre vous-même sur un pool fini — il croît avec la taille. L'optimiseur trouve là où leur somme est la plus basse.</span></p>
+        <p><span class="t-en">OrnyTools uses the <b>exact constant-product formula</b> (x·y=k) — not the <span class="mono">√(2·gas·TVL)</span> shortcut that overstates optimal size by up to 2×.</span><span class="t-fr">OrnyTools utilise la <b>formule exact du constant-product</b> (x·y=k) — pas le raccourci <span class="mono">√(2·gas·TVL)</span> qui surestime la taille optimale jusqu'à 2×.</span></p>
         <div class="formula">
 <span class="c">// one-sided reserve (balanced pool)</span>
 R = TVL / 2        <span class="c">(× active fraction for v3)</span>
@@ -705,22 +713,22 @@ slippage($) = A² / (R + A)
 cost(%) = gas/A + A/(R+A) + fee
 <span class="c">// optimum = ternary search min of the U</span>
         </div>
-        <p>At the minimum, gas dollars and slippage dollars are approximately equal — that's the equilibrium point.</p>
+        <p><span class="t-en">At the minimum, gas dollars and slippage dollars are approximately equal — that's the equilibrium point.</span><span class="t-fr">Au minimum, les dollars de gas et les dollars de slippage sont approximativement égaux — c'est le point d'équilibre.</span></p>
       </div>
       <div class="panel">
-        <p style="font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);font-weight:700;margin-bottom:14px">Where it's only an estimate</p>
+        <p style="font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);font-weight:700;margin-bottom:14px"><span class="t-en">Where it's only an estimate</span><span class="t-fr">Où c'est seulement une estimation</span></p>
         <ul class="limits">
-          <li>TVL approximates usable liquidity. Real slippage depends on reserves, trade direction, fee tier and the specific AMM curve.</li>
-          <li>For v3 pools, accuracy depends on active liquidity at the current price. Use the slider or the on-chain reader for better precision.</li>
-          <li>Single-hop only. Aggregators split across pools — which changes the slippage profile entirely.</li>
-          <li>Gas is an estimate. The figure your wallet confirms can differ from any quote.</li>
-          <li>This is execution efficiency analysis — not financial advice.</li>
+          <li><span class="t-en">TVL approximates usable liquidity. Real slippage depends on reserves, trade direction, fee tier and the specific AMM curve.</span><span class="t-fr">Le TVL approxime la liquidité utilisable. Le vrai slippage dépend des réserves, du sens du trade, du fee tier et de la courbe AMM spécifique.</span></li>
+          <li><span class="t-en">For v3 pools, accuracy depends on active liquidity at the current price. Use the slider or the on-chain reader for better precision.</span><span class="t-fr">Pour les pools v3, la précision dépend de la liquidité active au prix actuel. Utilisez le slider ou le lecteur on-chain pour plus de précision.</span></li>
+          <li><span class="t-en">Single-hop only. Aggregators split across pools — which changes the slippage profile entirely.</span><span class="t-fr">Swap en une étape uniquement. Les agrégateurs divisent entre plusieurs pools — ce qui change entièrement le profil de slippage.</span></li>
+          <li><span class="t-en">Gas is an estimate. The figure your wallet confirms can differ from any quote.</span><span class="t-fr">Le gas est une estimation. Le montant confirmé par votre wallet peut différer de tout devis.</span></li>
+          <li><span class="t-en">This is execution efficiency analysis — not financial advice.</span><span class="t-fr">Ceci est une analyse d'efficacité d'exécution — pas un conseil financier.</span></li>
         </ul>
       </div>
     </div>
     <div class="risk">
-      <h3>Risk note</h3>
-      <p>This tool estimates <b>execution efficiency only</b>. It does not account for MEV, sandwich attacks, smart-contract risk, oracle failures, bridge risk, token volatility, or failed transaction costs. It is read-only: it never connects a wallet and never asks you to sign anything. <b>Not financial advice.</b></p>
+      <h3><span class="t-en">Risk note</span><span class="t-fr">Note de risque</span></h3>
+      <p><span class="t-en">This tool estimates <b>execution efficiency only</b>. It does not account for MEV, sandwich attacks, smart-contract risk, oracle failures, bridge risk, token volatility, or failed transaction costs. It is read-only: it never connects a wallet and never asks you to sign anything. <b>Not financial advice.</b></span><span class="t-fr">Cet outil estime <b>l'efficacité d'exécution uniquement</b>. Il ne tient pas compte du MEV, des attaques sandwich, du risque de smart contract, des défaillances d'oracle, du risque de bridge, de la volatilité des tokens, ni des coûts de transactions échouées. Il est en lecture seule : il ne connecte jamais un wallet et ne vous demande jamais de signer quoi que ce soit. <b>Pas un conseil financier.</b></span></p>
     </div>
     <div style="text-align:center;margin-top:28px">
       <a href="methodology.html" style="display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:var(--dim);text-decoration:none;padding:10px 22px;border:1.5px solid var(--line);border-radius:40px;background:#fff;transition:.15s" onmouseover="this.style.borderColor='var(--gold)';this.style.color='var(--gold)'" onmouseout="this.style.borderColor='var(--line)';this.style.color='var(--dim)'">
@@ -797,7 +805,7 @@ cost(%) = gas/A + A/(R+A) + fee
         <div class="result-card">
           <div class="result-label">Impermanent Loss</div>
           <div class="result-big mono" id="ilPct" style="color:var(--coral)">—</div>
-          <div class="result-sub" id="ilUsd">Enter prices above</div>
+          <div class="result-sub" id="ilUsd"><span class="t-en">Enter prices above</span><span class="t-fr">Saisissez les prix ci-dessus</span></div>
 
           <div class="il-breakdown" id="ilBreakdown" style="display:none">
             <div class="il-row">
@@ -851,7 +859,7 @@ cost(%) = gas/A + A/(R+A) + fee
 <footer>
   <div class="ft-tag"><span class="t-en">Patience. <span>Strategy.</span> Freedom.</span><span class="t-fr">Patience. <span>Stratégie.</span> Liberté.</span></div>
   <span class="t-en">Every basis point saved compounds. OrnyTools gives you the math — you make the move.</span><span class="t-fr">Chaque point de base économisé se compose. OrnyTools vous donne les maths — vous faites le move.</span><br/>
-  Live data via GeckoTerminal &amp; public RPCs · ornytools.xyz<br/>
+  <span class="t-en">Live data via GeckoTerminal &amp; public RPCs · ornytools.xyz</span><span class="t-fr">Données en direct via GeckoTerminal &amp; RPCs publics · ornytools.xyz</span><br/>
   <span style="margin-top:8px;display:inline-block">Built by <a href="https://www.linkedin.com/in/xavier-maquin-5576643b9/" target="_blank" rel="noopener" style="color:var(--gold);text-decoration:none;font-weight:600">Xavier Maquin</a></span>
 </footer>
 
@@ -862,6 +870,7 @@ cost(%) = gas/A + A/(R+A) + fee
    ========================================================================= */
 
 const $ = id => document.getElementById(id);
+const _l = () => (typeof getLang === 'function' ? getLang() : 'en');
 
 const state = {
   network:  'eth',
@@ -1031,8 +1040,12 @@ function recompute() {
   $('balGas').textContent      = fmtUSD(g);
   $('balSlip').textContent     = fmtUSD(s);
   const ratio = s / g;
-  $('balEq').textContent = (ratio > 0.85 && ratio < 1.18) ? '≈ balanced'
-    : ratio >= 1.18 ? 'slippage-led' : 'gas-led';
+  const isFR = _l() === 'fr';
+  $('balEq').textContent = (ratio > 0.85 && ratio < 1.18)
+    ? (isFR ? '≈ équilibré' : '≈ balanced')
+    : ratio >= 1.18
+      ? (isFR ? 'slippage dominant' : 'slippage-led')
+      : (isFR ? 'gas dominant' : 'gas-led');
 
   $('rOpt').textContent    = fmtUSD(optA);
   $('rTotPct').textContent = fmtPct(totP);
@@ -1042,13 +1055,22 @@ function recompute() {
   $('rTotUsd').textContent = fmtUSD(tot);
 
   const ex = $('explain');
+  const isFR2 = _l() === 'fr';
   if (state.poolType === 'v3') {
     const src = state.v3Source === 'on-chain'
-      ? `Depth is the <b style="color:var(--aqua)">real active liquidity</b> read from the contract.`
-      : `Depth is a slider estimate (${Math.round(state.v3frac * 100)}% of TVL). Use "Read on-chain liquidity" for the real figure.`;
-    ex.innerHTML = `${src} Trade above the optimum and you start crossing ticks where this estimate degrades.`;
+      ? (isFR2
+          ? `La profondeur est la <b style="color:var(--aqua)">vraie liquidité active</b> lue depuis le contrat.`
+          : `Depth is the <b style="color:var(--aqua)">real active liquidity</b> read from the contract.`)
+      : (isFR2
+          ? `La profondeur est une estimation par slider (${Math.round(state.v3frac * 100)}% du TVL). Utilisez "Lire la liquidité on-chain" pour la vraie valeur.`
+          : `Depth is a slider estimate (${Math.round(state.v3frac * 100)}% of TVL). Use "Read on-chain liquidity" for the real figure.`);
+    ex.innerHTML = isFR2
+      ? `${src} Tradez au-dessus de l'optimum et vous commencez à croiser des ticks où cette estimation se dégrade.`
+      : `${src} Trade above the optimum and you start crossing ticks where this estimate degrades.`;
   } else {
-    ex.innerHTML = `Constant-product pool: trade smaller and fixed gas dominates; trade larger and slippage on a finite reserve takes over.`;
+    ex.innerHTML = isFR2
+      ? `Pool constant-product : tradez plus petit et le gas fixe domine ; tradez plus grand et le slippage sur une réserve finie prend le dessus.`
+      : `Constant-product pool: trade smaller and fixed gas dominates; trade larger and slippage on a finite reserve takes over.`;
   }
 
   renderChart();
@@ -1059,6 +1081,7 @@ function recompute() {
 
 function renderOrnyAnalysis(optA, R, totP, slipP, gasP) {
   const tvl = state.tvl;
+  const fr = _l() === 'fr';
 
   // Confidence score
   let conf = 88;
@@ -1073,44 +1096,67 @@ function renderOrnyAnalysis(optA, R, totP, slipP, gasP) {
   // Insights
   const ins = [];
   if (slipP < 0.5)
-    ins.push({type:'ok',   text:'Slippage remains negligible at this size'});
+    ins.push({type:'ok',   text: fr ? 'Le slippage reste négligeable à cette taille' : 'Slippage remains negligible at this size'});
   else if (slipP < 1.5)
-    ins.push({type:'neutral', text:`Slippage is moderate (${slipP.toFixed(2)}%) — stay near the optimum`});
+    ins.push({type:'neutral', text: fr
+      ? `Slippage modéré (${slipP.toFixed(2)}%) — restez près de l'optimum`
+      : `Slippage is moderate (${slipP.toFixed(2)}%) — stay near the optimum`});
   else
-    ins.push({type:'warn', text:`High slippage (${slipP.toFixed(2)}%) — consider splitting into smaller trades`});
+    ins.push({type:'warn', text: fr
+      ? `Slippage élevé (${slipP.toFixed(2)}%) — envisagez de diviser en trades plus petits`
+      : `High slippage (${slipP.toFixed(2)}%) — consider splitting into smaller trades`});
 
-  ins.push({type:'ok', text:'Gas impact is minimized at the optimal size'});
+  ins.push({type:'ok', text: fr
+    ? "L'impact du gas est minimisé à la taille optimale"
+    : 'Gas impact is minimized at the optimal size'});
 
   if (optA > R * 0.08)
-    ins.push({type:'warn', text:'Trade is large relative to pool depth — real slippage may differ'});
+    ins.push({type:'warn', text: fr
+      ? 'Trade large par rapport à la profondeur du pool — le vrai slippage peut différer'
+      : 'Trade is large relative to pool depth — real slippage may differ'});
   else
-    ins.push({type:'ok',  text:'Larger trades become inefficient beyond this threshold'});
+    ins.push({type:'ok',  text: fr
+      ? "Les trades plus grands deviennent inefficaces au-delà de ce seuil"
+      : 'Larger trades become inefficient beyond this threshold'});
 
   if (tvl < 500e3)
-    ins.push({type:'warn', text:'Low pool TVL — load a larger pool for higher precision'});
+    ins.push({type:'warn', text: fr
+      ? 'TVL du pool faible — chargez un pool plus grand pour plus de précision'
+      : 'Low pool TVL — load a larger pool for higher precision'});
 
   // Metrics
-  const effLabel = totP < 0.5 ? 'High' : totP < 1.5 ? 'Medium' : 'Low';
+  const effLabel = fr
+    ? (totP < 0.5 ? 'Élevée' : totP < 1.5 ? 'Moyenne' : 'Faible')
+    : (totP < 0.5 ? 'High'   : totP < 1.5 ? 'Medium'  : 'Low');
   const effClass = totP < 0.5 ? 'c-good' : totP < 1.5 ? 'c-warn' : 'c-bad';
-  const slipLabel = slipP < 0.1 ? 'Very Low' : slipP < 0.3 ? 'Low' : slipP < 1 ? 'Medium' : 'High';
+  const slipLabel = fr
+    ? (slipP < 0.1 ? 'Très faible' : slipP < 0.3 ? 'Faible' : slipP < 1 ? 'Moyen' : 'Élevé')
+    : (slipP < 0.1 ? 'Very Low'    : slipP < 0.3 ? 'Low'    : slipP < 1 ? 'Medium': 'High');
   const slipClass = slipP < 0.3 ? 'c-good' : slipP < 1 ? 'c-warn' : 'c-bad';
-  const riskLabel = (totP < 0.5 && slipP < 0.3) ? 'Low' : totP < 1.5 ? 'Moderate' : 'High';
-  const riskClass = riskLabel === 'Low' ? 'c-good' : riskLabel === 'Moderate' ? 'c-warn' : 'c-bad';
+  const riskKey   = (totP < 0.5 && slipP < 0.3) ? 'low' : totP < 1.5 ? 'moderate' : 'high';
+  const riskLabel = fr
+    ? (riskKey === 'low' ? 'Faible' : riskKey === 'moderate' ? 'Modéré' : 'Élevé')
+    : (riskKey === 'low' ? 'Low'    : riskKey === 'moderate' ? 'Moderate': 'High');
+  const riskClass = riskKey === 'low' ? 'c-good' : riskKey === 'moderate' ? 'c-warn' : 'c-bad';
 
   // State
   let panelClass, stateLabel, actionText;
-  if (riskLabel === 'Low' && conf >= 85) {
-    panelClass = 'state-approved'; stateLabel = 'Orny Approved';
-    actionText = '✓ Execute at the recommended size';
-  } else if (riskLabel === 'High') {
-    panelClass = 'state-warning'; stateLabel = 'Orny Warning';
-    actionText = '⚠ Split your trade or choose a deeper pool';
+  if (riskKey === 'low' && conf >= 85) {
+    panelClass = 'state-approved';
+    stateLabel = fr ? 'Orny Approuvé'        : 'Orny Approved';
+    actionText = fr ? '✓ Exécutez à la taille recommandée' : '✓ Execute at the recommended size';
+  } else if (riskKey === 'high') {
+    panelClass = 'state-warning';
+    stateLabel = fr ? 'Orny Avertissement'   : 'Orny Warning';
+    actionText = fr ? '⚠ Divisez votre trade ou choisissez un pool plus profond' : '⚠ Split your trade or choose a deeper pool';
   } else if (conf >= 78) {
-    panelClass = 'state-high'; stateLabel = 'Orny High Confidence';
-    actionText = '→ Trade near the optimum for best efficiency';
+    panelClass = 'state-high';
+    stateLabel = fr ? 'Orny Haute Confiance' : 'Orny High Confidence';
+    actionText = fr ? '→ Tradez près de l\'optimum pour la meilleure efficacité' : '→ Trade near the optimum for best efficiency';
   } else {
-    panelClass = 'state-low'; stateLabel = 'Orny Low Confidence';
-    actionText = '→ Load a live pool for a more reliable estimate';
+    panelClass = 'state-low';
+    stateLabel = fr ? 'Orny Faible Confiance': 'Orny Low Confidence';
+    actionText = fr ? '→ Chargez un pool en direct pour une estimation plus fiable' : '→ Load a live pool for a more reliable estimate';
   }
 
   // Render
@@ -1148,10 +1194,11 @@ function renderSim() {
 
   const worse = (totP / optP - 1) * 100;
   const el    = $('simDelta');
+  const sfr   = _l() === 'fr';
   if (Math.abs(worse) < 3) {
-    el.textContent = 'at optimum'; el.style.color = 'var(--gold)';
+    el.textContent = sfr ? 'à l\'optimum' : 'at optimum'; el.style.color = 'var(--gold)';
   } else {
-    el.textContent = '+' + worse.toFixed(0) + '% costlier';
+    el.textContent = '+' + worse.toFixed(0) + (sfr ? '% plus cher' : '% costlier');
     el.style.color = worse > 40 ? 'var(--coral)' : 'var(--dim)';
   }
 
@@ -1165,24 +1212,29 @@ function renderSim() {
     if (saved > 0.01) {
       tip.className = 'sim-tip good';
       tip.style.display = 'block';
-      tip.innerHTML = `Split into <b>${N} trades of ${fmtUSD(chunk)}</b> → save ~<b>${fmtUSD(saved)}</b> in fees (${((saved / tot) * 100).toFixed(0)}% less)`;
+      tip.innerHTML = sfr
+        ? `Divisez en <b>${N} trades de ${fmtUSD(chunk)}</b> → économisez ~<b>${fmtUSD(saved)}</b> en frais (${((saved / tot) * 100).toFixed(0)}% de moins)`
+        : `Split into <b>${N} trades of ${fmtUSD(chunk)}</b> → save ~<b>${fmtUSD(saved)}</b> in fees (${((saved / tot) * 100).toFixed(0)}% less)`;
     } else { tip.style.display = 'none'; }
   } else if (A < optA * 0.4 && optA < A * 20) {
     const N = Math.max(2, Math.round(optA / A));
     tip.className = 'sim-tip info';
     tip.style.display = 'block';
-    tip.innerHTML = `Gas dominates at this size. Batching <b>${N} transactions</b> into one ~${fmtUSD(optA)} trade would cut total cost significantly.`;
+    tip.innerHTML = sfr
+      ? `Le gas domine à cette taille. Regrouper <b>${N} transactions</b> en un seul trade ~${fmtUSD(optA)} réduirait significativement le coût total.`
+      : `Gas dominates at this size. Batching <b>${N} transactions</b> into one ~${fmtUSD(optA)} trade would cut total cost significantly.`;
   } else {
     tip.style.display = 'none';
   }
 }
 
 function verdictLabel(frac) {
-  if (frac < 0.50)  return ['Too small — gas-heavy',   'v-gas'];
-  if (frac < 0.85)  return ['Efficient zone',           'v-eff'];
-  if (frac <= 1.15) return ['Optimal',                  'v-opt'];
-  if (frac <= 1.75) return ['Efficient zone',           'v-eff'];
-  return               ['Too large — slippage-heavy', 'v-slip'];
+  const vfr = _l() === 'fr';
+  if (frac < 0.50)  return [vfr ? 'Trop petit — gas lourd'       : 'Too small — gas-heavy',   'v-gas'];
+  if (frac < 0.85)  return [vfr ? 'Zone efficace'                 : 'Efficient zone',           'v-eff'];
+  if (frac <= 1.15) return [vfr ? 'Optimal'                       : 'Optimal',                  'v-opt'];
+  if (frac <= 1.75) return [vfr ? 'Zone efficace'                 : 'Efficient zone',           'v-eff'];
+  return               [vfr ? 'Trop grand — slippage lourd' : 'Too large — slippage-heavy', 'v-slip'];
 }
 
 function renderScenarioTable() {
@@ -1273,7 +1325,7 @@ function renderChart() {
     <path id="totPath" d="${totalPath}" fill="none" stroke="#C8841E" stroke-width="3" stroke-linejoin="round"/>
     <line x1="${ox}" y1="${oy}" x2="${ox}" y2="${VB.h - VB.b}" stroke="#C8841E" stroke-width="1" stroke-dasharray="3 4" opacity=".4"/>
     <circle id="optDot" cx="${ox}" cy="${oy}" r="6" fill="#C8841E" stroke="#fff" stroke-width="2.5"/>
-    <text x="${ox}" y="${oy - 14}" text-anchor="middle" font-size="11" font-weight="700" fill="#C8841E" font-family="'JetBrains Mono',monospace">optimum</text>
+    <text x="${ox}" y="${oy - 14}" text-anchor="middle" font-size="11" font-weight="700" fill="#C8841E" font-family="'JetBrains Mono',monospace">${_l()==='fr' ? 'optimum' : 'optimum'}</text>
     <line id="crossLine" x1="0" y1="${VB.t}" x2="0" y2="${VB.h - VB.b}" stroke="#111827" stroke-width="1" opacity="0"/>
     <circle id="crossDot" r="4" fill="#111827" opacity="0"/>
   `;
@@ -1299,11 +1351,12 @@ function setupCross() {
     cl.setAttribute('x1', x); cl.setAttribute('x2', x); cl.setAttribute('opacity', '.3');
     cd.setAttribute('cx', x); cd.setAttribute('cy', y); cd.setAttribute('opacity', '1');
     ro.style.opacity = '1';
+    const rfr = _l() === 'fr';
     ro.innerHTML =
       `<div class="r-size">${fmtUSD(A)}</div>` +
       `<div class="r-row"><span>Gas</span><b style="color:#3A9FD4">${fmtPct(gP)}</b></div>` +
       `<div class="r-row"><span>Slippage</span><b style="color:#E8765A">${fmtPct(sP)}</b></div>` +
-      `<div class="r-row"><span>Total</span><b style="color:#C8841E">${fmtPct(tP)}</b></div>`;
+      `<div class="r-row"><span>${rfr ? 'Total' : 'Total'}</span><b style="color:#C8841E">${fmtPct(tP)}</b></div>`;
     let lx = e.clientX - rect.left + 14;
     if (lx > rect.width - 160) lx = e.clientX - rect.left - 162;
     ro.style.left = lx + 'px';
@@ -1374,13 +1427,14 @@ async function rpcCall(net, to, data) {
 async function readChainV3() {
   const addr = $('poolAddr').value.trim().toLowerCase();
   const st   = $('chainStatus');
+  const cfr  = _l() === 'fr';
   st.className = 'status';
   if (!/^0x[0-9a-f]{40}$/.test(addr)) {
     st.className = 'status err';
-    st.textContent = 'Enter a valid pool address above first.';
+    st.textContent = cfr ? 'Saisissez d\'abord une adresse de pool valide ci-dessus.' : 'Enter a valid pool address above first.';
     return;
   }
-  st.textContent = 'Reading the pool contract on-chain…';
+  st.textContent = cfr ? 'Lecture du contrat de pool on-chain…' : 'Reading the pool contract on-chain…';
   const net = state.network;
   try {
     const slot0 = await rpcCall(net, addr, SEL.slot0);
@@ -1425,18 +1479,24 @@ async function readChainV3() {
     $('ocConc').className     = 'mono hi';
     $('ocPrice').textContent  = px.priceLabel;
     $('ocExplain').textContent = conc >= 1
-      ? `Liquidity is concentrated near the price — ${conc.toFixed(1)}× deeper than TVL suggests. Optimal size is larger than a TVL-based guess.`
-      : `Liquidity is spread thin at the current price — only ${(conc*100).toFixed(0)}% of TVL is active here. Optimal size is smaller than a TVL-based guess.`;
+      ? (cfr
+          ? `La liquidité est concentrée près du prix — ${conc.toFixed(1)}× plus profond que le TVL ne le suggère. La taille optimale est plus grande qu'une estimation basée sur le TVL.`
+          : `Liquidity is concentrated near the price — ${conc.toFixed(1)}× deeper than TVL suggests. Optimal size is larger than a TVL-based guess.`)
+      : (cfr
+          ? `La liquidité est étalée au prix actuel — seulement ${(conc*100).toFixed(0)}% du TVL est actif ici. La taille optimale est plus petite qu'une estimation basée sur le TVL.`
+          : `Liquidity is spread thin at the current price — only ${(conc*100).toFixed(0)}% of TVL is active here. Optimal size is smaller than a TVL-based guess.`);
     $('v3chain').style.display = 'block';
     st.className   = 'status ok';
-    st.textContent = 'Read from chain — depth driven by real active liquidity.';
+    st.textContent = cfr
+      ? 'Lu depuis la chaîne — profondeur basée sur la vraie liquidité active.'
+      : 'Read from chain — depth driven by real active liquidity.';
     recompute();
   } catch (err) {
     state.v3DepthUSD = null; state.v3Source = 'slider';
     st.className   = 'status err';
     st.textContent = /no price|GeckoTerminal/.test(String(err.message))
-      ? "Got on-chain liquidity but no USD price — falling back to slider."
-      : "Couldn't read as v3 (may be v2, or RPC blocked). Enter values manually.";
+      ? (cfr ? "Liquidité on-chain obtenue mais pas de prix USD — retour au slider." : "Got on-chain liquidity but no USD price — falling back to slider.")
+      : (cfr ? "Impossible de lire en tant que v3 (peut être v2, ou RPC bloqué). Saisissez les valeurs manuellement." : "Couldn't read as v3 (may be v2, or RPC blocked). Enter values manually.");
   }
 }
 
@@ -1469,8 +1529,9 @@ async function fetchPrices(net, addr, token0, token1) {
 async function fetchPoolData() {
   const addr = $('poolAddr').value.trim().toLowerCase();
   const st   = $('loadStatus');
+  const pfr  = _l() === 'fr';
   st.className = 'status';
-  if (!addr) { st.textContent = 'Paste a pool address first.'; return; }
+  if (!addr) { st.textContent = pfr ? 'Collez d\'abord une adresse de pool.' : 'Paste a pool address first.'; return; }
 
   const cacheKey = `${state.network}:${addr}`;
   if (_poolCache[cacheKey]) {
@@ -1478,12 +1539,12 @@ async function fetchPoolData() {
     state.tvl = c.tvl; $('tvl').value = Math.round(c.tvl);
     state.fee = c.fee; $('fee').value = c.fee;
     st.className = 'status ok';
-    st.textContent = `${c.name} · TVL ${fmtUSD(c.tvl)} (cached)`;
+    st.textContent = `${c.name} · TVL ${fmtUSD(c.tvl)} (${pfr ? 'en cache' : 'cached'})`;
     recompute();
     return;
   }
 
-  st.textContent = 'Contacting GeckoTerminal…';
+  st.textContent = pfr ? 'Contacting GeckoTerminal…' : 'Contacting GeckoTerminal…';
   const net = state.network;
   try {
     const res = await fetchRetry(
@@ -1501,26 +1562,32 @@ async function fetchPoolData() {
     const name = a.name || 'pool';
     _poolCache[cacheKey] = {tvl, fee: state.fee, name};
     st.className   = 'status ok';
-    st.textContent = `Loaded ${name} · TVL ${fmtUSD(tvl)}`;
+    st.textContent = pfr ? `Chargé ${name} · TVL ${fmtUSD(tvl)}` : `Loaded ${name} · TVL ${fmtUSD(tvl)}`;
     recompute();
     try {
-      st.textContent += ' · checking v3…';
+      st.textContent += pfr ? ' · vérification v3…' : ' · checking v3…';
       const probe = await rpcCall(net, addr, SEL.slot0);
       if (probe && probe !== '0x') {
         setPoolType('v3');
-        $('chainStatus').textContent = 'v3 pool detected — reading active liquidity…';
+        $('chainStatus').textContent = pfr
+          ? 'Pool v3 détecté — lecture de la liquidité active…'
+          : 'v3 pool detected — reading active liquidity…';
         await readChainV3();
       }
-      st.textContent = `Loaded ${name} · TVL ${fmtUSD(tvl)}`;
-    } catch(_){ st.textContent = `Loaded ${name} · TVL ${fmtUSD(tvl)}`; }
+      st.textContent = pfr ? `Chargé ${name} · TVL ${fmtUSD(tvl)}` : `Loaded ${name} · TVL ${fmtUSD(tvl)}`;
+    } catch(_){ st.textContent = pfr ? `Chargé ${name} · TVL ${fmtUSD(tvl)}` : `Loaded ${name} · TVL ${fmtUSD(tvl)}`; }
     loadSiblings(addr); // async, non-blocking
   } catch(err) {
     st.className = 'status err';
     const msg = String(err.message||'');
-    if (/rate.limit|429/.test(msg))       st.textContent = 'GeckoTerminal rate limit — attends 30 sec puis réessaie.';
-    else if (/not found/.test(msg))       st.textContent = 'Pool introuvable — vérifie que le réseau sélectionné est correct.';
-    else if (/abort|timeout/.test(msg))   st.textContent = 'Timeout — GeckoTerminal ne répond pas, réessaie dans quelques secondes.';
-    else st.textContent = `Erreur : ${msg}. Entre les valeurs manuellement.`;
+    if (/rate.limit|429/.test(msg))
+      st.textContent = pfr ? 'Limite de taux GeckoTerminal — attends 30 sec puis réessaie.' : 'GeckoTerminal rate limit — wait 30 s then retry.';
+    else if (/not found/.test(msg))
+      st.textContent = pfr ? 'Pool introuvable — vérifie que le réseau sélectionné est correct.' : 'Pool not found — check the selected network is correct.';
+    else if (/abort|timeout/.test(msg))
+      st.textContent = pfr ? 'Timeout — GeckoTerminal ne répond pas, réessaie dans quelques secondes.' : 'Timeout — GeckoTerminal not responding, retry in a few seconds.';
+    else
+      st.textContent = pfr ? `Erreur : ${msg}. Saisis les valeurs manuellement.` : `Error: ${msg}. Enter values manually.`;
   }
 }
 
@@ -1605,28 +1672,35 @@ function renderFeeComparison() {
   const current = costs.find(p => p.isCurrent);
   const showSwitch = current && current.addr !== best.addr;
 
+  const fcfr = _l() === 'fr';
   el.style.display = 'block';
   el.innerHTML = `<div class="fee-cmp">
-    <div class="fee-cmp-title">Fee tier comparison · ${sibs[0].label}</div>
+    <div class="fee-cmp-title">${fcfr ? 'Comparaison de fee tiers' : 'Fee tier comparison'} · ${sibs[0].label}</div>
     ${costs.map((p, i) => `
       <div class="fee-cmp-row">
         <span><b style="color:var(--text)">${p.fee}</b>
           <span style="font-size:11px;color:var(--faint);margin-left:5px">TVL ${fmtUSD(p.tvl)}</span>
-          ${p.isCurrent ? '<span style="font-size:10px;color:var(--aqua);margin-left:4px">current</span>' : ''}
+          ${p.isCurrent ? `<span style="font-size:10px;color:var(--aqua);margin-left:4px">${fcfr ? 'actuel' : 'current'}</span>` : ''}
         </span>
         <span style="font-family:var(--mono);font-size:12px;color:var(--text)">${fmtPct(p.costPct)}</span>
         ${i === 0
-          ? `<span class="fee-cmp-badge best">✓ cheapest at ${fmtUSD(A)}</span>`
+          ? `<span class="fee-cmp-badge best">✓ ${fcfr ? 'moins cher à' : 'cheapest at'} ${fmtUSD(A)}</span>`
           : `<span class="fee-cmp-badge worse">+${fmtUSD(p.cost - best.cost)}</span>`}
       </div>`).join('')}
     <div class="fee-cmp-cross">${
       cross
-        ? `Crossover ~${fmtUSD(cross)}: <b>${costs[0].fee}</b> wins below, <b>${costs[1].fee}</b> wins above.`
-        : `<b>${costs[0].fee}</b> is cheaper at every trade size on these pools.`
+        ? (fcfr
+            ? `Croisement ~${fmtUSD(cross)} : <b>${costs[0].fee}</b> gagne en dessous, <b>${costs[1].fee}</b> gagne au-dessus.`
+            : `Crossover ~${fmtUSD(cross)}: <b>${costs[0].fee}</b> wins below, <b>${costs[1].fee}</b> wins above.`)
+        : (fcfr
+            ? `<b>${costs[0].fee}</b> est moins cher à toutes les tailles de trade sur ces pools.`
+            : `<b>${costs[0].fee}</b> is cheaper at every trade size on these pools.`)
     }</div>
     ${showSwitch
       ? `<button class="fee-cmp-switch" data-addr="${best.addr}" data-label="${best.label} ${best.fee}">
-           Switch to ${best.fee} pool — save ~${fmtUSD(current.cost - best.cost)} on this trade →
+           ${fcfr
+             ? `Passer au pool ${best.fee} — économiser ~${fmtUSD(current.cost - best.cost)} sur ce trade →`
+             : `Switch to ${best.fee} pool — save ~${fmtUSD(current.cost - best.cost)} on this trade →`}
          </button>`
       : ''}
   </div>`;
@@ -1645,7 +1719,7 @@ function renderRegistryChips() {
   const pools = POOL_REGISTRY[state.network] || [];
   if (!pools.length) { wrap.innerHTML = ''; return; }
   wrap.innerHTML =
-    `<div class="reg-label">Quick-load</div>` +
+    `<div class="reg-label">${_l()==='fr' ? 'Chargement rapide' : 'Quick-load'}</div>` +
     `<div class="reg-chips">${
       pools.map(p =>
         `<button class="reg-chip" data-addr="${p.addr}" data-label="${p.label} ${p.fee}">` +
@@ -1668,7 +1742,8 @@ let _searchTimer;
 
 async function searchPools(query) {
   const drop = $('searchDrop');
-  drop.innerHTML = '<div class="drop-loading">Searching…</div>';
+  const spfr = _l() === 'fr';
+  drop.innerHTML = `<div class="drop-loading">${spfr ? 'Recherche…' : 'Searching…'}</div>`;
   drop.style.display = 'block';
   try {
     const net = state.network;
@@ -1679,7 +1754,7 @@ async function searchPools(query) {
     if (!r.ok) throw new Error('search failed');
     const j = await r.json();
     const pools = (j.data || []).slice(0, 7);
-    if (!pools.length) { drop.innerHTML = '<div class="drop-empty">No pools found on this network</div>'; return; }
+    if (!pools.length) { drop.innerHTML = `<div class="drop-empty">${spfr ? 'Aucun pool trouvé sur ce réseau' : 'No pools found on this network'}</div>`; return; }
     drop.innerHTML = pools.map(p => {
       const a = p.attributes;
       const tvl = parseFloat(a.reserve_in_usd);
@@ -1700,7 +1775,7 @@ async function searchPools(query) {
       });
     });
   } catch(e) {
-    drop.innerHTML = '<div class="drop-empty">Search unavailable — paste the address directly</div>';
+    drop.innerHTML = `<div class="drop-empty">${_l()==='fr' ? 'Recherche indisponible — collez l\'adresse directement' : 'Search unavailable — paste the address directly'}</div>`;
   }
 }
 
@@ -1740,7 +1815,7 @@ $('poolType').querySelectorAll('button').forEach(b => {
 });
 $('v3frac').addEventListener('input', e => {
   state.v3frac = num(e.target.value, 20) / 100;
-  $('v3Val').textContent = Math.round(state.v3frac * 100) + '% of TVL';
+  $('v3Val').textContent = Math.round(state.v3frac * 100) + (_l()==='fr' ? '% du TVL' : '% of TVL');
   state.v3DepthUSD = null; state.v3Source = 'slider';
   $('v3chain').style.display = 'none';
   recompute();
@@ -1794,22 +1869,34 @@ function calcIL() {
     $('ilHeld').textContent = fmtUSD(held);
     $('ilPool').textContent = fmtUSD(pool);
     $('ilLoss').textContent = (loss < 0 ? '-' : '+') + fmtUSD(Math.abs(loss));
-    $('ilUsd').textContent  = `You'd have ${fmtUSD(Math.abs(loss))} ${loss<0?'less':'more'} than if you'd just held`;
+    $('ilUsd').textContent = _l()==='fr'
+      ? `Vous auriez ${fmtUSD(Math.abs(loss))} de ${loss<0?'moins':'plus'} qu'en ayant simplement conservé`
+      : `You'd have ${fmtUSD(Math.abs(loss))} ${loss<0?'less':'more'} than if you'd just held`;
     $('ilBreakdown').style.display = 'flex';
   } else {
-    $('ilUsd').textContent = `Price ratio: ${k.toFixed(3)}×`;
+    $('ilUsd').textContent = _l()==='fr' ? `Ratio de prix : ${k.toFixed(3)}×` : `Price ratio: ${k.toFixed(3)}×`;
     $('ilBreakdown').style.display = 'none';
   }
 
+  const ilfr = _l() === 'fr';
   $('ilNote').textContent = Math.abs(ilPct) < 0.1
-    ? 'Prices moved together — IL is negligible.'
+    ? (ilfr ? 'Les prix ont évolué ensemble — l\'IL est négligeable.' : 'Prices moved together — IL is negligible.')
     : ilFrac < -0.05
-    ? 'Significant IL. Make sure fees earned exceed this loss.'
-    : 'Moderate IL — check that your fee APR covers it.';
+    ? (ilfr ? 'IL significatif. Assurez-vous que les frais gagnés dépassent cette perte.' : 'Significant IL. Make sure fees earned exceed this loss.')
+    : (ilfr ? 'IL modéré — vérifiez que votre APR en frais le couvre.' : 'Moderate IL — check that your fee APR covers it.');
 }
 
 ['ilA0','ilA1','ilB0','ilB1','ilDeposit'].forEach(id => $( id).addEventListener('input', calcIL));
 calcIL();
+
+// Re-render all JS-driven content when language switches
+window.onLangChange = function() {
+  recompute();                // redraws result card, explain, chart, scenario table, sim, orny panel
+  renderRegistryChips();      // Quick-load label
+  renderFeeComparison();      // fee tier comparison strings
+  // update v3Val label if visible
+  $('v3Val').textContent = Math.round(state.v3frac * 100) + (_l()==='fr' ? '% du TVL' : '% of TVL');
+};
 </script>
 <script src="lang.js"></script>
 </body>

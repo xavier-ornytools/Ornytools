@@ -286,13 +286,13 @@
   <div class="section">
     <div class="section-title"><span class="t-fr">Vue d'ensemble</span><span class="t-en">Overview</span></div>
     <p>
-      Aave est l'équivalent décentralisé d'une banque de prêt : des déposants fournissent des liquidités (ETH, USDC, WBTC…) dans des pools gérés par des smart contracts, et des emprunteurs puisent dans ces pools en déposant un collatéral supérieur à ce qu'ils empruntent.
+      <span class="t-fr">Aave est l'équivalent décentralisé d'une banque de prêt : des déposants fournissent des liquidités (ETH, USDC, WBTC…) dans des pools gérés par des smart contracts, et des emprunteurs puisent dans ces pools en déposant un collatéral supérieur à ce qu'ils empruntent.</span><span class="t-en">Aave is the decentralized equivalent of a lending bank: depositors supply liquidity (ETH, USDC, WBTC…) into smart-contract-managed pools, and borrowers draw from those pools by depositing collateral worth more than what they borrow.</span>
     </p>
     <p>
-      Aucun intermédiaire, aucun KYC. Les règles — taux d'intérêt, seuils de liquidation, actifs acceptés — sont codées dans les contrats et ajustables uniquement par vote de la DAO.
+      <span class="t-fr">Aucun intermédiaire, aucun KYC. Les règles — taux d'intérêt, seuils de liquidation, actifs acceptés — sont codées dans les contrats et ajustables uniquement par vote de la DAO.</span><span class="t-en">No intermediary, no KYC. The rules — interest rates, liquidation thresholds, accepted assets — are encoded in the contracts and can only be changed by DAO vote.</span>
     </p>
     <p>
-      Aave V3 (lancé en 2022) améliore V2 sur trois axes majeurs : l'<strong>efficiency mode</strong> (meilleur capital pour les actifs corrélés), l'<strong>isolation mode</strong> (confinement du risque des nouveaux actifs) et le <strong>Portal</strong> (liquidité cross-chain).
+      <span class="t-fr">Aave V3 (lancé en 2022) améliore V2 sur trois axes majeurs : l'<strong>efficiency mode</strong> (meilleur capital pour les actifs corrélés), l'<strong>isolation mode</strong> (confinement du risque des nouveaux actifs) et le <strong>Portal</strong> (liquidité cross-chain).</span><span class="t-en">Aave V3 (launched 2022) improves on V2 across three major areas: <strong>efficiency mode</strong> (better capital efficiency for correlated assets), <strong>isolation mode</strong> (risk containment for new assets), and the <strong>Portal</strong> (cross-chain liquidity).</span>
     </p>
   </div>
 
@@ -300,7 +300,7 @@
   <div class="section">
     <div class="section-title"><span class="t-fr">Fonctionnement</span><span class="t-en">How it works</span></div>
 
-    <div class="diagram">
+    <div class="diagram t-fr">
 <span class="hi">DÉPOSANT</span>                        <span class="hi">EMPRUNTEUR</span>
     <span class="arrow">│</span>                                   <span class="arrow">│</span>
     <span class="arrow">│</span> dépose ETH / WBTC / USDC         <span class="arrow">│</span> dépose collatéral (ex : WBTC)
@@ -312,44 +312,57 @@ reçoit <span class="hi">aTokens</span>                    emprunte USDT / USDC 
 (aUSDC, aWBTC…)                    paie intérêts variables
 solde augmente en continu          surveille son <span class="hi">Health Factor</span>
     </div>
+    <div class="diagram t-en">
+<span class="hi">DEPOSITOR</span>                        <span class="hi">BORROWER</span>
+    <span class="arrow">│</span>                                   <span class="arrow">│</span>
+    <span class="arrow">│</span> deposits ETH / WBTC / USDC       <span class="arrow">│</span> deposits collateral (e.g. WBTC)
+    <span class="arrow">▼</span>                                   <span class="arrow">▼</span>
+<span class="hi">═════════════════ AAVE POOL (smart contract) ══════════════════</span>
+    <span class="arrow">│</span>                                   <span class="arrow">│</span>
+    <span class="arrow">▼</span>                                   <span class="arrow">▼</span>
+receives <span class="hi">aTokens</span>                  borrows USDT / USDC / DAI
+(aUSDC, aWBTC…)                    pays variable interest
+balance grows continuously         monitors <span class="hi">Health Factor</span>
+    </div>
 
     <ol class="steps" style="margin-top:1.25rem">
       <li>
-        <div>Le déposant envoie ses cryptos au smart contract Aave. Il reçoit instantanément des <code>aTokens</code> (ex : déposer USDC → recevoir aUSDC). Ces tokens sont intérêts-porteurs : leur valeur augmente chaque seconde, en temps réel.</div>
+        <div><span class="t-fr">Le déposant envoie ses cryptos au smart contract Aave. Il reçoit instantanément des <code>aTokens</code> (ex : déposer USDC → recevoir aUSDC). Ces tokens sont intérêts-porteurs : leur valeur augmente chaque seconde, en temps réel.</span><span class="t-en">The depositor sends crypto to the Aave smart contract and instantly receives <code>aTokens</code> (e.g. deposit USDC → receive aUSDC). These tokens are interest-bearing: their value increases every second, in real time.</span></div>
       </li>
       <li>
-        <div>L'emprunteur dépose un collatéral (ex : WBTC) dont la valeur doit dépasser celle de l'emprunt selon le <strong>LTV</strong> (Loan-to-Value) défini par la DAO. Il reçoit les fonds empruntés et commence à payer des intérêts.</div>
+        <div><span class="t-fr">L'emprunteur dépose un collatéral (ex : WBTC) dont la valeur doit dépasser celle de l'emprunt selon le <strong>LTV</strong> (Loan-to-Value) défini par la DAO. Il reçoit les fonds empruntés et commence à payer des intérêts.</span><span class="t-en">The borrower deposits collateral (e.g. WBTC) whose value must exceed the loan amount according to the <strong>LTV</strong> (Loan-to-Value) set by the DAO. They receive the borrowed funds and begin paying interest.</span></div>
       </li>
       <li>
-        <div>Le <strong>Health Factor</strong> de l'emprunteur est calculé en continu. S'il descend sous 1.0, n'importe qui peut déclencher la liquidation et recevoir un bonus.</div>
+        <div><span class="t-fr">Le <strong>Health Factor</strong> de l'emprunteur est calculé en continu. S'il descend sous 1.0, n'importe qui peut déclencher la liquidation et recevoir un bonus.</span><span class="t-en">The borrower's <strong>Health Factor</strong> is calculated continuously. If it falls below 1.0, anyone can trigger the liquidation and receive a bonus.</span></div>
       </li>
       <li>
-        <div>Pour récupérer son collatéral, l'emprunteur rembourse la dette (principal + intérêts). Le déposant retire ses fonds + intérêts accumulés en brûlant ses aTokens.</div>
+        <div><span class="t-fr">Pour récupérer son collatéral, l'emprunteur rembourse la dette (principal + intérêts). Le déposant retire ses fonds + intérêts accumulés en brûlant ses aTokens.</span><span class="t-en">To recover collateral, the borrower repays the debt (principal + interest). The depositor withdraws their funds + accrued interest by burning their aTokens.</span></div>
       </li>
     </ol>
 
     <div style="margin-top:1.5rem">
       <strong style="font-size:0.85rem;color:var(--text-light);text-transform:uppercase;letter-spacing:0.05em;">Health Factor (HF)</strong>
-      <p style="margin-top:0.5rem;font-size:0.9rem;">Le HF mesure la sécurité d'une position d'emprunt :</p>
-      <div class="diagram" style="margin-top:0.5rem">HF = (Valeur collatéral × Liquidation Threshold) / Valeur dette</div>
+      <p style="margin-top:0.5rem;font-size:0.9rem;"><span class="t-fr">Le HF mesure la sécurité d'une position d'emprunt :</span><span class="t-en">The HF measures the safety of a borrow position:</span></p>
+      <div class="diagram t-fr" style="margin-top:0.5rem">HF = (Valeur collatéral × Liquidation Threshold) / Valeur dette</div>
+      <div class="diagram t-en" style="margin-top:0.5rem">HF = (Collateral Value × Liquidation Threshold) / Debt Value</div>
       <table class="hf-table">
         <thead>
-          <tr><th>Health Factor</th><th>Situation</th><th>Action</th></tr>
+          <tr><th>Health Factor</th><th><span class="t-fr">Situation</span><span class="t-en">Status</span></th><th><span class="t-fr">Action</span><span class="t-en">Action</span></th></tr>
         </thead>
         <tbody>
-          <tr><td><code>&gt; 2.0</code></td><td><span class="dot">🟢</span> Sûr</td><td>Rien à faire</td></tr>
-          <tr><td><code>1.5 – 2.0</code></td><td><span class="dot">🟡</span> À surveiller</td><td>Surveiller le marché</td></tr>
-          <tr><td><code>1.0 – 1.5</code></td><td><span class="dot">🟠</span> Danger</td><td>Rembourser ou ajouter du collatéral</td></tr>
-          <tr><td><code>&lt; 1.0</code></td><td><span class="dot">🔴</span> Liquidation</td><td>Smart contract liquide automatiquement</td></tr>
+          <tr><td><code>&gt; 2.0</code></td><td><span class="dot">🟢</span> <span class="t-fr">Sûr</span><span class="t-en">Safe</span></td><td><span class="t-fr">Rien à faire</span><span class="t-en">Nothing to do</span></td></tr>
+          <tr><td><code>1.5 – 2.0</code></td><td><span class="dot">🟡</span> <span class="t-fr">À surveiller</span><span class="t-en">Watch closely</span></td><td><span class="t-fr">Surveiller le marché</span><span class="t-en">Monitor the market</span></td></tr>
+          <tr><td><code>1.0 – 1.5</code></td><td><span class="dot">🟠</span> <span class="t-fr">Danger</span><span class="t-en">Danger</span></td><td><span class="t-fr">Rembourser ou ajouter du collatéral</span><span class="t-en">Repay debt or add collateral</span></td></tr>
+          <tr><td><code>&lt; 1.0</code></td><td><span class="dot">🔴</span> <span class="t-fr">Liquidation</span><span class="t-en">Liquidation</span></td><td><span class="t-fr">Smart contract liquide automatiquement</span><span class="t-en">Smart contract liquidates automatically</span></td></tr>
         </tbody>
       </table>
     </div>
 
     <div style="margin-top:1.5rem">
-      <strong style="font-size:0.85rem;color:var(--text-light);text-transform:uppercase;letter-spacing:0.05em;">Paramètres clés par actif (exemples Arbitrum)</strong>
+      <strong style="font-size:0.85rem;color:var(--text-light);text-transform:uppercase;letter-spacing:0.05em;"><span class="t-fr">Paramètres clés par actif (exemples Arbitrum)</span><span class="t-en">Key parameters per asset (Arbitrum examples)</span></strong>
       <table style="margin-top:0.75rem">
         <thead>
-          <tr><th>Actif</th><th>LTV max</th><th>Liq. Threshold</th><th>Liq. Bonus</th></tr>
+          <tr><th><span class="t-fr">Actif</span><span class="t-en">Asset</span></th><th>LTV max</th><th>Liq. Threshold</th><th>Liq. Bonus</th></tr>
         </thead>
         <tbody>
           <tr><td><code>WBTC</code></td><td>70%</td><td>75%</td><td>+6.25%</td></tr>
@@ -358,7 +371,7 @@ solde augmente en continu          surveille son <span class="hi">Health Factor<
           <tr><td><code>USDC</code></td><td>75%</td><td>78%</td><td>+5%</td></tr>
         </tbody>
       </table>
-      <p style="font-size:0.8rem;color:var(--text-light);margin-top:0.5rem;">LTV = montant max empruntable / valeur collatéral. Liq. Threshold = seuil à partir duquel la liquidation devient possible.</p>
+      <p style="font-size:0.8rem;color:var(--text-light);margin-top:0.5rem;"><span class="t-fr">LTV = montant max empruntable / valeur collatéral. Liq. Threshold = seuil à partir duquel la liquidation devient possible.</span><span class="t-en">LTV = max borrowable amount / collateral value. Liq. Threshold = the threshold at which liquidation becomes possible.</span></p>
     </div>
   </div>
 
@@ -368,19 +381,19 @@ solde augmente en continu          surveille son <span class="hi">Health Factor<
     <div class="features-grid">
       <div class="feature-card">
         <div class="feature-name">eMode — Efficiency Mode</div>
-        <div class="feature-desc">Pour les actifs fortement corrélés (ex : ETH / stETH / wstETH), le LTV monte jusqu'à 93%. Permet un levier bien plus efficace en capital sur des paires stables.</div>
+        <div class="feature-desc"><span class="t-fr">Pour les actifs fortement corrélés (ex : ETH / stETH / wstETH), le LTV monte jusqu'à 93%. Permet un levier bien plus efficace en capital sur des paires stables.</span><span class="t-en">For highly correlated assets (e.g. ETH / stETH / wstETH), the LTV rises to 93%. Enables far more capital-efficient leverage on stable pairs.</span></div>
       </div>
       <div class="feature-card">
         <div class="feature-name">Isolation Mode</div>
-        <div class="feature-desc">Les nouveaux actifs risqués sont listés en mode isolé : plafond d'emprunt global fixé, seuls les stablecoins peuvent être empruntés contre eux. Limite la contagion.</div>
+        <div class="feature-desc"><span class="t-fr">Les nouveaux actifs risqués sont listés en mode isolé : plafond d'emprunt global fixé, seuls les stablecoins peuvent être empruntés contre eux. Limite la contagion.</span><span class="t-en">New risky assets are listed in isolation mode: a global borrow cap is set, and only stablecoins can be borrowed against them. Limits contagion risk.</span></div>
       </div>
       <div class="feature-card">
         <div class="feature-name">Supply & Borrow Caps</div>
-        <div class="feature-desc">La DAO fixe un plafond de dépôt et d'emprunt par actif. Réduit l'exposition au risque systémique d'un actif peu liquide.</div>
+        <div class="feature-desc"><span class="t-fr">La DAO fixe un plafond de dépôt et d'emprunt par actif. Réduit l'exposition au risque systémique d'un actif peu liquide.</span><span class="t-en">The DAO sets supply and borrow caps per asset. Reduces exposure to systemic risk from illiquid assets.</span></div>
       </div>
       <div class="feature-card">
         <div class="feature-name">Portal (cross-chain)</div>
-        <div class="feature-desc">Mécanisme permettant la migration de liquidité d'une chaîne à l'autre. Objectif : unifier la liquidité Aave sur toutes les blockchains déployées.</div>
+        <div class="feature-desc"><span class="t-fr">Mécanisme permettant la migration de liquidité d'une chaîne à l'autre. Objectif : unifier la liquidité Aave sur toutes les blockchains déployées.</span><span class="t-en">Mechanism enabling liquidity migration from one chain to another. Goal: unify Aave liquidity across all deployed blockchains.</span></div>
       </div>
     </div>
   </div>
@@ -391,27 +404,27 @@ solde augmente en continu          surveille son <span class="hi">Health Factor<
     <ul class="risk-list">
       <li class="risk-item high">
         <span class="risk-badge"><span class="t-fr">Élevé</span><span class="t-en">High</span></span>
-        <div><strong><span class="t-fr">Liquidation.</span><span class="t-en">Liquidation.</span></strong> Si le prix du collatéral chute brutalement (crash BTC, ETH), le HF peut passer sous 1.0 avant que tu aies le temps de réagir. Une chute de -30% sur WBTC avec un LTV à 70% suffit à déclencher la liquidation.</div>
+        <div><strong><span class="t-fr">Liquidation.</span><span class="t-en">Liquidation.</span></strong> <span class="t-fr">Si le prix du collatéral chute brutalement (crash BTC, ETH), le HF peut passer sous 1.0 avant que tu aies le temps de réagir. Une chute de -30% sur WBTC avec un LTV à 70% suffit à déclencher la liquidation.</span><span class="t-en">If collateral price drops sharply (BTC or ETH crash), the HF can fall below 1.0 before you have time to react. A -30% drop on WBTC with a 70% LTV is enough to trigger liquidation.</span></div>
       </li>
       <li class="risk-item high">
-        <span class="risk-badge">Élevé</span>
-        <div><strong>Risque oracle.</strong> Aave utilise Chainlink pour connaître le prix des actifs. Une manipulation ou une panne d'oracle peut provoquer des liquidations artificielles ou permettre des emprunts excessifs.</div>
+        <span class="risk-badge"><span class="t-fr">Élevé</span><span class="t-en">High</span></span>
+        <div><strong><span class="t-fr">Risque oracle.</span><span class="t-en">Oracle risk.</span></strong> <span class="t-fr">Aave utilise Chainlink pour connaître le prix des actifs. Une manipulation ou une panne d'oracle peut provoquer des liquidations artificielles ou permettre des emprunts excessifs.</span><span class="t-en">Aave uses Chainlink to price assets. An oracle manipulation or failure can trigger artificial liquidations or allow excessive borrowing.</span></div>
       </li>
       <li class="risk-item medium">
         <span class="risk-badge"><span class="t-fr">Moyen</span><span class="t-en">Medium</span></span>
-        <div><strong>Smart contract risk.</strong> Aave est massivement audité, mais un bug dans les contrats (~$15B de TVL) serait catastrophique. Plusieurs forks d'Aave ont été exploités par le passé.</div>
+        <div><strong>Smart contract risk.</strong> <span class="t-fr">Aave est massivement audité, mais un bug dans les contrats (~$15B de TVL) serait catastrophique. Plusieurs forks d'Aave ont été exploités par le passé.</span><span class="t-en">Aave is heavily audited, but a bug in the contracts (~$15B TVL) would be catastrophic. Several Aave forks have been exploited in the past.</span></div>
       </li>
       <li class="risk-item medium">
         <span class="risk-badge"><span class="t-fr">Moyen</span><span class="t-en">Medium</span></span>
-        <div><strong>Risque de taux.</strong> Les taux d'emprunt sont variables et peuvent monter fortement en cas de forte demande. Un emprunt rentable à 2% peut devenir coûteux à 8% sans prévenir.</div>
+        <div><strong><span class="t-fr">Risque de taux.</span><span class="t-en">Interest rate risk.</span></strong> <span class="t-fr">Les taux d'emprunt sont variables et peuvent monter fortement en cas de forte demande. Un emprunt rentable à 2% peut devenir coûteux à 8% sans prévenir.</span><span class="t-en">Borrow rates are variable and can spike sharply when demand is high. A position profitable at 2% can become costly at 8% without warning.</span></div>
       </li>
       <li class="risk-item medium">
         <span class="risk-badge"><span class="t-fr">Moyen</span><span class="t-en">Medium</span></span>
-        <div><strong>Gouvernance.</strong> La DAO peut modifier les paramètres de risque (LTV, seuils de liquidation, actifs acceptés). Un vote malveillant ou une prise de contrôle de la DAO reste théoriquement possible.</div>
+        <div><strong><span class="t-fr">Gouvernance.</span><span class="t-en">Governance.</span></strong> <span class="t-fr">La DAO peut modifier les paramètres de risque (LTV, seuils de liquidation, actifs acceptés). Un vote malveillant ou une prise de contrôle de la DAO reste théoriquement possible.</span><span class="t-en">The DAO can modify risk parameters (LTV, liquidation thresholds, accepted assets). A malicious vote or DAO takeover remains theoretically possible.</span></div>
       </li>
       <li class="risk-item low">
         <span class="risk-badge"><span class="t-fr">Faible</span><span class="t-en">Low</span></span>
-        <div><strong>Risque de liquidité.</strong> En cas de stress extrême, le pool peut être temporairement sous-liquide : tu ne peux pas retirer tes dépôts tant que le taux d'utilisation est à 100%. Rare mais possible sur les pools peu profondes.</div>
+        <div><strong><span class="t-fr">Risque de liquidité.</span><span class="t-en">Liquidity risk.</span></strong> <span class="t-fr">En cas de stress extrême, le pool peut être temporairement sous-liquide : tu ne peux pas retirer tes dépôts tant que le taux d'utilisation est à 100%. Rare mais possible sur les pools peu profondes.</span><span class="t-en">Under extreme stress, a pool can become temporarily illiquid: you cannot withdraw deposits while the utilization rate is at 100%. Rare but possible on shallow pools.</span></div>
       </li>
     </ul>
   </div>
@@ -454,10 +467,10 @@ solde augmente en continu          surveille son <span class="hi">Health Factor<
     <ul class="sources">
       <li><span class="src-label"><span class="t-fr">Documentation officielle</span><span class="t-en">Official documentation</span></span><a href="https://docs.aave.com" target="_blank">docs.aave.com</a></li>
       <li><span class="src-label">Dashboard positions</span><a href="https://app.aave.com" target="_blank">app.aave.com</a></li>
-      <li><span class="src-label">Métriques TVL</span><a href="https://defillama.com/protocol/aave-v3" target="_blank">defillama.com/protocol/aave-v3</a></li>
-      <li><span class="src-label">Paramètres de risque</span><a href="https://risk.aave.com" target="_blank">risk.aave.com</a></li>
+      <li><span class="src-label"><span class="t-fr">Métriques TVL</span><span class="t-en">TVL metrics</span></span><a href="https://defillama.com/protocol/aave-v3" target="_blank">defillama.com/protocol/aave-v3</a></li>
+      <li><span class="src-label"><span class="t-fr">Paramètres de risque</span><span class="t-en">Risk parameters</span></span><a href="https://risk.aave.com" target="_blank">risk.aave.com</a></li>
       <li><span class="src-label">Analytics on-chain</span><a href="https://dune.com/aave" target="_blank">dune.com/aave</a></li>
-      <li><span class="src-label">Vault Alyra (formation)</span><code>Aave.md</code> · <code>Risques-DeFi.md</code> · <code>Liquidité.md</code></li>
+      <li><span class="src-label"><span class="t-fr">Vault Alyra (formation)</span><span class="t-en">Alyra vault (course)</span></span><code>Aave.md</code> · <code>Risques-DeFi.md</code> · <code>Liquidité.md</code></li>
     </ul>
   </div>
 

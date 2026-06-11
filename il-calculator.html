@@ -254,25 +254,25 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="result-side">
 
     <div class="result-card">
-      <div class="result-label">Impermanent Loss</div>
+      <div class="result-label"><span class="t-en">Impermanent Loss</span><span class="t-fr">Perte Impermanente</span></div>
       <div class="result-big" id="ilPct" style="color:var(--coral)">—</div>
-      <div class="result-sub" id="ilSub">Enter prices to calculate</div>
+      <div class="result-sub" id="ilSub"><span class="t-en">Enter prices to calculate</span><span class="t-fr">Saisissez les prix pour calculer</span></div>
 
       <div class="breakdown" id="ilBreakdown" style="display:none">
-        <div class="br-row"><span>Value if held</span><b id="ilHeld">—</b></div>
-        <div class="br-row"><span>Value in pool</span><b id="ilPool">—</b></div>
-        <div class="br-row loss"><span>Loss from IL</span><b id="ilLoss">—</b></div>
-        <div class="br-row"><span>Token A change</span><b id="ilChgA">—</b></div>
-        <div class="br-row"><span>Token B change</span><b id="ilChgB">—</b></div>
+        <div class="br-row"><span><span class="t-en">Value if held</span><span class="t-fr">Valeur si conservé</span></span><b id="ilHeld">—</b></div>
+        <div class="br-row"><span><span class="t-en">Value in pool</span><span class="t-fr">Valeur dans le pool</span></span><b id="ilPool">—</b></div>
+        <div class="br-row loss"><span><span class="t-en">Loss from IL</span><span class="t-fr">Perte due à l'IL</span></span><b id="ilLoss">—</b></div>
+        <div class="br-row"><span><span class="t-en">Token A change</span><span class="t-fr">Variation Token A</span></span><b id="ilChgA">—</b></div>
+        <div class="br-row"><span><span class="t-en">Token B change</span><span class="t-fr">Variation Token B</span></span><b id="ilChgB">—</b></div>
         <p class="br-note" id="ilNote"></p>
       </div>
     </div>
 
     <div class="breakeven-card" id="beCard" style="display:none">
-      <div class="be-title">Break-even analysis</div>
-      <div class="be-row"><span>Fees earned (est.)</span><b id="beEarned">—</b></div>
-      <div class="be-row"><span>IL to cover</span><b id="beLoss">—</b></div>
-      <div class="be-row"><span>Break-even APR needed</span><b id="beNeeded">—</b></div>
+      <div class="be-title"><span class="t-en">Break-even analysis</span><span class="t-fr">Analyse du seuil de rentabilité</span></div>
+      <div class="be-row"><span><span class="t-en">Fees earned (est.)</span><span class="t-fr">Frais gagnés (est.)</span></span><b id="beEarned">—</b></div>
+      <div class="be-row"><span><span class="t-en">IL to cover</span><span class="t-fr">IL à couvrir</span></span><b id="beLoss">—</b></div>
+      <div class="be-row"><span><span class="t-en">Break-even APR needed</span><span class="t-fr">APR nécessaire au seuil</span></span><b id="beNeeded">—</b></div>
       <div class="be-verdict" id="beVerdict"></div>
     </div>
 
@@ -386,6 +386,7 @@ function buildChart(currentK) {
 
 // ── Main calculation ──────────────────────────────────────────────────────
 function calcIL() {
+  const l = getLang ? getLang() : 'en';
   const a0  = parseFloat($('ilA0').value);
   const a1  = parseFloat($('ilA1').value);
   const b0  = parseFloat($('ilB0').value);
@@ -419,7 +420,9 @@ function calcIL() {
     $('ilHeld').textContent = fmtUSD(held);
     $('ilPool').textContent = fmtUSD(pool);
     $('ilLoss').textContent = fmtUSD(Math.abs(loss));
-    $('ilSub').textContent  = `${fmtUSD(Math.abs(loss))} ${loss<0?'less':'more'} than holding`;
+    $('ilSub').textContent  = l==='fr'
+      ? `${fmtUSD(Math.abs(loss))} ${loss<0?'de moins':'de plus'} qu'en conservant`
+      : `${fmtUSD(Math.abs(loss))} ${loss<0?'less':'more'} than holding`;
     $('ilBreakdown').style.display = 'flex';
 
     // Break-even
@@ -436,29 +439,33 @@ function calcIL() {
       const v   = $('beVerdict');
       if (ilUSD < 0.01) {
         v.className = 'be-verdict neutral';
-        v.textContent = 'No IL — you are ahead of a simple hold.';
+        v.textContent = l==='fr' ? 'Pas d\'IL — vous êtes en avance sur un simple hold.' : 'No IL — you are ahead of a simple hold.';
       } else if (feesEarned >= ilUSD) {
         v.className = 'be-verdict good';
-        v.textContent = `Fees cover IL. You are net +${fmtUSD(net)} vs holding.`;
+        v.textContent = l==='fr'
+          ? `Les frais couvrent l'IL. Vous êtes net +${fmtUSD(net)} vs holding.`
+          : `Fees cover IL. You are net +${fmtUSD(net)} vs holding.`;
       } else {
         v.className = 'be-verdict bad';
-        v.textContent = `Fees don't cover IL yet. You need ${beAPR.toFixed(1)}% APR — current pool: ${apr}%.`;
+        v.textContent = l==='fr'
+          ? `Les frais ne couvrent pas encore l'IL. Il faut ${beAPR.toFixed(1)}% APR — pool actuel : ${apr}%.`
+          : `Fees don't cover IL yet. You need ${beAPR.toFixed(1)}% APR — current pool: ${apr}%.`;
       }
       $('beCard').style.display = 'block';
     } else {
       $('beCard').style.display = 'none';
     }
   } else {
-    $('ilSub').textContent = `Price ratio: ${k.toFixed(3)}×`;
+    $('ilSub').textContent = l==='fr' ? `Ratio de prix : ${k.toFixed(3)}×` : `Price ratio: ${k.toFixed(3)}×`;
     $('ilBreakdown').style.display = 'none';
     $('beCard').style.display = 'none';
   }
 
   const note = Math.abs(ilPct) < 0.1
-    ? 'Prices moved together — IL is negligible.'
+    ? (l==='fr' ? 'Les prix ont évolué ensemble — l\'IL est négligeable.' : 'Prices moved together — IL is negligible.')
     : Math.abs(ilPct) > 5
-    ? 'High IL. Fees must be substantial to justify this position.'
-    : 'Moderate IL — verify your fee APR covers it.';
+    ? (l==='fr' ? 'IL élevé. Les frais doivent être conséquents pour justifier cette position.' : 'High IL. Fees must be substantial to justify this position.')
+    : (l==='fr' ? 'IL modéré — vérifiez que votre APR de frais le couvre.' : 'Moderate IL — verify your fee APR covers it.');
   $('ilNote').textContent = note;
 
   buildChart(k);
