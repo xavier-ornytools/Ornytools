@@ -1,0 +1,247 @@
+{
+  "main": {
+    "id": "5f2b3d8c3fc8bb3f",
+    "type": "split",
+    "children": [
+      {
+        "id": "a920f3349d6f65bc",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "3b78eb353b44afba",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Wiki/assets/Stablecoins/pmUSD.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "pmUSD"
+            }
+          },
+          {
+            "id": "55716de728e700bb",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "4-3-4_IA-Claude-Obsidian-Outillage.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "4-3-4_IA-Claude-Obsidian-Outillage"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "516b17312130c262",
+    "type": "split",
+    "children": [
+      {
+        "id": "857cf1f9bd9d219e",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "184c79808d3bbc6d",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Explorateur de fichiers"
+            }
+          },
+          {
+            "id": "552b5c1e5072a952",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": " section:()",
+                "matchingCase": true,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Rechercher"
+            }
+          },
+          {
+            "id": "c72048d77a4ffce2",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Signets"
+            }
+          }
+        ],
+        "currentTab": 1
+      }
+    ],
+    "direction": "horizontal",
+    "width": 200
+  },
+  "right": {
+    "id": "aee20fc47d9eaa2e",
+    "type": "split",
+    "children": [
+      {
+        "id": "1b68f1f5ec7b3cbd",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "9d470a64ec48df7b",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "S2-Tokenisation-actifs.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Rétrolien pour S2-Tokenisation-actifs"
+            }
+          },
+          {
+            "id": "5c403f0b83010015",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "cours prise de note alyra.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Liens sortants de cours prise de note alyra"
+            }
+          },
+          {
+            "id": "a8598a4099a20dbd",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Mots-clés"
+            }
+          },
+          {
+            "id": "1eb4f930d9a8f236",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "Toutes les propriétés"
+            }
+          },
+          {
+            "id": "25c537c80f6b9bdc",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "cours prise de note alyra.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Plan de cours prise de note alyra"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 200,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Ouvrir le sélecteur rapide": false,
+      "canvas:Créer une nouvelle toile": false,
+      "daily-notes:Ouvrir la note quotidienne": false,
+      "templates:Insérer le modèle": false,
+      "command-palette:Ouvrir la palette de commandes": false,
+      "bases:Créer une nouvelle base": false,
+      "graph:Ouvrir la vue graphique": false
+    }
+  },
+  "active": "3b78eb353b44afba",
+  "lastOpenFiles": [
+    "index.html.tmp.243699.ca662c48fc8b",
+    "MOC-Alyra-DeFi-V2.md.tmp.80736.d5c9fea0ab24",
+    "Templates/Template_Strategie-Stablepool.md",
+    "Templates/Template_Strategie-Stablepool.md.tmp.80736.502e20360702",
+    "4-3-5_Exercice-pmUSD-Convex-Beefy.md",
+    "4-3-5_Exercice-pmUSD-Convex-Beefy.md.tmp.80736.75525d71d9f5",
+    "4-3-4_IA-Claude-Obsidian-Outillage.md",
+    "4-3-4_IA-Claude-Obsidian-Outillage.md.tmp.80736.ada78f8d9efc",
+    "Templates/Template_Pool-Analyse.md",
+    "Templates/Template_Pool-Analyse.md.tmp.80736.dfcc7bc3a3ac",
+    "Templates/Protocol-Risk-Analysis.md",
+    "Templates/DeFi-Strategy-Risk-Analysis.md",
+    "Templates/Strategy-Template.md.tmp.80736.5e912b0b6442",
+    "Templates/Template_Strategie.md",
+    "Templates/Template_Strategie.md.tmp.80736.083b386296cd",
+    "MOC-Alyra-DeFi-V2.md.tmp.80736.d190f31a690b",
+    "Wiki/assets/S2-Stablecoins.md.tmp.80736.4b66a6288e5f",
+    "Wiki/assets/Stablecoins/pmUSD.md",
+    "Wiki/assets/Stablecoins/pmUSD.md.tmp.80736.5a9c0c3cd75a",
+    "Wiki/assets/Stablecoins/OUSD.md",
+    "Wiki/assets/Stablecoins/USDD.md",
+    "Wiki/assets/Stablecoins/TUSD.md",
+    "Wiki/assets/Stablecoins/DOLA.md",
+    "Wiki/assets/Stablecoins/USDT.md",
+    "Wiki/assets/Stablecoins/MIM.md",
+    "Wiki/assets/Stablecoins/USD0.md",
+    "Wiki/assets/Stablecoins/Stablecoins-INDEX.md",
+    "Wiki/assets/Stablecoins/RLUSD.md",
+    "Wiki/assets/Stablecoins/USDM.md",
+    "Wiki/assets/Stablecoins/FDUSD.md",
+    "ClippiRAW/articlesngs/Avis RealT  Que penser de RealT et ses problèmes en 2026.md",
+    "Wiki/assets/Stablecoins/USDS.md",
+    "Wiki/assets/Stablecoins/GHO.md",
+    "Wiki/assets/Stablecoins/crvUSD.md",
+    "Wiki/assets/Stablecoins/PYUSD.md",
+    "Wiki/assets/Stablecoins/FRAX.md",
+    "orny-banner.png",
+    "logo.png",
+    "Sans titre 4.canvas",
+    "Sans titre 3.canvas",
+    "Sans titre 2.canvas",
+    "Sans titre 1.canvas",
+    "Sans titre.canvas"
+  ]
+}

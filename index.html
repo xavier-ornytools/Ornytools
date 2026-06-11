@@ -1,0 +1,1185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OrnyTools — The DeFi Decision Engine</title>
+  <meta name="description" content="Advanced calculators and risk tools that turn DeFi complexity into clear actions." />
+  <script src="chart.min.js"></script>
+  <style>
+    :root {
+      --bg: #f7f8fc;
+      --white: #ffffff;
+      --border: #e4e8f0;
+      --gold: #C8841E;
+      --blue: #2563eb;
+      --blue-dark: #1d4ed8;
+      --navy: #0d1b3e;
+      --purple: #7c3aed;
+      --green: #0e9f6e;
+      --red: #e02424;
+      --yellow: #d97706;
+      --text: #111827;
+      --muted: #6b7280;
+      --light: #f1f4fa;
+      --radius: 14px;
+      --shadow: 0 1px 4px rgba(0,0,0,.07), 0 4px 20px rgba(0,0,0,.05);
+      --shadow-lg: 0 8px 32px rgba(0,0,0,.11);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--white); color: var(--text); font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; min-height: 100vh; }
+    a { text-decoration: none; color: inherit; }
+    .hidden { display: none !important; }
+
+    /* ══════════════════ NAVBAR ══════════════════ */
+    .navbar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      background: rgba(255,255,255,.97); backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+      height: 64px; padding: 0 40px;
+      display: flex; align-items: center; gap: 28px;
+      box-shadow: 0 1px 6px rgba(0,0,0,.06);
+    }
+    .nav-logo { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+    .nav-logo img { width: 36px; height: 36px; border-radius: 9px; object-fit: cover; object-position: center 15%; }
+    .nav-brand { font-size: 1.05rem; font-weight: 900; letter-spacing: .5px; color: var(--text); }
+    .nav-brand span { color: var(--blue); }
+    .nav-links { display: flex; list-style: none; gap: 2px; flex: 1; }
+    .nav-links a { font-size: .88rem; font-weight: 500; color: var(--muted); padding: 6px 13px; border-radius: 8px; transition: color .2s, background .2s; }
+    .nav-links a:hover { color: var(--text); background: var(--light); }
+    .nav-right { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+    .btn-theme {
+      width: 36px; height: 36px; border-radius: 8px; border: 1px solid var(--border);
+      background: var(--light); display: flex; align-items: center; justify-content: center;
+      cursor: pointer; font-size: 1rem; transition: background .2s;
+    }
+    .btn-theme:hover { background: var(--border); }
+    .btn-launch {
+      background: var(--blue); color: #fff; border: none; border-radius: 8px;
+      font-size: .88rem; font-weight: 700; padding: 9px 20px; cursor: pointer;
+      display: flex; align-items: center; gap: 6px; transition: background .2s, transform .1s;
+      box-shadow: 0 2px 10px rgba(37,99,235,.3);
+    }
+    .btn-launch:hover { background: var(--blue-dark); transform: translateY(-1px); }
+
+    /* ══════════════════ HERO ══════════════════ */
+    .hero-section {
+      min-height: 100vh; padding: 100px 40px 70px;
+      background: #080e28;
+      display: flex; align-items: center;
+      position: relative; overflow: hidden;
+    }
+    .hero-glow {
+      position: absolute; inset: 0; pointer-events: none;
+      background:
+        radial-gradient(ellipse 60% 70% at 72% 50%, rgba(37,99,235,.22) 0%, transparent 65%),
+        radial-gradient(ellipse 40% 50% at 18% 70%, rgba(124,58,237,.14) 0%, transparent 55%),
+        radial-gradient(ellipse 30% 40% at 50% 10%, rgba(37,99,235,.08) 0%, transparent 60%);
+    }
+    .hero-inner {
+      max-width: 1200px; margin: 0 auto; width: 100%;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 56px; align-items: center; position: relative; z-index: 1;
+    }
+    .hero-tag {
+      display: inline-flex; align-items: center; gap: 7px; margin-bottom: 26px;
+      background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.14);
+      border-radius: 999px; padding: 5px 16px;
+      font-size: .72rem; font-weight: 700; letter-spacing: 1.8px; text-transform: uppercase;
+      color: rgba(255,255,255,.6);
+    }
+    .hero-h1 {
+      font-size: clamp(2.6rem, 4.5vw, 3.8rem); font-weight: 900; line-height: 1.07;
+      color: #fff; letter-spacing: -.5px; margin-bottom: 18px;
+    }
+    .hero-h1 .blue { color: #60a5fa; display: block; }
+    .hero-sub {
+      font-size: 1.05rem; color: rgba(255,255,255,.6); line-height: 1.78;
+      max-width: 430px; margin-bottom: 34px;
+    }
+    .hero-ctas { display: flex; gap: 12px; margin-bottom: 34px; flex-wrap: wrap; }
+    .btn-hero-primary {
+      background: var(--blue); color: #fff; border: none; border-radius: 9px;
+      font-size: .95rem; font-weight: 700; padding: 13px 26px; cursor: pointer;
+      display: flex; align-items: center; gap: 8px;
+      box-shadow: 0 4px 20px rgba(37,99,235,.45);
+      transition: background .2s, transform .1s;
+    }
+    .btn-hero-primary:hover { background: var(--blue-dark); transform: translateY(-1px); }
+    .btn-hero-outline {
+      background: transparent; color: rgba(255,255,255,.8);
+      border: 1px solid rgba(255,255,255,.22); border-radius: 9px;
+      font-size: .95rem; font-weight: 600; padding: 13px 26px; cursor: pointer;
+      transition: background .2s;
+    }
+    .btn-hero-outline:hover { background: rgba(255,255,255,.07); }
+    .hero-proof { display: flex; align-items: center; gap: 13px; margin-bottom: 26px; }
+    .avatar-stack { display: flex; }
+    .av {
+      width: 30px; height: 30px; border-radius: 50%; border: 2px solid #080e28;
+      margin-left: -8px; display: flex; align-items: center; justify-content: center;
+      font-size: .55rem; font-weight: 800; color: #fff; flex-shrink: 0;
+    }
+    .av:first-child { margin-left: 0; }
+    .proof-txt { font-size: .82rem; color: rgba(255,255,255,.5); line-height: 1.5; }
+    .proof-txt strong { color: rgba(255,255,255,.82); display: block; }
+    .hero-badges { display: flex; gap: 22px; }
+    .hbadge { display: flex; align-items: center; gap: 6px; font-size: .76rem; color: rgba(255,255,255,.38); font-weight: 600; }
+    .hbadge svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+    /* Hero right */
+    .hero-right { position: relative; }
+    .hero-img-wrap {
+      border-radius: 20px; overflow: hidden;
+      box-shadow: 0 20px 70px rgba(0,0,0,.55);
+      position: relative;
+    }
+    .hero-img-wrap img { width: 100%; display: block; border-radius: 20px; }
+    .stat-float {
+      position: absolute; background: rgba(255,255,255,.96);
+      backdrop-filter: blur(10px); border-radius: 12px; padding: 10px 14px;
+      box-shadow: 0 8px 28px rgba(0,0,0,.28); min-width: 126px;
+    }
+    .sf-label { font-size: .6rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 2px; }
+    .sf-val { font-size: 1.1rem; font-weight: 900; color: var(--text); line-height: 1.2; }
+    .sf-change { font-size: .71rem; font-weight: 700; margin-top: 2px; }
+    .sf-green { color: var(--green); }
+    .sf-blue { color: var(--blue); }
+    .sf-muted { color: var(--muted); }
+    .sf-tvl  { top: 14px; left: -18px; }
+    .sf-eth  { top: 14px; right: -14px; }
+    .sf-trend { bottom: 110px; left: -18px; }
+    .sf-gas  { bottom: 34px; right: -14px; }
+
+    /* ══════════════════ INTENT ══════════════════ */
+    .intent-section { background: var(--white); padding: 80px 40px; text-align: center; }
+    .sec-icon { font-size: 1.35rem; margin-bottom: 8px; }
+    .sec-title { font-size: 1.65rem; font-weight: 800; color: var(--text); margin-bottom: 8px; }
+    .sec-sub { font-size: .95rem; color: var(--muted); margin-bottom: 40px; }
+    .intent-grid {
+      max-width: 1120px; margin: 0 auto;
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;
+    }
+    .intent-card {
+      background: var(--white); border: 1px solid var(--border); border-radius: 16px;
+      padding: 24px 20px; text-align: left; cursor: pointer;
+      display: flex; flex-direction: column; gap: 0;
+      transition: box-shadow .2s, border-color .2s, transform .15s;
+    }
+    .intent-card:hover { box-shadow: var(--shadow-lg); border-color: var(--blue); transform: translateY(-3px); }
+    .intent-ico { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; margin-bottom: 14px; }
+    .intent-pre { font-size: .7rem; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 3px; }
+    .intent-title { font-size: 1.15rem; font-weight: 800; color: var(--text); margin-bottom: 8px; }
+    .intent-desc { font-size: .82rem; color: var(--muted); line-height: 1.65; flex: 1; }
+    .intent-arrow {
+      margin-top: 18px; width: 28px; height: 28px; border: 1px solid var(--border);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-size: .9rem; color: var(--blue);
+    }
+
+    /* ══════════════════ TOOLS ══════════════════ */
+    .tools-section { background: #f8f9fb; padding: 60px 40px; }
+    .tools-hd {
+      max-width: 1200px; margin: 0 auto 28px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .tools-hd-left { display: flex; align-items: center; gap: 9px; }
+    .tools-hd-left h2 { font-size: 1.35rem; font-weight: 800; color: var(--text); }
+    .view-all { font-size: .83rem; font-weight: 700; color: var(--blue); }
+    .tools-grid {
+      max-width: 1200px; margin: 0 auto;
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+    }
+    .tool-card {
+      background: var(--white); border: 1px solid var(--border); border-radius: 16px;
+      padding: 24px; transition: box-shadow .2s, transform .15s;
+    }
+    .tool-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-2px); }
+    .tc-head { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px; }
+    .tc-ico { width: 44px; height: 44px; border-radius: 12px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; }
+    .tc-meta { flex: 1; }
+    .tc-meta h3 { font-size: .98rem; font-weight: 800; color: var(--text); margin-bottom: 4px; }
+    .tc-meta p { font-size: .79rem; color: var(--muted); line-height: 1.55; }
+    .tc-badge { font-size: .58rem; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; padding: 3px 8px; border-radius: 6px; white-space: nowrap; }
+    .badge-best { background: #dcfce7; color: #15803d; }
+    .badge-risk { background: #fee2e2; color: #991b1b; }
+    .tc-stat { font-size: 1.4rem; font-weight: 900; text-align: right; line-height: 1.2; margin-top: 8px; }
+    .tc-stat small { font-size: .68rem; font-weight: 600; color: var(--muted); display: block; }
+    .open-tool { display: inline-flex; align-items: center; gap: 4px; font-size: .8rem; font-weight: 700; color: var(--blue); margin-top: 14px; cursor: pointer; background: none; border: none; padding: 0; }
+    .open-tool:hover { text-decoration: underline; }
+
+    /* ══════════════════ WHY / INSIGHT / ROADMAP ══════════════════ */
+    .why-section { background: var(--white); padding: 60px 40px; }
+    .why-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+    .why-card { background: var(--white); border: 1px solid var(--border); border-radius: 16px; padding: 28px; }
+    .wc-hd { display: flex; align-items: center; gap: 8px; margin-bottom: 20px; }
+    .wc-hd h3 { font-size: .93rem; font-weight: 800; color: var(--text); }
+    .flow-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .flow-item { text-align: center; }
+    .flow-ico {
+      width: 40px; height: 40px; border-radius: 10px;
+      background: var(--light); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem; margin: 0 auto 4px;
+    }
+    .flow-item.active .flow-ico { background: linear-gradient(135deg, var(--blue), var(--purple)); color: #fff; }
+    .flow-name { font-size: .62rem; color: var(--muted); font-weight: 600; }
+    .flow-item.active .flow-name { color: var(--blue); font-weight: 800; }
+    .flow-desc { font-size: .6rem; color: var(--muted); }
+    .flow-arrow { font-size: .9rem; color: #cbd5e1; margin-bottom: 18px; }
+    .insight-quote {
+      background: linear-gradient(135deg, #fef9f0, #fffdf9);
+      border-left: 3px solid var(--gold); border-radius: 0 10px 10px 0;
+      padding: 16px 18px; font-size: .87rem; line-height: 1.75;
+      color: var(--text); font-style: italic;
+    }
+    .insight-foot { font-size: .78rem; font-weight: 700; color: var(--muted); margin-top: 14px; }
+    .road-list { display: flex; flex-direction: column; gap: 11px; }
+    .road-item { display: flex; align-items: center; gap: 11px; font-size: .85rem; }
+    .rd { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
+    .rd-done { background: var(--green); }
+    .rd-active { background: var(--blue); box-shadow: 0 0 0 3px rgba(37,99,235,.2); }
+    .rd-soon { background: transparent; border: 2px solid var(--border); }
+    .rd-name { flex: 1; color: var(--text); font-weight: 500; }
+    .rd-status { font-size: .71rem; color: var(--muted); font-weight: 600; }
+    .rd-status.active { color: var(--blue); }
+
+    /* ══════════════════ STATS BAR ══════════════════ */
+    .stats-bar { background: var(--navy); padding: 50px 40px; }
+    .stats-inner {
+      max-width: 1200px; margin: 0 auto;
+      display: flex; align-items: center; gap: 0; flex-wrap: wrap;
+    }
+    .stat-item {
+      flex: 1 1 140px; text-align: center;
+      padding: 0 24px; border-right: 1px solid rgba(255,255,255,.09);
+    }
+    .stat-item:last-of-type { border-right: none; }
+    .stat-icon { font-size: 1.2rem; margin-bottom: 6px; opacity: .7; }
+    .stat-num {
+      font-size: 2rem; font-weight: 900; line-height: 1;
+      background: linear-gradient(135deg, #93c5fd, #c4b5fd);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .stat-lbl { font-size: .75rem; color: rgba(255,255,255,.42); font-weight: 600; margin-top: 5px; }
+    .trusted-col { flex: 1 1 200px; padding-left: 32px; border-left: 1px solid rgba(255,255,255,.09); }
+    .trusted-lbl { font-size: .68rem; color: rgba(255,255,255,.35); text-transform: uppercase; letter-spacing: 1.2px; font-weight: 700; margin-bottom: 12px; }
+    .trusted-logos { display: flex; gap: 8px; flex-wrap: wrap; }
+    .tl {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: rgba(255,255,255,.09); border: 1px solid rgba(255,255,255,.14);
+      display: flex; align-items: center; justify-content: center;
+      font-size: .72rem; color: rgba(255,255,255,.55); font-weight: 700;
+    }
+
+    /* ══════════════════ TOOL SECTION ══════════════════ */
+    .tool-section-wrap { background: var(--bg); }
+    .tool-section-header {
+      max-width: 1060px; margin: 0 auto;
+      padding: 64px 28px 0; text-align: center;
+    }
+    .tool-section-header h2 { font-size: 1.55rem; font-weight: 800; color: var(--text); margin-bottom: 8px; }
+    .tool-section-header p { font-size: .94rem; color: var(--muted); }
+
+    /* ══════════════════ TOOL INTERNALS (preserved) ══════════════════ */
+    main { max-width: 1060px; margin: 0 auto; padding: 44px 28px 100px; position: relative; }
+    .grid { display: grid; gap: 22px; grid-template-columns: 1fr 1fr; position: relative; z-index: 1; }
+    @media (max-width: 680px) { .grid { grid-template-columns: 1fr; } }
+    .card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 30px; box-shadow: var(--shadow); }
+    .card h2 { font-size: .72rem; font-weight: 700; letter-spacing: 1.8px; text-transform: uppercase; color: var(--muted); margin-bottom: 22px; }
+    .full { grid-column: 1 / -1; }
+    .fetch-card { border-top: 3px solid var(--gold); }
+    .fetch-row { display: flex; gap: 8px; flex-wrap: wrap; }
+    .fetch-row input { flex: 1; min-width: 180px; }
+    select, input[type="text"], input[type="number"] {
+      background: var(--light); border: 1px solid var(--border); border-radius: 8px;
+      color: var(--text); font-size: .95rem; padding: 10px 13px; outline: none;
+      transition: border-color .2s, box-shadow .2s; width: 100%;
+    }
+    select { width: auto; cursor: pointer; flex-shrink: 0; }
+    input:focus, select:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(200,132,30,.12); }
+    input::placeholder { color: #adb5c7; }
+    input.live { border-color: var(--blue); background: #eef7fd; }
+    .btn-load {
+      background: linear-gradient(135deg, var(--gold), #E8A040); border: none; border-radius: 8px;
+      color: #fff; font-size: .92rem; font-weight: 700; padding: 10px 22px; cursor: pointer;
+      white-space: nowrap; transition: opacity .2s, transform .1s; flex-shrink: 0;
+      box-shadow: 0 2px 10px rgba(200,132,30,.3);
+    }
+    .btn-load:hover { opacity: .88; } .btn-load:disabled { opacity: .45; cursor: not-allowed; box-shadow: none; }
+    .status-bar {
+      display: flex; align-items: center; gap: 10px; margin-top: 12px; padding: 10px 14px;
+      background: var(--light); border: 1px solid var(--border); border-radius: 8px; font-size: .82rem;
+    }
+    .dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+    .dot.idle { background: #cbd5e1; }
+    .dot.loading { background: var(--yellow); animation: pulse 1s infinite; }
+    .dot.ok  { background: var(--green); }
+    .dot.err { background: var(--red); }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
+    .status-text { color: var(--muted); flex: 1; }
+    .chips { display: flex; gap: 5px; flex-wrap: wrap; }
+    .chip { background: #e8f5fd; border: 1px solid #b3dcf5; color: var(--blue); font-size: .68rem; font-weight: 700; padding: 2px 8px; border-radius: 999px; }
+    .history-row { margin-top: 10px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+    .hlabel { font-size: .68rem; color: var(--muted); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+    .btn-hist {
+      background: var(--light); border: 1px solid var(--border); border-radius: 999px;
+      color: var(--muted); font-size: .72rem; font-weight: 600; padding: 3px 11px;
+      cursor: pointer; transition: all .2s;
+    }
+    .btn-hist:hover { border-color: var(--blue); color: var(--blue); }
+    .field { margin-bottom: 20px; }
+    label { display: block; font-size: .75rem; color: var(--muted); margin-bottom: 5px; font-weight: 600; }
+    .tip { font-size: .68rem; color: #adb5c7; margin-top: 4px; }
+    .btn-calc {
+      width: 100%; background: linear-gradient(135deg, var(--gold), #E8A040); border: none;
+      border-radius: 8px; color: #fff; font-size: .95rem; font-weight: 700; padding: 12px;
+      cursor: pointer; margin-top: 4px; transition: opacity .2s, transform .1s;
+      box-shadow: 0 2px 12px rgba(200,132,30,.25);
+    }
+    .btn-calc:hover { opacity: .88; } .btn-calc:active { transform: scale(.98); }
+    .alert {
+      grid-column: 1/-1; display: flex; align-items: flex-start; gap: 12px;
+      background: #fff7f7; border: 1px solid #fecaca; border-radius: var(--radius);
+      padding: 14px 18px; font-size: .87rem; line-height: 1.6; color: var(--text); box-shadow: var(--shadow);
+    }
+    .alert strong { color: var(--red); }
+    .results { grid-column: 1/-1; display: flex; gap: 14px; flex-wrap: wrap; }
+    .rblock { flex: 1 1 120px; background: var(--white); border: 1px solid var(--border); border-radius: 12px; padding: 18px; text-align: center; box-shadow: var(--shadow); }
+    .rblock .rl { font-size: .68rem; color: var(--muted); font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; margin-bottom: 8px; }
+    .rblock .rv { font-size: 1.75rem; font-weight: 800; }
+    .rblock .rs { font-size: .7rem; color: var(--muted); margin-top: 4px; }
+    .c-gold  { color: var(--gold); } .c-blue { color: var(--blue); }
+    .c-green { color: var(--green); } .c-red { color: var(--red); }
+    .myrow { display: flex; gap: 14px; align-items: flex-end; flex-wrap: wrap; }
+    .myinput { flex: 1 1 160px; }
+    .myblocks { flex: 2 1 280px; display: flex; gap: 10px; flex-wrap: wrap; }
+    .mblock { flex: 1 1 100px; background: var(--light); border: 1px solid var(--border); border-radius: 10px; padding: 12px; text-align: center; }
+    .mblock .ml { font-size: .68rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; font-weight: 700; }
+    .mblock .mv { font-size: 1.3rem; font-weight: 800; margin-top: 5px; }
+    .advice { margin-top: 14px; padding: 11px 16px; border-radius: 8px; font-size: .87rem; line-height: 1.6; }
+    .advice.good { background: #f0fdf8; border: 1px solid #a7f3d0; color: var(--green); }
+    .advice.warn { background: #fff7f7; border: 1px solid #fecaca; color: var(--red); }
+    .chart-wrap { position: relative; height: 260px; }
+    .slider-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+    .slider-head span { font-size: .82rem; color: var(--muted); }
+    .slider-head strong { font-size: 1rem; color: var(--text); }
+    input[type="range"] { width: 100%; accent-color: var(--gold); cursor: pointer; }
+    .pills { display: flex; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
+    .pill { flex: 1 1 110px; background: var(--light); border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; text-align: center; }
+    .pill .pl { font-size: .68rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; font-weight: 700; }
+    .pill .pv { font-size: 1.1rem; font-weight: 800; margin-top: 4px; }
+    .pill.hl { border-color: var(--gold); background: #fffbf5; }
+    .cmp-row { display: flex; align-items: center; gap: 12px; padding: 13px 0; border-bottom: 1px solid var(--border); }
+    .cmp-row:last-child { border-bottom: none; }
+    .cmp-icon { font-size: 1.3rem; width: 30px; text-align: center; flex-shrink: 0; }
+    .cmp-text { flex: 1; font-size: .88rem; line-height: 1.5; color: var(--muted); }
+    .cmp-text strong { color: var(--text); }
+    .pos { color: var(--green); font-weight: 700; } .neg { color: var(--red); font-weight: 700; }
+    .bottom { grid-column: 1/-1; display: flex; flex-direction: column; align-items: center; gap: 16px; }
+    .formula {
+      width: 100%; background: var(--white); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 24px 30px; font-size: .88rem; line-height: 2; color: var(--muted);
+      box-shadow: var(--shadow); text-align: center;
+    }
+    .formula strong { display: block; margin-bottom: 10px; }
+    .formula code { background: #fef3e2; color: var(--gold); padding: 2px 8px; border-radius: 4px; font-size: .84rem; }
+    .sharebox {
+      width: 100%; background: var(--white); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 24px 30px; display: flex; flex-direction: column; align-items: center; gap: 12px;
+      box-shadow: var(--shadow); text-align: center;
+    }
+    .sharebox p { font-size: .88rem; color: var(--muted); line-height: 1.7; max-width: 420px; }
+    .btn-share {
+      background: linear-gradient(135deg, var(--gold), #E8A040); border: none; border-radius: 8px;
+      color: #fff; font-size: .9rem; font-weight: 700; padding: 11px 32px; cursor: pointer; transition: opacity .2s;
+    }
+    .btn-share:hover { opacity: .85; }
+    .copied { color: var(--green); font-size: .78rem; text-align: center; display: none; }
+    .how { text-align: center; }
+    .how p { font-size: .9rem; color: var(--muted); line-height: 1.85; margin-bottom: 10px; }
+    .how p:last-child { margin-bottom: 0; }
+
+    /* ══════════════════ BANNER ══════════════════ */
+    .banner-section { background: var(--white); border-top: 1px solid var(--border); padding: 80px 28px 90px; text-align: center; }
+    .banner-inner { max-width: 720px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 40px; }
+    .banner-img { width: 100%; max-width: 560px; border-radius: 24px; box-shadow: 0 16px 64px rgba(0,0,0,.13); }
+    .banner-text { display: flex; flex-direction: column; align-items: center; }
+    .banner-tag { display: inline-block; background: #fef3e2; color: var(--gold); font-size: .7rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; padding: 5px 14px; border-radius: 999px; margin-bottom: 22px; }
+    .banner-title { font-size: clamp(2.4rem, 5vw, 3.6rem); font-weight: 900; color: var(--text); line-height: 1.1; letter-spacing: -.5px; margin-bottom: 28px; }
+    .banner-sub { font-size: 1rem; color: var(--muted); line-height: 1.9; max-width: 520px; }
+
+    /* ══════════════════ FOOTER ══════════════════ */
+    .footer-new { background: var(--white); border-top: 1px solid var(--border); padding: 56px 40px 28px; }
+    .footer-inner { max-width: 1200px; margin: 0 auto; }
+    .footer-top { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr 1.4fr; gap: 36px; margin-bottom: 44px; }
+    .fbrand-logo { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+    .fbrand-logo img { width: 32px; height: 32px; border-radius: 8px; object-fit: cover; object-position: center 15%; }
+    .fbrand-logo span { font-size: 1rem; font-weight: 900; letter-spacing: .4px; }
+    .fbrand-logo span em { color: var(--blue); font-style: normal; }
+    .fbrand-desc { font-size: .82rem; color: var(--muted); line-height: 1.72; margin-bottom: 16px; }
+    .fbrand-socials { display: flex; gap: 7px; }
+    .fsoc {
+      width: 30px; height: 30px; border-radius: 7px;
+      background: var(--light); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: .72rem; font-weight: 800; color: var(--muted);
+      cursor: pointer; transition: all .2s;
+    }
+    .fsoc:hover { border-color: var(--blue); color: var(--blue); background: #eff6ff; }
+    .fcol h4 { font-size: .69rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text); margin-bottom: 14px; }
+    .fcol ul { list-style: none; display: flex; flex-direction: column; gap: 9px; }
+    .fcol ul li a { font-size: .83rem; color: var(--muted); transition: color .2s; }
+    .fcol ul li a:hover { color: var(--blue); }
+    .fnews-desc { font-size: .82rem; color: var(--muted); line-height: 1.65; margin-bottom: 12px; }
+    .news-form { display: flex; gap: 7px; }
+    .news-form input {
+      flex: 1; background: var(--light); border: 1px solid var(--border);
+      border-radius: 8px; padding: 9px 12px; font-size: .83rem; color: var(--text); outline: none;
+    }
+    .news-form input:focus { border-color: var(--blue); }
+    .news-form button {
+      background: var(--blue); color: #fff; border: none; border-radius: 8px;
+      padding: 9px 13px; cursor: pointer; font-size: 1rem; transition: background .2s;
+    }
+    .news-form button:hover { background: var(--blue-dark); }
+    .footer-bottom { border-top: 1px solid var(--border); padding-top: 20px; text-align: center; font-size: .74rem; color: #adb5c7; }
+    .footer-bottom a { color: var(--blue); }
+
+    /* ══════════════════ RESPONSIVE ══════════════════ */
+    @media (max-width: 960px) {
+      .hero-inner { grid-template-columns: 1fr; }
+      .hero-right { display: none; }
+      .intent-grid { grid-template-columns: 1fr 1fr; }
+      .tools-grid { grid-template-columns: 1fr 1fr; }
+      .why-grid { grid-template-columns: 1fr; }
+      .footer-top { grid-template-columns: 1fr 1fr; }
+      .stats-inner { gap: 16px; }
+      .navbar { padding: 0 20px; gap: 16px; }
+      .nav-links { display: none; }
+    }
+    @media (max-width: 580px) {
+      .intent-grid { grid-template-columns: 1fr; }
+      .tools-grid { grid-template-columns: 1fr; }
+      .hero-section { padding: 90px 20px 60px; }
+      .intent-section, .tools-section, .why-section { padding: 52px 20px; }
+      .stats-bar { padding: 40px 20px; }
+      .footer-new { padding: 40px 20px 24px; }
+      .footer-top { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ════════════════════════════ NAVBAR ════════════════════════════ -->
+<nav class="navbar">
+  <a href="#" class="nav-logo">
+    <img src="logo.png" alt="OrnyTools" />
+    <span class="nav-brand">ORNY<span>TOOL</span></span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#tools">Tools</a></li>
+    <li><a href="#">Resources</a></li>
+    <li><a href="#">Blog</a></li>
+    <li><a href="#">About</a></li>
+  </ul>
+  <div class="nav-right">
+    <div class="btn-theme" title="Toggle theme">🌙</div>
+    <button class="btn-launch" onclick="document.getElementById('tool').scrollIntoView({behavior:'smooth'})">
+      Launch App 🚀
+    </button>
+  </div>
+</nav>
+
+<!-- ════════════════════════════ HERO ════════════════════════════ -->
+<section class="hero-section">
+  <div class="hero-glow"></div>
+  <div class="hero-inner">
+
+    <!-- Left -->
+    <div class="hero-left">
+      <div class="hero-tag">⚡ DeFi Intelligence Platform</div>
+      <h1 class="hero-h1">
+        The DeFi
+        <span class="blue">Decision Engine</span>
+      </h1>
+      <p class="hero-sub">Advanced calculators and risk tools that turn DeFi complexity into clear actions.</p>
+      <div class="hero-ctas">
+        <button class="btn-hero-primary" onclick="document.getElementById('tool').scrollIntoView({behavior:'smooth'})">
+          🚀 Launch Tools
+        </button>
+        <button class="btn-hero-outline" onclick="document.getElementById('tools').scrollIntoView({behavior:'smooth'})">
+          Explore All Tools
+        </button>
+      </div>
+      <div class="hero-proof">
+        <div class="avatar-stack">
+          <div class="av" style="background:#2563eb">XY</div>
+          <div class="av" style="background:#7c3aed">MK</div>
+          <div class="av" style="background:#0e9f6e">JL</div>
+          <div class="av" style="background:#d97706">+</div>
+        </div>
+        <div class="proof-txt">
+          <strong>Join 25,000+ DeFi users</strong>
+          making smarter decisions every day.
+        </div>
+      </div>
+      <div class="hero-badges">
+        <div class="hbadge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          Secure
+        </div>
+        <div class="hbadge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+          Transparent
+        </div>
+        <div class="hbadge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+          Open Source
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: mascot + floating stats -->
+    <div class="hero-right">
+      <div class="hero-img-wrap">
+        <img src="orny-banner.png" alt="OrnyTools — DeFi Decision Engine" />
+        <div class="stat-float sf-tvl">
+          <div class="sf-label">Total Value Locked (TVL)</div>
+          <div class="sf-val">$82.4B</div>
+          <div class="sf-change sf-green">▲ +6.21%</div>
+        </div>
+        <div class="stat-float sf-eth">
+          <div class="sf-label">ETH Price</div>
+          <div class="sf-val">$3,678.24</div>
+          <div class="sf-change sf-green">▲ +2.45%</div>
+        </div>
+        <div class="stat-float sf-trend">
+          <div class="sf-label">Market Trend</div>
+          <div class="sf-val sf-green">Bullish</div>
+          <div class="sf-change sf-muted">Momentum Strong</div>
+        </div>
+        <div class="stat-float sf-gas">
+          <div class="sf-label">Gas Fees</div>
+          <div class="sf-val">23 Gwei</div>
+          <div class="sf-change sf-green">Low</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ════════════════════════════ INTENT ════════════════════════════ -->
+<section class="intent-section">
+  <div class="sec-icon">⚙️</div>
+  <h2 class="sec-title">What are you trying to do today?</h2>
+  <p class="sec-sub">Choose your objective, we'll help you make the right decision.</p>
+  <div class="intent-grid">
+    <div class="intent-card" onclick="document.getElementById('tool').scrollIntoView({behavior:'smooth'})">
+      <div class="intent-ico" style="background:#eff6ff">🔄</div>
+      <div class="intent-pre">I want to</div>
+      <div class="intent-title">Trade</div>
+      <div class="intent-desc">Find the optimal trade size and minimize slippage</div>
+      <div class="intent-arrow">→</div>
+    </div>
+    <div class="intent-card">
+      <div class="intent-ico" style="background:#f0fdf4">💧</div>
+      <div class="intent-pre">I want to</div>
+      <div class="intent-title">Provide LP</div>
+      <div class="intent-desc">Simulate impermanent loss and optimize returns</div>
+      <div class="intent-arrow">→</div>
+    </div>
+    <div class="intent-card">
+      <div class="intent-ico" style="background:#fdf4ff">📈</div>
+      <div class="intent-pre">I want to</div>
+      <div class="intent-title">Leverage</div>
+      <div class="intent-desc">Maximize yield with safe leverage strategies</div>
+      <div class="intent-arrow">→</div>
+    </div>
+    <div class="intent-card">
+      <div class="intent-ico" style="background:#fff7ed">🏛️</div>
+      <div class="intent-pre">I want to</div>
+      <div class="intent-title">Borrow</div>
+      <div class="intent-desc">Understand liquidation risk and safe borrowing limits</div>
+      <div class="intent-arrow">→</div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════ TOOLS ════════════════════════════ -->
+<section class="tools-section" id="tools">
+  <div class="tools-hd">
+    <div class="tools-hd-left">
+      <span style="font-size:1.25rem">⚡</span>
+      <h2>Powerful tools. Clear decisions.</h2>
+    </div>
+    <a href="#tool" class="view-all" onclick="document.getElementById('tool').scrollIntoView({behavior:'smooth'});return false;">View all tools →</a>
+  </div>
+  <div class="tools-grid">
+
+    <div class="tool-card">
+      <div class="tc-head">
+        <div class="tc-ico" style="background:#eff6ff">🔄</div>
+        <div class="tc-meta">
+          <h3>Trade Optimizer</h3>
+          <p>Find the mathematically optimal trade size based on AMM curve, fees, and slippage.</p>
+        </div>
+        <span class="tc-badge badge-best">BEST TRADES</span>
+      </div>
+      <button class="open-tool" onclick="document.getElementById('tool').scrollIntoView({behavior:'smooth'})">Open Tool →</button>
+    </div>
+
+    <div class="tool-card">
+      <div class="tc-head">
+        <div class="tc-ico" style="background:#fdf4ff">📉</div>
+        <div class="tc-meta">
+          <h3>LP Simulator</h3>
+          <p>Calculate impermanent loss, fees earned, and total PnL for any price range.</p>
+        </div>
+      </div>
+      <button class="open-tool" onclick="location.href='defi-tx-optimizer.html'">Open Tool →</button>
+    </div>
+
+    <div class="tool-card">
+      <div class="tc-head">
+        <div class="tc-ico" style="background:#fff7ed">🛡️</div>
+        <div class="tc-meta">
+          <h3>Liquidation Calculator</h3>
+          <p>Know your exact liquidation price and how much buffer you actually have.</p>
+        </div>
+        <span class="tc-badge badge-risk">RISK</span>
+      </div>
+      <div class="tc-stat" style="color:var(--gold)">1.48x <small>Buffer</small></div>
+      <button class="open-tool">Open Tool →</button>
+    </div>
+
+    <div class="tool-card">
+      <div class="tc-head">
+        <div class="tc-ico" style="background:#f0fdf4">💰</div>
+        <div class="tc-meta">
+          <h3>Leverage Calculator</h3>
+          <p>Calculate real APY, borrow costs, and find the optimal leverage for your strategy.</p>
+        </div>
+      </div>
+      <div class="tc-stat" style="color:var(--green)">27.48% <small>APY</small></div>
+      <button class="open-tool">Open Tool →</button>
+    </div>
+
+    <div class="tool-card">
+      <div class="tc-head">
+        <div class="tc-ico" style="background:#eff6ff">🎯</div>
+        <div class="tc-meta">
+          <h3>Position Size Calculator</h3>
+          <p>Find the right position size based on your risk tolerance and market conditions.</p>
+        </div>
+      </div>
+      <div class="tc-stat" style="color:var(--blue)">2% <small>Risk</small></div>
+      <button class="open-tool">Open Tool →</button>
+    </div>
+
+    <div class="tool-card">
+      <div class="tc-head">
+        <div class="tc-ico" style="background:#fdf4ff">⚖️</div>
+        <div class="tc-meta">
+          <h3>Yield Comparator</h3>
+          <p>Compare yields across protocols to find the best risk-adjusted opportunities.</p>
+        </div>
+      </div>
+      <button class="open-tool">Open Tool →</button>
+    </div>
+
+  </div>
+</section>
+
+<!-- ════════════════════════════ WHY / INSIGHT / ROADMAP ════════════════════════════ -->
+<section class="why-section">
+  <div class="why-grid">
+
+    <div class="why-card">
+      <div class="wc-hd"><span>⚙️</span><h3>Why OrnyTools exists</h3></div>
+      <div class="flow-row">
+        <div class="flow-item">
+          <div class="flow-ico">🦙</div>
+          <div class="flow-name">DeFiLlama</div>
+          <div class="flow-desc">shows data</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-item">
+          <div class="flow-ico">🏦</div>
+          <div class="flow-name">DeBank</div>
+          <div class="flow-desc">shows wallets</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-item">
+          <div class="flow-ico">🔥</div>
+          <div class="flow-name">De.Fi</div>
+          <div class="flow-desc">shows risks</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-item active">
+          <div class="flow-ico">🧠</div>
+          <div class="flow-name">OrnyTools</div>
+          <div class="flow-desc">helps you decide</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="why-card">
+      <div class="wc-hd"><span>💡</span><h3>Orny's Daily Insight</h3></div>
+      <div class="insight-quote">
+        "Trading a $50 swap in a $50M pool can cost more in gas than in slippage."
+      </div>
+      <div class="insight-foot">Most traders never calculate that.</div>
+    </div>
+
+    <div class="why-card">
+      <div class="wc-hd"><span>🗺️</span><h3>Roadmap</h3></div>
+      <div class="road-list">
+        <div class="road-item"><div class="rd rd-done"></div><div class="rd-name">Trade Optimizer</div><div class="rd-status">Completed</div></div>
+        <div class="road-item"><div class="rd rd-done"></div><div class="rd-name">LP Simulator</div><div class="rd-status">Completed</div></div>
+        <div class="road-item"><div class="rd rd-active"></div><div class="rd-name">Risk Engine</div><div class="rd-status active">In Progress</div></div>
+        <div class="road-item"><div class="rd rd-soon"></div><div class="rd-name">Yield Comparator</div><div class="rd-status">Coming Soon</div></div>
+        <div class="road-item"><div class="rd rd-soon"></div><div class="rd-name">DeFi Decision AI</div><div class="rd-status">Future</div></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ════════════════════════════ STATS BAR ════════════════════════════ -->
+<section class="stats-bar">
+  <div class="stats-inner">
+    <div class="stat-item">
+      <div class="stat-icon">👤</div>
+      <div class="stat-num">25K+</div>
+      <div class="stat-lbl">Active Users</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-icon">🧮</div>
+      <div class="stat-num">100K+</div>
+      <div class="stat-lbl">Calculations Run</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-icon">🔗</div>
+      <div class="stat-num">50+</div>
+      <div class="stat-lbl">DeFi Protocols</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-icon">🛡️</div>
+      <div class="stat-num">99.9%</div>
+      <div class="stat-lbl">Uptime</div>
+    </div>
+    <div class="trusted-col">
+      <div class="trusted-lbl">Trusted by DeFi users worldwide</div>
+      <div class="trusted-logos">
+        <div class="tl">Ξ</div>
+        <div class="tl">🦄</div>
+        <div class="tl">⚡</div>
+        <div class="tl">🔵</div>
+        <div class="tl">🟠</div>
+        <div class="tl">🔴</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════ TRADE OPTIMIZER TOOL ════════════════════════════ -->
+<div class="tool-section-wrap">
+  <div class="tool-section-header">
+    <h2>🔄 Trade Size Optimizer</h2>
+    <p>Find the mathematically optimal trade amount — live blockchain data.</p>
+  </div>
+
+  <main id="tool">
+    <div class="grid">
+
+      <!-- POOL LOADER -->
+      <div class="card fetch-card full">
+        <h2>Pool Analysis</h2>
+        <div class="fetch-row">
+          <select id="net">
+            <option value="eth">Ethereum</option>
+            <option value="arbitrum">Arbitrum</option>
+            <option value="base">Base</option>
+            <option value="optimism">Optimism</option>
+            <option value="bsc">BNB Chain</option>
+            <option value="polygon">Polygon</option>
+          </select>
+          <input type="text" id="poolAddr" placeholder="Pool address  (0x...)" />
+          <button class="btn-load" onclick="fetchPool()">⚡ Load</button>
+        </div>
+        <div class="history-row hidden" id="histRow">
+          <span class="hlabel">Recent</span>
+          <div id="histBtns"></div>
+        </div>
+        <div class="status-bar">
+          <div class="dot idle" id="dot"></div>
+          <span class="status-text" id="statusTxt">Select a network, paste a pool address and click Load</span>
+          <div class="chips hidden" id="chips"></div>
+        </div>
+      </div>
+
+      <!-- PARAMETERS -->
+      <div class="card">
+        <h2>Pool Parameters</h2>
+        <div class="field">
+          <label>Pair</label>
+          <input type="text" id="pairName" placeholder="e.g. USDC / WETH" value="USDC / WETH" />
+        </div>
+        <div class="field">
+          <label>Total liquidity — TVL ($)</label>
+          <input type="number" id="tvl" value="500000" min="1" />
+          <div class="tip">Auto-fetched · editable</div>
+        </div>
+        <div class="field">
+          <label>Network fee — gas ($)</label>
+          <input type="number" id="gas" value="3.50" step="0.01" min="0.01" />
+          <div class="tip">Real-time estimate</div>
+        </div>
+        <div class="field">
+          <label>Protocol fee (%)</label>
+          <input type="number" id="fee" value="0.30" step="0.01" min="0" />
+        </div>
+        <button class="btn-calc" onclick="calculate()">Calculate optimal size →</button>
+      </div>
+
+      <!-- HOW IT WORKS -->
+      <div class="card how">
+        <h2>How it works</h2>
+        <p>Gas is a fixed cost — it kills small trades. Slippage grows with size — it kills large ones. Between both lies a precise sweet spot.</p>
+        <p>OrnyTools solves √(2 × gas × TVL) live, using real blockchain data, to give you that number before every trade.</p>
+      </div>
+
+      <!-- ALERT -->
+      <div class="alert hidden full" id="alertLiq">
+        <span style="font-size:1.4rem">⚠️</span>
+        <div><strong>Low liquidity pool</strong> — fees will be high regardless of trade size. Check if a more liquid alternative exists before trading.</div>
+      </div>
+
+      <!-- RESULTS -->
+      <div class="results hidden full" id="results">
+        <div class="rblock">
+          <div class="rl">Optimal size</div>
+          <div class="rv c-gold" id="resOpt">—</div>
+          <div class="rs">ideal trade amount</div>
+        </div>
+        <div class="rblock">
+          <div class="rl">Minimum cost</div>
+          <div class="rv c-blue" id="resCost">—</div>
+          <div class="rs">total fees at optimum</div>
+        </div>
+        <div class="rblock">
+          <div class="rl">Saving vs $100</div>
+          <div class="rv c-green" id="resSave">—</div>
+          <div class="rs">vs a naive trade</div>
+        </div>
+        <div class="rblock">
+          <div class="rl">Pool</div>
+          <div class="rv" style="font-size:.95rem;color:var(--text)" id="resPair">—</div>
+          <div class="rs" id="resTVL">—</div>
+        </div>
+      </div>
+
+      <!-- MY AMOUNT -->
+      <div class="card full hidden" id="mySection">
+        <h2>Simulate my trade</h2>
+        <div class="myrow">
+          <div class="myinput">
+            <label>I want to invest ($)</label>
+            <input type="number" id="myAmt" value="100" min="1" oninput="updateMyAmt()" />
+          </div>
+          <div class="myblocks">
+            <div class="mblock"><div class="ml">Total cost</div><div class="mv c-red" id="maCost">—</div></div>
+            <div class="mblock"><div class="ml">Fees in $</div><div class="mv" style="color:var(--yellow)" id="maFee">—</div></div>
+            <div class="mblock"><div class="ml">vs optimal</div><div class="mv" id="maDiff">—</div></div>
+          </div>
+        </div>
+        <div class="advice hidden" id="maAdvice"></div>
+      </div>
+
+      <!-- CHART -->
+      <div class="card full hidden" id="chartSection">
+        <h2>Cost curve — The U-shape</h2>
+        <div class="chart-wrap"><canvas id="chart"></canvas></div>
+      </div>
+
+      <!-- SLIDER -->
+      <div class="card full hidden" id="sliderSection">
+        <h2>Interactive explorer</h2>
+        <div class="slider-head">
+          <span>Trade amount</span>
+          <strong id="sliderVal">$50</strong>
+        </div>
+        <input type="range" id="slider" min="1" max="500" value="50" oninput="updateSlider()" />
+        <div class="pills">
+          <div class="pill"><div class="pl">Gas</div><div class="pv c-red" id="pGas">—</div></div>
+          <div class="pill"><div class="pl">Slippage</div><div class="pv" style="color:var(--yellow)" id="pSlip">—</div></div>
+          <div class="pill"><div class="pl">Pool fee</div><div class="pv" style="color:var(--muted)" id="pFee">—</div></div>
+          <div class="pill hl"><div class="pl">Total</div><div class="pv c-gold" id="pTotal">—</div></div>
+        </div>
+      </div>
+
+      <!-- COMPARATOR -->
+      <div class="card full hidden" id="cmpSection">
+        <h2>Scenario comparison</h2>
+        <div id="cmpRows"></div>
+      </div>
+
+      <!-- BOTTOM -->
+      <div class="bottom hidden" id="bottomRow">
+        <div class="formula">
+          <strong style="color:var(--text);display:block;margin-bottom:6px">The math</strong>
+          Total cost (%) = <code>Gas $ / Amount</code> + <code>Amount / (2 × TVL)</code> + <code>Pool fee</code><br>
+          Optimal amount = <code>√(2 × Gas $ × TVL)</code><br><br>
+          Zero derivative of the cost function — mathematical minimum of the U-curve.
+        </div>
+        <div class="sharebox">
+          <strong style="font-size:.83rem">Share this analysis</strong>
+          <p>Generate a direct link — anyone who opens it sees the result instantly.</p>
+          <button class="btn-share" onclick="shareLink()">Copy link</button>
+          <div class="copied" id="copied">Link copied!</div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<!-- ════════════════════════════ BANNER ════════════════════════════ -->
+<section class="banner-section">
+  <div class="banner-inner">
+    <img src="orny-banner.png" alt="OrnyTools — Patience. Strategy. Freedom." class="banner-img" />
+    <div class="banner-text">
+      <div class="banner-tag">Built for DeFi traders</div>
+      <h2 class="banner-title">Patience.<br>Strategy.<br>Freedom.</h2>
+      <p class="banner-sub">Every basis point saved compounds. Most traders focus on entry price — few think about the cost of the transaction itself. OrnyTools fills that gap: one number, derived live from the blockchain, so you stop leaving money on the table before the trade even starts. The math is simple. The edge is real.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════ FOOTER ════════════════════════════ -->
+<footer class="footer-new">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div>
+        <div class="fbrand-logo">
+          <img src="logo.png" alt="OrnyTools" />
+          <span>ORNY<em>TOOL</em></span>
+        </div>
+        <p class="fbrand-desc">The DeFi Decision Engine.<br>Make better decisions. Every time.</p>
+        <div class="fbrand-socials">
+          <div class="fsoc">𝕏</div>
+          <div class="fsoc">DC</div>
+          <div class="fsoc">TG</div>
+          <div class="fsoc">GH</div>
+        </div>
+      </div>
+      <div class="fcol">
+        <h4>Product</h4>
+        <ul>
+          <li><a href="#">All Tools</a></li>
+          <li><a href="#">Risk Engine</a></li>
+          <li><a href="#">Roadmap</a></li>
+          <li><a href="#">API (Soon)</a></li>
+        </ul>
+      </div>
+      <div class="fcol">
+        <h4>Resources</h4>
+        <ul>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Guides</a></li>
+          <li><a href="#">Glossary</a></li>
+          <li><a href="#">FAQ</a></li>
+        </ul>
+      </div>
+      <div class="fcol">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Contact</a></li>
+          <li><a href="#">Privacy</a></li>
+          <li><a href="#">Terms</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 style="font-size:.69rem;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;color:var(--text);margin-bottom:14px">Stay Updated</h4>
+        <p class="fnews-desc">Get new tools, insights, and updates delivered to your inbox.</p>
+        <div class="news-form">
+          <input type="email" placeholder="Enter your email" />
+          <button>→</button>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      © 2024 OrnyTool. All rights reserved. · Live data via <a href="https://www.geckoterminal.com">GeckoTerminal</a> & public RPCs · <a href="https://ornytools.xyz">ornytools.xyz</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  let chartInst=null, G=3.5, TVL=500000, FEE=0.003, OPT=50, CUR_NET='eth', CUR_ADDR='';
+  const GECKO=(n,a)=>`https://api.geckoterminal.com/api/v2/networks/${n}/pools/${a}`;
+  const NETS={
+    eth:      {rpcs:['https://ethereum.publicnode.com','https://1rpc.io/eth'],units:120000,coin:'ethereum'},
+    arbitrum: {rpcs:['https://arb1.arbitrum.io/rpc','https://arbitrum-one.publicnode.com'],units:1500000,coin:'ethereum'},
+    base:     {rpcs:['https://mainnet.base.org','https://base.llamarpc.com'],units:300000,coin:'ethereum'},
+    optimism: {rpcs:['https://mainnet.optimism.io'],units:300000,coin:'ethereum'},
+    bsc:      {rpcs:['https://bsc-dataseed.binance.org'],units:150000,coin:'binancecoin'},
+    polygon:  {rpcs:['https://polygon-rpc.com'],units:300000,coin:'matic-network'},
+  };
+
+  window.addEventListener('load',()=>{
+    const p=new URLSearchParams(location.search);
+    if(p.get('pool')){document.getElementById('poolAddr').value=p.get('pool');document.getElementById('net').value=p.get('net')||'eth';fetchPool();}
+    else renderHistory();
+  });
+
+  function setStatus(s,t,ch=[]){
+    document.getElementById('dot').className='dot '+s;
+    document.getElementById('statusTxt').textContent=t;
+    const c=document.getElementById('chips');
+    if(ch.length){c.innerHTML=ch.map(x=>`<span class="chip">${x}</span>`).join('');c.classList.remove('hidden');}
+    else c.classList.add('hidden');
+  }
+
+  async function fetchPool(){
+    const addr=document.getElementById('poolAddr').value.trim().toLowerCase();
+    const net=document.getElementById('net').value;
+    if(addr.length<10){setStatus('err','Invalid address');return;}
+    CUR_NET=net;CUR_ADDR=addr;
+    document.querySelector('.btn-load').disabled=true;
+    setStatus('loading','Fetching live data…');
+    try{
+      const[poolR,gasR]=await Promise.allSettled([fetchGecko(net,addr),fetchGas(net)]);
+      let ok=false;
+      if(poolR.status==='fulfilled'&&poolR.value){
+        const p=poolR.value,tvl=parseFloat(p.tvl||0);
+        if(tvl>0){setLive('tvl',tvl.toFixed(0));setLive('fee',parseFloat(p.fee||0.30).toFixed(2));setLive('pairName',p.pair||'');ok=true;
+          document.getElementById('alertLiq').classList.toggle('hidden',tvl>=10000);
+          saveHistory(net,addr,(p.pair||'Pool')+' · '+net.toUpperCase());}
+      }
+      if(gasR.status==='fulfilled'&&gasR.value>0){setLive('gas',gasR.value.toFixed(2));ok=true;}
+      if(ok){const ch=[];if(poolR.status==='fulfilled'&&poolR.value)ch.push('TVL live','Fee live');if(gasR.status==='fulfilled')ch.push('Gas live');setStatus('ok','Data loaded — click Calculate',ch);}
+      else{setStatus('err','Pool not found — enter values manually');document.getElementById('alertLiq').classList.add('hidden');}
+    }catch(e){setStatus('err','Network error — enter values manually');}
+    document.querySelector('.btn-load').disabled=false;
+  }
+
+  function setLive(id,v){const el=document.getElementById(id);el.value=v;el.classList.add('live');}
+
+  async function fetchGecko(net,addr){
+    const c=new AbortController();setTimeout(()=>c.abort(),8000);
+    const r=await fetch(GECKO(net,addr),{headers:{'Accept':'application/json;version=20230302'},signal:c.signal});
+    if(!r.ok)return null;
+    const j=await r.json();const a=j?.data?.attributes;if(!a)return null;
+    const feeDirect=parseFloat(a.pool_fee_percentage);
+    const name=a.name||'';const m=name.match(/([\d.]+)%/);
+    const fee=!isNaN(feeDirect)?feeDirect:(m?parseFloat(m[1]):0.30);
+    const pairRaw=a.pool_name||name;const parts=pairRaw.split('/');
+    const pair=(parts[0]?.trim()||'?')+' / '+(parts[1]?.replace(/[\d.%]/g,'').trim()||'?');
+    return{tvl:parseFloat(a.reserve_in_usd||0),fee,pair};
+  }
+
+  async function fetchGas(net){
+    const cfg=NETS[net]||NETS.eth;
+    const body=JSON.stringify({jsonrpc:'2.0',method:'eth_gasPrice',params:[],id:1});
+    let gwei=null;
+    for(const rpc of cfg.rpcs){try{const c=new AbortController();setTimeout(()=>c.abort(),5000);const r=await fetch(rpc,{method:'POST',headers:{'Content-Type':'application/json'},body,signal:c.signal});const d=await r.json();if(d.result){gwei=parseInt(d.result,16)/1e9;break;}}catch(_){}}
+    if(!gwei)throw new Error('RPC failed');
+    const pr=await(await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${cfg.coin}&vs_currencies=usd`)).json();
+    return(gwei*cfg.units*(pr[cfg.coin]?.usd||0))/1e9;
+  }
+
+  function saveHistory(net,addr,label){
+    let h=JSON.parse(localStorage.getItem('orny_hist')||'[]');
+    h=h.filter(e=>e.addr!==addr);h.unshift({net,addr,label});h=h.slice(0,5);
+    localStorage.setItem('orny_hist',JSON.stringify(h));renderHistory();
+  }
+  function renderHistory(){
+    const h=JSON.parse(localStorage.getItem('orny_hist')||'[]');
+    const row=document.getElementById('histRow'),btns=document.getElementById('histBtns');
+    if(!h.length){row.classList.add('hidden');return;}
+    row.classList.remove('hidden');
+    btns.innerHTML=h.map(e=>`<button class="btn-hist" onclick="document.getElementById('net').value='${e.net}';document.getElementById('poolAddr').value='${e.addr}';fetchPool()">${e.label}</button>`).join('');
+  }
+
+  function shareLink(){
+    if(!CUR_ADDR)return;
+    navigator.clipboard.writeText(`${location.origin}${location.pathname}?net=${CUR_NET}&pool=${CUR_ADDR}`).then(()=>{
+      const el=document.getElementById('copied');el.style.display='block';setTimeout(()=>el.style.display='none',2500);
+    });
+  }
+
+  function cost(a,g,tvl,fee){if(a<=0)return Infinity;return(g/a)*100+(a/(2*tvl))*100+fee*100;}
+  function optimal(g,tvl){return Math.sqrt(2*g*tvl);}
+
+  function calculate(){
+    const tvl=parseFloat(document.getElementById('tvl').value);
+    const g=parseFloat(document.getElementById('gas').value);
+    const fee=parseFloat(document.getElementById('fee').value)/100;
+    const pair=document.getElementById('pairName').value||'Pool';
+    if(!tvl||!g||isNaN(fee))return;
+    G=g;TVL=tvl;FEE=fee;
+    const opt=optimal(g,tvl);OPT=opt;
+    const minC=cost(opt,g,tvl,fee),c100=cost(100,g,tvl,fee),save=Math.max(0,c100-minC);
+    document.getElementById('resOpt').textContent=fmt(opt);
+    document.getElementById('resCost').textContent=pct(minC);
+    document.getElementById('resSave').textContent=save>0.01?'-'+pct(save):'≈ 0%';
+    document.getElementById('resPair').textContent=pair;
+    document.getElementById('resTVL').textContent='TVL: '+fmt(tvl);
+    const sl=document.getElementById('slider');sl.max=Math.max(Math.round(opt*4),200);sl.value=Math.min(100,sl.max);
+    ['results','mySection','chartSection','sliderSection','cmpSection','bottomRow'].forEach(id=>document.getElementById(id).classList.remove('hidden'));
+    drawChart(g,tvl,fee,opt);buildCmp(g,tvl,fee,opt);updateSlider();updateMyAmt();
+  }
+
+  function updateMyAmt(){
+    const amt=parseFloat(document.getElementById('myAmt').value);if(!amt||!TVL)return;
+    const c=cost(amt,G,TVL,FEE),minC=cost(OPT,G,TVL,FEE),diff=c-minC;
+    document.getElementById('maCost').textContent=pct(c);
+    document.getElementById('maFee').textContent='$'+(amt*c/100).toFixed(2);
+    document.getElementById('maDiff').textContent=diff<0.05?'✓ optimal':'+'+pct(diff);
+    document.getElementById('maDiff').style.color=diff<0.05?'var(--green)':'var(--red)';
+    const adv=document.getElementById('maAdvice');
+    if(diff>1){adv.className='advice warn';adv.innerHTML=`At <strong>$${amt}</strong> you pay <strong>${pct(diff)} more</strong> than optimal. Consider trading around <strong>${fmt(OPT)}</strong>.`;adv.classList.remove('hidden');}
+    else if(diff<0.1){adv.className='advice good';adv.innerHTML='Your amount is close to optimal — good call.';adv.classList.remove('hidden');}
+    else adv.classList.add('hidden');
+  }
+
+  function drawChart(g,tvl,fee,opt){
+    const max=Math.max(opt*4,200),steps=120,labels=[],dG=[],dS=[],dT=[];
+    for(let i=1;i<=steps;i++){const a=(max/steps)*i,gp=(g/a)*100,sp=(a/(2*tvl))*100,fp=fee*100;labels.push(fmt(a));dG.push(+gp.toFixed(4));dS.push(+sp.toFixed(4));dT.push(+(gp+sp+fp).toFixed(4));}
+    if(chartInst)chartInst.destroy();
+    chartInst=new Chart(document.getElementById('chart'),{type:'line',data:{labels,datasets:[
+      {label:'Total cost (%)',data:dT,borderColor:'#C8841E',backgroundColor:'rgba(200,132,30,.07)',borderWidth:2.5,fill:true,tension:.4,pointRadius:0,pointHitRadius:10},
+      {label:'Gas (%)',data:dG,borderColor:'#e02424',borderWidth:1.5,borderDash:[4,4],fill:false,tension:.4,pointRadius:0},
+      {label:'Slippage (%)',data:dS,borderColor:'#3A9FD4',borderWidth:1.5,borderDash:[4,4],fill:false,tension:.4,pointRadius:0},
+    ]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
+      plugins:{legend:{labels:{color:'#6b7280',font:{size:12},boxWidth:18}},tooltip:{backgroundColor:'#fff',borderColor:'#e4e8f0',borderWidth:1,titleColor:'#111827',bodyColor:'#6b7280',callbacks:{label:c=>` ${c.dataset.label}: ${c.parsed.y.toFixed(2)}%`}}},
+      scales:{x:{ticks:{color:'#adb5c7',maxTicksLimit:8,maxRotation:0},grid:{color:'#f1f4fa'}},y:{ticks:{color:'#adb5c7',callback:v=>v+'%'},grid:{color:'#f1f4fa'}}}}});
+  }
+
+  function buildCmp(g,tvl,fee,opt){
+    const sc=[{l:'Tiny amount',a:Math.max(1,opt*.1)},{l:'Optimal ✓',a:opt},{l:'2× optimal',a:opt*2},{l:'$100 reference',a:100}];
+    const ic=['🔴','🟢','🟡','🔵'];
+    document.getElementById('cmpRows').innerHTML=sc.map((s,i)=>{
+      const c=cost(s.a,g,tvl,fee),d=c-cost(opt,g,tvl,fee);
+      return`<div class="cmp-row"><div class="cmp-icon">${ic[i]}</div><div class="cmp-text"><strong>${s.l}</strong> — ${fmt(s.a)}<br>Total cost: <strong>${pct(c)}</strong> — ${d<.05?'<span class="pos">optimal</span>':`<span class="neg">+${pct(d)} more</span>`}</div></div>`;
+    }).join('');
+  }
+
+  function updateSlider(){
+    const a=parseFloat(document.getElementById('slider').value);
+    document.getElementById('sliderVal').textContent=fmt(a);
+    const gp=(G/a)*100,sp=(a/(2*TVL))*100,fp=FEE*100;
+    document.getElementById('pGas').textContent=pct(gp);
+    document.getElementById('pSlip').textContent=pct(sp);
+    document.getElementById('pFee').textContent=pct(fp);
+    document.getElementById('pTotal').textContent=pct(gp+sp+fp);
+  }
+
+  function fmt(n){if(n>=1000000)return'$'+(n/1000000).toFixed(1)+'M';if(n>=1000)return'$'+(n/1000).toFixed(1)+'k';if(n>=10)return'$'+Math.round(n);return'$'+n.toFixed(2);}
+  function pct(n){return n.toFixed(2)+'%';}
+</script>
+</body>
+</html>
