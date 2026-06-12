@@ -135,6 +135,8 @@
   .ft-tag{font-family:var(--display);font-style:italic;font-size:17px;color:var(--dim);margin-bottom:8px}
   .ft-tag span{color:var(--purple)}
 
+  .oc-badge{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:700;letter-spacing:.06em;color:var(--good);background:var(--good-pale);border:1px solid rgba(14,159,110,.2);border-radius:5px;padding:2px 7px;margin-left:6px;vertical-align:middle}
+
   @media(max-width:860px){.config-zone{grid-template-columns:1fr}.result-side{position:static}}
   @media(max-width:560px){.row2{grid-template-columns:1fr}}
   @media(max-width:480px){
@@ -226,7 +228,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <!-- HERO -->
 <div class="page-hero">
-  <div class="eyebrow"><span class="t-en">Leverage Loop Calculator — Aave V3</span><span class="t-fr">Calculateur de Levier — Aave V3</span><span class="t-es">Calculadora de Loop de Apalancamiento — Aave V3</span></div>
+  <div class="eyebrow"><span class="t-en">Leverage Loop Calculator — </span><span class="t-fr">Calculateur de Levier — </span><span class="t-es">Calculadora de Loop — </span><span id="heroEyebrow">Aave V3 · Arbitrum</span></div>
   <h1><span class="t-en">How much <em>real leverage</em><br>does your loop give you?</span><span class="t-fr">Quel <em>vrai levier</em><br>offre votre loop ?</span><span class="t-es">¿Cuánto <em>apalancamiento real</em><br>te da tu loop?</span></h1>
   <p>Deposit collateral → borrow → rebuy → repeat. See your effective leverage, final liquidation price, and the APY you need to be profitable at each step.</p>
 </div>
@@ -237,11 +239,35 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="panel">
     <div class="panel-title"><span class="t-en">Position setup</span><span class="t-fr">Configuration</span><span class="t-es">Configuración de posición</span></div>
 
-    <div class="presets">
-      <button class="preset-btn active" data-lt="73" data-sym="₿" data-label="WBTC">WBTC — LTV 73%</button>
-      <button class="preset-btn" data-lt="80" data-sym="Ξ" data-label="ETH">ETH — LTV 80%</button>
-      <button class="preset-btn" data-lt="75" data-sym="Ξ" data-label="wstETH">wstETH — LTV 75%</button>
+    <div class="field" style="margin-bottom:16px">
+      <label>
+        <span class="t-en">Protocol &amp; Chain</span>
+        <span class="t-fr">Protocole &amp; Réseau</span>
+        <span class="t-es">Protocolo &amp; Red</span>
+      </label>
+      <select id="protocolChain" onchange="onProtocolChange()">
+        <optgroup label="Aave V3">
+          <option value="aave-v3:arbitrum" selected>Aave V3 — Arbitrum</option>
+          <option value="aave-v3:ethereum">Aave V3 — Ethereum</option>
+          <option value="aave-v3:base">Aave V3 — Base</option>
+          <option value="aave-v3:optimism">Aave V3 — Optimism</option>
+          <option value="aave-v3:polygon">Aave V3 — Polygon</option>
+        </optgroup>
+        <optgroup label="Morpho Blue">
+          <option value="morpho-blue:ethereum">Morpho Blue — Ethereum</option>
+          <option value="morpho-blue:base">Morpho Blue — Base</option>
+        </optgroup>
+        <optgroup label="Spark">
+          <option value="spark:ethereum">Spark — Ethereum</option>
+        </optgroup>
+        <optgroup label="Compound V3">
+          <option value="compound-v3:ethereum">Compound V3 — Ethereum</option>
+          <option value="compound-v3:arbitrum">Compound V3 — Arbitrum</option>
+        </optgroup>
+      </select>
     </div>
+
+    <div class="presets"></div>
 
     <hr class="divider"/>
 
@@ -273,7 +299,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     <div class="row2">
       <div class="field with-prefix">
-        <label><span class="t-en">Borrow APY</span><span class="t-fr">APY d'emprunt</span><span class="t-es">APY de préstamo</span> <span class="hint">USDC</span><span class="oc-badge" id="borrowApyBadge" style="display:none">⛓ DeFiLlama live</span></label>
+        <label><span class="t-en">Borrow APY</span><span class="t-fr">APY d'emprunt</span><span class="t-es">APY de préstamo</span> <span class="hint" id="borrowSymHint">USDC</span><span class="oc-badge" id="borrowApyBadge" style="display:none">⛓ DeFiLlama live</span></label>
         <span class="pfx" style="font-family:var(--ui);font-size:13px">%</span>
         <input id="borrowApy" class="mono" value="5" inputmode="decimal" style="padding-left:26px"/>
       </div>
@@ -363,19 +389,129 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <script>
 const $ = id => document.getElementById(id);
 let loops = 3;
+let _currentProtocol = 'aave-v3:arbitrum';
+let _currentAsset    = 'WBTC';
 
 function fmtUSD(v){
   if(!isFinite(v))return'—';
   if(Math.abs(v)>=1e6)return'$'+(v/1e6).toFixed(2)+'M';
   return '$'+v.toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:0});
 }
-function fmtX(v){ return isFinite(v) ? v.toFixed(2)+'×' : '—'; }
+function fmtX(v)  { return isFinite(v) ? v.toFixed(2)+'×' : '—'; }
 function fmtPct(v){ return isFinite(v) ? (v>=0?'+':'')+v.toFixed(2)+'%' : '—'; }
 
-const PRESETS = {
-  'WBTC':  {ltv:73,  lt:78,   sym:'₿', symLabel:'BTC',    gecko:'wrapped-bitcoin'},
-  'ETH':   {ltv:80,  lt:82.5, sym:'Ξ', symLabel:'ETH',    gecko:'ethereum'},
-  'wstETH':{ltv:75,  lt:80,   sym:'Ξ', symLabel:'wstETH', gecko:'ethereum'},
+const PROTO_CHAINS = {
+  'aave-v3:arbitrum':{
+    label:'Aave V3 · Arbitrum',
+    assets:{
+      'WBTC':  {ltv:73,  lt:78,   sym:'₿', symLabel:'BTC',    gecko:'wrapped-bitcoin',              defaultColApy:0},
+      'cbBTC': {ltv:70,  lt:75,   sym:'₿', symLabel:'cbBTC',  gecko:'coinbase-wrapped-btc',          defaultColApy:0},
+      'ETH':   {ltv:80,  lt:82.5, sym:'Ξ', symLabel:'ETH',    gecko:'ethereum',                      defaultColApy:0},
+      'wstETH':{ltv:75,  lt:80,   sym:'Ξ', symLabel:'wstETH', gecko:'ethereum',                      defaultColApy:3.5},
+      'ARB':   {ltv:56,  lt:63,   sym:'A', symLabel:'ARB',    gecko:'arbitrum',                      defaultColApy:0},
+      'LINK':  {ltv:67,  lt:71,   sym:'L', symLabel:'LINK',   gecko:'chainlink',                     defaultColApy:0},
+    },
+    borrow:{project:'aave-v3', chain:'Arbitrum', symbol:'USDC'}
+  },
+  'aave-v3:ethereum':{
+    label:'Aave V3 · Ethereum',
+    assets:{
+      'ETH':   {ltv:80,  lt:82.5, sym:'Ξ', symLabel:'ETH',    gecko:'ethereum',                      defaultColApy:0},
+      'wstETH':{ltv:80,  lt:82,   sym:'Ξ', symLabel:'wstETH', gecko:'ethereum',                      defaultColApy:3.5},
+      'rETH':  {ltv:74,  lt:77,   sym:'Ξ', symLabel:'rETH',   gecko:'rocket-pool-eth',               defaultColApy:3.2},
+      'cbETH': {ltv:74,  lt:77,   sym:'Ξ', symLabel:'cbETH',  gecko:'coinbase-wrapped-staked-eth',   defaultColApy:3.0},
+      'weETH': {ltv:72,  lt:75,   sym:'Ξ', symLabel:'weETH',  gecko:'wrapped-eeth',                  defaultColApy:3.4},
+      'WBTC':  {ltv:70,  lt:75,   sym:'₿', symLabel:'BTC',    gecko:'wrapped-bitcoin',               defaultColApy:0},
+      'cbBTC': {ltv:70,  lt:75,   sym:'₿', symLabel:'cbBTC',  gecko:'coinbase-wrapped-btc',          defaultColApy:0},
+    },
+    borrow:{project:'aave-v3', chain:'Ethereum', symbol:'USDC'}
+  },
+  'aave-v3:base':{
+    label:'Aave V3 · Base',
+    assets:{
+      'WETH':  {ltv:80,  lt:83,   sym:'Ξ', symLabel:'WETH',   gecko:'ethereum',                      defaultColApy:0},
+      'cbBTC': {ltv:73,  lt:78,   sym:'₿', symLabel:'cbBTC',  gecko:'coinbase-wrapped-btc',          defaultColApy:0},
+      'wstETH':{ltv:75,  lt:80,   sym:'Ξ', symLabel:'wstETH', gecko:'ethereum',                      defaultColApy:3.5},
+      'cbETH': {ltv:74,  lt:77,   sym:'Ξ', symLabel:'cbETH',  gecko:'coinbase-wrapped-staked-eth',   defaultColApy:3.0},
+      'weETH': {ltv:72,  lt:75,   sym:'Ξ', symLabel:'weETH',  gecko:'wrapped-eeth',                  defaultColApy:3.4},
+    },
+    borrow:{project:'aave-v3', chain:'Base', symbol:'USDC'}
+  },
+  'aave-v3:optimism':{
+    label:'Aave V3 · Optimism',
+    assets:{
+      'WBTC':  {ltv:70,  lt:75,   sym:'₿', symLabel:'BTC',    gecko:'wrapped-bitcoin',               defaultColApy:0},
+      'WETH':  {ltv:80,  lt:82.5, sym:'Ξ', symLabel:'WETH',   gecko:'ethereum',                      defaultColApy:0},
+      'wstETH':{ltv:75,  lt:80,   sym:'Ξ', symLabel:'wstETH', gecko:'ethereum',                      defaultColApy:3.5},
+      'OP':    {ltv:58,  lt:63,   sym:'O', symLabel:'OP',     gecko:'optimism',                      defaultColApy:0},
+      'LINK':  {ltv:67,  lt:71,   sym:'L', symLabel:'LINK',   gecko:'chainlink',                     defaultColApy:0},
+    },
+    borrow:{project:'aave-v3', chain:'Optimism', symbol:'USDC'}
+  },
+  'aave-v3:polygon':{
+    label:'Aave V3 · Polygon',
+    assets:{
+      'WBTC':  {ltv:70,  lt:75,   sym:'₿', symLabel:'BTC',    gecko:'wrapped-bitcoin',               defaultColApy:0},
+      'WETH':  {ltv:80,  lt:82.5, sym:'Ξ', symLabel:'WETH',   gecko:'ethereum',                      defaultColApy:0},
+      'wstETH':{ltv:75,  lt:80,   sym:'Ξ', symLabel:'wstETH', gecko:'ethereum',                      defaultColApy:3.5},
+      'LINK':  {ltv:67,  lt:71,   sym:'L', symLabel:'LINK',   gecko:'chainlink',                     defaultColApy:0},
+      'POL':   {ltv:58,  lt:65,   sym:'M', symLabel:'POL',    gecko:'matic-network',                 defaultColApy:0},
+    },
+    borrow:{project:'aave-v3', chain:'Polygon', symbol:'USDC'}
+  },
+  'morpho-blue:ethereum':{
+    label:'Morpho Blue · Ethereum',
+    assets:{
+      'wstETH':{ltv:77,  lt:86,   sym:'Ξ', symLabel:'wstETH', gecko:'ethereum',                      defaultColApy:3.5},
+      'weETH': {ltv:70,  lt:77,   sym:'Ξ', symLabel:'weETH',  gecko:'wrapped-eeth',                  defaultColApy:3.4},
+      'WBTC':  {ltv:69,  lt:77,   sym:'₿', symLabel:'BTC',    gecko:'wrapped-bitcoin',               defaultColApy:0},
+      'cbBTC': {ltv:69,  lt:77,   sym:'₿', symLabel:'cbBTC',  gecko:'coinbase-wrapped-btc',          defaultColApy:0},
+      'ETH':   {ltv:77,  lt:86,   sym:'Ξ', symLabel:'ETH',    gecko:'ethereum',                      defaultColApy:0},
+    },
+    borrow:{project:'morpho-blue', chain:'Ethereum', symbol:'USDC'}
+  },
+  'morpho-blue:base':{
+    label:'Morpho Blue · Base',
+    assets:{
+      'cbBTC': {ltv:69,  lt:77,   sym:'₿', symLabel:'cbBTC',  gecko:'coinbase-wrapped-btc',          defaultColApy:0},
+      'WETH':  {ltv:77,  lt:86,   sym:'Ξ', symLabel:'WETH',   gecko:'ethereum',                      defaultColApy:0},
+      'cbETH': {ltv:77,  lt:86,   sym:'Ξ', symLabel:'cbETH',  gecko:'coinbase-wrapped-staked-eth',   defaultColApy:3.0},
+      'weETH': {ltv:70,  lt:77,   sym:'Ξ', symLabel:'weETH',  gecko:'wrapped-eeth',                  defaultColApy:3.4},
+    },
+    borrow:{project:'morpho-blue', chain:'Base', symbol:'USDC'}
+  },
+  'spark:ethereum':{
+    label:'Spark · Ethereum',
+    assets:{
+      'ETH':   {ltv:80,  lt:82.5, sym:'Ξ', symLabel:'ETH',    gecko:'ethereum',                      defaultColApy:0},
+      'wstETH':{ltv:79,  lt:82,   sym:'Ξ', symLabel:'wstETH', gecko:'ethereum',                      defaultColApy:3.5},
+      'rETH':  {ltv:72,  lt:75,   sym:'Ξ', symLabel:'rETH',   gecko:'rocket-pool-eth',               defaultColApy:3.2},
+      'weETH': {ltv:72,  lt:75,   sym:'Ξ', symLabel:'weETH',  gecko:'wrapped-eeth',                  defaultColApy:3.4},
+      'cbBTC': {ltv:68,  lt:73,   sym:'₿', symLabel:'cbBTC',  gecko:'coinbase-wrapped-btc',          defaultColApy:0},
+    },
+    borrow:{project:'spark', chain:'Ethereum', symbol:'DAI'}
+  },
+  'compound-v3:ethereum':{
+    label:'Compound V3 · Ethereum',
+    assets:{
+      'ETH':   {ltv:82,  lt:90,   sym:'Ξ', symLabel:'ETH',    gecko:'ethereum',                      defaultColApy:0},
+      'wstETH':{ltv:80,  lt:87,   sym:'Ξ', symLabel:'wstETH', gecko:'ethereum',                      defaultColApy:3.5},
+      'WBTC':  {ltv:70,  lt:77,   sym:'₿', symLabel:'BTC',    gecko:'wrapped-bitcoin',               defaultColApy:0},
+      'cbBTC': {ltv:70,  lt:77,   sym:'₿', symLabel:'cbBTC',  gecko:'coinbase-wrapped-btc',          defaultColApy:0},
+      'LINK':  {ltv:62,  lt:74,   sym:'L', symLabel:'LINK',   gecko:'chainlink',                     defaultColApy:0},
+    },
+    borrow:{project:'compound-v3', chain:'Ethereum', symbol:'USDC'}
+  },
+  'compound-v3:arbitrum':{
+    label:'Compound V3 · Arbitrum',
+    assets:{
+      'ETH':   {ltv:82,  lt:90,   sym:'Ξ', symLabel:'ETH',    gecko:'ethereum',                      defaultColApy:0},
+      'WBTC':  {ltv:70,  lt:77,   sym:'₿', symLabel:'BTC',    gecko:'wrapped-bitcoin',               defaultColApy:0},
+      'ARB':   {ltv:58,  lt:67,   sym:'A', symLabel:'ARB',    gecko:'arbitrum',                      defaultColApy:0},
+      'LINK':  {ltv:62,  lt:74,   sym:'L', symLabel:'LINK',   gecko:'chainlink',                     defaultColApy:0},
+    },
+    borrow:{project:'compound-v3', chain:'Arbitrum', symbol:'USDC'}
+  },
 };
 
 const _prices = {};
@@ -398,135 +534,175 @@ function setPriceLive(price){
   calc();
 }
 
-document.querySelectorAll('.preset-btn').forEach(btn => {
-  btn.addEventListener('click', async () => {
-    document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    const p = PRESETS[btn.dataset.label];
-    $('ltv').value           = p.ltv;
-    $('ltPct').value         = p.lt;
-    $('colSym').textContent  = p.sym;
-    $('symHint').textContent = p.symLabel;
-    $('priceHint').textContent = 'fetching…';
-    const price = await fetchPrice(p.gecko);
-    setPriceLive(price);
-    if(!price){ $('priceHint').textContent = 'USD'; calc(); }
+function buildPresets(protocolKey){
+  const proto = PROTO_CHAINS[protocolKey];
+  if(!proto) return;
+  const container = document.querySelector('.presets');
+  container.innerHTML = '';
+  for(const [label, data] of Object.entries(proto.assets)){
+    const btn = document.createElement('button');
+    btn.className    = 'preset-btn';
+    btn.dataset.label = label;
+    btn.dataset.lt    = data.lt;
+    btn.dataset.sym   = data.sym;
+    btn.dataset.gecko = data.gecko;
+    btn.textContent   = label + ' — LTV ' + data.ltv + '%';
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      _currentAsset = label;
+      applyPreset(label, protocolKey);
+    });
+    container.appendChild(btn);
+  }
+}
+
+async function applyPreset(assetLabel, protocolKey){
+  const proto = PROTO_CHAINS[protocolKey];
+  const p     = proto?.assets[assetLabel];
+  if(!p) return;
+  $('ltv').value           = p.ltv;
+  $('ltPct').value         = p.lt;
+  $('colSym').textContent  = p.sym;
+  $('symHint').textContent = p.symLabel;
+  $('colApy').value        = p.defaultColApy || 0;
+  const hint = $('borrowSymHint');
+  if(hint) hint.textContent = proto.borrow.symbol;
+  $('priceHint').textContent = 'fetching…';
+  const price = await fetchPrice(p.gecko);
+  setPriceLive(price);
+  if(!price){ $('priceHint').textContent = 'USD'; calc(); }
+}
+
+async function onProtocolChange(){
+  const key   = $('protocolChain').value;
+  _currentProtocol = key;
+  const proto = PROTO_CHAINS[key];
+  if(!proto) return;
+  buildPresets(key);
+  const assetKeys = Object.keys(proto.assets);
+  const target    = assetKeys.includes(_currentAsset) ? _currentAsset : assetKeys[0];
+  _currentAsset   = target;
+  document.querySelectorAll('.preset-btn').forEach(b => {
+    if(b.dataset.label === target) b.classList.add('active');
   });
-});
+  const ey = $('heroEyebrow');
+  if(ey) ey.textContent = proto.label;
+  await applyPreset(target, key);
+  fetchBorrowApy(key);
+}
 
-// Auto-fetch on load for active preset (WBTC)
-fetchPrice('wrapped-bitcoin').then(p => setPriceLive(p));
-
-// Live Aave V3 USDC borrow APY from DeFiLlama
-(async function fetchAaveBorrowApy(){
+async function fetchBorrowApy(protocolKey){
+  const proto = PROTO_CHAINS[protocolKey];
+  if(!proto) return;
+  const {project, chain, symbol} = proto.borrow;
+  const badge = $('borrowApyBadge');
+  if(badge) badge.style.display = 'none';
   try {
-    const r = await fetch('https://yields.llama.fi/pools');
+    const r = await fetch('https://yields.llama.fi/pools', {signal:AbortSignal.timeout(8000)});
     const pools = (await r.json()).data;
-    const sel = document.querySelector('.preset-btn.active');
-    const chain = sel ? (sel.dataset.label === 'wstETH' ? 'Ethereum' : 'Arbitrum') : 'Arbitrum';
-    const pool = pools.find(p =>
-      p.project === 'aave-v3' &&
-      p.symbol === 'USDC' &&
-      p.chain === chain &&
-      p.apyBaseBorrow > 0
-    ) || pools.find(p => p.project === 'aave-v3' && p.symbol === 'USDC' && p.apyBaseBorrow > 0);
-    if (pool && pool.apyBaseBorrow > 0) {
+    const pool  = pools.find(p =>
+      p.project === project &&
+      (p.chain||'').toLowerCase() === chain.toLowerCase() &&
+      (p.symbol||'').toUpperCase().includes(symbol.toUpperCase()) &&
+      (p.apyBaseBorrow||0) > 0
+    );
+    if(pool && pool.apyBaseBorrow > 0){
       $('borrowApy').value = pool.apyBaseBorrow.toFixed(2);
       $('borrowApy').classList.add('live');
-      var badge = document.getElementById('borrowApyBadge');
-      if (badge) badge.style.display = 'inline-flex';
+      if(badge) badge.style.display = 'inline-flex';
       calc();
     }
   } catch(e) {}
-})();
+}
 
-$('loopMinus').addEventListener('click', () => { if(loops>1){loops--;$('loopVal').textContent=loops;calc();} });
+$('loopMinus').addEventListener('click', () => { if(loops>1) {loops--;$('loopVal').textContent=loops;calc();} });
 $('loopPlus').addEventListener('click',  () => { if(loops<10){loops++;$('loopVal').textContent=loops;calc();} });
 
 function calc(){
-  const l = getLang ? getLang() : 'en';
-  const colAmt   = parseFloat($('colAmount').value)  || 0;
-  const price    = parseFloat($('colPrice').value)   || 0;
-  const ltv      = parseFloat($('ltv').value)        / 100 || 0;
-  const lt       = parseFloat($('ltPct').value)      / 100 || 0;
-  const borrow   = parseFloat($('borrowApy').value)  || 0;
-  const colApy   = parseFloat($('colApy').value)     || 0;
+  const l       = typeof getLang==='function' ? getLang() : 'en';
+  const colAmt  = parseFloat($('colAmount').value) || 0;
+  const price   = parseFloat($('colPrice').value)  || 0;
+  const ltv     = parseFloat($('ltv').value)       / 100 || 0;
+  const lt      = parseFloat($('ltPct').value)     / 100 || 0;
+  const borrow  = parseFloat($('borrowApy').value) || 0;
+  const colApy  = parseFloat($('colApy').value)    || 0;
 
   if(!(colAmt>0 && price>0 && ltv>0 && lt>0)) return;
 
   const initUSD = colAmt * price;
-
-  // Build loop steps
   let cumCol = initUSD, cumDebt = 0;
-  const steps = [];
-
-  steps.push({loop:0, deposited:initUSD, borrowed:0, cumCol, cumDebt});
+  const steps = [{loop:0, deposited:initUSD, borrowed:0, cumCol, cumDebt}];
 
   for(let i=1; i<=loops; i++){
-    const borrowed  = steps[i-1].deposited * ltv;
-    cumDebt  += borrowed;
-    cumCol   += borrowed;  // rebuy same asset
+    const borrowed = steps[i-1].deposited * ltv;
+    cumDebt += borrowed;
+    cumCol  += borrowed;
     steps.push({loop:i, deposited:borrowed, borrowed, cumCol, cumDebt});
   }
 
-  const lastStep   = steps[steps.length-1];
-  const leverage   = lastStep.cumCol / initUSD;
-  const liqPrice   = price * (lastStep.cumDebt) / (lastStep.cumCol * lt);
-  const dropPct    = ((price - liqPrice) / price) * 100;
-  const hf         = (lastStep.cumCol * lt) / (lastStep.cumDebt || 0.0001);
-  const netApy     = colApy * leverage - borrow * (leverage - 1);
-  const breakEven  = borrow * (leverage - 1) / leverage;
+  const last      = steps[steps.length-1];
+  const leverage  = last.cumCol / initUSD;
+  const liqPrice  = price * last.cumDebt / (last.cumCol * lt);
+  const dropPct   = ((price - liqPrice) / price) * 100;
+  const hf        = (last.cumCol * lt) / (last.cumDebt || 0.0001);
+  const netApy    = colApy * leverage - borrow * (leverage - 1);
+  const breakEven = borrow * (leverage - 1) / leverage;
 
-  $('resLeverage').textContent = fmtX(leverage);
-  // Cross-link vers liquidation avec valeurs pré-remplies
-  const sel2 = document.querySelector('.preset-btn.active');
-  const asset2 = sel2 ? (sel2.dataset.label === 'wstETH' ? 'WSTETH' : sel2.dataset.label === 'ETH' ? 'ETH' : 'WBTC') : 'WBTC';
-  const crossUrl = `liquidation.html?asset=${asset2}&price=${price.toFixed(0)}&liqprice=${liqPrice.toFixed(0)}`;
-  const lnk = document.getElementById('crossLiqLink');
-  if(lnk){ lnk.href = crossUrl; lnk.style.display='flex'; }
-  $('resSub').textContent      = `${loops} loop${loops>1?'s':''} · HF = ${hf.toFixed(2)}`;
-  $('resTotalCol').textContent = fmtUSD(lastStep.cumCol);
-  $('resTotalDebt').textContent= fmtUSD(lastStep.cumDebt);
-  $('resLiqPrice').textContent = '$'+liqPrice.toLocaleString('en-US',{maximumFractionDigits:0});
-  $('resDrop').textContent     = '-'+dropPct.toFixed(1)+'%';
-  $('resNetApy').textContent   = fmtPct(netApy);
-  $('resBreakEven').textContent= breakEven.toFixed(2)+'% APY';
+  $('resLeverage').textContent  = fmtX(leverage);
+  $('resSub').textContent       = `${loops} loop${loops>1?'s':''} · HF = ${hf.toFixed(2)}`;
+  $('resTotalCol').textContent  = fmtUSD(last.cumCol);
+  $('resTotalDebt').textContent = fmtUSD(last.cumDebt);
+  $('resLiqPrice').textContent  = '$'+liqPrice.toLocaleString('en-US',{maximumFractionDigits:0});
+  $('resDrop').textContent      = '-'+dropPct.toFixed(1)+'%';
+  $('resNetApy').textContent    = fmtPct(netApy);
+  $('resBreakEven').textContent = breakEven.toFixed(2)+'% APY';
 
-  // Color net APY
   document.querySelector('.br-row:has(#resNetApy) b').style.color =
     netApy > 0 ? 'var(--good)' : 'var(--coral)';
 
-  // Alert
+  if(isFinite(liqPrice) && liqPrice > 0){
+    const ASSET_MAP = {WBTC:'WBTC',cbBTC:'WBTC',ETH:'ETH',WETH:'ETH',wstETH:'WSTETH',rETH:'ETH',cbETH:'ETH',weETH:'ETH',ARB:'ARB',OP:'OP',LINK:'LINK',MATIC:'MATIC',POL:'MATIC'};
+    const activeBtn = document.querySelector('.preset-btn.active');
+    const assetCode = ASSET_MAP[activeBtn?.dataset.label] || 'ETH';
+    const lnk = $('crossLiqLink');
+    if(lnk){ lnk.href = `liquidation.html?asset=${assetCode}&price=${price.toFixed(0)}&liqprice=${liqPrice.toFixed(0)}`; lnk.style.display='flex'; }
+  }
+
   const card  = $('alertCard');
   const title = $('alertTitle');
   const text  = $('alertText');
   if(hf >= 2){
-    card.className = 'alert-card good';
-    title.textContent = l==='fr' ? 'Position saine' : 'Position healthy';
-    text.textContent = l==='fr'
-      ? `${dropPct.toFixed(1)}% de baisse nécessaires pour atteindre la liquidation. APY net : ${fmtPct(netApy)}. Le collateral doit s'apprécier d'au moins ${breakEven.toFixed(2)}%/an pour couvrir les coûts d'emprunt.`
-      : `${dropPct.toFixed(1)}% drop needed to get liquidated. Net APY: ${fmtPct(netApy)}. You need the asset to appreciate at least ${breakEven.toFixed(2)}%/yr to cover borrow costs.`;
+    card.className  = 'alert-card good';
+    title.textContent = l==='fr' ? 'Position saine' : l==='es' ? 'Posición sana' : 'Position healthy';
+    text.textContent  = l==='fr'
+      ? `${dropPct.toFixed(1)}% de baisse nécessaires avant liquidation. APY net : ${fmtPct(netApy)}. L'actif doit s'apprécier d'au moins ${breakEven.toFixed(2)}%/an pour couvrir l'emprunt.`
+      : l==='es'
+      ? `${dropPct.toFixed(1)}% de caída hasta liquidación. APY neto: ${fmtPct(netApy)}. El activo debe apreciarse al menos ${breakEven.toFixed(2)}%/año para cubrir costes.`
+      : `${dropPct.toFixed(1)}% drop needed to get liquidated. Net APY: ${fmtPct(netApy)}. Asset must appreciate at least ${breakEven.toFixed(2)}%/yr to cover borrow costs.`;
   } else if(hf >= 1.5){
-    card.className = 'alert-card warn';
-    title.textContent = l==='fr' ? 'À surveiller' : 'Monitor closely';
-    text.textContent = l==='fr'
-      ? `Seulement ${dropPct.toFixed(1)}% avant la liquidation avec un levier ${fmtX(leverage)}. Envisagez moins de loops ou un actif à seuil de liquidation plus élevé.`
-      : `Only ${dropPct.toFixed(1)}% away from liquidation with ${fmtX(leverage)} leverage. Consider fewer loops or a higher LT asset.`;
+    card.className  = 'alert-card warn';
+    title.textContent = l==='fr' ? 'À surveiller' : l==='es' ? 'Monitorear' : 'Monitor closely';
+    text.textContent  = l==='fr'
+      ? `Seulement ${dropPct.toFixed(1)}% avant liquidation avec ${fmtX(leverage)} de levier. Réduisez les loops ou choisissez un actif avec un LT plus élevé.`
+      : l==='es'
+      ? `Solo ${dropPct.toFixed(1)}% hasta liquidación con ${fmtX(leverage)} de apalancamiento. Considera menos loops o un activo con mayor umbral.`
+      : `Only ${dropPct.toFixed(1)}% away from liquidation at ${fmtX(leverage)} leverage. Consider fewer loops or a higher LT asset.`;
   } else {
-    card.className = 'alert-card danger';
-    title.textContent = l==='fr' ? '⚠ Risque de liquidation élevé' : '⚠ High liquidation risk';
-    text.textContent = l==='fr'
+    card.className  = 'alert-card danger';
+    title.textContent = l==='fr' ? '⚠ Risque de liquidation élevé' : l==='es' ? '⚠ Riesgo alto de liquidación' : '⚠ High liquidation risk';
+    text.textContent  = l==='fr'
       ? `HF = ${hf.toFixed(2)}. Une baisse de ${dropPct.toFixed(1)}% vous liquide. Réduisez les loops ou empruntez moins par étape.`
+      : l==='es'
+      ? `HF = ${hf.toFixed(2)}. Una caída del ${dropPct.toFixed(1)}% te liquida. Reduce los loops o pide menos prestado por paso.`
       : `HF = ${hf.toFixed(2)}. A ${dropPct.toFixed(1)}% drop liquidates you. Reduce loops or borrow less per step.`;
   }
 
-  // Table
-  const tbody = $('loopBody');
-  tbody.innerHTML = steps.map((s,i) => {
-    const stepHF = s.cumDebt > 0 ? (s.cumCol * lt / s.cumDebt) : Infinity;
-    const hfStr  = s.cumDebt === 0 ? '∞' : stepHF.toFixed(2);
-    const hfClass= stepHF < 1.5 ? 'danger' : stepHF < 2 ? '' : 'good';
-    const isLast = i === steps.length-1;
+  $('loopBody').innerHTML = steps.map((s,i) => {
+    const stepHF  = s.cumDebt > 0 ? (s.cumCol * lt / s.cumDebt) : Infinity;
+    const hfStr   = s.cumDebt === 0 ? '∞' : stepHF.toFixed(2);
+    const hfClass = stepHF < 1.5 ? 'danger' : stepHF < 2 ? '' : 'good';
+    const isLast  = i === steps.length-1;
     return `<tr${isLast?' style="font-weight:700"':''}>
       <td>${s.loop === 0 ? 'Init' : s.loop}</td>
       <td>${fmtUSD(s.deposited)}</td>
@@ -539,32 +715,35 @@ function calc(){
 }
 
 ['colAmount','colPrice','ltv','ltPct','borrowApy','colApy'].forEach(id => $(id).addEventListener('input', calc));
-calc();
 
-window.onLangChange = function(l) { if(typeof calc==='function') calc(); };
+window.onLangChange = function(){ if(typeof calc==='function') calc(); };
 
 // localStorage persistence
-const LEV_KEY = 'orny-leverage-v1';
+const LEV_KEY = 'orny-leverage-v2';
 function saveLeverage(){
   try {
     localStorage.setItem(LEV_KEY, JSON.stringify({
-      colAmount:$('colAmount').value, colPrice:$('colPrice').value,
-      ltv:$('ltv').value, ltPct:$('ltPct').value,
-      borrowApy:$('borrowApy').value, colApy:$('colApy').value,
-      loops: loops
+      protocolChain:_currentProtocol, activeAsset:_currentAsset,
+      colAmount:$('colAmount').value, borrowApy:$('borrowApy').value,
+      colApy:$('colApy').value, loops
     }));
   } catch(e){}
 }
-(function(){
+(async function init(){
   try {
-    const d = JSON.parse(localStorage.getItem(LEV_KEY) || '{}');
-    if(!d.colAmount) return;
-    ['colAmount','colPrice','ltv','ltPct','borrowApy','colApy'].forEach(id => {
-      if(d[id] && $(id)) $(id).value = d[id];
-    });
-    if(d.loops) { loops = parseInt(d.loops) || loops; $('loopVal').textContent = loops; }
+    const d = JSON.parse(localStorage.getItem(LEV_KEY)||'{}');
+    if(d.protocolChain && PROTO_CHAINS[d.protocolChain]){
+      $('protocolChain').value = d.protocolChain;
+      _currentProtocol = d.protocolChain;
+    }
+    if(d.activeAsset) _currentAsset = d.activeAsset;
+    if(d.loops){ loops = parseInt(d.loops)||loops; $('loopVal').textContent=loops; }
+    await onProtocolChange();
+    if(d.colAmount) $('colAmount').value = d.colAmount;
+    if(d.borrowApy){ $('borrowApy').value = d.borrowApy; }
+    if(d.colApy)    $('colApy').value    = d.colApy;
     calc();
-  } catch(e){}
+  } catch(e){ onProtocolChange(); }
 })();
 ['colAmount','colPrice','ltv','ltPct','borrowApy','colApy'].forEach(id => {
   const el = document.getElementById(id);

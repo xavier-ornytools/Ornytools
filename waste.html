@@ -232,7 +232,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <option value="arbitrum">Arbitrum</option>
         <option value="eth">Ethereum</option>
         <option value="base">Base</option>
+        <option value="optimism">Optimism</option>
         <option value="polygon_pos">Polygon</option>
+        <option value="avalanche">Avalanche</option>
+        <option value="zksync">zkSync Era</option>
+        <option value="scroll">Scroll</option>
+        <option value="linea">Linea</option>
         <option value="bnb">BNB Chain</option>
       </select>
       <div id="gasHint" class="gas-hint"></div>
@@ -303,9 +308,22 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <script>
 const $ = id => document.getElementById(id);
 
-const GAS  = { eth:2.50, arbitrum:0.05, base:0.02, polygon_pos:0.02, bnb:0.15 };
-const TVL  = { eth:5e6, arbitrum:2e6, base:1e6, polygon_pos:500e3, bnb:1e6 };
-const NAME = { eth:'Ethereum', arbitrum:'Arbitrum', base:'Base', polygon_pos:'Polygon', bnb:'BNB Chain' };
+const GAS  = { eth:2.50, arbitrum:0.05, base:0.02, optimism:0.01, polygon_pos:0.02, avalanche:0.06, zksync:0.04, scroll:0.03, linea:0.03, bnb:0.15 };
+const TVL  = { eth:5e6, arbitrum:2e6, base:1.5e6, optimism:1.2e6, polygon_pos:500e3, avalanche:800e3, zksync:600e3, scroll:400e3, linea:400e3, bnb:1e6 };
+const NAME = { eth:'Ethereum', arbitrum:'Arbitrum', base:'Base', optimism:'Optimism', polygon_pos:'Polygon', avalanche:'Avalanche', zksync:'zkSync Era', scroll:'Scroll', linea:'Linea', bnb:'BNB Chain' };
+const RPC  = {
+  eth:      { url:'https://ethereum-rpc.publicnode.com',  gas_units:150000 },
+  arbitrum: { url:'https://arb1.arbitrum.io/rpc',         gas_units:900000 },
+  base:     { url:'https://mainnet.base.org',              gas_units:900000 },
+  optimism: { url:'https://mainnet.optimism.io',           gas_units:900000 },
+  avalanche:{ url:'https://api.avax.network/ext/bc/C/rpc', gas_units:200000 },
+  zksync:   { url:'https://mainnet.era.zksync.io',         gas_units:800000 },
+  scroll:   { url:'https://rpc.scroll.io',                 gas_units:900000 },
+  linea:    { url:'https://rpc.linea.build',               gas_units:900000 },
+  polygon_pos:{ url:'https://polygon-rpc.com',             gas_units:200000 },
+  bnb:      { url:'https://bsc-dataseed1.binance.org',     gas_units:200000 },
+};
+const NATIVE_COIN = { eth:'ethereum', arbitrum:'ethereum', base:'ethereum', optimism:'ethereum', polygon_pos:'matic-network', avalanche:'avalanche-2', zksync:'ethereum', scroll:'ethereum', linea:'ethereum', bnb:'binancecoin' };
 
 function fmtUSD(v){
   if(!isFinite(v)||v<0)return'$0';
@@ -458,34 +476,32 @@ $('monthlyTrades').addEventListener('input', function(){
   $('tradesHint').textContent = this.value + ' trades';
   calc();
 });
-// Fetch live ETH gas: eth_gasPrice × 150,000 gas units (Uniswap V3 swap) × ETH/USD
+// Fetch live gas: eth_gasPrice via RPC × gas units × native token USD
 async function fetchLiveGas() {
   const el = $('gasHint');
   const chain = $('chain').value;
-  const estLabels = { arbitrum:'~$0.05', base:'~$0.02', polygon_pos:'~$0.02', bnb:'~$0.15' };
-  if (chain !== 'eth') {
-    const lbl = estLabels[chain] || '';
-    if (lbl) el.innerHTML = `<span class="gas-pill">${lbl} <span style="color:var(--faint)">est./swap</span></span>`;
-    else el.innerHTML = '';
-    return;
-  }
+  const rpcCfg = RPC[chain];
+  if (!rpcCfg) { el.innerHTML = ''; return; }
   el.innerHTML = '<span class="gas-pill">…</span>';
   try {
+    const coinId = NATIVE_COIN[chain] || 'ethereum';
     const [gasR, priceR] = await Promise.all([
-      fetch('https://ethereum-rpc.publicnode.com', {
+      fetch(rpcCfg.url, {
         method:'POST', headers:{'Content-Type':'application/json'},
-        body: JSON.stringify({jsonrpc:'2.0', method:'eth_gasPrice', params:[], id:1})
+        body: JSON.stringify({jsonrpc:'2.0', method:'eth_gasPrice', params:[], id:1}),
+        signal: AbortSignal.timeout(5000)
       }),
-      fetch('https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd')
+      fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${coinId}&vs_currencies=usd`, {signal:AbortSignal.timeout(6000)})
     ]);
     const gwei = parseInt((await gasR.json()).result, 16) / 1e9;
-    const ethUsd = (await priceR.json()).ethereum?.usd || 3000;
-    // 150,000 gas units × Gwei price × ETH/USD → USD per swap
-    GAS.eth = gwei * 150000 / 1e9 * ethUsd;
-    el.innerHTML = `<span class="gas-pill live">⬤ ${gwei.toFixed(1)} Gwei · $${GAS.eth.toFixed(2)}/swap</span>`;
+    const priceData = await priceR.json();
+    const nativeUsd = priceData[coinId]?.usd || (coinId==='ethereum'?3000:coinId==='matic-network'?0.6:coinId==='avalanche-2'?30:coinId==='binancecoin'?400:1);
+    GAS[chain] = gwei * rpcCfg.gas_units / 1e9 * nativeUsd;
+    el.innerHTML = `<span class="gas-pill live">⬤ ${gwei.toFixed(2)} Gwei · $${GAS[chain].toFixed(3)}/swap</span>`;
     calc();
   } catch(_) {
-    el.innerHTML = '<span class="gas-pill" style="color:var(--faint)">~$2.50 est./swap</span>';
+    const fallbacks = {eth:'~$2.50',arbitrum:'~$0.05',base:'~$0.02',optimism:'~$0.01',polygon_pos:'~$0.02',avalanche:'~$0.06',zksync:'~$0.04',scroll:'~$0.03',linea:'~$0.03',bnb:'~$0.15'};
+    el.innerHTML = `<span class="gas-pill">${fallbacks[chain]||'—'} <span style="color:var(--faint)">est./swap</span></span>`;
   }
 }
 
