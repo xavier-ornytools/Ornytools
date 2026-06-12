@@ -311,7 +311,7 @@
     .optimizer-frame {
       max-width: 920px; margin: 0 auto;
       border-radius: 20px; overflow: hidden;
-      box-shadow: 0 0 0 1px rgba(200,132,30,.18), 0 24px 64px rgba(0,0,0,.13), 0 8px 24px rgba(200,132,30,.12);
+      box-shadow: 0 0 0 1px rgba(37,99,235,.2), 0 24px 64px rgba(0,0,0,.13), 0 8px 24px rgba(37,99,235,.12);
     }
     .optimizer-head {
       background: linear-gradient(135deg, #0d1421 0%, #0f2547 55%, #131b2e 100%);
@@ -319,17 +319,17 @@
     }
     .optimizer-head::before {
       content:''; position:absolute; inset:0; pointer-events:none;
-      background: radial-gradient(ellipse 70% 80% at 50% 120%, rgba(200,132,30,.18) 0%, transparent 60%),
-                  radial-gradient(ellipse 40% 50% at 20% 0%, rgba(37,99,235,.08) 0%, transparent 50%);
+      background: radial-gradient(ellipse 70% 80% at 50% 120%, rgba(37,99,235,.22) 0%, transparent 60%),
+                  radial-gradient(ellipse 40% 50% at 20% 0%, rgba(99,102,241,.12) 0%, transparent 50%);
     }
     .optimizer-head::after {
       content:''; position:absolute; bottom:0; left:0; right:0; height:1px;
-      background: linear-gradient(90deg, transparent, rgba(200,132,30,.5), rgba(37,99,235,.3), transparent);
+      background: linear-gradient(90deg, transparent, rgba(37,99,235,.6), rgba(99,102,241,.4), transparent);
     }
     .opt-tag {
       display:inline-flex; align-items:center; gap:6px; position:relative; z-index:1;
-      background:rgba(200,132,30,.12); border:1px solid rgba(200,132,30,.3);
-      color:#F0A030; border-radius:999px; padding:4px 14px;
+      background:rgba(37,99,235,.15); border:1px solid rgba(37,99,235,.4);
+      color:#93c5fd; border-radius:999px; padding:4px 14px;
       font-size:.63rem; font-weight:800; letter-spacing:2px; text-transform:uppercase; margin-bottom:12px;
     }
     .optimizer-head h2 {
@@ -344,11 +344,11 @@
     main { max-width: 860px; margin: 0 auto; padding: 20px 20px 36px; position: relative; }
     .grid { display: grid; gap: 14px; grid-template-columns: 1fr 1fr; position: relative; z-index: 1; }
     @media (max-width: 680px) { .grid { grid-template-columns: 1fr; } }
-    .card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; box-shadow: var(--shadow); transition: box-shadow .2s; }
+    .card { background: var(--white); border: 1.5px solid rgba(37,99,235,.13); border-radius: var(--radius); padding: 16px; box-shadow: var(--shadow); transition: box-shadow .2s; }
     .card:hover { box-shadow: var(--shadow-lg); }
     .card h2 { font-size: .72rem; font-weight: 700; letter-spacing: 1.8px; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; }
     .full { grid-column: 1 / -1; }
-    .fetch-card { border-top: 3px solid var(--gold); box-shadow: var(--shadow), 0 -1px 0 0 rgba(200,132,30,.3); }
+    .fetch-card { border-top: 3px solid var(--blue); box-shadow: var(--shadow), 0 -1px 0 0 rgba(37,99,235,.3); }
     .fetch-row { display: flex; gap: 8px; flex-wrap: wrap; }
     .fetch-row input { flex: 1; min-width: 180px; }
     select, input[type="text"], input[type="number"] {
@@ -357,14 +357,14 @@
       transition: border-color .2s, box-shadow .2s; width: 100%;
     }
     select { width: auto; cursor: pointer; flex-shrink: 0; }
-    input:focus, select:focus { border-color: var(--gold); box-shadow: 0 0 0 4px rgba(200,132,30,.18), 0 2px 8px rgba(200,132,30,.12); outline:none; }
+    input:focus, select:focus { border-color: var(--blue); box-shadow: 0 0 0 4px rgba(37,99,235,.18), 0 2px 8px rgba(37,99,235,.12); outline:none; }
     input::placeholder { color: #adb5c7; }
     input.live { border-color: var(--blue); background: #eef7fd; }
     .btn-load {
-      background: linear-gradient(135deg, var(--gold), #E8A040); border: none; border-radius: 8px;
+      background: linear-gradient(135deg, var(--blue), #3b82f6); border: none; border-radius: 8px;
       color: #fff; font-size: .92rem; font-weight: 700; padding: 10px 22px; cursor: pointer;
       white-space: nowrap; transition: opacity .2s, transform .1s; flex-shrink: 0;
-      box-shadow: 0 2px 10px rgba(200,132,30,.3);
+      box-shadow: 0 2px 10px rgba(37,99,235,.3);
     }
     .btn-load:hover { opacity: .88; } .btn-load:disabled { opacity: .45; cursor: not-allowed; box-shadow: none; }
     .status-bar {
@@ -395,10 +395,10 @@
     label { display: block; font-size: .73rem; color: var(--muted); margin-bottom: 5px; font-weight: 700; letter-spacing: .03em; }
     .tip { font-size: .68rem; color: #adb5c7; margin-top: 4px; }
     .btn-calc {
-      width: 100%; background: linear-gradient(135deg, var(--gold), #E8A040); border: none;
+      width: 100%; background: linear-gradient(135deg, var(--blue), #3b82f6); border: none;
       border-radius: 8px; color: #fff; font-size: .95rem; font-weight: 700; padding: 12px;
       cursor: pointer; margin-top: 4px; transition: opacity .2s, transform .1s;
-      box-shadow: 0 2px 12px rgba(200,132,30,.25);
+      box-shadow: 0 2px 12px rgba(37,99,235,.25);
     }
     .btn-calc:hover { opacity: .88; } .btn-calc:active { transform: scale(.98); }
     .alert {
@@ -410,21 +410,21 @@
     .results { grid-column: 1/-1; display: flex; gap: 14px; flex-wrap: wrap; }
     .rblock { flex: 1 1 120px; background: var(--white); border: 1px solid var(--border); border-radius: 12px; padding: 14px 12px; text-align: center; box-shadow: var(--shadow); transition: transform .15s, box-shadow .15s; }
     .rblock:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
-    .rblock:first-child  { border-color: rgba(200,132,30,.3); background: linear-gradient(135deg,#fffcf8,#fef3e2); }
+    .rblock:first-child  { border-color: rgba(99,102,241,.3); background: linear-gradient(135deg,#f5f3ff,#ede9fe); }
     .rblock:nth-child(2) { border-color: rgba(37,99,235,.2); background: linear-gradient(135deg,#f8faff,#eef4ff); }
     .rblock:nth-child(3) { border-color: rgba(14,159,110,.2); background: linear-gradient(135deg,#f7fdf9,#ecfdf5); }
     .rblock:nth-child(4) { border-color: rgba(124,58,237,.18); background: linear-gradient(135deg,#faf8ff,#f5f0ff); }
     .rblock .rl { font-size: .68rem; color: var(--muted); font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; margin-bottom: 8px; }
     .rblock .rv { font-size: 1.35rem; font-weight: 800; }
     .rblock .rs { font-size: .7rem; color: var(--muted); margin-top: 4px; }
-    .c-gold  { color: var(--gold); } .c-blue { color: var(--blue); }
+    .c-gold  { color: #6366f1; } .c-blue { color: var(--blue); }
     .c-green { color: var(--green); } .c-red { color: var(--red); }
     .myrow { display: flex; gap: 14px; align-items: flex-end; flex-wrap: wrap; }
     .myinput { flex: 1 1 160px; }
     .myblocks { flex: 2 1 280px; display: flex; gap: 10px; flex-wrap: wrap; }
     .mblock { flex: 1 1 100px; background: var(--light); border: 1px solid var(--border); border-top: 2.5px solid var(--border); border-radius: 10px; padding: 12px; text-align: center; transition: border-color .2s; }
-    .mblock:hover { border-color: rgba(200,132,30,.45); }
-    .mblock:first-child { border-top-color: var(--gold); }
+    .mblock:hover { border-color: rgba(37,99,235,.45); }
+    .mblock:first-child { border-top-color: var(--blue); }
     .mblock:nth-child(2) { border-top-color: var(--blue); }
     .mblock:nth-child(3) { border-top-color: var(--green); }
     .mblock .ml { font-size: .68rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; font-weight: 700; }
@@ -436,12 +436,12 @@
     .slider-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
     .slider-head span { font-size: .82rem; color: var(--muted); }
     .slider-head strong { font-size: 1rem; color: var(--text); }
-    input[type="range"] { width: 100%; accent-color: var(--gold); cursor: pointer; }
+    input[type="range"] { width: 100%; accent-color: var(--blue); cursor: pointer; }
     .pills { display: flex; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
     .pill { flex: 1 1 110px; background: var(--light); border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; text-align: center; }
     .pill .pl { font-size: .68rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; font-weight: 700; }
     .pill .pv { font-size: 1.1rem; font-weight: 800; margin-top: 4px; }
-    .pill.hl { border-color: var(--gold); background: #fffbf5; box-shadow: 0 0 0 3px rgba(200,132,30,.12), inset 0 1px 0 rgba(200,132,30,.1); }
+    .pill.hl { border-color: var(--blue); background: #eff6ff; box-shadow: 0 0 0 3px rgba(37,99,235,.12), inset 0 1px 0 rgba(37,99,235,.1); }
     .cmp-row { display: flex; align-items: center; gap: 12px; padding: 13px 0; border-bottom: 1px solid var(--border); }
     .cmp-row:last-child { border-bottom: none; }
     .cmp-icon { font-size: 1.3rem; width: 30px; text-align: center; flex-shrink: 0; }
@@ -450,12 +450,12 @@
     .pos { color: var(--green); font-weight: 700; } .neg { color: var(--red); font-weight: 700; }
     .bottom { grid-column: 1/-1; display: flex; flex-direction: column; align-items: center; gap: 16px; }
     .formula {
-      width: 100%; background: linear-gradient(135deg,#fffcf5,#fff8ee); border: 1.5px solid rgba(200,132,30,.2); border-radius: var(--radius);
+      width: 100%; background: linear-gradient(135deg,#f5f8ff,#eff4ff); border: 1.5px solid rgba(37,99,235,.2); border-radius: var(--radius);
       padding: 24px 30px; font-size: .88rem; line-height: 2; color: var(--muted);
-      box-shadow: var(--shadow), 0 0 0 4px rgba(200,132,30,.07); text-align: center;
+      box-shadow: var(--shadow), 0 0 0 4px rgba(37,99,235,.07); text-align: center;
     }
     .formula strong { display: block; margin-bottom: 10px; }
-    .formula code { background: #fef3e2; color: var(--gold); padding: 2px 8px; border-radius: 4px; font-size: .84rem; }
+    .formula code { background: #dbeafe; color: var(--blue); padding: 2px 8px; border-radius: 4px; font-size: .84rem; }
     .sharebox {
       width: 100%; background: linear-gradient(135deg,#fafcff,#f0f6ff); border: 1.5px solid rgba(37,99,235,.18); border-radius: var(--radius);
       padding: 24px 30px; display: flex; flex-direction: column; align-items: center; gap: 12px;
@@ -463,7 +463,7 @@
     }
     .sharebox p { font-size: .88rem; color: var(--muted); line-height: 1.7; max-width: 420px; }
     .btn-share {
-      background: linear-gradient(135deg, var(--gold), #E8A040); border: none; border-radius: 8px;
+      background: linear-gradient(135deg, var(--blue), #3b82f6); border: none; border-radius: 8px;
       color: #fff; font-size: .9rem; font-weight: 700; padding: 11px 32px; cursor: pointer; transition: opacity .2s;
     }
     .btn-share:hover { opacity: .85; }
@@ -516,7 +516,7 @@
       padding: 14px 16px; border-radius: 0 10px 10px 0;
       font-style:italic; color:var(--text);
     }
-    .why-card[style*="border:2px solid"] { animation: borderPulse 3s ease-in-out infinite; }
+    .why-card[style*="var(--blue)"] { animation: borderPulse 3s ease-in-out infinite; }
 
     /* ══════════════════ SECTION SEPARATOR ══════════════════ */
     .sec-divider {
@@ -667,8 +667,11 @@
     <span class="nav-brand">ORNY<span>TOOL</span></span>
   </a>
   <ul class="nav-links">
-    <li><a href="#tools">Tools</a></li>
-    <li><a href="methodology.html">Methodology</a></li>
+    <li><a href="#tools"><span class="t-en">Tools</span><span class="t-fr">Outils</span><span class="t-es">Herramientas</span></a></li>
+    <li><a href="blog.html">Blog</a></li>
+    <li><a href="guides.html"><span class="t-en">Guides</span><span class="t-fr">Guides</span><span class="t-es">Guías</span></a></li>
+    <li><a href="glossary.html"><span class="t-en">Glossary</span><span class="t-fr">Glossaire</span><span class="t-es">Glosario</span></a></li>
+    <li><a href="faq.html">FAQ</a></li>
   </ul>
   <div class="nav-right">
     <div class="btn-theme" id="btnTheme" title="Toggle theme" onclick="toggleTheme()">🌙</div>
@@ -910,7 +913,7 @@
 <section class="why-section">
   <div class="why-grid">
 
-    <div class="why-card">
+    <div class="why-card" style="border:2px solid var(--gold,#C8841E);box-shadow:0 0 0 4px rgba(200,132,30,.07),var(--shadow)">
       <div class="wc-hd"><span>⚙️</span><h3><span class="t-en">Why OrnyTools exists</span><span class="t-fr">Pourquoi OrnyTools existe</span><span class="t-es">Por qué existe OrnyTools</span></h3></div>
       <div class="flow-row">
         <div class="flow-item">
@@ -945,7 +948,7 @@
       <div class="insight-foot"><span class="t-en">Most traders never calculate that.</span><span class="t-fr">La plupart des traders ne calculent jamais ça.</span><span class="t-es">La mayoría de traders nunca calcula eso.</span></div>
     </div>
 
-    <div class="why-card">
+    <div class="why-card" style="border:2px solid #16a34a;box-shadow:0 0 0 4px rgba(22,163,74,.07),var(--shadow)">
       <div class="wc-hd"><span>🗺️</span><h3><span class="t-en">Roadmap</span><span class="t-fr">Feuille de Route</span><span class="t-es">Hoja de ruta</span></h3></div>
       <div class="road-list">
         <div class="road-item"><div class="rd rd-done"></div><div class="rd-name">Trade Optimizer</div><div class="rd-status"><span class="t-en">Live</span><span class="t-fr">En ligne</span><span class="t-es">En vivo</span></div></div>
@@ -1001,9 +1004,9 @@
 <div class="optimizer-outer">
 <div class="optimizer-frame">
   <div class="optimizer-head">
-    <div class="opt-tag">⭐ <span class="t-en">Featured Tool</span><span class="t-fr">Outil en Vedette</span><span class="t-es">Herramienta Destacada</span></div>
+    <div class="opt-tag">⚡ <span class="t-en">Featured Tool</span><span class="t-fr">Outil en Vedette</span><span class="t-es">Herramienta Destacada</span></div>
     <h2>🔄 <span class="t-en">Trade Size Optimizer</span><span class="t-fr">Optimiseur de Taille de Trade</span><span class="t-es">Optimizador de Tamaño de Trade</span></h2>
-    <p><span class="t-en">Find the mathematically optimal trade amount — live blockchain data.</span><span class="t-fr">Trouvez la taille de trade optimale mathématiquement — données blockchain en direct.</span><span class="t-es">Encuentra la cantidad de trade óptima matemáticamente — datos blockchain en vivo.</span></p>
+    <p><span class="t-en">Stop overpaying on every swap. Paste a pool address — get the exact size that minimizes gas &amp; slippage in real time.</span><span class="t-fr">Arrêtez de surpayer à chaque swap. Collez une adresse de pool — obtenez la taille exacte qui minimise gaz &amp; slippage en temps réel.</span><span class="t-es">Deja de pagar de más en cada swap. Pega una dirección de pool — obtén el tamaño exacto que minimiza gas &amp; slippage en tiempo real.</span></p>
   </div>
   <div class="tool-section-wrap">
   <div class="tool-section-header"></div>
@@ -1024,15 +1027,15 @@
             <option value="polygon">Polygon</option>
           </select>
           <input type="text" id="poolAddr" placeholder="Pool address  (0x...)" />
-          <button class="btn-load" onclick="fetchPool()">⚡ Load</button>
+          <button class="btn-load" onclick="fetchPool()"><span class="t-en">⚡ Load</span><span class="t-fr">⚡ Charger</span><span class="t-es">⚡ Cargar</span></button>
         </div>
         <div class="history-row hidden" id="histRow">
-          <span class="hlabel">Recent</span>
+          <span class="hlabel"><span class="t-en">Recent</span><span class="t-fr">Récent</span><span class="t-es">Reciente</span></span>
           <div id="histBtns"></div>
         </div>
         <div class="status-bar">
           <div class="dot idle" id="dot"></div>
-          <span class="status-text" id="statusTxt">Select a network, paste a pool address and click Load</span>
+          <span class="status-text" id="statusTxt"><span class="t-en">Select a network, paste a pool address and click Load</span><span class="t-fr">Sélectionnez un réseau, collez une adresse de pool et cliquez sur Charger</span><span class="t-es">Selecciona una red, pega una dirección de pool y haz clic en Cargar</span></span>
           <div class="chips hidden" id="chips"></div>
         </div>
       </div>
@@ -1041,55 +1044,55 @@
       <div class="card">
         <h2><span class="t-en">Pool Parameters</span><span class="t-fr">Paramètres du Pool</span><span class="t-es">Parámetros del pool</span></h2>
         <div class="field">
-          <label>Pair</label>
+          <label><span class="t-en">Pair</span><span class="t-fr">Paire</span><span class="t-es">Par</span></label>
           <input type="text" id="pairName" placeholder="e.g. USDC / WETH" value="USDC / WETH" />
         </div>
         <div class="field">
-          <label>Total liquidity — TVL ($)</label>
+          <label><span class="t-en">Total liquidity — TVL ($)</span><span class="t-fr">Liquidité totale — TVL ($)</span><span class="t-es">Liquidez total — TVL ($)</span></label>
           <input type="number" id="tvl" value="500000" min="1" />
-          <div class="tip">Auto-fetched · editable</div>
+          <div class="tip"><span class="t-en">Auto-fetched · editable</span><span class="t-fr">Récupéré auto · modifiable</span><span class="t-es">Obtenido auto · editable</span></div>
         </div>
         <div class="field">
-          <label>Network fee — gas ($)</label>
+          <label><span class="t-en">Network fee — gas ($)</span><span class="t-fr">Frais réseau — gaz ($)</span><span class="t-es">Comisión de red — gas ($)</span></label>
           <input type="number" id="gas" value="3.50" step="0.01" min="0.01" />
-          <div class="tip">Real-time estimate</div>
+          <div class="tip"><span class="t-en">Real-time estimate</span><span class="t-fr">Estimation temps réel</span><span class="t-es">Estimación en tiempo real</span></div>
         </div>
         <div class="field">
-          <label>Protocol fee (%)</label>
+          <label><span class="t-en">Protocol fee (%)</span><span class="t-fr">Frais de protocole (%)</span><span class="t-es">Comisión del protocolo (%)</span></label>
           <input type="number" id="fee" value="0.30" step="0.01" min="0" />
         </div>
-        <button class="btn-calc" onclick="calculate()">Calculate optimal size →</button>
+        <button class="btn-calc" onclick="calculate()"><span class="t-en">Calculate optimal size →</span><span class="t-fr">Calculer la taille optimale →</span><span class="t-es">Calcular tamaño óptimo →</span></button>
       </div>
 
       <!-- HOW IT WORKS -->
       <div class="card how">
         <h2><span class="t-en">How it works</span><span class="t-fr">Comment ça marche</span><span class="t-es">Cómo funciona</span></h2>
-        <p>Gas is a fixed cost — it kills small trades. Slippage grows with size — it kills large ones. Between both lies a precise sweet spot.</p>
-        <p>OrnyTools solves √(2 × gas × TVL) live, using real blockchain data, to give you that number before every trade.</p>
+        <p><span class="t-en">Gas is a fixed cost — it kills small trades. Slippage grows with size — it kills large ones. Between both lies a precise sweet spot.</span><span class="t-fr">Le gas est un coût fixe — il tue les petits trades. Le slippage augmente avec la taille — il tue les grands. Entre les deux se trouve un point précis.</span><span class="t-es">El gas es un coste fijo — destroza los trades pequeños. El slippage crece con el tamaño — destroza los grandes. Entre ambos hay un punto preciso.</span></p>
+        <p><span class="t-en">OrnyTools solves √(2 × gas × TVL) live, using real blockchain data, to give you that number before every trade.</span><span class="t-fr">OrnyTools résout √(2 × gas × TVL) en direct, avec les données blockchain réelles, pour vous donner ce chiffre avant chaque trade.</span><span class="t-es">OrnyTools resuelve √(2 × gas × TVL) en vivo, con datos reales de la blockchain, para darte ese número antes de cada trade.</span></p>
       </div>
 
       <!-- ALERT -->
       <div class="alert hidden full" id="alertLiq">
         <span style="font-size:1.4rem">⚠️</span>
-        <div><strong>Low liquidity pool</strong> — fees will be high regardless of trade size. Check if a more liquid alternative exists before trading.</div>
+        <div><strong><span class="t-en">Low liquidity pool</span><span class="t-fr">Pool à faible liquidité</span><span class="t-es">Pool con baja liquidez</span></strong> — <span class="t-en">fees will be high regardless of trade size. Check if a more liquid alternative exists before trading.</span><span class="t-fr">les frais seront élevés quelle que soit la taille du trade. Vérifiez si une alternative plus liquide existe avant de trader.</span><span class="t-es">las comisiones serán altas independientemente del tamaño del trade. Verifica si existe una alternativa más líquida antes de operar.</span></div>
       </div>
 
       <!-- RESULTS -->
       <div class="results hidden full" id="results">
         <div class="rblock">
-          <div class="rl">Optimal size</div>
+          <div class="rl"><span class="t-en">Optimal size</span><span class="t-fr">Taille optimale</span><span class="t-es">Tamaño óptimo</span></div>
           <div class="rv c-gold" id="resOpt">—</div>
-          <div class="rs">ideal trade amount</div>
+          <div class="rs"><span class="t-en">ideal trade amount</span><span class="t-fr">montant de trade idéal</span><span class="t-es">monto de trade ideal</span></div>
         </div>
         <div class="rblock">
-          <div class="rl">Minimum cost</div>
+          <div class="rl"><span class="t-en">Minimum cost</span><span class="t-fr">Coût minimum</span><span class="t-es">Coste mínimo</span></div>
           <div class="rv c-blue" id="resCost">—</div>
-          <div class="rs">total fees at optimum</div>
+          <div class="rs"><span class="t-en">total fees at optimum</span><span class="t-fr">frais totaux à l'optimum</span><span class="t-es">comisiones totales en el óptimo</span></div>
         </div>
         <div class="rblock">
-          <div class="rl">Saving vs $100</div>
+          <div class="rl"><span class="t-en">Saving vs $100</span><span class="t-fr">Économie vs $100</span><span class="t-es">Ahorro vs $100</span></div>
           <div class="rv c-green" id="resSave">—</div>
-          <div class="rs">vs a naive trade</div>
+          <div class="rs"><span class="t-en">vs a naive trade</span><span class="t-fr">vs un trade non optimisé</span><span class="t-es">vs un trade sin optimizar</span></div>
         </div>
         <div class="rblock">
           <div class="rl">Pool</div>
@@ -1103,13 +1106,13 @@
         <h2><span class="t-en">Simulate my trade</span><span class="t-fr">Simuler mon trade</span><span class="t-es">Simular mi trade</span></h2>
         <div class="myrow">
           <div class="myinput">
-            <label>I want to invest ($)</label>
+            <label><span class="t-en">I want to invest ($)</span><span class="t-fr">Je veux investir ($)</span><span class="t-es">Quiero invertir ($)</span></label>
             <input type="number" id="myAmt" value="100" min="1" oninput="updateMyAmt()" />
           </div>
           <div class="myblocks">
-            <div class="mblock"><div class="ml">Total cost</div><div class="mv c-red" id="maCost">—</div></div>
-            <div class="mblock"><div class="ml">Fees in $</div><div class="mv" style="color:var(--yellow)" id="maFee">—</div></div>
-            <div class="mblock"><div class="ml">vs optimal</div><div class="mv" id="maDiff">—</div></div>
+            <div class="mblock"><div class="ml"><span class="t-en">Total cost</span><span class="t-fr">Coût total</span><span class="t-es">Coste total</span></div><div class="mv c-red" id="maCost">—</div></div>
+            <div class="mblock"><div class="ml"><span class="t-en">Fees in $</span><span class="t-fr">Frais en $</span><span class="t-es">Comisiones en $</span></div><div class="mv" style="color:var(--yellow)" id="maFee">—</div></div>
+            <div class="mblock"><div class="ml"><span class="t-en">vs optimal</span><span class="t-fr">vs optimal</span><span class="t-es">vs óptimo</span></div><div class="mv" id="maDiff">—</div></div>
           </div>
         </div>
         <div class="advice hidden" id="maAdvice"></div>
@@ -1125,7 +1128,7 @@
       <div class="card full hidden" id="sliderSection">
         <h2><span class="t-en">Interactive explorer</span><span class="t-fr">Explorateur interactif</span><span class="t-es">Explorador interactivo</span></h2>
         <div class="slider-head">
-          <span>Trade amount</span>
+          <span><span class="t-en">Trade amount</span><span class="t-fr">Montant du trade</span><span class="t-es">Monto del trade</span></span>
           <strong id="sliderVal">$50</strong>
         </div>
         <input type="range" id="slider" min="1" max="500" value="50" oninput="updateSlider()" />
@@ -1146,16 +1149,16 @@
       <!-- BOTTOM -->
       <div class="bottom hidden" id="bottomRow">
         <div class="formula">
-          <strong style="color:var(--text);display:block;margin-bottom:6px">The math</strong>
+          <strong style="color:var(--text);display:block;margin-bottom:6px"><span class="t-en">The math</span><span class="t-fr">La formule</span><span class="t-es">La fórmula</span></strong>
           Total cost (%) = <code>Gas $ / Amount</code> + <code>Amount / (2 × TVL)</code> + <code>Pool fee</code><br>
           Optimal amount = <code>√(2 × Gas $ × TVL)</code><br><br>
-          Zero derivative of the cost function — mathematical minimum of the U-curve.
+          <span class="t-en">Zero derivative of the cost function — mathematical minimum of the U-curve.</span><span class="t-fr">Dérivée nulle de la fonction de coût — minimum mathématique de la courbe en U.</span><span class="t-es">Derivada cero de la función de coste — mínimo matemático de la curva en U.</span>
         </div>
         <div class="sharebox">
-          <strong style="font-size:.83rem">Share this analysis</strong>
-          <p>Generate a direct link — anyone who opens it sees the result instantly.</p>
-          <button class="btn-share" onclick="shareLink()">Copy link</button>
-          <div class="copied" id="copied">Link copied!</div>
+          <strong style="font-size:.83rem"><span class="t-en">Share this analysis</span><span class="t-fr">Partager cette analyse</span><span class="t-es">Compartir este análisis</span></strong>
+          <p><span class="t-en">Generate a direct link — anyone who opens it sees the result instantly.</span><span class="t-fr">Générez un lien direct — toute personne qui l'ouvre voit le résultat instantanément.</span><span class="t-es">Genera un enlace directo — cualquiera que lo abra ve el resultado al instante.</span></p>
+          <button class="btn-share" onclick="shareLink()"><span class="t-en">Copy link</span><span class="t-fr">Copier le lien</span><span class="t-es">Copiar enlace</span></button>
+          <div class="copied" id="copied"><span class="t-en">Link copied!</span><span class="t-fr">Lien copié !</span><span class="t-es">¡Enlace copiado!</span></div>
         </div>
       </div>
 
@@ -1257,6 +1260,42 @@
 
 <script>
   let chartInst=null, G=3.5, TVL=500000, FEE=0.003, OPT=50, CUR_NET='eth', CUR_ADDR='';
+  const MSGS={
+    en:{
+      statusInvalid:'Invalid address',
+      statusLoading:'Fetching live data…',
+      statusOk:'Data loaded — click Calculate',
+      statusNotFound:'Pool not found — enter values manually',
+      statusError:'Network error — enter values manually',
+      advWarn:(amt,diff,opt)=>`At <strong>$${amt}</strong> you pay <strong>${diff} more</strong> than optimal. Consider trading around <strong>${opt}</strong>.`,
+      advGood:'Your amount is close to optimal — good call.',
+      cmpTiny:'Tiny amount',cmpOpt:'Optimal ✓',cmpDouble:'2× optimal',cmpRef:'$100 reference',
+      cmpTotal:'Total cost:',cmpOptTag:'optimal',cmpMore:'more',
+    },
+    fr:{
+      statusInvalid:'Adresse invalide',
+      statusLoading:'Récupération des données en direct…',
+      statusOk:'Données chargées — cliquez sur Calculer',
+      statusNotFound:'Pool introuvable — saisissez les valeurs manuellement',
+      statusError:'Erreur réseau — saisissez les valeurs manuellement',
+      advWarn:(amt,diff,opt)=>`À <strong>$${amt}</strong>, vous payez <strong>${diff} de plus</strong> qu'à l'optimal. Envisagez de trader autour de <strong>${opt}</strong>.`,
+      advGood:"Votre montant est proche de l'optimal — bon choix.",
+      cmpTiny:'Petit montant',cmpOpt:'Optimal ✓',cmpDouble:'2× optimal',cmpRef:'$100 référence',
+      cmpTotal:'Coût total :',cmpOptTag:'optimal',cmpMore:'de plus',
+    },
+    es:{
+      statusInvalid:'Dirección inválida',
+      statusLoading:'Obteniendo datos en vivo…',
+      statusOk:'Datos cargados — haz clic en Calcular',
+      statusNotFound:'Pool no encontrado — introduce los valores manualmente',
+      statusError:'Error de red — introduce los valores manualmente',
+      advWarn:(amt,diff,opt)=>`Con <strong>$${amt}</strong>, pagas <strong>${diff} más</strong> que el óptimo. Considera operar alrededor de <strong>${opt}</strong>.`,
+      advGood:'Tu monto está cerca del óptimo — buena decisión.',
+      cmpTiny:'Monto pequeño',cmpOpt:'Óptimo ✓',cmpDouble:'2× óptimo',cmpRef:'$100 referencia',
+      cmpTotal:'Coste total:',cmpOptTag:'óptimo',cmpMore:'más',
+    }
+  };
+  function msg(k,...a){const l=typeof getLang==='function'?getLang():'en';const m=(MSGS[l]||MSGS.en)[k]??MSGS.en[k];return typeof m==='function'?m(...a):m;}
   // fee() selector → uint24 (500=0.05%, 3000=0.30%, 10000=1.00%)
   const IDX_FEE_SEL = '0xddca3f43';
   // eth_call brut — retourne le résultat hex ou lève une exception
@@ -1333,9 +1372,9 @@
     else renderHistory();
   });
 
-  function setStatus(s,t,ch=[]){
+  function setStatus(s,k,ch=[]){
     document.getElementById('dot').className='dot '+s;
-    document.getElementById('statusTxt').textContent=t;
+    document.getElementById('statusTxt').innerHTML=msg(k);
     const c=document.getElementById('chips');
     if(ch.length){c.innerHTML=ch.map(x=>`<span class="chip">${x}</span>`).join('');c.classList.remove('hidden');}
     else c.classList.add('hidden');
@@ -1344,10 +1383,10 @@
   async function fetchPool(){
     const addr=document.getElementById('poolAddr').value.trim().toLowerCase();
     const net=document.getElementById('net').value;
-    if(addr.length<10){setStatus('err','Invalid address');return;}
+    if(addr.length<10){setStatus('err','statusInvalid');return;}
     CUR_NET=net;CUR_ADDR=addr;
     document.querySelector('.btn-load').disabled=true;
-    setStatus('loading','Fetching live data…');
+    setStatus('loading','statusLoading');
     try{
       const[poolR,gasR]=await Promise.allSettled([fetchGecko(net,addr),fetchGas(net)]);
       let ok=false;
@@ -1378,9 +1417,9 @@
           console.log('[OrnyTools] Fee tier : on-chain non disponible, valeur GeckoTerminal conservée');
         }
       }
-      if(ok){const ch=[];if(poolR.status==='fulfilled'&&poolR.value)ch.push('TVL live', feeChip);if(gasR.status==='fulfilled')ch.push('Gas live');setStatus('ok','Data loaded — click Calculate',ch);}
-      else{setStatus('err','Pool not found — enter values manually');document.getElementById('alertLiq').classList.add('hidden');}
-    }catch(e){setStatus('err','Network error — enter values manually');}
+      if(ok){const ch=[];if(poolR.status==='fulfilled'&&poolR.value)ch.push('TVL live', feeChip);if(gasR.status==='fulfilled')ch.push('Gas live');setStatus('ok','statusOk',ch);}
+      else{setStatus('err','statusNotFound');document.getElementById('alertLiq').classList.add('hidden');}
+    }catch(e){setStatus('err','statusError');}
     document.querySelector('.btn-load').disabled=false;
   }
 
@@ -1459,8 +1498,8 @@
     document.getElementById('maDiff').textContent=diff<0.05?'✓ optimal':'+'+pct(diff);
     document.getElementById('maDiff').style.color=diff<0.05?'var(--green)':'var(--red)';
     const adv=document.getElementById('maAdvice');
-    if(diff>1){adv.className='advice warn';adv.innerHTML=`At <strong>$${amt}</strong> you pay <strong>${pct(diff)} more</strong> than optimal. Consider trading around <strong>${fmt(OPT)}</strong>.`;adv.classList.remove('hidden');}
-    else if(diff<0.1){adv.className='advice good';adv.innerHTML='Your amount is close to optimal — good call.';adv.classList.remove('hidden');}
+    if(diff>1){adv.className='advice warn';adv.innerHTML=msg('advWarn',amt,pct(diff),fmt(OPT));adv.classList.remove('hidden');}
+    else if(diff<0.1){adv.className='advice good';adv.innerHTML=msg('advGood');adv.classList.remove('hidden');}
     else adv.classList.add('hidden');
   }
 
@@ -1469,7 +1508,7 @@
     for(let i=1;i<=steps;i++){const a=(max/steps)*i,gp=(g/a)*100,sp=(a/(2*tvl))*100,fp=fee*100;labels.push(fmt(a));dG.push(+gp.toFixed(4));dS.push(+sp.toFixed(4));dT.push(+(gp+sp+fp).toFixed(4));}
     if(chartInst)chartInst.destroy();
     chartInst=new Chart(document.getElementById('chart'),{type:'line',data:{labels,datasets:[
-      {label:'Total cost (%)',data:dT,borderColor:'#C8841E',backgroundColor:'rgba(200,132,30,.07)',borderWidth:2.5,fill:true,tension:.4,pointRadius:0,pointHitRadius:10},
+      {label:'Total cost (%)',data:dT,borderColor:'#2563eb',backgroundColor:'rgba(37,99,235,.07)',borderWidth:2.5,fill:true,tension:.4,pointRadius:0,pointHitRadius:10},
       {label:'Gas (%)',data:dG,borderColor:'#e02424',borderWidth:1.5,borderDash:[4,4],fill:false,tension:.4,pointRadius:0},
       {label:'Slippage (%)',data:dS,borderColor:'#3A9FD4',borderWidth:1.5,borderDash:[4,4],fill:false,tension:.4,pointRadius:0},
     ]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
@@ -1478,11 +1517,11 @@
   }
 
   function buildCmp(g,tvl,fee,opt){
-    const sc=[{l:'Tiny amount',a:Math.max(1,opt*.1)},{l:'Optimal ✓',a:opt},{l:'2× optimal',a:opt*2},{l:'$100 reference',a:100}];
+    const sc=[{l:msg('cmpTiny'),a:Math.max(1,opt*.1)},{l:msg('cmpOpt'),a:opt},{l:msg('cmpDouble'),a:opt*2},{l:msg('cmpRef'),a:100}];
     const ic=['🔴','🟢','🟡','🔵'];
     document.getElementById('cmpRows').innerHTML=sc.map((s,i)=>{
       const c=cost(s.a,g,tvl,fee),d=c-cost(opt,g,tvl,fee);
-      return`<div class="cmp-row"><div class="cmp-icon">${ic[i]}</div><div class="cmp-text"><strong>${s.l}</strong> — ${fmt(s.a)}<br>Total cost: <strong>${pct(c)}</strong> — ${d<.05?'<span class="pos">optimal</span>':`<span class="neg">+${pct(d)} more</span>`}</div></div>`;
+      return`<div class="cmp-row"><div class="cmp-icon">${ic[i]}</div><div class="cmp-text"><strong>${s.l}</strong> — ${fmt(s.a)}<br>${msg('cmpTotal')} <strong>${pct(c)}</strong> — ${d<.05?`<span class="pos">${msg('cmpOptTag')}</span>`:`<span class="neg">+${pct(d)} ${msg('cmpMore')}</span>`}</div></div>`;
     }).join('');
   }
 
