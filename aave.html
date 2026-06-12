@@ -27,6 +27,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
 })(window,document,'script','dataLayer','GTM-5XT34MFV');</script>
 <!-- End Google Tag Manager -->
+<script src="lang.js"></script>
 <style>
 :root{
   --blue:#1A56DB;--blue-pale:rgba(26,86,219,.08);
@@ -182,6 +183,31 @@ footer{padding:36px 0;text-align:center;color:var(--faint);font-size:13px;border
 @media(max-width:900px){.calc-layout{grid-template-columns:1fr}.right-col{position:static}}
 @media(max-width:640px){.col-row{grid-template-columns:1fr 1fr;gap:8px}.col-row .field:first-child{grid-column:1/-1}.debt-row{grid-template-columns:1fr 1fr}}
 @media(max-width:480px){.navbar{padding:8px 14px}.page-hero{padding:80px 16px 32px}.hf-zone,.calc-layout,.params-section{padding-left:14px;padding-right:14px}.hf-card{padding:18px}}
+/* ── DARK MODE ─────────────────────────────── */
+html.dark{
+  --surface:#161b22;--surface-2:#1c2128;--bg:#0d1117;
+  --line:#30363d;--line-soft:#21262d;
+  --text:#e6edf3;--dim:#8b949e;--faint:#6e7681;
+}
+html.dark body{background:var(--bg);color:var(--text)}
+html.dark .navbar{background:rgba(13,17,23,.95);border-color:var(--line)}
+html.dark .page-hero{background:var(--bg)}
+html.dark .hf-card{background:var(--surface)!important;border-color:var(--line)!important}
+html.dark .panel{background:var(--surface);border-color:var(--line)}
+html.dark .hfstat{background:var(--surface-2);border-color:var(--line)}
+html.dark .field select,html.dark .field input{background:var(--surface-2);border-color:var(--line);color:var(--text)}
+html.dark .del-btn{background:var(--surface);border-color:var(--line);color:var(--dim)}
+html.dark .add-btn{background:rgba(26,86,219,.12)}
+html.dark .sum-card,html.dark .scenario-card,html.dark .insight-card{background:var(--surface);border-color:var(--line)}
+html.dark .ptable{background:var(--surface)}
+html.dark .ptable thead th{background:var(--surface-2)}
+html.dark .ptable tbody tr{border-top-color:var(--line)}
+html.dark .back-link{background:var(--surface-2);border-color:var(--line)}
+html.dark .result-placeholder{background:var(--surface-2);border-color:var(--line)}
+html.dark .tools-nav-band{background:#161b22!important;border-color:var(--line)!important}
+html.dark .tools-nav-btn{background:var(--surface-2)!important;border-color:var(--line)!important;color:var(--text)!important}
+.btn-theme{background:transparent;border:1px solid var(--line);border-radius:7px;padding:5px 9px;cursor:pointer;font-size:1rem;line-height:1;transition:.15s}
+.btn-theme:hover{border-color:var(--blue)}
 </style>
   <script type="application/ld+json">
   {
@@ -213,6 +239,7 @@ footer{padding:36px 0;text-align:center;color:var(--faint);font-size:13px;border
     <button id="btnFR" class="lang-btn" onclick="setLang('fr')">🇫🇷 FR</button>
     <button id="btnES" class="lang-btn" onclick="setLang('es')">🇪🇸 ES</button>
   </div>
+  <button class="btn-theme" onclick="toggleTheme()" title="Dark mode">🌙</button>
   <a href="index.html" class="nav-home" id="navBack">← All tools</a>
 </nav>
 
@@ -221,6 +248,10 @@ footer{padding:36px 0;text-align:center;color:var(--faint);font-size:13px;border
   <div class="eyebrow" id="eyebrow">Aave V3 · Arbitrum / Ethereum<span class="oc-badge">⛓ CoinGecko live</span></div>
   <h1 id="heroTitle">Is your <em>position</em><br>safe right now?</h1>
   <p id="heroSub">Enter your collateral and debt — get your health factor, liquidation price, and a stress test at any price drop.</p>
+</div>
+
+<div style="padding:40px 28px 0;text-align:center;background:var(--surface,#fff)">
+  <img src="img-aave.png" alt="Aave V3 Calculator — OrnyTools" loading="lazy" style="width:clamp(300px,88vw,980px);border-radius:18px;box-shadow:0 16px 56px rgba(0,0,0,.10);display:inline-block"/>
 </div>
 
 <!-- HF GAUGE -->
@@ -585,7 +616,7 @@ function removeCollateral(id) {
 }
 function updateCollateral(id, key, val) {
   const row = collaterals.find(r => r.id === id);
-  if(row) { row[key] = val; fetchMissingPrices(); compute(); }
+  if(row) { row[key] = val; fetchMissingPrices(); compute(); saveAave(); }
 }
 function addDebt() {
   debts.push({ id: Date.now(), asset:'USDC', amount:'1000' });
@@ -597,7 +628,7 @@ function removeDebt(id) {
 }
 function updateDebt(id, key, val) {
   const row = debts.find(r => r.id === id);
-  if(row) { row[key] = val; fetchMissingPrices(); compute(); }
+  if(row) { row[key] = val; fetchMissingPrices(); compute(); saveAave(); }
 }
 
 /* ── PRICE OVERRIDE ──────────────────────────────────────────────────── */
@@ -861,7 +892,21 @@ function rerender() {
   renderCollateralRows();
   renderDebtRows();
   compute();
+  saveAave();
 }
+
+// localStorage persistence
+const AAVE_KEY = 'orny-aave-v1';
+function saveAave(){
+  try { localStorage.setItem(AAVE_KEY, JSON.stringify({collaterals, debts})); } catch(e){}
+}
+(function(){
+  try {
+    const d = JSON.parse(localStorage.getItem(AAVE_KEY) || '{}');
+    if(d.collaterals && d.collaterals.length) collaterals = d.collaterals;
+    if(d.debts && d.debts.length) debts = d.debts;
+  } catch(e){}
+})();
 
 // Init
 renderParamsTable();

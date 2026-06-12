@@ -25,7 +25,15 @@
     '.oc-badge{display:inline-flex;align-items:center;gap:3px;font-size:9.5px;font-weight:700;',
     'background:rgba(37,99,235,.07);color:#2563eb;border:1px solid rgba(37,99,235,.18);',
     'border-radius:5px;padding:2px 7px;vertical-align:middle;margin-left:6px;letter-spacing:.02em;',
-    'white-space:nowrap;flex-shrink:0}'
+    'white-space:nowrap;flex-shrink:0}',
+    // Mobile navbar overflow fix
+    '@media(max-width:420px){',
+    '.navbar{gap:6px!important;padding:8px 10px!important}',
+    '.nav-tag{display:none!important}',
+    '}',
+    '@media(max-width:360px){',
+    '.lang-switch{display:none!important}',
+    '}'
   ].join('');
   document.head.appendChild(s);
 

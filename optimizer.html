@@ -424,6 +424,35 @@
   .reg-chip{font-family:var(--ui);font-size:11.5px;font-weight:600;border:1px solid var(--line);background:var(--ink-2);color:var(--dim);padding:4px 9px;border-radius:6px;cursor:pointer;transition:border-color .15s,color .15s,background .15s;white-space:nowrap;line-height:1.4}
   .reg-chip:hover{border-color:var(--gold);color:var(--gold);background:var(--gold-pale)}
   .reg-chip .rc-fee{font-size:10px;opacity:.65;margin-left:2px}
+  /* Gas fetch */
+  .gas-field-row{display:flex;align-items:center;gap:7px;margin-top:6px}
+  .btn-gas-fetch{padding:4px 10px;background:rgba(58,159,212,.08);color:var(--aqua);border:1px solid rgba(58,159,212,.3);border-radius:6px;font-size:.7rem;font-weight:700;cursor:pointer;white-space:nowrap;font-family:var(--ui);transition:.15s;line-height:1.6}
+  .btn-gas-fetch:hover{background:rgba(58,159,212,.18)}
+  .btn-gas-fetch:disabled{opacity:.5;cursor:default}
+  .gas-ts{font-size:.7rem;color:var(--faint);white-space:nowrap}
+  /* ── DARK MODE ─────────────────────────────── */
+  html.dark{
+    --surface:#161b22;--surface-2:#1c2128;--bg:#0d1117;
+    --line:#30363d;--line-soft:#21262d;--ink-2:#1c2128;
+    --text:#e6edf3;--dim:#8b949e;--faint:#6e7681;
+  }
+  html.dark body{background:var(--bg);color:var(--text)}
+  html.dark .navbar{background:rgba(13,17,23,.95);border-color:var(--line)}
+  html.dark .hero-landing{background:var(--bg)}
+  html.dark .chart-shell{background:var(--surface);border-color:var(--line)}
+  html.dark .search-drop{background:var(--surface);border-color:var(--line)}
+  html.dark .drop-item:hover{background:rgba(200,132,30,.1)}
+  html.dark .readout{background:rgba(22,27,34,.97);border-color:var(--line)}
+  html.dark .toggle{background:var(--surface-2);border-color:var(--line)}
+  html.dark .toggle button.active{background:var(--surface);color:var(--text)}
+  html.dark .onchain{background:var(--surface-2)}
+  html.dark .search-box input{background:var(--surface-2);color:var(--text)}
+  html.dark .btn{background:var(--surface-2);border-color:var(--line);color:var(--text)}
+  html.dark .reg-chip{background:var(--surface-2);border-color:var(--line);color:var(--dim)}
+  html.dark .tools-nav-band{background:#161b22!important;border-color:var(--line)!important}
+  html.dark .tools-nav-btn{background:var(--surface-2)!important;border-color:var(--line)!important;color:var(--text)!important}
+  .btn-theme{background:transparent;border:1px solid var(--line);border-radius:7px;padding:5px 9px;cursor:pointer;font-size:1rem;line-height:1;transition:.15s}
+  .btn-theme:hover{border-color:var(--gold)}
 </style>
 <!-- Google Tag Manager -->
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -467,6 +496,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <button id="btnFR" class="lang-btn" onclick="setLang('fr')">🇫🇷 FR</button>
     <button id="btnES" class="lang-btn" onclick="setLang('es')">🇪🇸 ES</button>
   </div>
+  <button class="btn-theme" onclick="toggleTheme()" title="Dark mode">🌙</button>
 </nav>
 
 <!-- HERO — logo centré, propre -->
@@ -487,8 +517,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <div class="page-deco-zone">
   <div class="page-deco page-deco-left  pd-1"></div>
   <div class="page-deco page-deco-right pd-2"></div>
-  <div class="page-deco page-deco-left  pd-3"><img src="orny-victoire.png" alt=""/></div>
-  <div class="page-deco page-deco-right pd-4"><img src="orny-karate.png"   alt=""/></div>
+  <div class="page-deco page-deco-left  pd-3"><img src="orny-victoire.png" alt="" loading="lazy"/></div>
+  <div class="page-deco page-deco-right pd-4"><img src="orny-karate.png"   alt="" loading="lazy"/></div>
 <div class="wrap" id="tool">
 
   <!-- Intro strip -->
@@ -542,6 +572,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <label><span class="t-en">Network fee (gas)</span><span class="t-fr">Frais réseau (gas)</span><span class="t-es">Comisión de red (gas)</span></label>
           <span class="pfx">$</span>
           <input id="gas" class="mono" value="2.50" inputmode="decimal" />
+          <div class="gas-field-row">
+            <button type="button" class="btn-gas-fetch" id="fetchGasBtn" onclick="fetchLiveGas()"><span class="t-en">⛓ Fetch live</span><span class="t-fr">⛓ Prix réseau</span><span class="t-es">⛓ Obtener live</span></button>
+            <span class="gas-ts" id="gasTsLabel"></span>
+          </div>
         </div>
       </div>
       <div class="field">
@@ -2013,12 +2047,48 @@ $('network').addEventListener('change', e => {
   state.network = e.target.value;
   state.gas     = GAS_DEFAULTS[state.network] ?? state.gas;
   $('gas').value = state.gas;
+  $('gasTsLabel').textContent = '';
   $('poolAddr').value = '';
   $('loadStatus').textContent = '';
   state.siblings = []; $('feeCompare').style.display = 'none';
   renderRegistryChips();
   recompute();
 });
+
+const NATIVE_COINGECKO = {
+  eth:'ethereum', arbitrum:'ethereum', base:'ethereum', optimism:'ethereum',
+  bsc:'binancecoin', polygon_pos:'matic-network'
+};
+const SWAP_GAS_UNITS = { v2:150000, v3:220000 };
+
+async function fetchLiveGas(){
+  const btn = $('fetchGasBtn'); const lbl = $('gasTsLabel');
+  btn.disabled = true;
+  lbl.textContent = _l()==='fr' ? 'récupération…' : _l()==='es' ? 'obteniendo…' : 'fetching…';
+  try {
+    const net = state.network;
+    const rpc = (RPCS[net] || RPCS.eth)[0];
+    const cgId = NATIVE_COINGECKO[net] || 'ethereum';
+    const [gasRes, priceRes] = await Promise.all([
+      fetch(rpc, {method:'POST', headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({jsonrpc:'2.0',id:1,method:'eth_gasPrice',params:[]})}).then(r=>r.json()),
+      fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${cgId}&vs_currencies=usd`).then(r=>r.json())
+    ]);
+    const gasPriceGwei = parseInt(gasRes.result, 16) / 1e9;
+    const nativeUsd = priceRes[cgId]?.usd || 0;
+    const units = SWAP_GAS_UNITS[state.poolType] || 175000;
+    const gasCostUsd = gasPriceGwei * 1e-9 * units * nativeUsd;
+    const rounded = Math.max(0.01, Math.round(gasCostUsd * 100) / 100);
+    $('gas').value = rounded.toFixed(2);
+    $('gas').dispatchEvent(new Event('input'));
+    const _ts = new Date();
+    const _hm = _ts.getHours().toString().padStart(2,'0')+':'+_ts.getMinutes().toString().padStart(2,'0');
+    lbl.textContent = `⛓ ${gasPriceGwei < 1 ? gasPriceGwei.toFixed(3) : gasPriceGwei.toFixed(1)} gwei · ${_hm}`;
+  } catch(e) {
+    lbl.textContent = _l()==='fr' ? '⚠️ erreur réseau' : '⚠️ fetch failed';
+  }
+  btn.disabled = false;
+}
 $('tvl').addEventListener('input',     e => { state.tvl     = num(e.target.value, state.tvl);  recompute(); });
 $('gas').addEventListener('input',     e => { state.gas     = num(e.target.value, state.gas);  recompute(); });
 $('fee').addEventListener('input',     e => { state.fee = num(e.target.value, state.fee); state.feeSource = 'default'; updateFeeSourceLabel(); recompute(); });
@@ -2120,6 +2190,31 @@ window.onLangChange = function() {
   updateFeeSourceLabel();     // libellé source fee tier
   $('v3Val').textContent = Math.round(state.v3frac * 100) + (_l()==='fr' ? '% du TVL' : '% of TVL');
 };
+
+// localStorage persistence
+const OPT_KEY = 'orny-optimizer-v1';
+function saveOpt(){
+  localStorage.setItem(OPT_KEY, JSON.stringify({
+    net: $('network').value,
+    tvl: $('tvl').value,
+    gas: $('gas').value,
+    fee: $('fee').value
+  }));
+}
+(function restoreOpt(){
+  try {
+    const d = JSON.parse(localStorage.getItem(OPT_KEY) || '{}');
+    if(d.net && $('network')) $('network').value = d.net;
+    if(d.tvl && $('tvl')) $('tvl').value = d.tvl;
+    if(d.gas && $('gas')) $('gas').value = d.gas;
+    if(d.fee && $('fee')) $('fee').value = d.fee;
+  } catch(e){}
+})();
+['network','tvl','gas','fee'].forEach(id => {
+  const el = document.getElementById(id);
+  if(el) el.addEventListener('change', saveOpt);
+  if(el) el.addEventListener('input', saveOpt);
+});
 </script>
 <script src="lang.js"></script>
 

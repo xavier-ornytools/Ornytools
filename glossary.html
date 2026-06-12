@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta name="description" content="DeFi Glossary — OrnyTools. Definitions for AMM, health factor, impermanent loss, liquidation, slippage, concentrated liquidity, and more."/>
+<meta name="robots" content="index,follow"/>
+<link rel="canonical" href="https://ornytools.xyz/glossary.html"/>
+<meta property="og:type" content="website"/>
+<meta property="og:site_name" content="OrnyTools"/>
+<meta property="og:title" content="DeFi Glossary — OrnyTools"/>
+<meta property="og:description" content="Clear definitions for key DeFi terms: AMM, health factor, liquidation, slippage, impermanent loss, concentrated liquidity and more."/>
+<meta property="og:url" content="https://ornytools.xyz/glossary.html"/>
+<meta property="og:image" content="https://ornytools.xyz/orny-banner.png"/>
+<title>DeFi Glossary — OrnyTools</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+  :root{
+    --gold:#C8841E;--blue:#2563eb;
+    --text:#111827;--dim:#6B7280;--faint:#9AA5B4;
+    --line:#E4E8F0;--surface:#FFFFFF;--surface-2:#F0F2F5;
+    --display:"Fraunces",Georgia,serif;
+    --ui:"Hanken Grotesk",system-ui,sans-serif;
+    --mono:"JetBrains Mono",ui-monospace,monospace;
+    --radius:14px;--shadow:0 2px 8px rgba(0,0,0,.07),0 8px 32px rgba(0,0,0,.07);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:#f7f8fc;color:var(--text);font-family:var(--ui);-webkit-font-smoothing:antialiased}
+  .navbar{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(255,255,255,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);padding:10px 24px;display:flex;align-items:center;gap:12px}
+  .nav-logo{width:36px;height:36px;object-fit:cover;object-position:center 15%;border-radius:8px}
+  .nav-brand{font-family:var(--display);font-size:1.05rem;font-weight:600;letter-spacing:-.02em}
+  .nav-brand .dot{color:var(--gold)}
+  .nav-home{margin-left:auto;font-size:.82rem;font-weight:600;color:var(--dim);text-decoration:none;padding:7px 14px;border:1px solid var(--line);border-radius:7px;transition:.15s}
+  .nav-home:hover{border-color:var(--blue);color:var(--blue)}
+  .page-hero{padding:96px 28px 40px;text-align:center;background:#fff;border-bottom:1px solid var(--line)}
+  .eyebrow{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--blue);font-weight:700;margin-bottom:14px}
+  .page-hero h1{font-family:var(--display);font-weight:500;font-size:clamp(1.6rem,3vw,2.3rem);letter-spacing:-.02em;margin-bottom:12px}
+  .page-hero p{color:var(--dim);font-size:.95rem;max-width:50ch;margin:0 auto;line-height:1.75}
+  /* Alpha index */
+  .alpha-bar{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;max-width:760px;margin:28px auto 0;padding:0 24px}
+  .alpha-btn{padding:5px 10px;background:#fff;border:1px solid var(--line);border-radius:7px;font-size:.78rem;font-weight:700;color:var(--dim);text-decoration:none;transition:.15s}
+  .alpha-btn:hover{border-color:var(--blue);color:var(--blue)}
+  main{max-width:760px;margin:0 auto;padding:40px 24px 80px}
+  /* Letter groups */
+  .letter-group{margin-bottom:32px}
+  .letter-anchor{font-family:var(--display);font-size:1.8rem;font-weight:500;color:var(--gold);margin-bottom:16px;padding-bottom:8px;border-bottom:2px solid var(--line)}
+  /* Term entries */
+  .term{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:20px 24px;margin-bottom:10px;box-shadow:var(--shadow)}
+  .term-name{font-weight:800;font-size:1rem;margin-bottom:6px;color:var(--text)}
+  .term-tag{display:inline-block;font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:2px 7px;border-radius:4px;margin-bottom:8px}
+  .term-tag.amm{background:rgba(200,132,30,.12);color:var(--gold)}
+  .term-tag.lending{background:rgba(37,99,235,.1);color:var(--blue)}
+  .term-tag.trading{background:rgba(124,58,237,.1);color:#7C3AED}
+  .term-tag.general{background:rgba(107,114,128,.1);color:#6B7280}
+  .term-def{color:var(--dim);font-size:.88rem;line-height:1.8}
+  .term-def strong{color:var(--text)}
+  .term-def code{font-family:var(--mono);font-size:.82rem;background:#f7f8fc;padding:1px 5px;border-radius:4px;border:1px solid var(--line)}
+  .term-link{display:inline-flex;align-items:center;gap:5px;font-size:.78rem;font-weight:700;color:var(--blue);text-decoration:none;margin-top:8px}
+  .term-link:hover{text-decoration:underline}
+  footer{text-align:center;padding:20px;font-size:.72rem;color:var(--faint);border-top:1px solid var(--line)}
+  footer a{color:var(--faint);text-decoration:none}
+  footer a:hover{color:var(--blue)}
+  /* ── DARK MODE ─────────────────────────────── */
+  html.dark{
+    --surface:#161b22;--surface-2:#1c2128;--bg:#0d1117;
+    --line:#30363d;
+    --text:#e6edf3;--dim:#8b949e;--faint:#6e7681;
+  }
+  html.dark body{background:var(--bg);color:var(--text)}
+  html.dark .navbar{background:rgba(13,17,23,.95);border-color:var(--line)}
+  html.dark .page-hero{background:var(--bg)}
+  html.dark .term{background:var(--surface);border-color:var(--line)}
+  html.dark .alpha-btn{background:var(--surface);border-color:var(--line);color:var(--dim)}
+  html.dark .term-def code{background:var(--surface-2);border-color:var(--line)}
+  .btn-theme{background:transparent;border:1px solid var(--line);border-radius:7px;padding:5px 9px;cursor:pointer;font-size:1rem;line-height:1;transition:.15s}
+  .btn-theme:hover{border-color:var(--blue)}
+</style>
+<script src="lang.js"></script>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="index.html"><img src="logo.png" class="nav-logo" alt="OrnyTools"/></a>
+  <span class="nav-brand">ORNY<span class="dot">.</span>TOOLS</span>
+  <button class="btn-theme" onclick="toggleTheme()" title="Dark mode">🌙</button>
+  <a href="index.html" class="nav-home">← Home</a>
+</nav>
+
+<div class="page-hero">
+  <div class="eyebrow">DeFi Glossary</div>
+  <h1>Every term, clearly defined.</h1>
+  <p>Key concepts behind AMMs, lending protocols, perpetuals, and liquidity provision — with the formulas where they apply.</p>
+  <div class="alpha-bar">
+    <a class="alpha-btn" href="#A">A</a><a class="alpha-btn" href="#B">B</a><a class="alpha-btn" href="#C">C</a><a class="alpha-btn" href="#F">F</a><a class="alpha-btn" href="#H">H</a><a class="alpha-btn" href="#I">I</a><a class="alpha-btn" href="#L">L</a><a class="alpha-btn" href="#M">M</a><a class="alpha-btn" href="#O">O</a><a class="alpha-btn" href="#P">P</a><a class="alpha-btn" href="#R">R</a><a class="alpha-btn" href="#S">S</a><a class="alpha-btn" href="#T">T</a><a class="alpha-btn" href="#U">U</a>
+  </div>
+</div>
+
+<main>
+
+  <div class="letter-group" id="A">
+    <div class="letter-anchor">A</div>
+    <div class="term">
+      <div class="term-name">AMM — Automated Market Maker</div>
+      <span class="term-tag amm">AMM</span>
+      <p class="term-def">A decentralized exchange mechanism that prices assets algorithmically instead of using an order book. The most common type uses the <strong>constant-product formula x·y=k</strong>: the pool holds two tokens and the product of their quantities stays constant. Every trade moves the price along the curve. Examples: Uniswap V2, SushiSwap.</p>
+    </div>
+    <div class="term">
+      <div class="term-name">Aave V3</div>
+      <span class="term-tag lending">Lending</span>
+      <p class="term-def">A decentralized lending protocol where users supply collateral and borrow assets. Key parameters per asset: <strong>LTV</strong> (max borrow / collateral value), <strong>Liquidation Threshold</strong> (the LT beyond which a position is at risk), and <strong>Health Factor</strong>. Available on Ethereum, Arbitrum, Base, and 5+ other chains.</p>
+      <a href="dashboard.html" class="term-link">→ Position Dashboard</a>
+    </div>
+  </div>
+
+  <div class="letter-group" id="B">
+    <div class="letter-anchor">B</div>
+    <div class="term">
+      <div class="term-name">Borrow rate</div>
+      <span class="term-tag lending">Lending</span>
+      <p class="term-def">The interest rate charged on borrowed assets, expressed as APY. In Aave V3, borrow rates are dynamic and increase as utilization grows. They compound continuously. On GMX perpetuals, the "borrow fee" (~0.01%/hour on the borrowed portion) is separate — it covers the protocol's funding reserve.</p>
+    </div>
+    <div class="term">
+      <div class="term-name">Break-even price</div>
+      <span class="term-tag trading">Trading</span>
+      <p class="term-def">For a leveraged trade: the price the underlying must reach for the position to cover all fees and return zero profit. Calculated as: <code>entry ± (opening fees / position_size)</code>. On GMX with 0.14% round-trip fees, a $10,000 position needs a $14 move just to break even — before borrow fees.</p>
+      <a href="gmx.html" class="term-link">→ GMX Calculator</a>
+    </div>
+  </div>
+
+  <div class="letter-group" id="C">
+    <div class="letter-anchor">C</div>
+    <div class="term">
+      <div class="term-name">Capital efficiency</div>
+      <span class="term-tag amm">AMM</span>
+      <p class="term-def">How much liquidity a given amount of capital provides relative to a V2 full-range position. Uniswap V3 concentrated liquidity multiplier: <code>CE = 1 / (1 − √(P_low/P_up))</code>. A ±20% range gives ~5.5× capital efficiency — you earn the same fees with 5.5× less capital, but only while in range.</p>
+      <a href="v3range.html" class="term-link">→ V3 Range Optimizer</a>
+    </div>
+    <div class="term">
+      <div class="term-name">Collateral</div>
+      <span class="term-tag lending">Lending</span>
+      <p class="term-def">Assets deposited in a lending protocol to back borrowed positions. In Aave V3, collateral value (in USD, via Chainlink oracles) determines both how much you can borrow (LTV) and when liquidation is triggered (LT). Not all assets can be used as collateral — some are "supply only."</p>
+    </div>
+    <div class="term">
+      <div class="term-name">Carry trade</div>
+      <span class="term-tag lending">Lending</span>
+      <p class="term-def">A position where you borrow at a known rate and invest in an asset expected to return more. In DeFi, the most common carry is borrowing stablecoins from Aave to hold leveraged ETH or BTC. The carry cost is the borrow APY; the expected return is the asset's price appreciation. If the asset doesn't outperform the borrow rate, you have a losing carry.</p>
+    </div>
+    <div class="term">
+      <div class="term-name">Concentrated liquidity</div>
+      <span class="term-tag amm">AMM</span>
+      <p class="term-def">Uniswap V3's model where LPs specify a price range [Pa, Pb] for their capital. Unlike V2's full-range distribution, liquidity is only active while the pool price is between Pa and Pb — earning fees during that time and nothing outside it. Narrower ranges yield higher capital efficiency but a higher probability of going out of range.</p>
+      <a href="v3range.html" class="term-link">→ V3 Range Optimizer</a>
+    </div>
+    <div class="term">
+      <div class="term-name">Constant-product curve</div>
+      <span class="term-tag amm">AMM</span>
+      <p class="term-def">The invariant <code>x·y=k</code> that governs Uniswap V2 pools. After any trade, the product of token quantities is unchanged. This means price impact is non-linear: the larger the trade relative to the pool, the more the price moves against the trader. Slippage = <code>A/(R+A)</code> where R is pool depth.</p>
+    </div>
+  </div>
+
+  <div class="letter-group" id="F">
+    <div class="letter-anchor">F</div>
+    <div class="term">
+      <div class="term-name">Flash loan</div>
+      <span class="term-tag general">General</span>
+      <p class="term-def">An uncollateralized loan that must be borrowed and repaid within the same transaction block. If repayment fails, the entire transaction reverts. Used for arbitrage, liquidations, and collateral swaps. Aave V3 offers flash loans with a 0.09% fee on the borrowed amount.</p>
+    </div>
+    <div class="term">
+      <div class="term-name">Funding rate</div>
+      <span class="term-tag trading">Trading</span>
+      <p class="term-def">On perpetual DEXes, a periodic payment between longs and shorts to keep the perpetual price anchored to the spot price. When longs pay shorts, the market is in contango (longs dominant). GMX V2 uses a "borrow fee" model rather than traditional funding — longs and shorts both pay, the rate depends on open interest imbalance.</p>
+    </div>
+  </div>
+
+  <div class="letter-group" id="H">
+    <div class="letter-anchor">H</div>
+    <div class="term">
+      <div class="term-name">Health factor (HF)</div>
+      <span class="term-tag lending">Lending</span>
+      <p class="term-def">Aave's real-time solvency metric: <code>HF = Σ(collateral × LT) / Σ(debt)</code>. HF = 1.0 means you are at the liquidation threshold. HF &gt; 1.5 is generally safe. HF &lt; 1.2 is high-risk — a 15% adverse price move can push you below 1.0. HF is fetched directly from the Aave V3 contract via the <code>getUserAccountData()</code> function.</p>
+      <a href="dashboard.html" class="term-link">→ Position Dashboard</a>
+    </div>
+  </div>
+
+  <div class="letter-group" id="I">
+    <div class="letter-anchor">I</div>
+    <div class="term">
+      <div class="term-name">Impermanent loss (IL)</div>
+      <span class="term-tag amm">AMM</span>
+      <p class="term-def">The opportunity cost of holding tokens in an AMM pool vs. simply holding them. The formula: <code>IL = 2√r/(1+r) − 1</code> where r = (current price / entry price). IL is symmetric: a 2× price move in either direction gives ~5.7% IL. It's "impermanent" only if the price returns to entry — otherwise it's a realized loss at withdrawal.</p>
+      <a href="il-calculator.html" class="term-link">→ IL Calculator</a>
+    </div>
+  </div>
+
+  <div class="letter-group" id="L">
+    <div class="letter-anchor">L</div>
+    <div class="term">
+      <div class="term-name">Leverage ratio</div>
+      <span class="term-tag trading">Trading</span>
+      <p class="term-def">In a lending loop, the maximum leverage achievable with a given LTV is: <code>max_leverage = 1 / (1 − LTV)</code>. At 80% LTV: max 5×. At 90% LTV: max 10×. Each loop adds collateral and debt, increasing both exposure and risk proportionally.</p>
+      <a href="leverage.html" class="term-link">→ Leverage Calculator</a>
+    </div>
+    <div class="term">
+      <div class="term-name">Liquidation</div>
+      <span class="term-tag lending">Lending</span>
+      <p class="term-def">When a borrower's health factor drops to 1.0, third-party liquidators can repay a portion of the debt and seize the equivalent collateral plus a bonus (e.g., 5–15% depending on the asset). On Aave V3, up to 50% of the debt can be repaid in a single liquidation call (the "close factor").</p>
+    </div>
+    <div class="term">
+      <div class="term-name">Liquidation threshold (LT)</div>
+      <span class="term-tag lending">Lending</span>
+      <p class="term-def">The collateralization ratio at which a position becomes eligible for liquidation. Always higher than LTV. Example: WBTC on Aave V3 Arbitrum has LTV = 70% and LT = 75% — you can borrow up to 70% of your WBTC value, but liquidation triggers only at 75% (after price drops have eaten into collateral). The gap between LTV and LT is your safety buffer.</p>
+    </div>
+    <div class="term">
+      <div class="term-name">Leverage loop</div>
+      <span class="term-tag lending">Lending</span>
+      <p class="term-def">A strategy where you deposit collateral, borrow against it, swap the borrowed asset back to the collateral, deposit again, and repeat. Each iteration adds exposure multiplicatively. After N loops with LTV l: <code>total_exposure = initial × (1 − l^(N+1)) / (1 − l)</code>. The liquidation buffer is determined by the LTV/LT gap — not by the number of loops.</p>
+      <a href="leverage.html" class="term-link">→ Leverage Calculator</a>
+    </div>
+    <div class="term">
+      <div class="term-name">LTV — Loan to Value</div>
+      <span class="term-tag lending">Lending</span>
+      <p class="term-def">The maximum fraction of collateral value that can be borrowed. Set per asset by Aave governance. Lower LTV = safer for the protocol, less efficient for the borrower. Volatile assets have lower LTV (e.g., WBTC 70%, ETH 80%) while stablecoins can reach 90%.</p>
+    </div>
+  </div>
+
+  <div class="letter-group" id="M">
+    <div class="letter-anchor">M</div>
+    <div class="term">
+      <div class="term-name">Maintenance margin</div>
+      <span class="term-tag trading">Trading</span>
+      <p class="term-def">The minimum collateral required to keep a leveraged position open. On GMX V2, it's 1% of position size. When collateral − fees falls below this level, the position is liquidated. It acts as the protocol's safety buffer, ensuring the trader covers the closing costs even in fast-moving markets.</p>
+    </div>
+  </div>
+
+  <div class="letter-group" id="O">
+    <div class="letter-anchor">O</div>
+    <div class="term">
+      <div class="term-name">On-chain data</div>
+      <span class="term-tag general">General</span>
+      <p class="term-def">Information read directly from smart contract state, not from an API or database. OrnyTools fetches health factors from the Aave V3 contract, V3 pool states from Uniswap V3 contracts, and prices from Chainlink feeds — all via public RPC nodes, without any wallet connection. The data is as fresh as the latest block.</p>
+    </div>
+    <div class="term">
+      <div class="term-name">Oracle</div>
+      <span class="term-tag general">General</span>
+      <p class="term-def">A smart contract that feeds real-world prices (USD prices for crypto assets) into the blockchain. Aave V3 uses <strong>Chainlink oracles</strong> — aggregated from multiple data sources with deviation thresholds and heartbeat checks. Your collateral value in the health factor calculation uses the oracle price, not the DEX spot price.</p>
+    </div>
+  </div>
+
+  <div class="letter-group" id="P">
+    <div class="letter-anchor">P</div>
+    <div class="term">
+      <div class="term-name">Perpetual (perp)</div>
+      <span class="term-tag trading">Trading</span>
+      <p class="term-def">A derivative contract with no expiry date that tracks the price of an underlying asset. On-chain perps (GMX, dYdX, Hyperliquid) allow leverage trading directly from a wallet without a CEX. GMX V2 uses a GLP/GM liquidity pool model where liquidity providers are the counterparty to traders.</p>
+    </div>
+    <div class="term">
+      <div class="term-name">Price impact</div>
+      <span class="term-tag amm">AMM</span>
+      <p class="term-def">The change in execution price caused by a trade moving the AMM curve. In a constant-product pool, price impact for a trade of size A in a pool of depth R is: <code>A/(R+A)</code>. A $10,000 trade in a $1M pool moves price by ~1%. This is the same as slippage for a V2 pool with no spread.</p>
+    </div>
+  </div>
+
+  <div class="letter-group" id="R">
+    <div class="letter-anchor">R</div>
+    <div class="term">
+      <div class="term-name">Range (Uniswap V3)</div>
+      <span class="term-tag amm">AMM</span>
+      <p class="term-def">The price interval [Pa, Pb] within which a V3 liquidity position is active. Pa is the lower bound and Pb is the upper bound. When the pool price is inside the range, the LP earns fees proportional to their share of in-range liquidity. When price moves outside, the position becomes 100% of one token and earns nothing until price re-enters. Choosing the right range is the core trade-off in V3 LP strategy.</p>
+      <a href="v3range.html" class="term-link">→ V3 Range Optimizer</a>
+    </div>
+    <div class="term">
+      <div class="term-name">Rebalancing</div>
+      <span class="term-tag amm">AMM</span>
+      <p class="term-def">The act of closing and reopening a V3 position after it goes out of range, or adjusting the range to re-center on the current price. Each rebalance incurs gas costs, swap fees (to convert the single-token position back to 50/50), and slippage. Frequent rebalancing on a narrow range can erase fee income. Active management strategies automate this with contracts like Arrakis or Gamma.</p>
+    </div>
+  </div>
+
+  <div class="letter-group" id="S">
+    <div class="letter-anchor">S</div>
+    <div class="term">
+      <div class="term-name">Slippage</div>
+      <span class="term-tag amm">AMM</span>
+      <p class="term-def">The difference between the expected price and the executed price of a trade. In AMMs, it's driven by price impact. In order books, it comes from thin liquidity at specific levels. Slippage tolerance (e.g., 0.5%) set in your wallet prevents execution if the price moves more than that between submission and confirmation.</p>
+    </div>
+    <div class="term">
+      <div class="term-name">Stablecoin</div>
+      <span class="term-tag general">General</span>
+      <p class="term-def">A token designed to maintain a fixed peg, usually to USD. Main types: <strong>fiat-backed</strong> (USDC, USDT — backed by dollars in a bank), <strong>crypto-overcollateralized</strong> (DAI, LUSD — backed by ETH/BTC with excess collateral), <strong>algorithmic</strong> (historically high failure rate). The Stablecoin Analyzer monitors depeg risk across 30+ assets.</p>
+      <a href="stablecoin.html" class="term-link">→ Stablecoin Analyzer</a>
+    </div>
+  </div>
+
+  <div class="letter-group" id="T">
+    <div class="letter-anchor">T</div>
+    <div class="term">
+      <div class="term-name">TVL — Total Value Locked</div>
+      <span class="term-tag general">General</span>
+      <p class="term-def">The total USD value of assets deposited in a protocol or pool. In an AMM pool, TVL = 2 × value of one side (since pools hold equal-value amounts of both tokens). Higher TVL means deeper liquidity and lower price impact per dollar traded. TVL data comes from DeFiLlama and GeckoTerminal in OrnyTools.</p>
+    </div>
+    <div class="term">
+      <div class="term-name">Tick (Uniswap V3)</div>
+      <span class="term-tag amm">AMM</span>
+      <p class="term-def">A discrete price level in Uniswap V3's concentrated liquidity system. The price space is divided into 1 basis-point increments (ticks). Liquidity providers select a lower and upper tick to define their range. Fees are earned only when the current price (currentTick) is between the position's ticks.</p>
+    </div>
+  </div>
+
+  <div class="letter-group" id="U">
+    <div class="letter-anchor">U</div>
+    <div class="term">
+      <div class="term-name">Utilization rate</div>
+      <span class="term-tag lending">Lending</span>
+      <p class="term-def">The fraction of supplied assets that are currently borrowed: <code>utilization = total_borrows / total_supply</code>. Aave uses a kinked interest rate model — below the optimal utilization (typically 80–90%), rates rise gently; above it, rates spike sharply to incentivize repayments and more supply.</p>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <a href="index.html">OrnyTools</a> · <a href="guides.html">Guides</a> · <a href="methodology.html">Methodology</a> · <a href="about.html">About</a> · <a href="mailto:contact@ornytools.xyz">contact@ornytools.xyz</a>
+</footer>
+
+</body>
+</html>

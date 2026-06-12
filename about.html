@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta name="description" content="About OrnyTools — the DeFi decision engine. Who we are, what we build, and why."/>
+<meta name="robots" content="index,follow"/>
+<link rel="canonical" href="https://ornytools.xyz/about.html"/>
+<meta property="og:type" content="website"/>
+<meta property="og:site_name" content="OrnyTools"/>
+<meta property="og:title" content="About OrnyTools — The DeFi Decision Engine"/>
+<meta property="og:url" content="https://ornytools.xyz/about.html"/>
+<meta property="og:image" content="https://ornytools.xyz/orny-banner.png"/>
+<title>About — OrnyTools</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet"/>
+<style>
+  :root{
+    --gold:#C8841E;--blue:#2563eb;--blue-pale:rgba(37,99,235,.08);
+    --good:#0E9F6E;--purple:#7C3AED;
+    --text:#111827;--dim:#6B7280;--faint:#9AA5B4;
+    --line:#E4E8F0;--line-soft:#EDF0F5;
+    --surface:#FFFFFF;--surface-2:#F0F2F5;
+    --display:"Fraunces",Georgia,serif;
+    --ui:"Hanken Grotesk",system-ui,sans-serif;
+    --mono:"JetBrains Mono",ui-monospace,monospace;
+    --radius:14px;
+    --shadow:0 2px 8px rgba(0,0,0,.07),0 8px 32px rgba(0,0,0,.07);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#f7f8fc;color:var(--text);font-family:var(--ui);-webkit-font-smoothing:antialiased}
+
+  .navbar{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(255,255,255,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);padding:10px 24px;display:flex;align-items:center;gap:12px;box-shadow:0 2px 12px rgba(0,0,0,.04)}
+  .nav-logo{width:36px;height:36px;object-fit:cover;object-position:center 15%;border-radius:8px}
+  .nav-brand{font-family:var(--display);font-size:1.05rem;font-weight:600;letter-spacing:-.02em}
+  .nav-brand .dot{color:var(--gold)}
+  .nav-home{margin-left:auto;font-size:.82rem;font-weight:600;color:var(--dim);text-decoration:none;padding:7px 14px;border:1px solid var(--line);border-radius:7px;transition:.15s}
+  .nav-home:hover{border-color:var(--blue);color:var(--blue)}
+  .lang-btn{background:none;border:1px solid var(--line);border-radius:6px;padding:4px 8px;font-size:.72rem;font-weight:700;cursor:pointer;color:var(--dim);transition:.15s;margin-left:3px}
+  .lang-btn:hover,.lang-btn.active{border-color:var(--blue);color:var(--blue)}
+
+  .page-hero{padding:100px 28px 48px;text-align:center;background:#fff;border-bottom:1px solid var(--line)}
+  .eyebrow{font-size:11.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--blue);font-weight:700;margin-bottom:16px}
+  .page-hero h1{font-family:var(--display);font-weight:500;font-size:clamp(1.7rem,3.2vw,2.4rem);letter-spacing:-.02em;line-height:1.12;margin-bottom:14px}
+  .page-hero h1 em{font-style:italic;color:var(--blue)}
+  .page-hero p{color:var(--dim);font-size:1rem;max-width:52ch;margin:0 auto;line-height:1.75}
+
+  main{max-width:760px;margin:0 auto;padding:40px 24px 80px}
+
+  .panel{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:28px 32px;box-shadow:var(--shadow);margin-bottom:18px}
+  .panel-title{font-size:.68rem;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--faint);margin-bottom:18px}
+  .panel p{color:var(--dim);font-size:.93rem;line-height:1.8;margin-bottom:12px}
+  .panel p:last-child{margin-bottom:0}
+  .panel p strong{color:var(--text);font-weight:700}
+
+  .origin-panel{border-top:3px solid var(--gold)}
+  .mission-panel{border-top:3px solid var(--blue)}
+  .contact-panel{border-top:3px solid var(--good)}
+
+  .principle-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-top:4px}
+  .principle{background:var(--surface-2);border:1px solid var(--line);border-radius:10px;padding:16px}
+  .principle-icon{font-size:1.4rem;margin-bottom:8px}
+  .principle-name{font-weight:700;font-size:.88rem;margin-bottom:4px}
+  .principle-desc{font-size:.78rem;color:var(--dim);line-height:1.6}
+
+  .stack-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin-top:4px}
+  .stack-item{background:var(--surface-2);border:1px solid var(--line);border-radius:9px;padding:12px 14px;display:flex;align-items:center;gap:9px;font-size:.82rem;font-weight:600}
+  .stack-item .si-icon{font-size:1.15rem;flex-shrink:0}
+  .stack-item .si-sub{font-size:.7rem;color:var(--faint);font-weight:400;display:block;margin-top:1px}
+
+  .contact-links{display:flex;flex-wrap:wrap;gap:10px;margin-top:4px}
+  .contact-link{display:inline-flex;align-items:center;gap:8px;padding:11px 18px;border-radius:9px;font-size:.85rem;font-weight:700;text-decoration:none;border:1.5px solid transparent;transition:.15s}
+  .contact-link:hover{transform:translateY(-1px)}
+  .contact-link.mail{background:rgba(14,159,110,.07);border-color:rgba(14,159,110,.25);color:var(--good)}
+  .contact-link.tools{background:var(--blue-pale);border-color:rgba(37,99,235,.2);color:var(--blue)}
+
+  .tools-nav-band{background:#f7f8fc;border-top:1px solid #e4e8f0;padding:28px 28px 32px;text-align:center}
+  .tools-nav-lbl{font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;color:#6b7280;margin-bottom:14px}
+  .tools-nav-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;max-width:900px;margin:0 auto}
+  .tools-nav-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 15px;border:1px solid #e4e8f0;border-radius:99px;background:#fff;font-size:.8rem;font-weight:600;color:#374151;text-decoration:none;transition:.15s}
+  .tools-nav-btn:hover{border-color:#2563eb;color:#2563eb;background:#eff6ff}
+  footer{text-align:center;padding:20px;font-size:.72rem;color:var(--faint);border-top:1px solid var(--line)}
+  /* ── DARK MODE ─────────────────────────────── */
+  html.dark{
+    --surface:#161b22;--surface-2:#1c2128;--bg:#0d1117;
+    --line:#30363d;--line-soft:#21262d;
+    --text:#e6edf3;--dim:#8b949e;--faint:#6e7681;
+  }
+  html.dark body{background:var(--bg);color:var(--text)}
+  html.dark .navbar{background:rgba(13,17,23,.95);border-color:var(--line)}
+  html.dark .page-hero{background:var(--bg)}
+  html.dark .about-card,html.dark .mission-card,html.dark .team-card{background:var(--surface);border-color:var(--line)}
+  html.dark .tools-nav-band{background:#161b22!important;border-color:var(--line)!important}
+  html.dark .tools-nav-btn{background:#1c2128!important;border-color:#30363d!important;color:#e6edf3!important}
+  .btn-theme{background:transparent;border:1px solid var(--line);border-radius:7px;padding:5px 9px;cursor:pointer;font-size:1rem;line-height:1;transition:.15s}
+  .btn-theme:hover{border-color:var(--gold)}
+</style>
+<script src="lang.js"></script>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="index.html"><img src="logo.png" class="nav-logo" alt="OrnyTools"/></a>
+  <span class="nav-brand">ORNY<span class="dot">.</span>TOOLS</span>
+  <a href="index.html" class="nav-home">← Home</a>
+  <div style="margin-left:8px">
+    <button id="btnEN" class="lang-btn" onclick="setLang('en')">🇬🇧 EN</button>
+    <button id="btnFR" class="lang-btn" onclick="setLang('fr')">🇫🇷 FR</button>
+    <button id="btnES" class="lang-btn" onclick="setLang('es')">🇪🇸 ES</button>
+  </div>
+  <button class="btn-theme" onclick="toggleTheme()" title="Dark mode">🌙</button>
+</nav>
+
+<div class="page-hero">
+  <div class="eyebrow"><span class="t-en">About OrnyTools</span><span class="t-fr">À propos d'OrnyTools</span><span class="t-es">Acerca de OrnyTools</span></div>
+  <h1><span class="t-en">Built to help you<br><em>decide</em>, not just observe.</span><span class="t-fr">Conçu pour vous aider<br>à <em>décider</em>, pas juste observer.</span><span class="t-es">Construido para ayudarte<br>a <em>decidir</em>, no solo observar.</span></h1>
+  <p><span class="t-en">DeFiLlama shows data. DeBank shows wallets. OrnyTools tells you what to do with them.</span><span class="t-fr">DeFiLlama montre les données. DeBank montre les wallets. OrnyTools vous dit quoi en faire.</span><span class="t-es">DeFiLlama muestra datos. DeBank muestra wallets. OrnyTools te dice qué hacer con ellos.</span></p>
+</div>
+
+<main>
+
+  <!-- Origin -->
+  <div class="panel origin-panel">
+    <div class="panel-title"><span class="t-en">Origin</span><span class="t-fr">Origine</span><span class="t-es">Origen</span></div>
+    <p><span class="t-en">OrnyTools started from a simple frustration: there is a mathematically optimal trade size for every AMM swap, and no tool was calculating it. The insight — that gas + slippage costs form a U-curve with a clear minimum — became the Trade Size Optimizer, and the first version went live in 2025.</span><span class="t-fr">OrnyTools est né d'une frustration simple : il existe une taille de trade mathématiquement optimale pour chaque swap AMM, et aucun outil ne la calculait. L'idée — que les coûts gas + slippage forment une courbe en U avec un minimum clair — est devenue le Trade Size Optimizer, et la première version a été mise en ligne en 2025.</span><span class="t-es">OrnyTools nació de una frustración simple: existe un tamaño de trade matemáticamente óptimo para cada swap en un AMM, y ninguna herramienta lo calculaba. La idea — que los costes de gas + slippage forman una curva en U con un mínimo claro — se convirtió en el Trade Size Optimizer, puesto en marcha en 2025.</span></p>
+    <p><span class="t-en">From that single insight, the platform expanded to cover the full DeFi decision stack: LP positions, leverage, borrowing, liquidation risk, stablecoin selection, and perpetual trading — 11 tools, all free, all read-only, all built on live on-chain data.</span><span class="t-fr">À partir de cette idée, la plateforme s'est étendue à l'ensemble de la chaîne de décision DeFi : positions LP, levier, emprunt, risque de liquidation, sélection de stablecoins et trading de perpetuels — 11 outils, tous gratuits, tous en lecture seule, tous construits sur des données on-chain en direct.</span><span class="t-es">A partir de esa idea, la plataforma se expandió para cubrir toda la cadena de decisiones DeFi: posiciones LP, apalancamiento, préstamos, riesgo de liquidación, selección de stablecoins y trading de perpetuos — 11 herramientas, todas gratuitas, todas de solo lectura, todas basadas en datos on-chain en vivo.</span></p>
+  </div>
+
+  <!-- Mission & Principles -->
+  <div class="panel mission-panel">
+    <div class="panel-title"><span class="t-en">Mission & Principles</span><span class="t-fr">Mission &amp; Principes</span><span class="t-es">Misión &amp; Principios</span></div>
+    <p><span class="t-en"><strong>Mission:</strong> Make DeFi decision-making rigorous, accessible, and language-neutral — so that any trader, regardless of background, can run the math before committing capital.</span><span class="t-fr"><strong>Mission :</strong> Rendre la prise de décision DeFi rigoureuse, accessible et indépendante de la langue — pour que tout trader, quel que soit son profil, puisse faire les calculs avant d'engager du capital.</span><span class="t-es"><strong>Misión:</strong> Hacer que la toma de decisiones en DeFi sea rigurosa, accesible e independiente del idioma — para que cualquier trader, sin importar su origen, pueda ejecutar los cálculos antes de comprometer capital.</span></p>
+    <div class="principle-grid">
+      <div class="principle">
+        <div class="principle-icon">🔗</div>
+        <div class="principle-name"><span class="t-en">On-chain first</span><span class="t-fr">On-chain en priorité</span><span class="t-es">On-chain primero</span></div>
+        <div class="principle-desc"><span class="t-en">Data from contracts and public RPCs, not from centralized APIs that can go stale.</span><span class="t-fr">Données depuis les contrats et RPCs publics, pas depuis des APIs centralisées qui peuvent vieillir.</span><span class="t-es">Datos desde contratos y RPCs públicos, no de APIs centralizadas que pueden quedar obsoletas.</span></div>
+      </div>
+      <div class="principle">
+        <div class="principle-icon">🔒</div>
+        <div class="principle-name"><span class="t-en">Zero custody</span><span class="t-fr">Zéro garde</span><span class="t-es">Cero custodia</span></div>
+        <div class="principle-desc"><span class="t-en">No wallet connection, no keys, no signatures. Every tool is read-only — we see nothing you don't share.</span><span class="t-fr">Aucune connexion wallet, aucune clé, aucune signature. Chaque outil est en lecture seule.</span><span class="t-es">Sin conexión de wallet, sin claves, sin firmas. Cada herramienta es de solo lectura.</span></div>
+      </div>
+      <div class="principle">
+        <div class="principle-icon">🧮</div>
+        <div class="principle-name"><span class="t-en">Honest math</span><span class="t-fr">Mathématiques honnêtes</span><span class="t-es">Matemáticas honestas</span></div>
+        <div class="principle-desc"><span class="t-en">Models are documented, assumptions stated, approximations labeled. The methodology page explains every formula.</span><span class="t-fr">Les modèles sont documentés, les hypothèses énoncées, les approximations étiquetées.</span><span class="t-es">Los modelos están documentados, las hipótesis declaradas, las aproximaciones etiquetadas.</span></div>
+      </div>
+      <div class="principle">
+        <div class="principle-icon">🌍</div>
+        <div class="principle-name"><span class="t-en">Language-neutral</span><span class="t-fr">Neutre linguistiquement</span><span class="t-es">Neutro en idiomas</span></div>
+        <div class="principle-desc"><span class="t-en">Full EN/FR/ES support across all 11 tools. DeFi should not be a language barrier.</span><span class="t-fr">Support complet EN/FR/ES sur les 11 outils. La DeFi ne doit pas être une barrière linguistique.</span><span class="t-es">Soporte completo EN/FR/ES en las 11 herramientas. La DeFi no debería ser una barrera lingüística.</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tech stack -->
+  <div class="panel">
+    <div class="panel-title"><span class="t-en">Data sources</span><span class="t-fr">Sources de données</span><span class="t-es">Fuentes de datos</span></div>
+    <div class="stack-grid">
+      <div class="stack-item"><span class="si-icon">⛓</span><div><span>Chainlink</span><span class="si-sub"><span class="t-en">Price feeds · 20+ pairs</span><span class="t-fr">Flux de prix · 20+ paires</span><span class="t-es">Feeds de precios · 20+ pares</span></span></div></div>
+      <div class="stack-item"><span class="si-icon">🦎</span><div><span>CoinGecko</span><span class="si-sub"><span class="t-en">Live market prices</span><span class="t-fr">Prix marché en direct</span><span class="t-es">Precios de mercado en vivo</span></span></div></div>
+      <div class="stack-item"><span class="si-icon">🦙</span><div><span>GeckoTerminal</span><span class="si-sub"><span class="t-en">Pool TVL &amp; volumes</span><span class="t-fr">TVL &amp; volumes de pool</span><span class="t-es">TVL &amp; volúmenes de pool</span></span></div></div>
+      <div class="stack-item"><span class="si-icon">🏦</span><div><span>Aave V3</span><span class="si-sub"><span class="t-en">getUserAccountData (RPC)</span><span class="t-fr">getUserAccountData (RPC)</span><span class="t-es">getUserAccountData (RPC)</span></span></div></div>
+      <div class="stack-item"><span class="si-icon">⚡</span><div><span>Public RPCs</span><span class="si-sub">Arbitrum · ETH · Base · +3</span></div></div>
+      <div class="stack-item"><span class="si-icon">🦄</span><div><span>Uniswap V3</span><span class="si-sub"><span class="t-en">Pool contracts (on-chain)</span><span class="t-fr">Contrats de pool (on-chain)</span><span class="t-es">Contratos de pool (on-chain)</span></span></div></div>
+    </div>
+  </div>
+
+  <!-- Contact -->
+  <div class="panel contact-panel">
+    <div class="panel-title"><span class="t-en">Contact</span><span class="t-fr">Contact</span><span class="t-es">Contacto</span></div>
+    <p><span class="t-en">Questions, partnership proposals, methodology feedback, or bug reports — we read everything.</span><span class="t-fr">Questions, propositions de partenariat, retours sur la méthodologie ou signalement de bugs — tout est lu.</span><span class="t-es">Preguntas, propuestas de colaboración, comentarios sobre la metodología o reportes de errores — leemos todo.</span></p>
+    <div class="contact-links">
+      <a href="mailto:contact@ornytools.xyz" class="contact-link mail">
+        ✉ contact@ornytools.xyz
+      </a>
+      <a href="methodology.html" class="contact-link tools">
+        🧮 <span class="t-en">Methodology →</span><span class="t-fr">Méthodologie →</span><span class="t-es">Metodología →</span>
+      </a>
+    </div>
+  </div>
+
+</main>
+
+<div class="tools-nav-band">
+  <div class="tools-nav-lbl"><span class="t-en">All OrnyTools</span><span class="t-fr">Tous les outils</span><span class="t-es">Todas las herramientas</span></div>
+  <div class="tools-nav-grid">
+    <a href="optimizer.html" class="tools-nav-btn"><span>🔄</span><span class="t-en">Trade Optimizer</span><span class="t-fr">Optimiseur de Trade</span><span class="t-es">Optimizador de Trade</span></a>
+    <a href="liquidation.html" class="tools-nav-btn"><span>🛡️</span>RedZone</a>
+    <a href="aave.html" class="tools-nav-btn"><span>🏦</span><span class="t-en">Aave V3 Calculator</span><span class="t-fr">Calculateur Aave V3</span><span class="t-es">Calculadora Aave V3</span></a>
+    <a href="il-calculator.html" class="tools-nav-btn"><span>💧</span><span class="t-en">IL Calculator</span><span class="t-fr">Calculateur IL</span><span class="t-es">Calculadora de PI</span></a>
+    <a href="leverage.html" class="tools-nav-btn"><span>📈</span><span class="t-en">Leverage Calculator</span><span class="t-fr">Calculateur Levier</span><span class="t-es">Calculadora Levier</span></a>
+    <a href="v3range.html" class="tools-nav-btn"><span>📐</span><span class="t-en">V3 Range Optimizer</span><span class="t-fr">Optimiseur Plage V3</span><span class="t-es">Optimizador de Rango V3</span></a>
+    <a href="stablecoin.html" class="tools-nav-btn"><span>🪙</span><span class="t-en">Stablecoin Analyzer</span><span class="t-fr">Analyseur Stablecoins</span><span class="t-es">Analizador de Stablecoins</span></a>
+    <a href="yield.html" class="tools-nav-btn"><span>💰</span><span class="t-en">Yield Optimizer</span><span class="t-fr">Optimiseur Rendement</span><span class="t-es">Optimizador de Rendimiento</span></a>
+    <a href="waste.html" class="tools-nav-btn"><span>🔥</span><span class="t-en">Waste Detector</span><span class="t-fr">Détecteur de Gaspillage</span><span class="t-es">Detector de Desperdicio</span></a>
+    <a href="gmx.html" class="tools-nav-btn"><span>⚡</span><span class="t-en">GMX Calculator</span><span class="t-fr">Calculateur GMX</span><span class="t-es">Calculadora GMX</span></a>
+    <a href="dashboard.html" class="tools-nav-btn"><span>🔭</span><span class="t-en">Position Dashboard</span><span class="t-fr">Dashboard Positions</span><span class="t-es">Dashboard de Posiciones</span></a>
+  </div>
+</div>
+
+<footer>
+  <span class="t-en">© 2026 OrnyTools · <a href="guides.html">Guides</a> · <a href="glossary.html">Glossary</a> · <a href="faq.html">FAQ</a> · <a href="methodology.html">Methodology</a> · <a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a> · <a href="mailto:contact@ornytools.xyz">contact@ornytools.xyz</a></span>
+  <span class="t-fr">© 2026 OrnyTools · <a href="guides.html">Guides</a> · <a href="glossary.html">Glossaire</a> · <a href="faq.html">FAQ</a> · <a href="methodology.html">Méthodologie</a> · <a href="privacy.html">Confidentialité</a> · <a href="terms.html">CGU</a> · <a href="mailto:contact@ornytools.xyz">contact@ornytools.xyz</a></span>
+  <span class="t-es">© 2026 OrnyTools · <a href="guides.html">Guías</a> · <a href="glossary.html">Glosario</a> · <a href="faq.html">FAQ</a> · <a href="methodology.html">Metodología</a> · <a href="privacy.html">Privacidad</a> · <a href="terms.html">Términos</a> · <a href="mailto:contact@ornytools.xyz">contact@ornytools.xyz</a></span>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta name="description" content="OrnyTools Privacy Policy — no data collected, no wallet connection, read-only tools."/>
+<meta name="robots" content="index,follow"/>
+<link rel="canonical" href="https://ornytools.xyz/privacy.html"/>
+<title>Privacy Policy — OrnyTools</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+  :root{
+    --gold:#C8841E;--blue:#2563eb;--good:#0E9F6E;
+    --text:#111827;--dim:#6B7280;--faint:#9AA5B4;
+    --line:#E4E8F0;--surface:#FFFFFF;--surface-2:#F0F2F5;
+    --display:"Fraunces",Georgia,serif;
+    --ui:"Hanken Grotesk",system-ui,sans-serif;
+    --radius:14px;--shadow:0 2px 8px rgba(0,0,0,.07),0 8px 32px rgba(0,0,0,.07);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#f7f8fc;color:var(--text);font-family:var(--ui);-webkit-font-smoothing:antialiased}
+  .navbar{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(255,255,255,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);padding:10px 24px;display:flex;align-items:center;gap:12px;box-shadow:0 2px 12px rgba(0,0,0,.04)}
+  .nav-logo{width:36px;height:36px;object-fit:cover;object-position:center 15%;border-radius:8px}
+  .nav-brand{font-family:var(--display);font-size:1.05rem;font-weight:600;letter-spacing:-.02em}
+  .nav-brand .dot{color:var(--gold)}
+  .nav-home{margin-left:auto;font-size:.82rem;font-weight:600;color:var(--dim);text-decoration:none;padding:7px 14px;border:1px solid var(--line);border-radius:7px;transition:.15s}
+  .nav-home:hover{border-color:var(--blue);color:var(--blue)}
+  .page-hero{padding:90px 28px 36px;text-align:center;background:#fff;border-bottom:1px solid var(--line)}
+  .eyebrow{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--blue);font-weight:700;margin-bottom:14px}
+  .page-hero h1{font-family:var(--display);font-weight:500;font-size:clamp(1.5rem,3vw,2.1rem);letter-spacing:-.02em;margin-bottom:10px}
+  .page-hero p{color:var(--dim);font-size:.92rem;max-width:48ch;margin:0 auto;line-height:1.7}
+  main{max-width:700px;margin:0 auto;padding:36px 24px 80px}
+  .panel{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:26px 30px;box-shadow:var(--shadow);margin-bottom:16px}
+  .panel-title{font-size:.68rem;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--faint);margin-bottom:14px}
+  .panel p,.panel li{color:var(--dim);font-size:.9rem;line-height:1.8;margin-bottom:8px}
+  .panel li{margin-left:18px}
+  .panel p:last-child,.panel li:last-child{margin-bottom:0}
+  .panel p strong,.panel li strong{color:var(--text);font-weight:700}
+  .safe-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(14,159,110,.07);border:1px solid rgba(14,159,110,.2);color:var(--good);border-radius:999px;padding:5px 14px;font-size:.78rem;font-weight:700;margin-bottom:18px}
+  footer{text-align:center;padding:20px;font-size:.72rem;color:var(--faint);border-top:1px solid var(--line)}
+  footer a{color:var(--faint);text-decoration:none}
+  footer a:hover{color:var(--blue)}
+  /* ── DARK MODE ─────────────────────────────── */
+  html.dark{
+    --surface:#161b22;--surface-2:#1c2128;--bg:#0d1117;
+    --line:#30363d;
+    --text:#e6edf3;--dim:#8b949e;--faint:#6e7681;
+  }
+  html.dark body{background:var(--bg);color:var(--text)}
+  html.dark .navbar{background:rgba(13,17,23,.95);border-color:var(--line)}
+  html.dark .page-hero{background:var(--bg)}
+  html.dark .panel{background:var(--surface);border-color:var(--line)}
+  .btn-theme{background:transparent;border:1px solid var(--line);border-radius:7px;padding:5px 9px;cursor:pointer;font-size:1rem;line-height:1;transition:.15s}
+  .btn-theme:hover{border-color:var(--blue)}
+</style>
+<script src="lang.js"></script>
+</head>
+<body>
+<nav class="navbar">
+  <a href="index.html"><img src="logo.png" class="nav-logo" alt="OrnyTools"/></a>
+  <span class="nav-brand">ORNY<span class="dot">.</span>TOOLS</span>
+  <button class="btn-theme" onclick="toggleTheme()" title="Dark mode">🌙</button>
+  <a href="index.html" class="nav-home">← Home</a>
+</nav>
+
+<div class="page-hero">
+  <div class="eyebrow"><span class="t-en">Privacy Policy</span><span class="t-fr">Politique de Confidentialité</span><span class="t-es">Política de Privacidad</span></div>
+  <h1><span class="t-en">We collect nothing.</span><span class="t-fr">Nous ne collectons rien.</span><span class="t-es">No recopilamos nada.</span></h1>
+  <p><span class="t-en">OrnyTools is read-only. No wallet, no account, no tracking. Here is exactly what happens when you use these tools.</span><span class="t-fr">OrnyTools est en lecture seule. Pas de wallet, pas de compte, pas de suivi. Voici exactement ce qui se passe quand vous utilisez ces outils.</span><span class="t-es">OrnyTools es de solo lectura. Sin wallet, sin cuenta, sin seguimiento. Aquí tienes exactamente lo que ocurre cuando usas estas herramientas.</span></p>
+</div>
+
+<main>
+
+  <div class="panel" style="border-top:3px solid var(--good)">
+    <div class="safe-badge">🔒 <span class="t-en">No data stored on our end</span><span class="t-fr">Aucune donnée stockée de notre côté</span><span class="t-es">Sin datos almacenados en nuestro lado</span></div>
+    <div class="panel-title"><span class="t-en">What we do NOT collect</span><span class="t-fr">Ce que nous ne collectons PAS</span><span class="t-es">Lo que NO recopilamos</span></div>
+    <ul>
+      <li><span class="t-en"><strong>No wallet addresses</strong> — addresses you type into the Position Dashboard are sent directly to the Arbitrum RPC, never to our servers.</span><span class="t-fr"><strong>Pas d'adresses wallet</strong> — les adresses saisies dans le Position Dashboard sont envoyées directement au RPC Arbitrum, jamais à nos serveurs.</span><span class="t-es"><strong>Sin direcciones de wallet</strong> — las direcciones que ingresas en el Position Dashboard se envían directamente al RPC de Arbitrum, nunca a nuestros servidores.</span></li>
+      <li><span class="t-en"><strong>No personal data</strong> — no name, no email, no IP logging.</span><span class="t-fr"><strong>Pas de données personnelles</strong> — pas de nom, pas d'e-mail, pas de journalisation d'IP.</span><span class="t-es"><strong>Sin datos personales</strong> — sin nombre, sin correo electrónico, sin registro de IP.</span></li>
+      <li><span class="t-en"><strong>No cookies</strong> — we use localStorage only to remember your language and theme preference, stored locally in your browser.</span><span class="t-fr"><strong>Pas de cookies</strong> — nous utilisons localStorage uniquement pour mémoriser vos préférences de langue et de thème, stockées localement dans votre navigateur.</span><span class="t-es"><strong>Sin cookies</strong> — usamos localStorage solo para recordar tus preferencias de idioma y tema, almacenadas localmente en tu navegador.</span></li>
+      <li><span class="t-en"><strong>No analytics trackers</strong> — no Google Analytics, no Facebook Pixel, no fingerprinting.</span><span class="t-fr"><strong>Pas de trackers analytics</strong> — pas de Google Analytics, pas de Facebook Pixel, pas de fingerprinting.</span><span class="t-es"><strong>Sin rastreadores analíticos</strong> — sin Google Analytics, sin Facebook Pixel, sin fingerprinting.</span></li>
+    </ul>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title"><span class="t-en">Third-party data providers</span><span class="t-fr">Fournisseurs de données tiers</span><span class="t-es">Proveedores de datos de terceros</span></div>
+    <p><span class="t-en">Certain tools fetch live data from external services. These calls originate from your browser (client-side), not from our servers. The following providers may receive your IP address as part of normal HTTP requests:</span><span class="t-fr">Certains outils récupèrent des données en direct depuis des services externes. Ces appels proviennent de votre navigateur (côté client), pas de nos serveurs. Les fournisseurs suivants peuvent recevoir votre adresse IP dans le cadre des requêtes HTTP normales :</span><span class="t-es">Algunas herramientas obtienen datos en vivo de servicios externos. Estas llamadas se originan en tu navegador (lado cliente), no en nuestros servidores. Los siguientes proveedores pueden recibir tu dirección IP como parte de las solicitudes HTTP normales:</span></p>
+    <ul>
+      <li><strong>CoinGecko / GeckoTerminal</strong> — <span class="t-en">live prices and pool TVL</span><span class="t-fr">prix en direct et TVL de pools</span><span class="t-es">precios en vivo y TVL de pools</span></li>
+      <li><strong>Chainlink</strong> — <span class="t-en">on-chain price feeds (via public RPC, no account required)</span><span class="t-fr">flux de prix on-chain (via RPC public, sans compte)</span><span class="t-es">feeds de precios on-chain (vía RPC público, sin cuenta)</span></li>
+      <li><strong>publicnode.com</strong> — <span class="t-en">public Arbitrum RPC for Aave V3 contract reads</span><span class="t-fr">RPC Arbitrum public pour la lecture des contrats Aave V3</span><span class="t-es">RPC público de Arbitrum para lecturas de contratos Aave V3</span></li>
+    </ul>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title"><span class="t-en">Contact</span><span class="t-fr">Contact</span><span class="t-es">Contacto</span></div>
+    <p><span class="t-en">Questions about this policy? Write to <a href="mailto:contact@ornytools.xyz" style="color:var(--blue)">contact@ornytools.xyz</a>.</span><span class="t-fr">Questions sur cette politique ? Écrivez à <a href="mailto:contact@ornytools.xyz" style="color:var(--blue)">contact@ornytools.xyz</a>.</span><span class="t-es">¿Preguntas sobre esta política? Escribe a <a href="mailto:contact@ornytools.xyz" style="color:var(--blue)">contact@ornytools.xyz</a>.</span></p>
+    <p><span class="t-en">Last updated: June 2026.</span><span class="t-fr">Dernière mise à jour : juin 2026.</span><span class="t-es">Última actualización: junio 2026.</span></p>
+  </div>
+
+</main>
+
+<footer>
+  <a href="index.html">OrnyTools</a> · <a href="about.html"><span class="t-en">About</span><span class="t-fr">À propos</span><span class="t-es">Acerca de</span></a> · <a href="guides.html"><span class="t-en">Guides</span><span class="t-fr">Guides</span><span class="t-es">Guías</span></a> · <a href="glossary.html"><span class="t-en">Glossary</span><span class="t-fr">Glossaire</span><span class="t-es">Glosario</span></a> · <a href="terms.html"><span class="t-en">Terms</span><span class="t-fr">CGU</span><span class="t-es">Términos</span></a> · <a href="mailto:contact@ornytools.xyz">contact@ornytools.xyz</a>
+</footer>
+
+</body>
+</html>

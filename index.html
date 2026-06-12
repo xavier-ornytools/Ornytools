@@ -141,17 +141,7 @@
       transition: background .2s;
     }
     .btn-hero-outline:hover { background: rgba(255,255,255,.07); }
-    .hero-proof { display: flex; align-items: center; gap: 13px; margin-bottom: 26px; }
-    .avatar-stack { display: flex; }
-    .av {
-      width: 30px; height: 30px; border-radius: 50%; border: 2px solid #080e28;
-      margin-left: -8px; display: flex; align-items: center; justify-content: center;
-      font-size: .55rem; font-weight: 800; color: #fff; flex-shrink: 0;
-    }
-    .av:first-child { margin-left: 0; }
-    .proof-txt { font-size: .82rem; color: rgba(255,255,255,.5); line-height: 1.5; }
-    .proof-txt strong { color: rgba(255,255,255,.82); display: block; }
-    .hero-badges { display: flex; gap: 22px; }
+.hero-badges { display: flex; gap: 22px; }
     .hbadge { display: flex; align-items: center; gap: 6px; font-size: .76rem; color: rgba(255,255,255,.38); font-weight: 600; }
     .hbadge svg { width: 14px; height: 14px; flex-shrink: 0; }
 
@@ -251,7 +241,9 @@
     .open-tool:hover { background: var(--blue); color: #fff; text-decoration: none; }
 
     /* ══════════════════ WHY / INSIGHT / ROADMAP ══════════════════ */
-    .why-section { background: var(--white); padding: 60px 40px; }
+    .why-section { background: linear-gradient(180deg,#f7f8fc 0%,#eef2ff 100%); padding: 60px 40px; border-top:1px solid var(--border); border-bottom:1px solid var(--border); }
+    .why-card { transition: transform .2s, box-shadow .2s; }
+    .why-card:hover { transform: translateY(-3px); box-shadow: 0 8px 32px rgba(0,0,0,.10); }
     .why-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
     .why-card { background: var(--white); border: 1px solid var(--border); border-radius: 16px; padding: 28px; }
     .wc-hd { display: flex; align-items: center; gap: 8px; margin-bottom: 20px; }
@@ -356,7 +348,7 @@
     .card:hover { box-shadow: var(--shadow-lg); }
     .card h2 { font-size: .72rem; font-weight: 700; letter-spacing: 1.8px; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; }
     .full { grid-column: 1 / -1; }
-    .fetch-card { border-top: 3px solid var(--gold); }
+    .fetch-card { border-top: 3px solid var(--gold); box-shadow: var(--shadow), 0 -1px 0 0 rgba(200,132,30,.3); }
     .fetch-row { display: flex; gap: 8px; flex-wrap: wrap; }
     .fetch-row input { flex: 1; min-width: 180px; }
     select, input[type="text"], input[type="number"] {
@@ -365,7 +357,7 @@
       transition: border-color .2s, box-shadow .2s; width: 100%;
     }
     select { width: auto; cursor: pointer; flex-shrink: 0; }
-    input:focus, select:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(200,132,30,.12); }
+    input:focus, select:focus { border-color: var(--gold); box-shadow: 0 0 0 4px rgba(200,132,30,.18), 0 2px 8px rgba(200,132,30,.12); outline:none; }
     input::placeholder { color: #adb5c7; }
     input.live { border-color: var(--blue); background: #eef7fd; }
     .btn-load {
@@ -377,8 +369,11 @@
     .btn-load:hover { opacity: .88; } .btn-load:disabled { opacity: .45; cursor: not-allowed; box-shadow: none; }
     .status-bar {
       display: flex; align-items: center; gap: 10px; margin-top: 12px; padding: 10px 14px;
-      background: var(--light); border: 1px solid var(--border); border-radius: 8px; font-size: .82rem;
+      background: var(--light); border: 1.5px solid var(--border); border-radius: 10px; font-size: .82rem;
+      box-shadow: inset 0 1px 3px rgba(0,0,0,.04);
     }
+    .status-bar:has(.dot.ok) { border-color: rgba(14,159,110,.35); background: rgba(14,159,110,.04); }
+    .status-bar:has(.dot.err) { border-color: rgba(224,36,36,.25); background: rgba(224,36,36,.03); }
     .dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
     .dot.idle { background: #cbd5e1; }
     .dot.loading { background: var(--yellow); animation: pulse 1s infinite; }
@@ -387,7 +382,7 @@
     @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
     .status-text { color: var(--muted); flex: 1; }
     .chips { display: flex; gap: 5px; flex-wrap: wrap; }
-    .chip { background: #e8f5fd; border: 1px solid #b3dcf5; color: var(--blue); font-size: .68rem; font-weight: 700; padding: 2px 8px; border-radius: 999px; }
+    .chip { background: #dbeafe; border: 1px solid #93c5fd; color: var(--blue); font-size: .68rem; font-weight: 700; padding: 3px 10px; border-radius: 999px; box-shadow: 0 0 0 3px rgba(37,99,235,.08); }
     .history-row { margin-top: 10px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
     .hlabel { font-size: .68rem; color: var(--muted); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
     .btn-hist {
@@ -397,7 +392,7 @@
     }
     .btn-hist:hover { border-color: var(--blue); color: var(--blue); }
     .field { margin-bottom: 20px; }
-    label { display: block; font-size: .75rem; color: var(--muted); margin-bottom: 5px; font-weight: 600; }
+    label { display: block; font-size: .73rem; color: var(--muted); margin-bottom: 5px; font-weight: 700; letter-spacing: .03em; }
     .tip { font-size: .68rem; color: #adb5c7; margin-top: 4px; }
     .btn-calc {
       width: 100%; background: linear-gradient(135deg, var(--gold), #E8A040); border: none;
@@ -415,7 +410,10 @@
     .results { grid-column: 1/-1; display: flex; gap: 14px; flex-wrap: wrap; }
     .rblock { flex: 1 1 120px; background: var(--white); border: 1px solid var(--border); border-radius: 12px; padding: 14px 12px; text-align: center; box-shadow: var(--shadow); transition: transform .15s, box-shadow .15s; }
     .rblock:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
-    .rblock:first-child { border-color: rgba(200,132,30,.3); background: linear-gradient(135deg,#fffcf8,#fef3e2); }
+    .rblock:first-child  { border-color: rgba(200,132,30,.3); background: linear-gradient(135deg,#fffcf8,#fef3e2); }
+    .rblock:nth-child(2) { border-color: rgba(37,99,235,.2); background: linear-gradient(135deg,#f8faff,#eef4ff); }
+    .rblock:nth-child(3) { border-color: rgba(14,159,110,.2); background: linear-gradient(135deg,#f7fdf9,#ecfdf5); }
+    .rblock:nth-child(4) { border-color: rgba(124,58,237,.18); background: linear-gradient(135deg,#faf8ff,#f5f0ff); }
     .rblock .rl { font-size: .68rem; color: var(--muted); font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; margin-bottom: 8px; }
     .rblock .rv { font-size: 1.35rem; font-weight: 800; }
     .rblock .rs { font-size: .7rem; color: var(--muted); margin-top: 4px; }
@@ -424,7 +422,11 @@
     .myrow { display: flex; gap: 14px; align-items: flex-end; flex-wrap: wrap; }
     .myinput { flex: 1 1 160px; }
     .myblocks { flex: 2 1 280px; display: flex; gap: 10px; flex-wrap: wrap; }
-    .mblock { flex: 1 1 100px; background: var(--light); border: 1px solid var(--border); border-radius: 10px; padding: 12px; text-align: center; }
+    .mblock { flex: 1 1 100px; background: var(--light); border: 1px solid var(--border); border-top: 2.5px solid var(--border); border-radius: 10px; padding: 12px; text-align: center; transition: border-color .2s; }
+    .mblock:hover { border-color: rgba(200,132,30,.45); }
+    .mblock:first-child { border-top-color: var(--gold); }
+    .mblock:nth-child(2) { border-top-color: var(--blue); }
+    .mblock:nth-child(3) { border-top-color: var(--green); }
     .mblock .ml { font-size: .68rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; font-weight: 700; }
     .mblock .mv { font-size: 1.3rem; font-weight: 800; margin-top: 5px; }
     .advice { margin-top: 14px; padding: 11px 16px; border-radius: 8px; font-size: .87rem; line-height: 1.6; }
@@ -439,7 +441,7 @@
     .pill { flex: 1 1 110px; background: var(--light); border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; text-align: center; }
     .pill .pl { font-size: .68rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; font-weight: 700; }
     .pill .pv { font-size: 1.1rem; font-weight: 800; margin-top: 4px; }
-    .pill.hl { border-color: var(--gold); background: #fffbf5; }
+    .pill.hl { border-color: var(--gold); background: #fffbf5; box-shadow: 0 0 0 3px rgba(200,132,30,.12), inset 0 1px 0 rgba(200,132,30,.1); }
     .cmp-row { display: flex; align-items: center; gap: 12px; padding: 13px 0; border-bottom: 1px solid var(--border); }
     .cmp-row:last-child { border-bottom: none; }
     .cmp-icon { font-size: 1.3rem; width: 30px; text-align: center; flex-shrink: 0; }
@@ -448,16 +450,16 @@
     .pos { color: var(--green); font-weight: 700; } .neg { color: var(--red); font-weight: 700; }
     .bottom { grid-column: 1/-1; display: flex; flex-direction: column; align-items: center; gap: 16px; }
     .formula {
-      width: 100%; background: var(--white); border: 1px solid var(--border); border-radius: var(--radius);
+      width: 100%; background: linear-gradient(135deg,#fffcf5,#fff8ee); border: 1.5px solid rgba(200,132,30,.2); border-radius: var(--radius);
       padding: 24px 30px; font-size: .88rem; line-height: 2; color: var(--muted);
-      box-shadow: var(--shadow); text-align: center;
+      box-shadow: var(--shadow), 0 0 0 4px rgba(200,132,30,.07); text-align: center;
     }
     .formula strong { display: block; margin-bottom: 10px; }
     .formula code { background: #fef3e2; color: var(--gold); padding: 2px 8px; border-radius: 4px; font-size: .84rem; }
     .sharebox {
-      width: 100%; background: var(--white); border: 1px solid var(--border); border-radius: var(--radius);
+      width: 100%; background: linear-gradient(135deg,#fafcff,#f0f6ff); border: 1.5px solid rgba(37,99,235,.18); border-radius: var(--radius);
       padding: 24px 30px; display: flex; flex-direction: column; align-items: center; gap: 12px;
-      box-shadow: var(--shadow); text-align: center;
+      box-shadow: var(--shadow), 0 0 0 4px rgba(37,99,235,.06); text-align: center;
     }
     .sharebox p { font-size: .88rem; color: var(--muted); line-height: 1.7; max-width: 420px; }
     .btn-share {
@@ -466,7 +468,7 @@
     }
     .btn-share:hover { opacity: .85; }
     .copied { color: var(--green); font-size: .78rem; text-align: center; display: none; }
-    .how { text-align: center; }
+    .how { text-align: center; border: 1px solid rgba(37,99,235,.12); background: linear-gradient(135deg,#f8faff,#f0f5ff); }
     .how p { font-size: .9rem; color: var(--muted); line-height: 1.85; margin-bottom: 10px; }
     .how p:last-child { margin-bottom: 0; }
 
@@ -702,18 +704,7 @@
           <span class="t-en">Explore All Tools</span><span class="t-fr">Explorer les Outils</span><span class="t-es">Explorar todas las herramientas</span>
         </button>
       </div>
-      <div class="hero-proof">
-        <div class="avatar-stack">
-          <div class="av" style="background:#2563eb">XY</div>
-          <div class="av" style="background:#7c3aed">MK</div>
-          <div class="av" style="background:#0e9f6e">JL</div>
-          <div class="av" style="background:#d97706">+</div>
-        </div>
-        <div class="proof-txt">
-          <strong><span class="t-en">Join 25,000+ DeFi users</span><span class="t-fr">Rejoins 25 000+ utilisateurs DeFi</span><span class="t-es">Únete a más de 25.000 usuarios DeFi</span></strong>
-          <span class="t-en">making smarter decisions every day.</span><span class="t-fr">qui prennent de meilleures décisions.</span><span class="t-es">tomando mejores decisiones cada día.</span>
-        </div>
-      </div>
+
       <div class="hero-badges">
         <div class="hbadge">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
@@ -724,8 +715,8 @@
           Transparent
         </div>
         <div class="hbadge">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
-          Open Source
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>
+          <span class="t-en">Transparent</span><span class="t-fr">Transparent</span><span class="t-es">Transparente</span>
         </div>
       </div>
     </div>
@@ -890,6 +881,28 @@
       <button class="open-tool" onclick="location.href='aave.html'"><span class="t-en">Open Tool →</span><span class="t-fr">Ouvrir l'outil →</span><span class="t-es">Abrir herramienta →</span></button>
     </div>
 
+    <div class="tool-card">
+      <div class="tc-head">
+        <div class="tc-ico" style="background:#fffbeb">⚡</div>
+        <div class="tc-meta">
+          <h3><span class="t-en">GMX V2 Calculator</span><span class="t-fr">Calculateur GMX V2</span><span class="t-es">Calculadora GMX V2</span></h3>
+          <p><span class="t-en">Liquidation price, total fees and break-even for any GMX V2 perpetual position on Arbitrum.</span><span class="t-fr">Prix de liquidation, frais totaux et seuil de rentabilité pour toute position perp GMX V2 sur Arbitrum.</span><span class="t-es">Precio de liquidación, comisiones totales y punto de equilibrio para posiciones perp GMX V2 en Arbitrum.</span></p>
+        </div>
+      </div>
+      <button class="open-tool" onclick="location.href='gmx.html'"><span class="t-en">Open Tool →</span><span class="t-fr">Ouvrir l'outil →</span><span class="t-es">Abrir herramienta →</span></button>
+    </div>
+
+    <div class="tool-card">
+      <div class="tc-head">
+        <div class="tc-ico" style="background:#f0fdf4">🔭</div>
+        <div class="tc-meta">
+          <h3><span class="t-en">Position Dashboard</span><span class="t-fr">Dashboard Positions</span><span class="t-es">Dashboard de Posiciones</span></h3>
+          <p><span class="t-en">Paste any Arbitrum address — get your Aave V3 health factor, collateral, debt and liquidation distance live from the blockchain.</span><span class="t-fr">Collez une adresse Arbitrum — obtenez votre health factor Aave V3, collatéral, dette et distance de liquidation en direct depuis la blockchain.</span><span class="t-es">Pega una dirección de Arbitrum — obtén tu health factor Aave V3, colateral, deuda y distancia de liquidación en vivo desde la blockchain.</span></p>
+        </div>
+      </div>
+      <button class="open-tool" onclick="location.href='dashboard.html'"><span class="t-en">Open Tool →</span><span class="t-fr">Ouvrir l'outil →</span><span class="t-es">Abrir herramienta →</span></button>
+    </div>
+
   </div>
 </section>
 
@@ -940,7 +953,7 @@
         <div class="road-item"><div class="rd rd-done"></div><div class="rd-name">Risk Engine</div><div class="rd-status"><span class="t-en">Live</span><span class="t-fr">En ligne</span><span class="t-es">En vivo</span></div></div>
         <div class="road-item"><div class="rd rd-done"></div><div class="rd-name">Chainlink Price Feeds</div><div class="rd-status"><span class="t-en">Live</span><span class="t-fr">En ligne</span><span class="t-es">En vivo</span></div></div>
         <div class="road-item"><div class="rd rd-active"></div><div class="rd-name">DeFi Decision AI</div><div class="rd-status active"><span class="t-en">In Progress</span><span class="t-fr">En cours</span><span class="t-es">En progreso</span></div></div>
-        <div class="road-item"><div class="rd rd-soon"></div><div class="rd-name">Portfolio Tracker</div><div class="rd-status"><span class="t-en">Coming Soon</span><span class="t-fr">Bientôt</span><span class="t-es">Próximamente</span></div></div>
+        <div class="road-item"><div class="rd rd-done"></div><div class="rd-name">Dashboard · GMX Calc</div><div class="rd-status"><span class="t-en">Live</span><span class="t-fr">En ligne</span><span class="t-es">En vivo</span></div></div>
       </div>
     </div>
 
@@ -1179,39 +1192,6 @@
       <div class="cta-badge-item"><span>🔗</span> <span class="t-en">Live on-chain data</span><span class="t-fr">Données on-chain en direct</span><span class="t-es">Datos on-chain en vivo</span></div>
       <div class="cta-badge-item"><span>🛡️</span> <span class="t-en">No wallet needed</span><span class="t-fr">Sans connexion wallet</span><span class="t-es">Sin wallet necesaria</span></div>
       <div class="cta-badge-item"><span>🌐</span> EN · FR · ES</div>
-
-      <!-- GMX CALCULATOR -->
-      <div class="tool-card">
-        <div class="tc-head">
-          <div class="tc-ico" style="background:#eff6ff">⚡</div>
-          <div class="tc-meta">
-            <h3><span class="t-en">GMX V2 Calculator</span><span class="t-fr">Calculateur GMX V2</span><span class="t-es">Calculadora GMX V2</span></h3>
-            <p><span class="t-en">Liquidation price, total fees and break-even for any GMX V2 perpetual position on Arbitrum.</span><span class="t-fr">Prix de liquidation, frais totaux et seuil de rentabilité pour toute position perp GMX V2 sur Arbitrum.</span><span class="t-es">Precio de liquidación, comisiones totales y punto de equilibrio para posiciones perp GMX V2 en Arbitrum.</span></p>
-          </div>
-        </div>
-        <button class="open-tool" onclick="location.href='gmx.html'"><span class="t-en">Open Tool →</span><span class="t-fr">Ouvrir l'outil →</span><span class="t-es">Abrir herramienta →</span></button>
-      </div>
-
-      <!-- POSITION DASHBOARD -->
-      <div class="tool-card">
-        <div class="tc-head">
-          <div class="tc-ico" style="background:#eff6ff">🔭</div>
-          <div class="tc-meta">
-            <h3><span class="t-en">Position Dashboard</span><span class="t-fr">Dashboard Positions</span><span class="t-es">Dashboard de Posiciones</span></h3>
-            <p><span class="t-en">Paste any Arbitrum address — get your Aave V3 health factor, collateral, debt and liquidation distance live from the blockchain.</span><span class="t-fr">Collez une adresse Arbitrum — obtenez votre health factor Aave V3, collatéral, dette et distance de liquidation en direct depuis la blockchain.</span><span class="t-es">Pega una dirección de Arbitrum — obtén tu health factor Aave V3, colateral, deuda y distancia de liquidación en vivo desde la blockchain.</span></p>
-          </div>
-        </div>
-        <button class="open-tool" onclick="location.href='dashboard.html'"><span class="t-en">Open Tool →</span><span class="t-fr">Ouvrir l'outil →</span><span class="t-es">Abrir herramienta →</span></button>
-      </div>
-      <!-- OLD DASHBOARD CARD PLACEHOLDER REMOVED -->
-      <div class="tool-card" style="display:none">
-        <div class="tool-card-inner">
-          <div class="tool-icon">🔭</div>
-          <h3><span class="t-en">Position Dashboard</span><span class="t-fr">Dashboard Positions</span><span class="t-es">Dashboard de Posiciones</span></h3>
-          <p><span class="t-en">Paste any Arbitrum address — get your Aave V3 health factor, collateral, debt and liquidation distance live from the blockchain.</span><span class="t-fr">Collez une adresse Arbitrum — obtenez votre health factor Aave V3, collatéral, dette et distance de liquidation en direct depuis la blockchain.</span><span class="t-es">Pega una dirección de Arbitrum — obtén tu health factor Aave V3, colateral, deuda y distancia de liquidación en vivo desde la blockchain.</span></p>
-          <button class="open-tool" onclick="location.href='dashboard.html'"><span class="t-en">Open Tool →</span><span class="t-fr">Ouvrir l'outil →</span><span class="t-es">Abrir herramienta →</span></button>
-        </div>
-      </div>
     </div>
   </div>
 </section>
@@ -1245,19 +1225,19 @@
       <div class="fcol">
         <h4><span class="t-en">Resources</span><span class="t-fr">Ressources</span><span class="t-es">Recursos</span></h4>
         <ul>
-          <li><a href="#" class="soon">Blog</a></li>
-          <li><a href="#" class="soon">Guides</a></li>
-          <li><a href="#" class="soon">Glossary</a></li>
-          <li><a href="#" class="soon">FAQ</a></li>
+          <li><a href="blog.html">Blog</a></li>
+          <li><a href="guides.html">Guides</a></li>
+          <li><a href="glossary.html">Glossary</a></li>
+          <li><a href="faq.html">FAQ</a></li>
         </ul>
       </div>
       <div class="fcol">
         <h4><span class="t-en">Company</span><span class="t-fr">Société</span><span class="t-es">Empresa</span></h4>
         <ul>
-          <li><a href="#" class="soon">About</a></li>
-          <li><a href="mailto:john3289@protonmail.com">Contact</a></li>
-          <li><a href="#" class="soon">Privacy</a></li>
-          <li><a href="#" class="soon">Terms</a></li>
+          <li><a href="about.html"><span class="t-en">About</span><span class="t-fr">À propos</span><span class="t-es">Acerca de</span></a></li>
+          <li><a href="mailto:contact@ornytools.xyz">Contact</a></li>
+          <li><a href="privacy.html"><span class="t-en">Privacy</span><span class="t-fr">Confidentialité</span><span class="t-es">Privacidad</span></a></li>
+          <li><a href="terms.html"><span class="t-en">Terms</span><span class="t-fr">CGU</span><span class="t-es">Términos</span></a></li>
         </ul>
       </div>
       <div>
@@ -1270,7 +1250,7 @@
       </div>
     </div>
     <div class="footer-bottom">
-      <span class="t-en">© 2026 OrnyTool. All rights reserved.</span><span class="t-fr">© 2026 OrnyTool. Tous droits réservés.</span><span class="t-es">© 2026 OrnyTool. Todos los derechos reservados.</span> · Live data via <a href="https://www.geckoterminal.com">GeckoTerminal</a>, <a href="https://data.chain.link">Chainlink</a> &amp; public RPCs · <a href="https://ornytools.xyz">ornytools.xyz</a>
+      <span class="t-en">© 2026 OrnyTools. All rights reserved.</span><span class="t-fr">© 2026 OrnyTools. Tous droits réservés.</span><span class="t-es">© 2026 OrnyTools. Todos los derechos reservados.</span> · Live data via <a href="https://www.geckoterminal.com">GeckoTerminal</a>, <a href="https://data.chain.link">Chainlink</a> &amp; public RPCs · <a href="privacy.html"><span class="t-en">Privacy</span><span class="t-fr">Confidentialité</span><span class="t-es">Privacidad</span></a> · <a href="terms.html"><span class="t-en">Terms</span><span class="t-fr">CGU</span><span class="t-es">Términos</span></a>
     </div>
   </div>
 </footer>

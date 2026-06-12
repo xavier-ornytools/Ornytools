@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <!-- Homepage -->
+  <url><loc>https://ornytools.xyz/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <!-- Tools -->
+  <url><loc>https://ornytools.xyz/optimizer.html</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://ornytools.xyz/dashboard.html</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://ornytools.xyz/liquidation.html</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://ornytools.xyz/aave.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ornytools.xyz/gmx.html</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://ornytools.xyz/il-calculator.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ornytools.xyz/leverage.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ornytools.xyz/v3range.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ornytools.xyz/stablecoin.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ornytools.xyz/yield.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ornytools.xyz/waste.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <!-- Content -->
+  <url><loc>https://ornytools.xyz/guides.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ornytools.xyz/glossary.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ornytools.xyz/faq.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://ornytools.xyz/blog.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://ornytools.xyz/methodology.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <!-- Company -->
+  <url><loc>https://ornytools.xyz/about.html</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://ornytools.xyz/privacy.html</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://ornytools.xyz/terms.html</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+</urlset>

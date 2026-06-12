@@ -187,6 +187,23 @@
     .mult-card{flex-direction:column;gap:12px;text-align:center}
     .mult-num{font-size:2.2rem}
   }
+  /* ── DARK MODE ─────────────────────────────── */
+  html.dark{
+    --surface:#161b22;--surface-2:#1c2128;--bg:#0d1117;
+    --line:#30363d;--line-soft:#21262d;
+    --text:#e6edf3;--dim:#8b949e;--faint:#6e7681;
+  }
+  html.dark body{background:var(--bg);color:var(--text)}
+  html.dark .navbar{background:rgba(13,17,23,.95);border-color:var(--line)}
+  html.dark .page-hero{background:var(--bg)}
+  html.dark .input-card,html.dark .metrics-card,html.dark .orny-card{background:var(--surface)!important;border-color:var(--line)!important}
+  html.dark .field select,html.dark .field input{background:var(--surface-2);border-color:var(--line);color:var(--text)}
+  html.dark .back-section{background:var(--surface-2)}
+  html.dark .back-link{background:var(--surface)}
+  html.dark .tools-nav-band{background:#161b22!important;border-color:var(--line)!important}
+  html.dark .tools-nav-btn{background:var(--surface-2)!important;border-color:var(--line)!important;color:var(--text)!important}
+  .btn-theme{background:transparent;border:1px solid var(--line);border-radius:7px;padding:5px 9px;cursor:pointer;font-size:1rem;line-height:1;transition:.15s}
+  .btn-theme:hover{border-color:var(--gold)}
 </style>
 <!-- Google Tag Manager -->
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -228,10 +245,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <button id="btnFR" class="lang-btn" onclick="setLang('fr')">🇫🇷 FR</button>
       <button id="btnES" class="lang-btn" onclick="setLang('es')">🇪🇸 ES</button>
     </div>
+  <button class="btn-theme" onclick="toggleTheme()" title="Dark mode">🌙</button>
 </nav>
 
 <div class="top-img-wrap">
-  <img src="img-il.png" alt="V3 Range Optimizer — OrnyTools AI-Powered Decision Partner"/>
+  <img src="img-il.png" alt="V3 Range Optimizer — OrnyTools AI-Powered Decision Partner" loading="lazy"/>
 </div>
 
 <div class="page-hero">
@@ -316,7 +334,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </div>
 
 <div class="bottom-img-wrap">
-  <img src="orny-victoire.png" alt="OrnyTools — Optimized decision, winning result"/>
+  <img src="orny-victoire.png" alt="OrnyTools — Optimized decision, winning result" loading="lazy"/>
 </div>
 
 <div class="back-section">
@@ -699,10 +717,36 @@ updateRangeBar();
 updatePctLabels();
 
 window.onLangChange = function(l) {
-  // re-run analyze only if results have been computed (empty-state not visible)
   var r = document.getElementById('results');
   if(r && !r.querySelector('.empty-state') && typeof analyze==='function') analyze();
 };
+
+// localStorage persistence
+const V3R_KEY = 'orny-v3range-v1';
+function saveV3R(){
+  try {
+    localStorage.setItem(V3R_KEY, JSON.stringify({
+      Pc:document.getElementById('inputPc').value,
+      Pa:document.getElementById('inputPa').value,
+      Pb:document.getElementById('inputPb').value,
+      V:document.getElementById('inputV').value
+    }));
+  } catch(e){}
+}
+(function(){
+  try {
+    const d = JSON.parse(localStorage.getItem(V3R_KEY) || '{}');
+    if(!d.Pc) return;
+    if(d.Pc) document.getElementById('inputPc').value = d.Pc;
+    if(d.Pa) document.getElementById('inputPa').value = d.Pa;
+    if(d.Pb) document.getElementById('inputPb').value = d.Pb;
+    if(d.V)  document.getElementById('inputV').value  = d.V;
+  } catch(e){}
+})();
+['inputPc','inputPa','inputPb','inputV'].forEach(function(id){
+  var el = document.getElementById(id);
+  if(el) el.addEventListener('input', saveV3R);
+});
 </script>
 <script src="lang.js"></script>
 

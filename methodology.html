@@ -3,20 +3,20 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<meta name="description" content="OrnyTools Methodology — How the Trade Size Optimizer works: constant-product solver, V3 on-chain liquidity derivation, and confidence scoring."/>
+<meta name="description" content="OrnyTools Methodology — complete formulas behind all 11 tools: Trade Optimizer, IL, Liquidation, Leverage, V3 Range, Yield, Stablecoins, Waste Detector, Aave V3, GMX V2, Dashboard."/>
 <meta name="robots" content="index,follow"/>
 <link rel="canonical" href="https://ornytools.xyz/methodology.html"/>
 <meta property="og:type" content="website"/>
 <meta property="og:site_name" content="OrnyTools"/>
 <meta property="og:title" content="Methodology — OrnyTools"/>
-<meta property="og:description" content="How the Trade Size Optimizer works: exact constant-product solver, V3 on-chain liquidity derivation, and Orny confidence scoring."/>
+<meta property="og:description" content="Complete methodology for all 11 OrnyTools: formulas, data sources, assumptions and known limits for every calculator."/>
 <meta property="og:url" content="https://ornytools.xyz/methodology.html"/>
 <meta property="og:image" content="https://ornytools.xyz/orny-banner.png"/>
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:title" content="Methodology — OrnyTools"/>
 <meta name="twitter:description" content="How the Trade Size Optimizer works: exact constant-product solver, V3 on-chain liquidity derivation, and Orny confidence scoring."/>
 <meta name="twitter:image" content="https://ornytools.xyz/orny-banner.png"/>
-<title>Methodology — OrnyTools</title>
+<title>Methodology — All 11 Tools — OrnyTools</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet"/>
@@ -134,6 +134,22 @@
     .formula{font-size:12px;padding:14px}
     .back-section{padding:28px 16px}
   }
+  /* ── DARK MODE ─────────────────────────────── */
+  html.dark{
+    --surface:#161b22;--surface-2:#1c2128;--bg:#0d1117;
+    --line:#30363d;--line-soft:#21262d;
+    --text:#e6edf3;--dim:#8b949e;--faint:#6e7681;
+  }
+  html.dark body{background:var(--bg);color:var(--text)}
+  html.dark .navbar{background:rgba(13,17,23,.95);border-color:var(--line)}
+  html.dark .page-hero{background:var(--bg)}
+  html.dark .content-card,html.dark .panel,html.dark .formula{background:var(--surface);border-color:var(--line)}
+  html.dark .toc-wrap{background:var(--surface-2);border-color:var(--line)}
+  html.dark .back-section{background:var(--surface-2)}
+  html.dark .tools-nav-band{background:#161b22!important;border-color:var(--line)!important}
+  html.dark .tools-nav-btn{background:var(--surface-2)!important;border-color:var(--line)!important;color:var(--text)!important}
+  .btn-theme{background:transparent;border:1px solid var(--line);border-radius:7px;padding:5px 9px;cursor:pointer;font-size:1rem;line-height:1;transition:.15s}
+  .btn-theme:hover{border-color:var(--gold)}
 </style>
 <!-- Google Tag Manager -->
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -175,23 +191,36 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <button id="btnFR" class="lang-btn" onclick="setLang('fr')">🇫🇷 FR</button>
     <button id="btnES" class="lang-btn" onclick="setLang('es')">🇪🇸 ES</button>
   </div>
+  <button class="btn-theme" onclick="toggleTheme()" title="Dark mode">🌙</button>
 </nav>
 
 <div class="page-hero">
   <div class="eyebrow"><span class="t-en">Under the hood</span><span class="t-fr">Sous le capot</span><span class="t-es">Bajo el capó</span></div>
-  <h1><span class="t-en">How the <em>engine</em> works.</span><span class="t-fr">Comment le <em>moteur</em> fonctionne.</span><span class="t-es">Cómo funciona <em>el motor</em>.</span></h1>
-  <p><span class="t-en">The math behind the Trade Size Optimizer — exact constant-product solver, on-chain V3 liquidity derivation, and the Orny confidence score.</span><span class="t-fr">Les maths derrière l'optimiseur de taille de trade — solveur constant-product exact, dérivation de liquidité V3 on-chain, et le score de confiance Orny.</span><span class="t-es">Las matemáticas del Optimizador de Tamaño de Trade — solución exacta de constant-product, derivación de liquidez V3 on-chain, y el indicador de confianza Orny.</span></p>
+  <h1><span class="t-en">Every formula.<br><em>Documented.</em></span><span class="t-fr">Toutes les formules.<br><em>Documentées.</em></span><span class="t-es">Todas las fórmulas.<br><em>Documentadas.</em></span></h1>
+  <p><span class="t-en">The complete methodology behind all 11 OrnyTools — models, data sources, assumptions, and known limits for every calculator.</span><span class="t-fr">La méthodologie complète derrière les 11 outils OrnyTools — modèles, sources de données, hypothèses et limites connues pour chaque calculateur.</span><span class="t-es">La metodología completa detrás de las 11 herramientas OrnyTools — modelos, fuentes de datos, supuestos y limitaciones conocidas para cada calculadora.</span></p>
 </div>
 
 <!-- TOC -->
 <div class="toc-wrap">
   <div class="toc">
+    <strong style="font-size:.65rem;text-transform:uppercase;letter-spacing:.18em;color:var(--faint);width:100%;display:block;margin-bottom:4px"><span class="t-en">Trade Size Optimizer (detailed)</span><span class="t-fr">Optimiseur de Trade (détaillé)</span><span class="t-es">Optimizador de Trade (detallado)</span></strong>
     <a href="#overview"><span class="t-en">1. Overview</span><span class="t-fr">1. Vue d'ensemble</span><span class="t-es">1. Visión general</span></a>
-    <a href="#formula"><span class="t-en">2. Why the analytical formula fails</span><span class="t-fr">2. Pourquoi la formule analytique échoue</span><span class="t-es">2. Por qué falla la fórmula analítica</span></a>
-    <a href="#solver"><span class="t-en">3. Exact constant-product solver</span><span class="t-fr">3. Solveur constant-product exact</span><span class="t-es">3. Solucionador constant-product exacto</span></a>
+    <a href="#formula"><span class="t-en">2. Why √(G·TVL) underestimates</span><span class="t-fr">2. Pourquoi √(G·TVL) sous-estime</span><span class="t-es">2. Por qué √(G·TVL) subestima</span></a>
+    <a href="#solver"><span class="t-en">3. Exact constant-product solver</span><span class="t-fr">3. Solveur exact</span><span class="t-es">3. Solucionador exacto</span></a>
     <a href="#v3"><span class="t-en">4. V3 on-chain liquidity</span><span class="t-fr">4. Liquidité V3 on-chain</span><span class="t-es">4. Liquidez V3 on-chain</span></a>
     <a href="#confidence"><span class="t-en">5. Orny confidence score</span><span class="t-fr">5. Score de confiance Orny</span><span class="t-es">5. Puntuación de confianza Orny</span></a>
     <a href="#limits"><span class="t-en">6. Known limitations</span><span class="t-fr">6. Limites connues</span><span class="t-es">6. Limitaciones conocidas</span></a>
+    <strong style="font-size:.65rem;text-transform:uppercase;letter-spacing:.18em;color:var(--faint);width:100%;display:block;margin:8px 0 4px"><span class="t-en">Other tools</span><span class="t-fr">Autres outils</span><span class="t-es">Otras herramientas</span></strong>
+    <a href="#il"><span class="t-en">7. IL Calculator</span><span class="t-fr">7. Calculateur IL</span><span class="t-es">7. Calculadora IL</span></a>
+    <a href="#redzone"><span class="t-en">8. RedZone</span><span class="t-fr">8. RedZone</span><span class="t-es">8. RedZone</span></a>
+    <a href="#leverage"><span class="t-en">9. Leverage Calculator</span><span class="t-fr">9. Calculateur Levier</span><span class="t-es">9. Calculadora Levier</span></a>
+    <a href="#v3range"><span class="t-en">10. V3 Range Optimizer</span><span class="t-fr">10. Optimiseur Plage V3</span><span class="t-es">10. Optimizador Rango V3</span></a>
+    <a href="#yield"><span class="t-en">11. Yield Optimizer</span><span class="t-fr">11. Optimiseur Rendement</span><span class="t-es">11. Optimizador Rendimiento</span></a>
+    <a href="#stablecoin"><span class="t-en">12. Stablecoin Analyzer</span><span class="t-fr">12. Analyseur Stablecoins</span><span class="t-es">12. Analizador Stablecoins</span></a>
+    <a href="#waste"><span class="t-en">13. Waste Detector</span><span class="t-fr">13. Détecteur de Gaspillage</span><span class="t-es">13. Detector de Desperdicio</span></a>
+    <a href="#aave"><span class="t-en">14. Aave V3 Calculator</span><span class="t-fr">14. Calculateur Aave V3</span><span class="t-es">14. Calculadora Aave V3</span></a>
+    <a href="#gmx"><span class="t-en">15. GMX V2 Calculator</span><span class="t-fr">15. Calculateur GMX V2</span><span class="t-es">15. Calculadora GMX V2</span></a>
+    <a href="#dashboard"><span class="t-en">16. Position Dashboard</span><span class="t-fr">16. Dashboard Positions</span><span class="t-es">16. Dashboard de Posiciones</span></a>
   </div>
 </div>
 
@@ -403,18 +432,287 @@ R_eff = (x_virtual × p0 + y_virtual × p1) / 2</pre>
     </div>
   </div>
 
+  <!-- ═══════════════════ OTHER TOOLS ═══════════════════ -->
+
+  <hr class="sec-div"/>
+
+  <!-- 7. IL CALCULATOR -->
+  <div class="sec" id="il">
+    <div class="sec-num">07 — IL Calculator</div>
+    <h2><span class="t-en">Impermanent Loss</span><span class="t-fr">Perte Impermanente</span><span class="t-es">Pérdida Impermanente</span></h2>
+    <p><span class="t-en">Impermanent loss is the difference in value between holding tokens in a liquidity pool vs holding them in a wallet, caused by the pool rebalancing against price movements.</span><span class="t-fr">La perte impermanente est la différence de valeur entre détenir des tokens dans une pool de liquidité versus les conserver dans un wallet, causée par le rééquilibrage de la pool face aux mouvements de prix.</span><span class="t-es">La pérdida impermanente es la diferencia de valor entre mantener tokens en un pool de liquidez frente a mantenerlos en una wallet, causada por el reequilibrio del pool ante los movimientos de precio.</span></p>
+
+    <h3><span class="t-en">V2 constant-product formula</span><span class="t-fr">Formule constant-product V2</span><span class="t-es">Fórmula constant-product V2</span></h3>
+    <pre class="formula"><span class="comment">// r = price_new / price_initial (price ratio)</span>
+<span class="hl">IL = 2 × √r / (1 + r) − 1</span>
+
+<span class="comment">// Examples:</span>
+r = 2.0  (price doubled)   → IL = −5.72%
+r = 4.0  (price 4×)        → IL = −20.0%
+r = 0.5  (price halved)    → IL = −5.72%
+r = 0.25 (price down 75%)  → IL = −20.0%</pre>
+
+    <p><span class="t-en">IL is symmetric around the initial price: a 2× increase causes the same IL as a 50% decrease. It only becomes <strong>realized</strong> when you withdraw — if the price returns to its initial value before you exit, IL is zero.</span><span class="t-fr">La PI est symétrique autour du prix initial : une hausse de 2× cause la même PI qu'une baisse de 50%. Elle ne se <strong>matérialise</strong> qu'au retrait — si le prix revient à sa valeur initiale avant la sortie, la PI est nulle.</span><span class="t-es">La PI es simétrica respecto al precio inicial: un aumento de 2× causa la misma PI que una caída del 50%. Solo se <strong>materializa</strong> al retirar — si el precio vuelve a su valor inicial antes de salir, la PI es cero.</span></p>
+
+    <h3><span class="t-en">V3 concentrated range adjustment</span><span class="t-fr">Ajustement de plage concentrée V3</span><span class="t-es">Ajuste de rango concentrado V3</span></h3>
+    <p><span class="t-en">In Uniswap V3, IL only applies when the price is within the LP's range. Outside the range, the position is 100% in one token and earns no fees. The effective IL is scaled by the fraction of time the position spends in range. The calculator uses user-specified price bounds to compute the range-adjusted IL.</span><span class="t-fr">Dans Uniswap V3, la PI ne s'applique que lorsque le prix est dans la plage du LP. Hors plage, la position est à 100% dans un token et ne génère plus de frais. La PI effective est mise à l'échelle par la fraction du temps passé dans la plage. Le calculateur utilise les bornes de prix définies par l'utilisateur pour calculer la PI ajustée à la plage.</span><span class="t-es">En Uniswap V3, la PI solo se aplica cuando el precio está dentro del rango del LP. Fuera del rango, la posición está al 100% en un token y no genera comisiones. La PI efectiva se escala por la fracción de tiempo que la posición pasa dentro del rango. La calculadora usa los límites de precio definidos por el usuario para calcular la PI ajustada al rango.</span></p>
+    <div class="callout gold"><span class="t-en"><b>Source:</b> User inputs only (initial price, new price, range bounds). No external data fetched.</span><span class="t-fr"><b>Source :</b> Entrées utilisateur uniquement (prix initial, nouveau prix, bornes de plage). Aucune donnée externe récupérée.</span><span class="t-es"><b>Fuente:</b> Solo entradas del usuario (precio inicial, nuevo precio, límites del rango). No se obtienen datos externos.</span></div>
+  </div>
+
+  <hr class="sec-div"/>
+
+  <!-- 8. REDZONE -->
+  <div class="sec" id="redzone">
+    <div class="sec-num">08 — RedZone</div>
+    <h2><span class="t-en">Multi-chain Liquidation Calculator</span><span class="t-fr">Calculateur de Liquidation Multi-chaîne</span><span class="t-es">Calculadora de Liquidación Multi-cadena</span></h2>
+    <p><span class="t-en">RedZone computes the liquidation price and safe collateral floor for any asset on Aave V3, Compound, Morpho and equivalent protocols — across 6 chains. It uses Chainlink price feeds as the primary oracle, replicating the exact calculation the protocol runs on-chain.</span><span class="t-fr">RedZone calcule le prix de liquidation et le plancher de collatéral sécurisé pour n'importe quel actif sur Aave V3, Compound, Morpho et protocoles équivalents — sur 6 chaînes. Il utilise les flux Chainlink comme oracle principal, répliquant le calcul exact qu'exécute le protocole on-chain.</span><span class="t-es">RedZone calcula el precio de liquidación y el suelo seguro de colateral para cualquier activo en Aave V3, Compound, Morpho y protocolos equivalentes — en 6 cadenas. Usa feeds de Chainlink como oráculo principal, replicando el cálculo exacto que ejecuta el protocolo on-chain.</span></p>
+
+    <h3><span class="t-en">Health Factor and liquidation condition</span><span class="t-fr">Health Factor et condition de liquidation</span><span class="t-es">Health Factor y condición de liquidación</span></h3>
+    <pre class="formula"><span class="comment">// Aave V3 Health Factor (multi-collateral, multi-debt)</span>
+<span class="hl">HF = Σ(collateral_i × price_i × LT_i) / Σ(debt_j × price_j)</span>
+
+<span class="comment">// Liquidation triggers when HF < 1</span>
+
+<span class="comment">// Single-collateral simplification (RedZone default):</span>
+<span class="hl">P_liq = debt_USD / (collateral_qty × LT)</span>
+
+<span class="comment">// Drop to liquidation (% from current price):</span>
+<span class="hl">Δ% = (P_current − P_liq) / P_current × 100</span></pre>
+
+    <p><span class="t-en"><code>LT</code> (Liquidation Threshold) is the protocol parameter above the LTV: it defines the maximum debt-to-collateral ratio before liquidation. Values are hard-coded per asset per protocol and updated when protocols upgrade their risk parameters.</span><span class="t-fr"><code>LT</code> (seuil de liquidation) est le paramètre de protocole supérieur au LTV : il définit le ratio dette/collatéral maximum avant liquidation. Les valeurs sont codées en dur par actif et par protocole, et mises à jour lors des upgrades de paramètres de risque.</span><span class="t-es"><code>LT</code> (umbral de liquidación) es el parámetro del protocolo por encima del LTV: define el ratio máximo deuda/colateral antes de la liquidación. Los valores están fijados por activo y protocolo, y se actualizan cuando los protocolos actualizan sus parámetros de riesgo.</span></p>
+    <div class="callout aqua"><span class="t-en"><b>Sources:</b> Chainlink price feeds (live, on-chain via public RPC) · Protocol LT parameters (hard-coded from official docs, updated manually).</span><span class="t-fr"><b>Sources :</b> Flux Chainlink (live, on-chain via RPC public) · Paramètres LT des protocoles (codés en dur depuis la documentation officielle, mis à jour manuellement).</span><span class="t-es"><b>Fuentes:</b> Feeds de Chainlink (live, on-chain vía RPC público) · Parámetros LT de los protocolos (fijados desde la documentación oficial, actualizados manualmente).</span></div>
+  </div>
+
+  <hr class="sec-div"/>
+
+  <!-- 9. LEVERAGE CALCULATOR -->
+  <div class="sec" id="leverage">
+    <div class="sec-num">09 — Leverage Calculator</div>
+    <h2><span class="t-en">Recursive Loop Leverage</span><span class="t-fr">Levier par Loop Récursif</span><span class="t-es">Apalancamiento por Loop Recursivo</span></h2>
+    <p><span class="t-en">The Leverage Calculator models the <strong>supply-borrow loop</strong> strategy: deposit collateral → borrow stablecoin → swap to collateral asset → re-deposit → repeat. This recursion amplifies both gains and exposure.</span><span class="t-fr">Le Calculateur de Levier modélise la stratégie <strong>supply-borrow loop</strong> : déposer du collatéral → emprunter du stablecoin → swapper en actif collatéral → re-déposer → répéter. Cette récursion amplifie à la fois les gains et l'exposition.</span><span class="t-es">La Calculadora de Levier modela la estrategia de <strong>bucle supply-borrow</strong>: depositar colateral → pedir prestado stablecoin → swap al activo colateral → re-depositar → repetir. Esta recursión amplifica tanto las ganancias como la exposición.</span></p>
+
+    <pre class="formula"><span class="comment">// After n loops with LTV ratio:</span>
+<span class="hl">final_collateral = initial × (1 − LTV^(n+1)) / (1 − LTV)</span>
+
+<span class="comment">// Limit as n → ∞ (geometric series):</span>
+<span class="hl">max_collateral   = initial / (1 − LTV)</span>
+<span class="hl">leverage_ratio   = 1 / (1 − LTV)</span>
+
+<span class="comment">// Example: LTV = 0.80, $1,000 initial</span>
+max_collateral = 1,000 / 0.20 = <span class="hl">$5,000 (5× leverage)</span>
+
+<span class="comment">// Liquidation price (single-collateral loop):</span>
+<span class="hl">P_liq = P0 × (debt_total / (collateral_total × LT))</span></pre>
+
+    <p><span class="t-en">Each loop cycle also costs gas (1 approval + 1 deposit + 1 borrow + 1 swap). The calculator displays the cumulative gas cost and the break-even time (how many days of yield to recover loop gas).</span><span class="t-fr">Chaque cycle de loop coûte aussi du gas (1 approbation + 1 dépôt + 1 emprunt + 1 swap). Le calculateur affiche le coût total de gas et le temps de récupération (combien de jours de yield pour récupérer le gas de la loop).</span><span class="t-es">Cada ciclo del loop también cuesta gas (1 aprobación + 1 depósito + 1 préstamo + 1 swap). La calculadora muestra el coste total de gas y el tiempo de recuperación (cuántos días de yield para recuperar el gas del loop).</span></p>
+    <div class="callout gold"><span class="t-en"><b>Limitation:</b> the model assumes constant LTV across all loops. In practice, borrow APY and supply APY fluctuate, and high utilization can raise borrow rates above supply rates mid-loop, eliminating the yield spread.</span><span class="t-fr"><b>Limite :</b> le modèle suppose un LTV constant sur tous les loops. En pratique, les APY d'emprunt et de dépôt fluctuent, et une forte utilisation peut faire monter les taux d'emprunt au-dessus des taux de dépôt en cours de loop, éliminant le spread de yield.</span><span class="t-es"><b>Limitación:</b> el modelo asume un LTV constante en todos los loops. En la práctica, el APY de préstamo y suministro fluctúan, y una alta utilización puede elevar las tasas de préstamo por encima de las de suministro a mitad del loop, eliminando el diferencial de yield.</span></div>
+  </div>
+
+  <hr class="sec-div"/>
+
+  <!-- 10. V3 RANGE OPTIMIZER -->
+  <div class="sec" id="v3range">
+    <div class="sec-num">10 — V3 Range Optimizer</div>
+    <h2><span class="t-en">Concentrated Liquidity Range</span><span class="t-fr">Plage de Liquidité Concentrée</span><span class="t-es">Rango de Liquidez Concentrada</span></h2>
+    <p><span class="t-en">Uniswap V3 LPs concentrate capital between a lower and upper price bound. The tool finds the range that maximizes fee revenue per dollar of capital, given an estimate of time spent in range.</span><span class="t-fr">Les LPs Uniswap V3 concentrent le capital entre une borne de prix inférieure et supérieure. L'outil trouve la plage qui maximise les revenus de frais par dollar de capital, étant donné une estimation du temps passé dans la plage.</span><span class="t-es">Los LPs de Uniswap V3 concentran capital entre un límite de precio inferior y superior. La herramienta encuentra el rango que maximiza los ingresos por comisiones por dólar de capital, dado un estimado del tiempo que se pasa dentro del rango.</span></p>
+
+    <pre class="formula"><span class="comment">// Capital efficiency vs a V2 position:</span>
+<span class="hl">CE = 1 / (1 − √(P_lower/P_upper))</span>
+
+<span class="comment">// For a ±10% range (P_lower=0.9×P, P_upper=1.1×P):</span>
+CE = 1 / (1 − √(0.9/1.1)) ≈ <span class="hl">10.5×</span>
+
+<span class="comment">// Expected fees accounting for % time in range:</span>
+<span class="hl">fee_APR = V2_fee_APR × CE × time_in_range</span>
+
+<span class="comment">// Impermanent loss risk at range boundary:</span>
+<span class="comment">// When price exits range, position becomes 100% in one token.</span>
+<span class="comment">// Effective IL if price exits and stays out:</span>
+<span class="hl">IL_at_exit = IL(P_boundary / P_entry)</span></pre>
+
+    <p><span class="t-en">The <code>time_in_range</code> estimate uses a log-normal price model: given current price volatility (σ, annualized), the probability that the price stays within [P_lower, P_upper] after T days is derived from the normal CDF applied to log returns.</span><span class="t-fr">L'estimation de <code>time_in_range</code> utilise un modèle de prix log-normal : étant donné la volatilité actuelle du prix (σ, annualisée), la probabilité que le prix reste dans [P_lower, P_upper] après T jours est dérivée de la CDF normale appliquée aux rendements logarithmiques.</span><span class="t-es">La estimación de <code>time_in_range</code> usa un modelo de precio log-normal: dada la volatilidad actual (σ, anualizada), la probabilidad de que el precio permanezca dentro de [P_lower, P_upper] tras T días se deriva de la CDF normal aplicada a los rendimientos logarítmicos.</span></p>
+    <div class="callout aqua"><span class="t-en"><b>Sources:</b> User inputs (range, capital, fee tier) · GeckoTerminal 24h volume (to estimate base fee APR) · Volatility estimated from recent price history if available.</span><span class="t-fr"><b>Sources :</b> Entrées utilisateur (plage, capital, niveau de frais) · Volume 24h GeckoTerminal (pour estimer l'APR de frais de base) · Volatilité estimée depuis l'historique de prix récent si disponible.</span><span class="t-es"><b>Fuentes:</b> Entradas del usuario (rango, capital, nivel de comisiones) · Volumen 24h de GeckoTerminal (para estimar el APR base de comisiones) · Volatilidad estimada desde el historial de precios reciente si disponible.</span></div>
+  </div>
+
+  <hr class="sec-div"/>
+
+  <!-- 11. YIELD OPTIMIZER -->
+  <div class="sec" id="yield">
+    <div class="sec-num">11 — Yield Optimizer</div>
+    <h2><span class="t-en">APR / APY Compound Model</span><span class="t-fr">Modèle de Composition APR / APY</span><span class="t-es">Modelo Compuesto APR / APY</span></h2>
+    <p><span class="t-en">The Yield Optimizer compares DeFi yield sources on a normalized basis: same capital, same duration, after compounding frequency and protocol fees.</span><span class="t-fr">L'Optimiseur de Rendement compare les sources de yield DeFi sur une base normalisée : même capital, même durée, après fréquence de composition et frais de protocole.</span><span class="t-es">El Optimizador de Rendimiento compara fuentes de yield DeFi de forma normalizada: mismo capital, misma duración, tras la frecuencia de capitalización y las comisiones del protocolo.</span></p>
+
+    <pre class="formula"><span class="comment">// APR → APY (n = compoundings per year)</span>
+<span class="hl">APY = (1 + APR/n)^n − 1</span>
+
+<span class="comment">// Continuous compounding limit:</span>
+<span class="hl">APY_continuous = e^APR − 1</span>
+
+<span class="comment">// Net yield after protocol fees and gas (annualized):</span>
+net_APY = gross_APY × (1 − protocol_fee_rate)
+        − (gas_per_compound × compounds_per_year) / capital
+
+<span class="comment">// Break-even compounding frequency (minimizes gas drag):</span>
+<span class="comment">// Compound when earned_yield > gas_cost_of_compound</span>
+<span class="hl">compound_when: capital × APR × Δt > gas_cost</span></pre>
+
+    <p><span class="t-en">Token incentives (liquidity mining rewards) are treated separately: their USD value is computed at current market price and added to the base APY. The tool flags when token incentive APY exceeds base APY by more than 3× — a sign of unsustainable yield that typically resets when emissions slow.</span><span class="t-fr">Les incitations en tokens (récompenses de liquidité mining) sont traitées séparément : leur valeur USD est calculée au prix de marché actuel et ajoutée à l'APY de base. L'outil signale lorsque l'APY d'incitation en tokens dépasse l'APY de base de plus de 3× — signe d'un yield non-durable qui se réinitialise généralement quand les émissions ralentissent.</span><span class="t-es">Los incentivos en tokens (recompensas de mining de liquidez) se tratan por separado: su valor USD se calcula al precio de mercado actual y se añade al APY base. La herramienta señala cuando el APY de incentivos supera el APY base en más de 3× — señal de un yield insostenible que típicamente se resetea cuando las emisiones disminuyen.</span></p>
+    <div class="callout gold"><span class="t-en"><b>Sources:</b> User inputs (APR, capital, duration) · CoinGecko for token incentive prices · Protocol fee tiers from documentation.</span><span class="t-fr"><b>Sources :</b> Entrées utilisateur (APR, capital, durée) · CoinGecko pour les prix des tokens d'incitation · Taux de frais de protocole depuis la documentation.</span><span class="t-es"><b>Fuentes:</b> Entradas del usuario (APR, capital, duración) · CoinGecko para precios de tokens de incentivo · Tasas de comisiones del protocolo desde la documentación.</span></div>
+  </div>
+
+  <hr class="sec-div"/>
+
+  <!-- 12. STABLECOIN ANALYZER -->
+  <div class="sec" id="stablecoin">
+    <div class="sec-num">12 — Stablecoin Analyzer</div>
+    <h2><span class="t-en">Peg Stability Scoring</span><span class="t-fr">Scoring de Stabilité du Peg</span><span class="t-es">Puntuación de Estabilidad del Peg</span></h2>
+    <p><span class="t-en">The Stablecoin Analyzer scores each stablecoin on four dimensions and produces a composite risk/yield rating. The goal is to surface the trade-off between yield and peg stability — two variables that are often inversely correlated.</span><span class="t-fr">L'Analyseur de Stablecoins évalue chaque stablecoin sur quatre dimensions et produit une note composite risque/rendement. L'objectif est de mettre en évidence le compromis entre le rendement et la stabilité du peg — deux variables souvent inversement corrélées.</span><span class="t-es">El Analizador de Stablecoins evalúa cada stablecoin en cuatro dimensiones y produce una calificación compuesta riesgo/rendimiento. El objetivo es poner de manifiesto el compromiso entre yield y estabilidad del peg — dos variables a menudo inversamente correlacionadas.</span></p>
+
+    <table class="cmp-table">
+      <thead><tr><th><span class="t-en">Dimension</span><span class="t-fr">Dimension</span><span class="t-es">Dimensión</span></th><th><span class="t-en">What is scored</span><span class="t-fr">Ce qui est évalué</span><span class="t-es">Qué se evalúa</span></th><th><span class="t-en">Data source</span><span class="t-fr">Source de données</span><span class="t-es">Fuente de datos</span></th></tr></thead>
+      <tbody>
+        <tr><td><span class="t-en">Peg mechanism</span><span class="t-fr">Mécanisme de peg</span><span class="t-es">Mecanismo del peg</span></td><td><span class="t-en">Fiat-backed > crypto-backed > algorithmic</span><span class="t-fr">Adossé fiat > adossé crypto > algorithmique</span><span class="t-es">Respaldado fiat > respaldado crypto > algorítmico</span></td><td><span class="t-en">Hard-coded classification</span><span class="t-fr">Classification codée en dur</span><span class="t-es">Clasificación fijada</span></td></tr>
+        <tr><td><span class="t-en">Market cap</span><span class="t-fr">Market cap</span><span class="t-es">Capitalización</span></td><td><span class="t-en">Liquidity proxy: larger supply = easier to exit</span><span class="t-fr">Proxy de liquidité : plus grande offre = sortie plus facile</span><span class="t-es">Proxy de liquidez: mayor oferta = más fácil salir</span></td><td>CoinGecko live</td></tr>
+        <tr><td><span class="t-en">Volume / Market cap</span><span class="t-fr">Volume / Market cap</span><span class="t-es">Volumen / Market cap</span></td><td><span class="t-en">Trading velocity: high ratio = active arbitrage keeping peg tight</span><span class="t-fr">Vélocité de trading : ratio élevé = arbitrage actif maintenant le peg serré</span><span class="t-es">Velocidad de trading: ratio alto = arbitraje activo manteniendo el peg ajustado</span></td><td>CoinGecko live</td></tr>
+        <tr><td><span class="t-en">Current price deviation</span><span class="t-fr">Déviation de prix actuelle</span><span class="t-es">Desviación de precio actual</span></td><td><span class="t-en">Distance from $1.00 — penalized exponentially above 0.2%</span><span class="t-fr">Distance par rapport à $1,00 — pénalisée exponentiellement au-dessus de 0,2%</span><span class="t-es">Distancia de $1,00 — penalizada exponencialmente por encima del 0,2%</span></td><td>CoinGecko live</td></tr>
+      </tbody>
+    </table>
+
+    <pre class="formula"><span class="comment">// Liquidity score (0–100) composite:</span>
+mech_score  = {fiat:40, crypto:25, algo:10}[mechanism]
+mcap_score  = log10(mcap_usd) × 6              <span class="comment">// capped at 30</span>
+vel_score   = min(30, vol_mcap_ratio × 150)
+peg_score   = max(0, 30 × (1 − |price−1| / 0.005))
+
+<span class="hl">liquidity_score = mech_score + mcap_score + vel_score + peg_score</span></pre>
+
+    <div class="callout aqua"><span class="t-en"><b>Limitation:</b> the analyzer uses current market prices and volumes, not historical depeg episodes. A stablecoin that is currently on-peg may have depegged significantly in the past. Always check DeFiLlama's stablecoin historical charts for UST-type tail risk.</span><span class="t-fr"><b>Limite :</b> l'analyseur utilise les prix et volumes de marché actuels, pas les épisodes de dépeg historiques. Un stablecoin actuellement au peg peut avoir subi des dépeg significatifs dans le passé. Vérifiez toujours les graphiques historiques des stablecoins sur DeFiLlama pour le risque de queue de type UST.</span><span class="t-es"><b>Limitación:</b> el analizador usa precios y volúmenes actuales, no episodios históricos de despeg. Un stablecoin que actualmente está en el peg puede haber sufrido despegs significativos en el pasado. Comprueba siempre los gráficos históricos de stablecoins en DeFiLlama para el riesgo de cola tipo UST.</span></div>
+  </div>
+
+  <hr class="sec-div"/>
+
+  <!-- 13. WASTE DETECTOR -->
+  <div class="sec" id="waste">
+    <div class="sec-num">13 — Waste Detector</div>
+    <h2><span class="t-en">Quantifying DeFi Inefficiency</span><span class="t-fr">Quantifier l'Inefficience DeFi</span><span class="t-es">Cuantificando la Ineficiencia DeFi</span></h2>
+    <p><span class="t-en">The Waste Detector runs the Trade Optimizer in reverse: given your actual trade history (size, pool, gas paid), it computes what the optimal size would have been and quantifies the excess cost.</span><span class="t-fr">Le Détecteur de Gaspillage fait tourner l'Optimiseur de Trade en sens inverse : étant donné votre historique de trades réels (taille, pool, gas payé), il calcule quelle aurait été la taille optimale et quantifie le coût excédentaire.</span><span class="t-es">El Detector de Desperdicio ejecuta el Optimizador de Trade a la inversa: dado tu historial real de trades (tamaño, pool, gas pagado), calcula cuál habría sido el tamaño óptimo y cuantifica el coste excesivo.</span></p>
+
+    <pre class="formula"><span class="comment">// For each historical trade of size A_actual:</span>
+A_opt = ternary_search(gas, R, fee)    <span class="comment">← exact solver</span>
+
+<span class="comment">// Excess cost per trade:</span>
+excess_pct  = C(A_actual) − C(A_opt)   <span class="comment">← cost per dollar</span>
+excess_usd  = excess_pct × A_actual
+
+<span class="comment">// Annual projection (from weekly trades):</span>
+<span class="hl">waste_annual = excess_usd × 52</span>
+
+<span class="comment">// Category labels:</span>
+excess &lt; 0.1%  → "Efficient"
+excess 0.1–0.5% → "Moderate waste"
+excess &gt; 0.5%  → "Significant waste — consider splitting"</pre>
+
+    <p><span class="t-en">The tool also flags <strong>gas waste</strong> separately: trades where the gas cost represented more than 1% of trade value are labeled "gas-dominated" — these should either be batched or made larger.</span><span class="t-fr">L'outil signale également le <strong>gaspillage de gas</strong> séparément : les trades où le coût de gas représentait plus de 1% de la valeur du trade sont étiquetés "dominés par le gas" — ceux-ci devraient être regroupés ou rendus plus grands.</span><span class="t-es">La herramienta también señala el <strong>desperdicio de gas</strong> por separado: los trades donde el coste de gas representó más del 1% del valor del trade se etiquetan como "dominados por gas" — estos deberían agruparse o hacerse más grandes.</span></p>
+  </div>
+
+  <hr class="sec-div"/>
+
+  <!-- 14. AAVE V3 CALCULATOR -->
+  <div class="sec" id="aave">
+    <div class="sec-num">14 — Aave V3 Calculator</div>
+    <h2><span class="t-en">Health Factor &amp; Borrow Power</span><span class="t-fr">Health Factor &amp; Capacité d'Emprunt</span><span class="t-es">Health Factor &amp; Capacidad de Préstamo</span></h2>
+    <p><span class="t-en">The Aave V3 Calculator is a simulation tool: it takes your current or hypothetical position and projects HF, liquidation price, maximum borrow, and stress scenarios. Unlike the Position Dashboard, it does not read on-chain state — it takes user inputs and applies Aave's formulas.</span><span class="t-fr">Le Calculateur Aave V3 est un outil de simulation : il prend votre position actuelle ou hypothétique et projette le HF, le prix de liquidation, l'emprunt maximum et les scénarios de stress. Contrairement au Position Dashboard, il ne lit pas l'état on-chain — il prend les entrées utilisateur et applique les formules d'Aave.</span><span class="t-es">La Calculadora Aave V3 es una herramienta de simulación: toma tu posición actual o hipotética y proyecta HF, precio de liquidación, préstamo máximo y escenarios de estrés. A diferencia del Position Dashboard, no lee el estado on-chain — toma entradas del usuario y aplica las fórmulas de Aave.</span></p>
+
+    <pre class="formula"><span class="comment">// Health Factor:</span>
+<span class="hl">HF = collateral_USD × LT / debt_USD</span>
+
+<span class="comment">// Maximum borrow (LTV constraint):</span>
+<span class="hl">max_borrow = collateral_USD × LTV − debt_existing</span>
+
+<span class="comment">// Borrow power used (%):</span>
+borrow_pct = debt_USD / (collateral_USD × LTV) × 100
+
+<span class="comment">// Price at liquidation (uniform price drop on collateral):</span>
+<span class="hl">P_liq = P_current × debt_USD / (collateral_USD × LT)</span>
+
+<span class="comment">// Stress test (−30% price shock):</span>
+HF_stressed = collateral_USD × 0.70 × LT / debt_USD</pre>
+
+    <div class="callout warn"><span class="t-en"><b>Multi-collateral note:</b> the calculator models a single-collateral position. Real Aave V3 positions can have multiple collateral assets with different LTs. In that case, use the Position Dashboard (on-chain read) for accurate values.</span><span class="t-fr"><b>Note multi-collatéral :</b> le calculateur modélise une position à collatéral unique. Les vraies positions Aave V3 peuvent avoir plusieurs actifs de collatéral avec des LT différents. Dans ce cas, utilisez le Position Dashboard (lecture on-chain) pour des valeurs précises.</span><span class="t-es"><b>Nota multi-colateral:</b> la calculadora modela una posición de colateral único. Las posiciones reales de Aave V3 pueden tener múltiples activos de colateral con diferentes LTs. En ese caso, usa el Position Dashboard (lectura on-chain) para valores precisos.</span></div>
+  </div>
+
+  <hr class="sec-div"/>
+
+  <!-- 15. GMX V2 CALCULATOR -->
+  <div class="sec" id="gmx">
+    <div class="sec-num">15 — GMX V2 Calculator</div>
+    <h2><span class="t-en">Perpetual Position Fees &amp; Liquidation</span><span class="t-fr">Frais de Position Perp &amp; Liquidation</span><span class="t-es">Comisiones de Posición Perp &amp; Liquidación</span></h2>
+    <p><span class="t-en">The GMX V2 Calculator models the full cost of a perpetual position on GMX V2 (Arbitrum): opening fee, borrowing fee, and the exact liquidation price for both long and short positions. Entry price is fetched live from CoinGecko.</span><span class="t-fr">Le Calculateur GMX V2 modélise le coût total d'une position perpetuelle sur GMX V2 (Arbitrum) : frais d'ouverture, frais d'emprunt, et le prix de liquidation exact pour les positions long et short. Le prix d'entrée est récupéré en direct depuis CoinGecko.</span><span class="t-es">La Calculadora GMX V2 modela el coste total de una posición perpetua en GMX V2 (Arbitrum): comisión de apertura, comisión de préstamo y el precio de liquidación exacto para posiciones largas y cortas. El precio de entrada se obtiene en vivo desde CoinGecko.</span></p>
+
+    <pre class="formula"><span class="comment">// Position sizing:</span>
+size     = collateral × leverage
+borrowed = size − collateral
+
+<span class="comment">// Fees (GMX V2 standard parameters):</span>
+fee_open   = size × 0.0007 × 2      <span class="comment">← open + close (0.07% each)</span>
+fee_borrow = borrowed × 0.0001 × hours <span class="comment">← ~0.01%/h on borrowed</span>
+fee_total  = fee_open + fee_borrow
+
+<span class="comment">// Liquidation price:</span>
+<span class="comment">// Triggered when (collateral − fees) &lt; maintenance_margin × size</span>
+<span class="comment">// maintenance_margin = 1%</span>
+
+<span class="hl">LONG:  P_liq = P0 × (1 − (collateral − fee_total − 0.01×size) / size)</span>
+<span class="hl">SHORT: P_liq = P0 × (1 + (collateral − fee_total − 0.01×size) / size)</span>
+
+<span class="comment">// Break-even price (minimum move to cover fees):</span>
+<span class="hl">LONG:  P_break = P0 + fee_total / (size / P0)</span>
+<span class="hl">SHORT: P_break = P0 − fee_total / (size / P0)</span></pre>
+
+    <div class="callout warn"><span class="t-en"><b>Approximations:</b> borrow rate is estimated at 0.01%/h (the typical rate). Actual rates fluctuate with pool utilization. Opening fee is modeled at 0.07% (market order rate); limit orders are 0.05%. Verify current rates on GMX V2 before opening large positions.</span><span class="t-fr"><b>Approximations :</b> le taux d'emprunt est estimé à 0,01%/h (taux typique). Les taux réels fluctuent avec l'utilisation de la pool. Les frais d'ouverture sont modélisés à 0,07% (taux ordre marché) ; les ordres limites sont à 0,05%. Vérifiez les taux actuels sur GMX V2 avant d'ouvrir de grandes positions.</span><span class="t-es"><b>Aproximaciones:</b> la tasa de préstamo se estima en 0,01%/h (tasa típica). Las tasas reales fluctúan con la utilización del pool. La comisión de apertura se modela al 0,07% (tasa de orden de mercado); las órdenes limitadas son al 0,05%. Verifica las tasas actuales en GMX V2 antes de abrir posiciones grandes.</span></div>
+  </div>
+
+  <hr class="sec-div"/>
+
+  <!-- 16. POSITION DASHBOARD -->
+  <div class="sec" id="dashboard">
+    <div class="sec-num">16 — Position Dashboard</div>
+    <h2><span class="t-en">On-chain Aave V3 State Reader</span><span class="t-fr">Lecteur d'État Aave V3 On-chain</span><span class="t-es">Lector de Estado Aave V3 On-chain</span></h2>
+    <p><span class="t-en">The Position Dashboard fetches live Aave V3 account data for any Arbitrum address by calling <code>getUserAccountData(address)</code> directly on the Aave Pool contract — no API key, no third-party indexer, no wallet connection.</span><span class="t-fr">Le Position Dashboard récupère les données de compte Aave V3 en direct pour n'importe quelle adresse Arbitrum en appelant <code>getUserAccountData(address)</code> directement sur le contrat Aave Pool — sans clé API, sans indexeur tiers, sans connexion wallet.</span><span class="t-es">El Position Dashboard obtiene datos de cuenta Aave V3 en vivo para cualquier dirección de Arbitrum llamando a <code>getUserAccountData(address)</code> directamente en el contrato del Pool de Aave — sin clave API, sin indexador externo, sin conexión de wallet.</span></p>
+
+    <pre class="formula"><span class="comment">// Contract: Aave V3 Pool on Arbitrum</span>
+<span class="comment">// 0x794a61358D6845594F94dc1DB02A252b5b4814aD</span>
+<span class="comment">// Selector: 0xbf92857c (getUserAccountData)</span>
+
+<span class="comment">// Returns 6 × uint256 (ABI-encoded, 32 bytes each):</span>
+[0] totalCollateralBase  / 1e8  → USD
+[1] totalDebtBase        / 1e8  → USD
+[2] availableBorrowsBase / 1e8  → USD
+[3] currentLiquidationThreshold / 1e4  → fraction (e.g. 0.82)
+[4] ltv                         / 1e4  → fraction (e.g. 0.80)
+[5] healthFactor                / 1e18 → HF (e.g. 1.87)
+
+<span class="comment">// Margin to liquidation (uniform price drop estimate):</span>
+<span class="hl">liq_factor = debt / (collateral × liq_threshold)</span>
+<span class="hl">drop_to_liq = (1 − liq_factor) × 100%</span></pre>
+
+    <p><span class="t-en">The <code>drop_to_liq</code> value assumes a <strong>uniform price movement</strong> across all collateral assets. In reality, a position with mixed collateral (e.g. WBTC + ETH) has a liquidation price that depends on the correlation of those assets — a correlated drop is more dangerous than the uniform estimate suggests.</span><span class="t-fr">La valeur <code>drop_to_liq</code> suppose un <strong>mouvement de prix uniforme</strong> sur tous les actifs de collatéral. En réalité, une position avec du collatéral mixte (ex. WBTC + ETH) a un prix de liquidation qui dépend de la corrélation de ces actifs — une baisse corrélée est plus dangereuse que ce que suggère l'estimation uniforme.</span><span class="t-es">El valor <code>drop_to_liq</code> asume un <strong>movimiento de precio uniforme</strong> en todos los activos de colateral. En realidad, una posición con colateral mixto (p.ej. WBTC + ETH) tiene un precio de liquidación que depende de la correlación de esos activos — una caída correlacionada es más peligrosa de lo que sugiere la estimación uniforme.</span></p>
+    <div class="callout good"><span class="t-en"><b>Why this is the most reliable tool in the suite:</b> it reads directly from the protocol's own state, using the same function Aave's UI calls. No modeling — just on-chain truth.</span><span class="t-fr"><b>Pourquoi c'est l'outil le plus fiable de la suite :</b> il lit directement depuis l'état propre du protocole, en utilisant la même fonction qu'appelle l'UI d'Aave. Pas de modélisation — juste la réalité on-chain.</span><span class="t-es"><b>Por qué es la herramienta más fiable de la suite:</b> lee directamente desde el estado propio del protocolo, usando la misma función que llama la UI de Aave. Sin modelado — solo la verdad on-chain.</span></div>
+  </div>
+
 </div><!-- /content -->
 
 <div class="back-section">
-  <a class="back-link" href="optimizer.html">
+  <a class="back-link" href="index.html">
     <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 1.5L1.5 9 9 16.5M1.5 9h15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    <span class="t-en">Back to the optimizer</span><span class="t-fr">Retour à l'optimiseur</span><span class="t-es">Volver al optimizador</span>
+    <span class="t-en">Back to all tools</span><span class="t-fr">Retour aux outils</span><span class="t-es">Volver a todas las herramientas</span>
   </a>
 </div>
 
 <footer>
   <div class="ft-tag"><span class="t-en">The math is <span>exact.</span> The input quality isn't.</span><span class="t-fr">Les maths sont <span>exactes.</span><span class="t-es">Las matemáticas son <span>exactas.</span> La calidad de los datos no.</span> La qualité des entrées non.</span></div>
   <span class="t-en">Methodology reflects the current engine implementation</span><span class="t-fr">La méthodologie reflète l'implémentation actuelle du moteur</span><span class="t-es">La metodología refleja la implementación actual del motor</span> · ornytools.xyz<br/>
+  <a href="guides.html" style="color:var(--faint);text-decoration:none">Guides</a> · <a href="glossary.html" style="color:var(--faint);text-decoration:none">Glossary</a> · <a href="faq.html" style="color:var(--faint);text-decoration:none">FAQ</a><br/>
   <span style="margin-top:8px;display:inline-block">Built by <a href="https://www.linkedin.com/in/xavier-maquin-5576643b9/" target="_blank" rel="noopener" style="color:var(--gold);text-decoration:none;font-weight:600">Xavier Maquin</a></span>
 </footer>
 

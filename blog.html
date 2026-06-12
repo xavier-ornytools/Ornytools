@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta name="description" content="OrnyTools Blog — DeFi insights on trade optimization, Aave health factor, GMX perpetuals, and the math behind decentralized finance."/>
+<meta name="robots" content="index,follow"/>
+<link rel="canonical" href="https://ornytools.xyz/blog.html"/>
+<meta property="og:type" content="website"/>
+<meta property="og:site_name" content="OrnyTools"/>
+<meta property="og:title" content="Blog — OrnyTools"/>
+<meta property="og:description" content="DeFi insights: trade sizing, Aave health factor, GMX liquidation, and the math that most traders ignore."/>
+<meta property="og:url" content="https://ornytools.xyz/blog.html"/>
+<meta property="og:image" content="https://ornytools.xyz/orny-banner.png"/>
+<title>Blog — OrnyTools</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+  :root{
+    --gold:#C8841E;--blue:#2563eb;--green:#16a34a;--red:#dc2626;
+    --text:#111827;--dim:#6B7280;--faint:#9AA5B4;
+    --line:#E4E8F0;--surface:#FFFFFF;--surface-2:#F0F2F5;
+    --display:"Fraunces",Georgia,serif;
+    --ui:"Hanken Grotesk",system-ui,sans-serif;
+    --mono:"JetBrains Mono",ui-monospace,monospace;
+    --radius:14px;--shadow:0 2px 8px rgba(0,0,0,.07),0 8px 32px rgba(0,0,0,.07);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:#f7f8fc;color:var(--text);font-family:var(--ui);-webkit-font-smoothing:antialiased}
+  .navbar{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(255,255,255,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);padding:10px 24px;display:flex;align-items:center;gap:12px}
+  .nav-logo{width:36px;height:36px;object-fit:cover;object-position:center 15%;border-radius:8px}
+  .nav-brand{font-family:var(--display);font-size:1.05rem;font-weight:600;letter-spacing:-.02em}
+  .nav-brand .dot{color:var(--gold)}
+  .nav-home{margin-left:auto;font-size:.82rem;font-weight:600;color:var(--dim);text-decoration:none;padding:7px 14px;border:1px solid var(--line);border-radius:7px;transition:.15s}
+  .nav-home:hover{border-color:var(--blue);color:var(--blue)}
+  .page-hero{padding:96px 28px 40px;text-align:center;background:#fff;border-bottom:1px solid var(--line)}
+  .eyebrow{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--blue);font-weight:700;margin-bottom:14px}
+  .page-hero h1{font-family:var(--display);font-weight:500;font-size:clamp(1.6rem,3vw,2.3rem);letter-spacing:-.02em;margin-bottom:12px}
+  .page-hero p{color:var(--dim);font-size:.95rem;max-width:50ch;margin:0 auto;line-height:1.75}
+  main{max-width:760px;margin:0 auto;padding:40px 24px 80px}
+  /* Post list */
+  .post-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:28px 30px;margin-bottom:20px;box-shadow:var(--shadow);transition:box-shadow .2s,transform .15s}
+  .post-card:hover{box-shadow:var(--shadow),0 0 0 2px rgba(37,99,235,.12);transform:translateY(-1px)}
+  .post-meta{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+  .post-date{font-size:.72rem;color:var(--faint);font-weight:600}
+  .post-tag{font-size:.65rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:2px 8px;border-radius:4px}
+  .post-tag.analysis{background:rgba(200,132,30,.1);color:var(--gold)}
+  .post-tag.guide{background:rgba(37,99,235,.1);color:var(--blue)}
+  .post-tag.research{background:rgba(22,163,74,.1);color:var(--green)}
+  .post-title{font-family:var(--display);font-size:1.25rem;font-weight:500;letter-spacing:-.015em;margin-bottom:10px;line-height:1.3}
+  .post-title a{color:var(--text);text-decoration:none}
+  .post-title a:hover{color:var(--blue)}
+  .post-excerpt{color:var(--dim);font-size:.88rem;line-height:1.8;margin-bottom:16px}
+  .post-excerpt strong{color:var(--text)}
+  .read-more{display:inline-flex;align-items:center;gap:5px;font-size:.82rem;font-weight:700;color:var(--blue);text-decoration:none}
+  .read-more:hover{text-decoration:underline}
+  /* Article pages (when linked via #anchor) */
+  .article{display:none}
+  .article:target{display:block}
+  .article-back{display:inline-flex;align-items:center;gap:6px;font-size:.82rem;font-weight:700;color:var(--dim);text-decoration:none;margin-bottom:28px}
+  .article-back:hover{color:var(--blue)}
+  .art-hero{margin-bottom:32px}
+  .art-hero h1{font-family:var(--display);font-size:clamp(1.5rem,3vw,2.1rem);font-weight:500;letter-spacing:-.02em;margin-bottom:12px;line-height:1.2}
+  .art-hero .lede{color:var(--dim);font-size:.95rem;line-height:1.8;border-left:3px solid var(--gold);padding-left:16px}
+  .art-body{font-size:.91rem;line-height:1.85;color:var(--dim)}
+  .art-body h2{font-family:var(--display);font-size:1.15rem;font-weight:500;color:var(--text);margin:28px 0 10px;letter-spacing:-.01em}
+  .art-body p{margin-bottom:14px}
+  .art-body strong{color:var(--text)}
+  .art-body code{font-family:var(--mono);font-size:.82rem;background:#f7f8fc;padding:2px 6px;border-radius:4px;border:1px solid var(--line);color:var(--text)}
+  .art-callout{border-radius:9px;padding:14px 18px;font-size:.86rem;line-height:1.7;margin:18px 0}
+  .art-callout.gold{background:rgba(200,132,30,.06);border-left:3px solid var(--gold)}
+  .art-callout.blue{background:rgba(37,99,235,.06);border-left:3px solid var(--blue)}
+  .art-callout.red{background:rgba(220,38,38,.06);border-left:3px solid var(--red)}
+  .art-formula{background:#f7f8fc;border:1px solid var(--line);border-radius:8px;padding:12px 16px;font-family:var(--mono);font-size:.83rem;color:var(--text);overflow-x:auto;margin:14px 0}
+  .art-cta{display:inline-flex;align-items:center;gap:7px;padding:10px 18px;background:var(--blue);color:#fff;border-radius:9px;font-size:.85rem;font-weight:700;text-decoration:none;margin-top:6px;transition:background .2s}
+  .art-cta:hover{background:#1d4ed8}
+  /* Index mode — hide all articles when no anchor */
+  footer{text-align:center;padding:20px;font-size:.72rem;color:var(--faint);border-top:1px solid var(--line)}
+  footer a{color:var(--faint);text-decoration:none}
+  footer a:hover{color:var(--blue)}
+  /* ── DARK MODE ─────────────────────────────── */
+  html.dark{
+    --surface:#161b22;--surface-2:#1c2128;--bg:#0d1117;
+    --line:#30363d;
+    --text:#e6edf3;--dim:#8b949e;--faint:#6e7681;
+  }
+  html.dark body{background:var(--bg);color:var(--text)}
+  html.dark .navbar{background:rgba(13,17,23,.95);border-color:var(--line)}
+  html.dark .page-hero{background:var(--bg)}
+  html.dark .post-card{background:var(--surface);border-color:var(--line)}
+  html.dark .art-formula,html.dark .art-body code{background:var(--surface-2);border-color:var(--line)}
+  .btn-theme{background:transparent;border:1px solid var(--line);border-radius:7px;padding:5px 9px;cursor:pointer;font-size:1rem;line-height:1;transition:.15s}
+  .btn-theme:hover{border-color:var(--blue)}
+</style>
+<script src="lang.js"></script>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="index.html"><img src="logo.png" class="nav-logo" alt="OrnyTools"/></a>
+  <span class="nav-brand">ORNY<span class="dot">.</span>TOOLS</span>
+  <button class="btn-theme" onclick="toggleTheme()" title="Dark mode">🌙</button>
+  <a href="index.html" class="nav-home">← Home</a>
+</nav>
+
+<div class="page-hero">
+  <div class="eyebrow">OrnyTools Blog</div>
+  <h1>The math most traders ignore.</h1>
+  <p>Practical DeFi analysis — with the formulas, the numbers, and the honest caveats.</p>
+</div>
+
+<main>
+
+  <!-- POST LIST (always visible) -->
+  <div id="post-list">
+
+    <div class="post-card">
+      <div class="post-meta">
+        <span class="post-date">June 2026</span>
+        <span class="post-tag analysis">Analysis</span>
+      </div>
+      <div class="post-title"><a href="#art-gas-slippage">Your Uniswap trades are costing you more than you think</a></div>
+      <p class="post-excerpt">Gas and slippage are both real costs — but most traders obsess over one and ignore the other. The optimal trade size sits at their exact crossover. <strong>The approximation formula most tools use overstates that size by up to 2×.</strong> Here's the exact math.</p>
+      <a href="#art-gas-slippage" class="read-more">Read →</a>
+    </div>
+
+    <div class="post-card">
+      <div class="post-meta">
+        <span class="post-date">June 2026</span>
+        <span class="post-tag guide">Guide</span>
+      </div>
+      <div class="post-title"><a href="#art-health-factor">Health factor 1.3 — how much margin is that, really?</a></div>
+      <p class="post-excerpt">A health factor of 1.3 sounds safe until you run the actual numbers. <strong>With WBTC as collateral (LT = 75%), HF 1.3 means a 23% price drop triggers liquidation.</strong> This is how to think about it correctly — and what buffer you actually need.</p>
+      <a href="#art-health-factor" class="read-more">Read →</a>
+    </div>
+
+    <div class="post-card">
+      <div class="post-meta">
+        <span class="post-date">June 2026</span>
+        <span class="post-tag research">Research</span>
+      </div>
+      <div class="post-title"><a href="#art-gmx-fees">GMX perpetuals: the borrow fee is eating your PnL</a></div>
+      <p class="post-excerpt">Opening a 10× long on GMX feels like a $10 decision on a $1,000 position. <strong>After 48 hours, borrow fees alone have taken $1.92 — before the position moves a dollar.</strong> The math on why short holds on leveraged perps are better than you think.</p>
+      <a href="#art-gmx-fees" class="read-more">Read →</a>
+    </div>
+
+    <div class="post-card">
+      <div class="post-meta">
+        <span class="post-date">June 2026</span>
+        <span class="post-tag analysis">Analysis</span>
+      </div>
+      <div class="post-title"><a href="#art-leverage-loops">Leverage loops on Aave: the real cost of recursive borrowing</a></div>
+      <p class="post-excerpt">Looping amplifies your BTC exposure cheaply — but the fee drag and liquidation buffer compress simultaneously. <strong>With WBTC at max LTV, four loops give 2.27× exposure but only a 10.7% BTC drop to liquidation.</strong> Here's the math behind the risk.</p>
+      <a href="#art-leverage-loops" class="read-more">Read →</a>
+    </div>
+
+    <div class="post-card">
+      <div class="post-meta">
+        <span class="post-date">June 2026</span>
+        <span class="post-tag research">Research</span>
+      </div>
+      <div class="post-title"><a href="#art-v3-ranges">Uniswap V3 ranges: why width matters more than entry</a></div>
+      <p class="post-excerpt">A ±10% range gives a 10× capital efficiency multiplier — but on ETH, it gets breached 28% of weeks. <strong>The fee APR your pool explorer shows assumes you're always in range.</strong> The actual math on range selection and out-of-range risk.</p>
+      <a href="#art-v3-ranges" class="read-more">Read →</a>
+    </div>
+
+  </div>
+
+  <!-- ARTICLE 1 -->
+  <div class="article" id="art-gas-slippage">
+    <a href="#" class="article-back" onclick="history.back();return false">← Back to blog</a>
+    <div class="art-hero">
+      <div class="post-meta"><span class="post-date">June 2026</span><span class="post-tag analysis">Analysis</span></div>
+      <h1>Your Uniswap trades are costing you more than you think</h1>
+      <p class="lede">Gas and slippage work against you from opposite directions. Most traders treat gas as fixed overhead and ignore how it interacts with trade size — that's leaving money on the table every single trade.</p>
+    </div>
+    <div class="art-body">
+      <h2>The U-curve problem</h2>
+      <p>Every AMM trade has a total cost that forms a U-shape as a function of size. Trade too small: gas dominates, and you're paying a large fixed overhead relative to any gains. Trade too large: slippage dominates, and you're moving the pool price against yourself. The bottom of the U — the optimal size — is where gas cost and slippage cost are equal.</p>
+      <p>This isn't intuition. It's a consequence of the constant-product formula (x·y=k). For a pool of depth R (single-sided TVL), a trade of size A produces slippage of exactly <code>A/(R+A)</code>. Gas is a fixed cost G in dollars. The total cost as a fraction of trade size is:</p>
+      <div class="art-formula">cost(A) = G/A + A/(R+A) + fee</div>
+      <p>Minimise this with respect to A and you get the optimal size:</p>
+      <div class="art-formula">A* = √(G × R)</div>
+
+      <h2>The 2× error in common tools</h2>
+      <p>Most online calculators and rule-of-thumb formulas use <code>√(2·G·TVL)</code> instead. The extra factor of 2 comes from using TVL directly instead of single-sided depth R = TVL/2. The result: they tell you the optimal trade is twice as large as it actually is.</p>
+      <p>In a $1M TVL pool with $3 gas: the correct optimal is <code>√(3 × 500,000) = $1,225</code>. The approximation gives <code>√(2 × 3 × 1,000,000) = $2,449</code>. Trade at $2,449 and you're paying roughly twice the optimal slippage.</p>
+      <div class="art-callout gold"><strong>At the true optimum:</strong> gas cost = slippage cost ≈ $3. Total overhead ≈ $6 on a $1,225 trade = 0.49%. Double that size and the slippage alone is ~$6, plus $3 gas = $9 total — 50% more.</div>
+
+      <h2>Practical numbers</h2>
+      <p>On Ethereum mainnet with 8 gwei gas (~$4 per swap) in a $2M WBTC/USDC pool: A* ≈ $1,414. On Arbitrum with 0.01 gwei gas (~$0.004 per swap) in the same pool: A* ≈ $45. The depth of the pool matters as much as the gas — on Arbitrum, tiny gas means even a small trade is "gas-efficient," so the optimal barely moves from the minimum gas-limited size.</p>
+
+      <h2>What to actually do</h2>
+      <p>Load your target pool in the Trade Size Optimizer. It fetches pool depth and fee live from GeckoTerminal, applies the exact constant-product formula, and shows you the bottom of the U. If you're trading a round number far from that bottom, you're either overpaying gas (too small) or overpaying slippage (too large).</p>
+      <a href="optimizer.html" class="art-cta">Open Trade Size Optimizer →</a>
+    </div>
+  </div>
+
+  <!-- ARTICLE 2 -->
+  <div class="article" id="art-health-factor">
+    <a href="#" class="article-back" onclick="history.back();return false">← Back to blog</a>
+    <div class="art-hero">
+      <div class="post-meta"><span class="post-date">June 2026</span><span class="post-tag guide">Guide</span></div>
+      <h1>Health factor 1.3 — how much margin is that, really?</h1>
+      <p class="lede">A health factor of 1.3 is routinely called "safe" in DeFi communities. Whether it actually is depends entirely on what's in your collateral — and the math is less forgiving than the label suggests.</p>
+    </div>
+    <div class="art-body">
+      <h2>What health factor measures</h2>
+      <p>Aave's health factor is a weighted ratio: the sum of collateral values adjusted by liquidation thresholds, divided by total debt. The formula read from the contract is:</p>
+      <div class="art-formula">HF = Σ(collateral_i × LT_i) / Σ(debt_j)</div>
+      <p>When HF drops to 1.0, a liquidator can seize up to 50% of your collateral in a single call, receiving a bonus (typically 5–15%) on top of the debt they repay. Below 1.0 is not a place you want to be.</p>
+
+      <h2>From HF to price drop</h2>
+      <p>The question traders actually need answered is: "how far can my collateral fall before I'm liquidated?" If you have a single collateral asset with liquidation threshold LT and total debt D, the liquidation price is:</p>
+      <div class="art-formula">P_liq = D / (collateral_qty × LT)</div>
+      <p>The margin until liquidation — expressed as a percentage drop in collateral price — is:</p>
+      <div class="art-formula">margin = 1 − 1/HF × (1/LT) × LT = 1 − 1/HF</div>
+      <p>Wait, simpler: if HF = 1.3, you need HF to drop by 0.3 to reach 1.0. Since HF scales linearly with collateral price, you need collateral to drop by <code>0.3/1.3 = 23.1%</code>.</p>
+
+      <div class="art-callout red"><strong>HF 1.3 with WBTC:</strong> a 23% BTC price drop triggers liquidation. BTC has moved ±20% in a week multiple times in 2024. This is not a comfortable margin for a volatile asset.</div>
+      <div class="art-callout gold"><strong>HF 1.3 with USDC collateral:</strong> a 23% stablecoin depeg would trigger liquidation. Much safer — but still meaningful if you're borrowing against pegged-asset collateral in a stressed market.</div>
+
+      <h2>The LT factor people miss</h2>
+      <p>The margin calculation above assumes uniform collateral. In practice, each asset has its own LT. WBTC on Aave V3 Arbitrum: LT = 75%. ETH: LT = 82.5%. USDC: LT = 85%. A mixed portfolio doesn't liquidate all at once — the weighted average LT determines the actual threshold. This is why reading your HF directly from the contract is more accurate than any manual estimate.</p>
+
+      <h2>Safe buffer rules of thumb</h2>
+      <p>For volatile collateral (BTC, ETH): maintain HF &gt; 1.5, which gives roughly 33% downside buffer. For stablecoin or LST collateral: HF &gt; 1.2 is more defensible. Set a mental alert at HF 1.25 for volatile assets — by the time you notice a sharp drop, you may already be below 1.2.</p>
+      <a href="dashboard.html" class="art-cta">Check your position live →</a>
+    </div>
+  </div>
+
+  <!-- ARTICLE 3 -->
+  <div class="article" id="art-gmx-fees">
+    <a href="#" class="article-back" onclick="history.back();return false">← Back to blog</a>
+    <div class="art-hero">
+      <div class="post-meta"><span class="post-date">June 2026</span><span class="post-tag research">Research</span></div>
+      <h1>GMX perpetuals: the borrow fee is eating your PnL</h1>
+      <p class="lede">The opening fee on GMX is visible and easy to account for. The borrow fee is continuous, compounding, and invisible to most traders until they finally close. Here's the actual math — with numbers.</p>
+    </div>
+    <div class="art-body">
+      <h2>The fee structure, clearly</h2>
+      <p>GMX V2 charges two main fees on leveraged positions. First, the <strong>opening fee</strong>: 0.07% of position size, charged on open and again on close — a round-trip costs 0.14%. Second, the <strong>borrow fee</strong>: approximately 0.01%/hour on the borrowed portion of the position, continuously accruing.</p>
+      <p>The borrowed portion is position size minus collateral. For a $10,000 position with $1,000 collateral (10× leverage), borrowed = $9,000. The borrow fee accrues at roughly:</p>
+      <div class="art-formula">borrow_fee_per_hour = borrowed × 0.0001 = $9,000 × 0.0001 = $0.90/hour</div>
+
+      <h2>Running the numbers over time</h2>
+      <p>Opening a 10× BTC long for $10,000 position size with $1,000 collateral:</p>
+      <p><strong>Opening fee:</strong> $10,000 × 0.07% = $7. <strong>After 1 hour:</strong> +$0.90 borrow fee, total overhead = $7.90. <strong>After 24 hours:</strong> +$21.60, total = $28.60 — nearly 3% of your collateral. <strong>After 48 hours:</strong> +$43.20, total = $50.20 — over 5% of $1,000 collateral.</p>
+      <div class="art-callout red"><strong>Break-even after 48 hours:</strong> BTC needs to move at least 0.50% in your favor just to cover fees — before you make a single dollar of profit. At higher leverage this compounds faster; with 20× leverage, fees eat 10% of collateral in two days.</div>
+
+      <h2>The liquidation price drift</h2>
+      <p>Borrow fees reduce your effective collateral continuously. This means your <strong>liquidation price drifts toward your entry</strong> the longer you hold. The liquidation formula:</p>
+      <div class="art-formula">P_liq = P_entry × (1 − (collateral − fees − 1%×size) / size)</div>
+      <p>After 24 hours on the 10× long above, fees = $28.60, so effective collateral drops from $1,000 to $971.40. Liquidation price moves ~0.14% closer to entry. Negligible on short holds — significant on multi-day positions.</p>
+
+      <h2>What this means for strategy</h2>
+      <p>GMX perpetuals are not designed for multi-day holds at high leverage. They're most cost-effective for short-term directional trades (hours, not days) where the fee overhead is a small fraction of the expected move. If you're planning to hold a leveraged position for days, the borrow fee drag makes lower leverage or a lending loop (Aave) more capital-efficient.</p>
+      <a href="gmx.html" class="art-cta">Model your GMX fees →</a>
+    </div>
+  </div>
+
+  <!-- ARTICLE 4 -->
+  <div class="article" id="art-leverage-loops">
+    <a href="#" class="article-back" onclick="history.back();return false">← Back to blog</a>
+    <div class="art-hero">
+      <div class="post-meta"><span class="post-date">June 2026</span><span class="post-tag analysis">Analysis</span></div>
+      <h1>Leverage loops on Aave: the real cost of recursive borrowing</h1>
+      <p class="lede">Looping — depositing, borrowing, redepositing — is the standard way to build leveraged exposure inside a lending protocol. The math is clean, but the fee drag and liquidation risk accumulate faster than most users model.</p>
+    </div>
+    <div class="art-body">
+      <h2>How a leverage loop works</h2>
+      <p>Start with $1,000 of WBTC as collateral at 67% max LTV on Aave V3 Arbitrum. You borrow $670 of USDC, swap it back to WBTC, deposit again. Now your collateral is $1,670. Borrow 67% again: +$1,119. Each round multiplies by LTV. After N loops, total exposure is:</p>
+      <div class="art-formula">total_exposure = initial × (1 − LTV^(N+1)) / (1 − LTV)</div>
+      <p>With LTV = 0.67 and 4 loops: exposure ≈ $1,000 × 2.27 = $2,270. Your $1,000 controls $2,270 of BTC — 2.27× leverage without touching a perpetual.</p>
+      <h2>Entry cost per loop</h2>
+      <p>Each loop requires a USDC→WBTC swap. On a 0.05% fee pool, four loops cost $670 × 0.05% + $449 × 0.05% + $301 × 0.05% + $201 × 0.05% = $0.81 in swap fees. At 0.1% slippage per swap, add $1.62. Gas on Arbitrum: ~$0.50 per transaction × 8 transactions = $4. Total entry cost: <strong>~$6.43 on $1,000 initial capital, or 0.64%</strong>. Cheap — but not free, and it must be paid again on exit.</p>
+      <div class="art-callout gold"><strong>vs. GMX:</strong> opening a 2.27× BTC position on GMX costs 0.07% × $2,270 = $1.59 in opening fees, plus ongoing borrow fees. The Aave loop is more expensive to enter but has no continuous fee on the full notional — only on the borrowed portion.</div>
+      <h2>Net APY: the uncomfortable math</h2>
+      <p>A loop earns supply APY on the full collateral stack and pays borrow APY on all borrowed capital. With WBTC supply APY 0.2%, USDC borrow APY 4.5%, and 2.27× leverage:</p>
+      <div class="art-formula">net_APY = leverage × supply_APY − (leverage − 1) × borrow_APY</div>
+      <div class="art-formula">= 2.27 × 0.2% − 1.27 × 4.5% = 0.45% − 5.72% = −5.27%</div>
+      <p>This is a <strong>negative-carry position</strong>. You're paying 5.27% per year to hold 2.27× BTC exposure. The bet is directional: it only pays off if BTC appreciates faster than the carry cost. That's historically true in bull markets — and false in flat or down periods.</p>
+      <h2>The liquidation buffer that doesn't change with loops</h2>
+      <p>The key insight most guides miss: the liquidation buffer is determined by the LTV/LT gap, not by the number of loops. With WBTC max LTV = 67% and liquidation threshold LT = 75%, liquidation triggers when collateral value drops enough that:</p>
+      <div class="art-formula">drop_to_liquidation ≈ 1 − LTV/LT = 1 − 0.67/0.75 = 10.7%</div>
+      <p>Whether you run 2 loops or 8 loops, a 10.7% BTC price drop liquidates you. More loops = more exposure, identical buffer. Running fewer loops does not increase safety — it just reduces your BTC upside.</p>
+      <div class="art-callout red"><strong>A 10.7% BTC drop triggers liquidation on any max-LTV WBTC loop.</strong> BTC moved ±10% in a single day multiple times in the past 18 months. Never run a leveraged loop without an alert at HF 1.15.</div>
+      <a href="leverage.html" class="art-cta">Model your leverage loop →</a>
+    </div>
+  </div>
+
+  <!-- ARTICLE 5 -->
+  <div class="article" id="art-v3-ranges">
+    <a href="#" class="article-back" onclick="history.back();return false">← Back to blog</a>
+    <div class="art-hero">
+      <div class="post-meta"><span class="post-date">June 2026</span><span class="post-tag research">Research</span></div>
+      <h1>Uniswap V3 ranges: why width matters more than entry</h1>
+      <p class="lede">Concentrated liquidity makes V3 up to 20× more capital-efficient than V2 — but only while price stays in range. The trade-off is quantifiable, and most LPs pick widths by feel rather than by the numbers.</p>
+    </div>
+    <div class="art-body">
+      <h2>The capital efficiency multiplier</h2>
+      <p>In V2, your liquidity is spread from price 0 to ∞. In V3, you concentrate it between Pa and Pb. The efficiency multiplier — fees earned per dollar vs. an equivalent V2 position — is approximately:</p>
+      <div class="art-formula">multiplier ≈ √Pb / (√Pb − √Pa)</div>
+      <p>For a ±10% range (Pa = 0.9×P, Pb = 1.1×P): multiplier ≈ 10.5×. For ±20%: ≈ 5.4×. For ±5%: ≈ 21×. Narrow ranges are dramatically more capital-efficient — while in range.</p>
+      <h2>Why displayed APRs are misleading</h2>
+      <p>Pool explorers (DefiLlama, GeckoTerminal, Uniswap UI) show fee APR based on 24h volume divided by total in-range liquidity. This assumes your position is always in range. It isn't. The correct APR is:</p>
+      <div class="art-formula">real_APR = displayed_APR × in_range_fraction × your_liquidity_share</div>
+      <p>For ETH/USDC with a ±10% range, the breach probability over 7 days (based on ETH's ~4%/day log-volatility) is roughly 28%. Your position is out of range ~28% of the time — earning nothing. Real APR is 72% of displayed. A "45% APR" pool actually yields ~32%.</p>
+      <div class="art-callout blue"><strong>The efficiency multiplier and the breach frequency pull in opposite directions.</strong> Narrower ranges earn more per dollar in range, but spend more time out of range. There's a sweet spot that maximizes realized yield — it's not always the narrowest possible range.</div>
+      <h2>Breach probability by width</h2>
+      <p>For ETH (σ ≈ 4%/day), approximate weekly breach probability by range width:</p>
+      <p><strong>±5% range:</strong> ~62% breach probability per week. <strong>±10%:</strong> ~28%. <strong>±20%:</strong> ~7%. <strong>±30%:</strong> ~2.5%. For BTC (σ ≈ 3%/day), multiply breach times by ~0.6. For a stablecoin pair (σ ≈ 0.1%/day), even ±0.5% ranges are safe for weeks.</p>
+      <div class="art-callout red"><strong>Every breach means rebalancing.</strong> Each rebalance costs gas + swap fees (0.05–0.3% of position) + slippage. On Ethereum mainnet, a rebalance costs $15–40. On Arbitrum, $0.50–2. Breach frequency × rebalance cost is a real drag that must be subtracted from fee income.</div>
+      <h2>Practical range selection</h2>
+      <p>For volatile pairs (ETH, BTC) with active management: ±20% gives multiplier ~5× and ~7% weekly breach — manageable. For set-and-forget positions: ±30–50% is more realistic. For stablecoin pairs: ±0.5–1% is standard practice, as breach risk is near zero and the multiplier can reach 100×+.</p>
+      <p>The V3 Range Calculator computes impermanent loss, fee income estimate, and the capital efficiency multiplier for any price range. It also feeds into the IL Calculator to model the full position P&amp;L including fees vs. holding.</p>
+      <a href="v3range.html" class="art-cta">Calculate your V3 range →</a>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <a href="index.html">OrnyTools</a> · <a href="guides.html">Guides</a> · <a href="glossary.html">Glossary</a> · <a href="methodology.html">Methodology</a> · <a href="about.html">About</a> · <a href="mailto:contact@ornytools.xyz">contact@ornytools.xyz</a>
+</footer>
+
+<script>
+function showArticle(){
+  const hash = window.location.hash;
+  const list = document.getElementById('post-list');
+  const arts = document.querySelectorAll('.article');
+  if(hash && hash.startsWith('#art-')){
+    list.style.display = 'none';
+    arts.forEach(a => a.style.display = a.id === hash.slice(1) ? 'block' : 'none');
+  } else {
+    list.style.display = 'block';
+    arts.forEach(a => a.style.display = 'none');
+  }
+}
+window.addEventListener('hashchange', showArticle);
+document.addEventListener('DOMContentLoaded', showArticle);
+</script>
+
+</body>
+</html>

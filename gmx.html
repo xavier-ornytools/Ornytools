@@ -57,7 +57,10 @@
   @media(max-width:680px){main{grid-template-columns:1fr}}
   .full{grid-column:1/-1}
 
-  .panel{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow)}
+  .panel{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow);transition:box-shadow .2s}
+  .panel:hover{box-shadow:var(--shadow),0 0 0 1px rgba(37,99,235,.08)}
+  .panel.input-panel{border-top:3px solid var(--gold)}
+  .panel.result-panel{border-top:3px solid var(--blue)}
   .panel-title{font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--faint);margin-bottom:18px}
 
   /* Direction tabs */
@@ -83,9 +86,12 @@
   .btn-calc:hover{background:#1d4ed8;transform:translateY(-1px)}
 
   /* Results */
-  .result-placeholder{text-align:center;padding:32px 20px;color:var(--faint)}
+  .result-placeholder{text-align:center;padding:28px 20px;color:var(--faint);background:linear-gradient(135deg,#f8faff,#eef4ff);border-radius:10px;border:1.5px dashed rgba(37,99,235,.18)}
   .result-placeholder .ph-icon{font-size:2.2rem;margin-bottom:12px}
-  .result-placeholder p{font-size:.9rem;line-height:1.7}
+  .result-placeholder p{font-size:.88rem;line-height:1.7}
+  .ph-preview{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:16px 0;text-align:left}
+  .ph-preview-item{background:rgba(37,99,235,.06);border:1px solid rgba(37,99,235,.1);border-radius:7px;padding:8px 10px;font-size:.73rem}
+  .ph-preview-item span{display:block;font-weight:700;color:var(--blue);font-family:var(--mono);font-size:.8rem;margin-top:2px}
   .result-big{font-family:var(--display);font-size:2.6rem;font-weight:500;letter-spacing:-.03em;margin:16px 0 6px;line-height:1}
   .result-label{font-size:.7rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--faint)}
   .br-row{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--line-soft);font-size:.88rem}
@@ -105,7 +111,7 @@
   .dir-badge.long{background:#dcfce7;color:#15803d}
   .dir-badge.short{background:#fee2e2;color:#b91c1c}
 
-  .orny-comment{margin-top:14px;padding:14px;background:var(--blue-pale);border-radius:10px;font-size:.84rem;line-height:1.7;color:var(--text);border-left:3px solid var(--blue)}
+  .orny-comment{margin-top:14px;padding:14px;background:var(--blue-pale);border-radius:10px;font-size:.84rem;line-height:1.7;color:var(--text);border-left:3px solid var(--blue);box-shadow:0 0 0 1px rgba(37,99,235,.1)}
 
   /* Tools nav */
   .tools-nav-band{background:#f7f8fc;border-top:1px solid #e4e8f0;padding:28px 28px 32px;text-align:center}
@@ -116,6 +122,31 @@
   .tools-nav-btn.current{border-color:#2563eb;background:#2563eb;color:#fff;pointer-events:none}
 
   footer{text-align:center;padding:20px;font-size:.72rem;color:var(--faint);border-top:1px solid var(--line)}
+  /* Dark mode */
+  html.dark{--surface:#161b22;--surface-2:#1c2128;--bg:#0d1117;--line:#30363d;--line-soft:#21262d;--text:#e6edf3;--dim:#8b949e;--faint:#6e7681}
+  html.dark body{background:var(--bg)}
+  html.dark .navbar{background:rgba(22,27,34,.96)!important;border-color:var(--line)}
+  html.dark .nav-home{border-color:var(--line);color:var(--dim)}
+  html.dark .page-hero{background:var(--surface)!important;border-color:var(--line)}
+  html.dark .panel{background:var(--surface)!important;border-color:var(--line)!important}
+  html.dark .result-placeholder{background:linear-gradient(135deg,#161b22,#1c2128);border-color:rgba(37,99,235,.25)}
+  html.dark .ph-preview-item{background:rgba(37,99,235,.1);border-color:rgba(37,99,235,.2)}
+  html.dark .tools-nav-band{background:#0d1117;border-color:var(--line)}
+  html.dark .tools-nav-btn{background:var(--surface);border-color:var(--line);color:var(--dim)}
+  html.dark .tools-nav-btn:hover{border-color:var(--blue);color:var(--blue);background:rgba(37,99,235,.08)}
+  html.dark footer{border-color:var(--line);background:var(--bg)}
+  /* Dark mode button */
+  .btn-theme{width:34px;height:34px;border-radius:8px;border:1px solid var(--line);background:var(--surface-2);cursor:pointer;font-size:.9rem;transition:.15s;display:inline-flex;align-items:center;justify-content:center}
+  .btn-theme:hover{background:var(--line)}
+  /* Mobile */
+  @media(max-width:520px){
+    .page-hero{padding:80px 16px 28px}
+    main{padding:20px 16px 60px;gap:14px}
+    .preset-row{gap:5px}
+    .preset-btn{padding:5px 10px;font-size:.74rem}
+    .ph-preview{grid-template-columns:1fr 1fr}
+    .result-big{font-size:2rem}
+  }
 </style>
 <script src="lang.js"></script>
 </head>
@@ -125,10 +156,11 @@
   <a href="index.html"><img src="logo.png" class="nav-logo" alt="OrnyTools"/></a>
   <span class="nav-brand">ORNY<span class="dot">.</span>TOOLS</span>
   <a href="index.html" class="nav-home">← Home</a>
-  <div style="margin-left:8px">
+  <div style="margin-left:8px;display:flex;align-items:center;gap:6px">
     <button id="btnEN" class="lang-btn" onclick="setLang('en')">🇬🇧 EN</button>
     <button id="btnFR" class="lang-btn" onclick="setLang('fr')">🇫🇷 FR</button>
     <button id="btnES" class="lang-btn" onclick="setLang('es')">🇪🇸 ES</button>
+    <button class="btn-theme" onclick="toggleTheme()" title="Dark mode">🌙</button>
   </div>
 </nav>
 
@@ -138,9 +170,13 @@
   <p><span class="t-en">Liquidation price, total fees and break-even for any GMX V2 position. Live entry price from CoinGecko.</span><span class="t-fr">Prix de liquidation, frais totaux et seuil de rentabilité pour toute position GMX V2. Prix d'entrée en direct via CoinGecko.</span><span class="t-es">Precio de liquidación, comisiones totales y punto de equilibrio para cualquier posición GMX V2. Precio de entrada en vivo vía CoinGecko.</span></p>
 </div>
 
+<div style="padding:40px 28px 0;text-align:center;background:var(--surface,#fff)">
+  <img src="img-gmx.png" alt="GMX V2 Calculator — OrnyTools" loading="lazy" style="width:clamp(300px,88vw,980px);border-radius:18px;box-shadow:0 16px 56px rgba(0,0,0,.10);display:inline-block"/>
+</div>
+
 <main>
   <!-- INPUTS -->
-  <div class="panel">
+  <div class="panel input-panel">
     <div class="panel-title"><span class="t-en">Position Setup</span><span class="t-fr">Configuration</span><span class="t-es">Configuración</span></div>
 
     <!-- Direction -->
@@ -159,7 +195,7 @@
     </div>
 
     <div class="field">
-      <label><span class="t-en">Entry price ($)</span><span class="t-fr">Prix d'entrée ($)</span><span class="t-es">Precio de entrada ($)</span><span class="oc-badge" id="priceBadge" style="display:none">⛓ live</span></label>
+      <label><span class="t-en">Entry price ($)</span><span class="t-fr">Prix d'entrée ($)</span><span class="t-es">Precio de entrada ($)</span><span class="oc-badge" id="priceBadge" style="display:none">⛓ <span id="priceTs">live</span></span></label>
       <input type="number" id="entryPrice" value="65000" oninput="calc()"/>
     </div>
     <div class="field">
@@ -183,10 +219,17 @@
   </div>
 
   <!-- RESULTS -->
-  <div class="panel" id="resultPanel">
+  <div class="panel result-panel" id="resultPanel">
     <div class="result-placeholder" id="placeholder">
-      <div class="ph-icon">📊</div>
-      <p><span class="t-en">Configure your position<br>and click Calculate.</span><span class="t-fr">Configurez votre position<br>et cliquez Calculer.</span><span class="t-es">Configura tu posición<br>y haz clic en Calcular.</span></p>
+      <div class="ph-icon">⚡</div>
+      <p style="font-weight:700;color:var(--text);margin-bottom:6px"><span class="t-en">Results appear here</span><span class="t-fr">Résultats ici</span><span class="t-es">Resultados aquí</span></p>
+      <p><span class="t-en">Defaults are loaded — click <strong>Calculate</strong> to run.</span><span class="t-fr">Valeurs par défaut chargées — cliquez <strong>Calculer</strong>.</span><span class="t-es">Valores por defecto cargados — haz clic en <strong>Calcular</strong>.</span></p>
+      <div class="ph-preview">
+        <div class="ph-preview-item"><span class="t-en">Liq. price</span><span class="t-fr">Prix liq.</span><span class="t-es">Precio liq.</span><span>—</span></div>
+        <div class="ph-preview-item"><span class="t-en">Break-even</span><span class="t-fr">Seuil rentab.</span><span class="t-es">Equilibrio</span><span>—</span></div>
+        <div class="ph-preview-item"><span class="t-en">Opening fee</span><span class="t-fr">Frais ouverture</span><span class="t-es">Comisión apertura</span><span>—</span></div>
+        <div class="ph-preview-item"><span class="t-en">Total fees</span><span class="t-fr">Frais totaux</span><span class="t-es">Comisiones totales</span><span>—</span></div>
+      </div>
     </div>
     <div id="resultContent" style="display:none">
       <div class="dir-badge" id="dirBadge">LONG</div>
@@ -284,6 +327,7 @@ async function fetchPrice(){
     if(p){
       $('entryPrice').value = p.toFixed(0);
       $('priceBadge').style.display = 'inline-flex';
+      const _ts = new Date(); $('priceTs').textContent = _ts.getHours().toString().padStart(2,'0')+':'+_ts.getMinutes().toString().padStart(2,'0');
       calc();
     }
   }catch(e){}
@@ -374,9 +418,46 @@ function calc(){
   $('ornyComment').innerHTML = comment;
 }
 
-// Init
-fetchPrice();
-calc();
+// Persist last values
+const GMX_STORE = 'orny-gmx-v1';
+function saveGMX(){
+  const d = {
+    col: $('collateral').value,
+    dur: $('duration').value,
+    lev: $('levSlider').value,
+    tab: document.querySelector('.dir-tab.active')?.dataset.dir || 'long',
+    asset: document.querySelector('.preset-btn.active')?.dataset.id || 'btc'
+  };
+  localStorage.setItem(GMX_STORE, JSON.stringify(d));
+}
+function restoreGMX(){
+  try{
+    const d = JSON.parse(localStorage.getItem(GMX_STORE));
+    if(!d) return;
+    if(d.col) $('collateral').value = d.col;
+    if(d.dur) $('duration').value = d.dur;
+    if(d.lev){$('levSlider').value=d.lev;$('levDisplay').textContent=d.lev+'×';}
+    if(d.asset){
+      const btn = document.querySelector(`.preset-btn[data-id="${d.asset}"]`);
+      if(btn) btn.click();
+    }
+    if(d.tab){
+      const tab = document.querySelector(`.dir-tab.${d.tab}`);
+      if(tab) tab.click();
+    }
+  }catch(e){}
+}
+['collateral','duration','levSlider'].forEach(id => {
+  const el = document.getElementById(id);
+  if(el) el.addEventListener('input', saveGMX);
+});
+
+// Init — wrapped in DOMContentLoaded for safe execution
+document.addEventListener('DOMContentLoaded', function(){
+  restoreGMX();
+  fetchPrice();
+  calc();
+});
 </script>
 </body>
 </html>

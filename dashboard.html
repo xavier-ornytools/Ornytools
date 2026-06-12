@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<meta name="description" content="DeFi Position Dashboard — OrnyTools. Enter any Arbitrum address to see your Aave V3 health factor, collateral, debt and liquidation price in real time."/>
+<meta name="description" content="DeFi Position Dashboard — OrnyTools. Enter any Arbitrum, Ethereum or Base address to see your Aave V3 health factor, collateral, debt and liquidation price in real time."/>
 <meta name="robots" content="index,follow"/>
 <link rel="canonical" href="https://ornytools.xyz/dashboard.html"/>
 <meta property="og:type" content="website"/>
@@ -14,7 +14,7 @@
 <meta property="og:image" content="https://ornytools.xyz/orny-banner.png"/>
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:title" content="DeFi Position Dashboard — OrnyTools"/>
-<meta name="twitter:description" content="Paste any Arbitrum address — Aave V3 health factor, collateral, debt and liquidation price live."/>
+<meta name="twitter:description" content="Paste any Arbitrum, Ethereum or Base address — Aave V3 health factor, collateral, debt and liquidation price live."/>
 <meta name="twitter:image" content="https://ornytools.xyz/orny-banner.png"/>
 <title>DeFi Position Dashboard — OrnyTools</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
@@ -112,11 +112,37 @@
   .cta-btn.red{background:var(--coral-pale);color:var(--coral);border:1px solid rgba(232,118,90,.2)}
   .cta-btn.purple{background:var(--purple-pale);color:var(--purple);border:1px solid rgba(124,58,237,.2)}
 
-  /* Placeholder */
-  .empty-state{text-align:center;padding:60px 20px;color:var(--faint)}
-  .empty-icon{font-size:3rem;margin-bottom:16px}
-  .empty-title{font-family:var(--display);font-size:1.4rem;font-weight:500;color:var(--text);margin-bottom:8px}
-  .empty-sub{font-size:.9rem;line-height:1.7;max-width:38ch;margin:0 auto}
+  /* Empty state redesign */
+  .empty-state{padding:8px 0}
+  .feature-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-bottom:24px}
+  .feat-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);text-align:center;transition:transform .2s,box-shadow .2s}
+  .feat-card:hover{transform:translateY(-2px);box-shadow:var(--shadow),0 0 0 2px rgba(37,99,235,.1)}
+  .feat-icon{font-size:2rem;margin-bottom:10px}
+  .feat-name{font-weight:700;font-size:.9rem;margin-bottom:4px;color:var(--text)}
+  .feat-sub{font-size:.78rem;color:var(--dim);line-height:1.6}
+  .feat-sample{font-family:var(--mono);font-size:1.2rem;font-weight:700;color:var(--blue);margin:8px 0 2px}
+  .steps-panel{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow)}
+  .steps-title{font-size:.68rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);margin-bottom:16px}
+  .steps-list{display:flex;gap:0;flex-direction:column}
+  .step-row{display:flex;align-items:flex-start;gap:14px;padding:12px 0;border-bottom:1px solid var(--line-soft)}
+  .step-row:last-child{border-bottom:none}
+  .step-num{width:28px;height:28px;border-radius:50%;background:var(--blue);color:#fff;font-size:.75rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+  .step-body{flex:1}
+  .step-title{font-weight:700;font-size:.88rem;margin-bottom:2px}
+  .step-desc{font-size:.78rem;color:var(--dim);line-height:1.6}
+
+  /* Chain selector */
+  .chain-selector{display:flex;gap:8px;justify-content:center;margin-bottom:20px}
+  .chain-btn{display:flex;align-items:center;gap:6px;padding:7px 15px;border:1.5px solid var(--line);border-radius:8px;background:#fff;font-size:.8rem;font-weight:700;cursor:pointer;color:var(--dim);transition:.15s;font-family:var(--ui)}
+  .chain-btn:hover{border-color:#3D72F5;color:#3D72F5}
+  .chain-btn.active.arb{background:#3D72F5;border-color:#3D72F5;color:#fff}
+  .chain-btn.active.eth{background:#627EEA;border-color:#627EEA;color:#fff}
+  .chain-btn.active.base{background:#0052FF;border-color:#0052FF;color:#fff}
+  .chain-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+  .chain-dot.arb{background:#3D72F5}
+  .chain-dot.eth{background:#627EEA}
+  .chain-dot.base{background:#0052FF}
+  .chain-btn.active .chain-dot{background:rgba(255,255,255,.75)}
 
   /* Privacy note */
   .privacy-note{font-size:.74rem;color:var(--faint);text-align:center;margin-top:12px}
@@ -130,6 +156,50 @@
   .tools-nav-btn.current{border-color:#2563eb;background:#2563eb;color:#fff;pointer-events:none}
 
   footer{text-align:center;padding:20px;font-size:.72rem;color:var(--faint);border-top:1px solid var(--line)}
+  /* Dark mode */
+  html.dark{--surface:#161b22;--surface-2:#1c2128;--bg:#0d1117;--line:#30363d;--line-soft:#21262d;--text:#e6edf3;--dim:#8b949e;--faint:#6e7681}
+  html.dark body{background:var(--bg)}
+  html.dark .navbar{background:rgba(22,27,34,.96)!important;border-color:var(--line)}
+  html.dark .nav-home{border-color:var(--line);color:var(--dim)}
+  html.dark .page-hero{background:var(--surface)!important;border-color:var(--line)}
+  html.dark .stat-card{background:var(--surface)!important;border-color:var(--line)!important}
+  html.dark .stat-card.danger{background:#2d1117!important;border-color:rgba(220,38,38,.4)!important}
+  html.dark .stat-card.warn{background:#1f1a0a!important;border-color:rgba(245,158,11,.4)!important}
+  html.dark .stat-card.safe{background:#091d13!important;border-color:rgba(22,163,74,.4)!important}
+  html.dark .panel{background:var(--surface)!important;border-color:var(--line)!important}
+  html.dark .feat-card{background:var(--surface)!important;border-color:var(--line)!important}
+  html.dark .steps-panel{background:var(--surface)!important;border-color:var(--line)!important}
+  html.dark .status-strip.idle{background:#21262d;color:var(--faint)}
+  html.dark .status-strip.loading{background:#0c1e35;color:#58a6ff}
+  html.dark .status-strip.ok{background:#091d13;color:#56d364}
+  html.dark .status-strip.err{background:#2d1117;color:#ff7b72}
+  html.dark .addr-bar input{background:var(--surface-2)!important;border-color:var(--line)!important;color:var(--text)!important}
+  html.dark .chain-btn{background:var(--surface-2);border-color:var(--line);color:var(--dim)}
+  html.dark .tools-nav-band{background:#0d1117;border-color:var(--line)}
+  html.dark .tools-nav-btn{background:var(--surface);border-color:var(--line);color:var(--dim)}
+  html.dark .tools-nav-btn:hover{border-color:var(--blue);color:var(--blue);background:rgba(37,99,235,.08)}
+  html.dark footer{border-color:var(--line);background:var(--bg)}
+  /* Dark mode + sparkline button */
+  .btn-theme{width:34px;height:34px;border-radius:8px;border:1px solid var(--line);background:var(--surface-2);cursor:pointer;font-size:.9rem;transition:.15s;display:inline-flex;align-items:center;justify-content:center}
+  .btn-theme:hover{background:var(--line)}
+  /* Sparkline HF history */
+  .hf-sparkline{margin-top:8px}
+  .spark-label{font-size:.66rem;color:var(--faint);text-align:center;margin-top:3px}
+  /* Mobile */
+  @media(max-width:680px){
+    .chain-selector{flex-wrap:wrap;gap:6px}
+    .addr-bar{flex-direction:column}
+    .btn-load{width:100%;justify-content:center}
+    .page-hero{padding:80px 16px 26px}
+    main{padding:20px 16px 60px}
+    .cta-row{flex-direction:column}
+  }
+  @media(max-width:420px){
+    .cards-grid{grid-template-columns:1fr}
+    .feature-row{grid-template-columns:1fr}
+    .chain-btn{padding:6px 10px;font-size:.75rem}
+    .chain-dot{width:7px;height:7px}
+  }
 </style>
 <script src="lang.js"></script>
 </head>
@@ -139,17 +209,23 @@
   <a href="index.html"><img src="logo.png" class="nav-logo" alt="OrnyTools"/></a>
   <span class="nav-brand">ORNY<span class="dot">.</span>TOOLS</span>
   <a href="index.html" class="nav-home">← Home</a>
-  <div style="margin-left:8px">
+  <div style="margin-left:8px;display:flex;align-items:center;gap:6px">
     <button id="btnEN" class="lang-btn" onclick="setLang('en')">🇬🇧 EN</button>
     <button id="btnFR" class="lang-btn" onclick="setLang('fr')">🇫🇷 FR</button>
     <button id="btnES" class="lang-btn" onclick="setLang('es')">🇪🇸 ES</button>
+    <button class="btn-theme" onclick="toggleTheme()" title="Dark mode">🌙</button>
   </div>
 </nav>
 
 <div class="page-hero">
-  <div class="eyebrow">Aave V3 · Arbitrum<span class="oc-badge">⛓ on-chain live</span></div>
+  <div class="eyebrow" id="chainEyebrow">Aave V3 · Arbitrum<span class="oc-badge">⛓ on-chain live</span></div>
+  <div class="chain-selector">
+    <button class="chain-btn active arb" data-chain="arbitrum" onclick="selectChain('arbitrum')"><span class="chain-dot arb"></span>Arbitrum</button>
+    <button class="chain-btn eth" data-chain="ethereum" onclick="selectChain('ethereum')"><span class="chain-dot eth"></span>Ethereum</button>
+    <button class="chain-btn base" data-chain="base" onclick="selectChain('base')"><span class="chain-dot base"></span>Base</button>
+  </div>
   <h1><span class="t-en">Is your <em>position</em><br>safe right now?</span><span class="t-fr">Votre <em>position</em><br>est-elle sûre en ce moment ?</span><span class="t-es">¿Tu <em>posición</em><br>está segura ahora mismo?</span></h1>
-  <p><span class="t-en">Paste any Arbitrum address — get your Aave V3 health factor, collateral, debt and liquidation distance, live from the blockchain.</span><span class="t-fr">Collez n'importe quelle adresse Arbitrum — obtenez votre health factor Aave V3, collateral, dette et distance de liquidation, en direct depuis la blockchain.</span><span class="t-es">Pega cualquier dirección de Arbitrum — obtén tu health factor Aave V3, colateral, deuda y distancia de liquidación, en vivo desde la blockchain.</span></p>
+  <p><span class="t-en">Select a chain, paste any address — get your Aave V3 health factor, collateral, debt and liquidation distance, live from the blockchain.</span><span class="t-fr">Choisissez une chaîne, collez n'importe quelle adresse — obtenez votre health factor Aave V3, collateral, dette et distance de liquidation, en direct depuis la blockchain.</span><span class="t-es">Elige una cadena, pega cualquier dirección — obtén tu health factor Aave V3, colateral, deuda y distancia de liquidación, en vivo desde la blockchain.</span></p>
   <div class="addr-bar" style="margin-top:20px">
     <input type="text" id="addrInput" placeholder="0x… Arbitrum address" maxlength="42" onkeydown="if(event.key==='Enter')loadDashboard()"/>
     <button class="btn-load" id="btnLoad" onclick="loadDashboard()"><span class="t-en">⚡ Load</span><span class="t-fr">⚡ Charger</span><span class="t-es">⚡ Cargar</span></button>
@@ -164,11 +240,65 @@
     <span id="statusTxt"><span class="t-en">Enter an address to begin</span><span class="t-fr">Entrez une adresse pour commencer</span><span class="t-es">Ingresa una dirección para comenzar</span></span>
   </div>
 
-  <!-- Empty state -->
+  <!-- Empty state redesigned -->
   <div class="empty-state" id="emptyState">
-    <div class="empty-icon">🔭</div>
-    <div class="empty-title"><span class="t-en">Waiting for address</span><span class="t-fr">En attente d'une adresse</span><span class="t-es">Esperando dirección</span></div>
-    <p class="empty-sub"><span class="t-en">Paste an Arbitrum address above. The dashboard reads your Aave V3 position directly from the blockchain — no API key, no wallet needed.</span><span class="t-fr">Collez une adresse Arbitrum ci-dessus. Le dashboard lit votre position Aave V3 directement depuis la blockchain — sans clé API, sans wallet.</span><span class="t-es">Pega una dirección de Arbitrum arriba. El dashboard lee tu posición Aave V3 directamente desde la blockchain — sin clave API, sin wallet.</span></p>
+
+    <!-- Preview cards — what you'll see -->
+    <div class="feature-row">
+      <div class="feat-card">
+        <div class="feat-icon">🟢</div>
+        <div class="feat-name"><span class="t-en">Health Factor</span><span class="t-fr">Health Factor</span><span class="t-es">Health Factor</span></div>
+        <div class="feat-sample">1.87</div>
+        <div class="feat-sub"><span class="t-en">Live from Aave V3 contract. Color-coded: green / orange / red.</span><span class="t-fr">En direct depuis le contrat Aave V3. Code couleur : vert / orange / rouge.</span><span class="t-es">En vivo desde el contrato Aave V3. Código de colores: verde / naranja / rojo.</span></div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">💰</div>
+        <div class="feat-name"><span class="t-en">Collateral &amp; Debt</span><span class="t-fr">Collatéral &amp; Dette</span><span class="t-es">Colateral &amp; Deuda</span></div>
+        <div class="feat-sample">$12,450</div>
+        <div class="feat-sub"><span class="t-en">Total collateral and outstanding debt, USD value from on-chain oracle.</span><span class="t-fr">Collatéral total et dette en cours, valeur USD depuis l'oracle on-chain.</span><span class="t-es">Colateral total y deuda pendiente, valor USD desde el oráculo on-chain.</span></div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">📏</div>
+        <div class="feat-name"><span class="t-en">Margin to Liquidation</span><span class="t-fr">Marge jusqu'à liquidation</span><span class="t-es">Margen hasta liquidación</span></div>
+        <div class="feat-sample">−23.4%</div>
+        <div class="feat-sub"><span class="t-en">Estimated uniform price drop before your collateral triggers liquidation.</span><span class="t-fr">Baisse de prix uniforme estimée avant liquidation du collatéral.</span><span class="t-es">Caída de precio uniforme estimada antes de que se active la liquidación.</span></div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">🔓</div>
+        <div class="feat-name"><span class="t-en">Borrow Power</span><span class="t-fr">Capacité d'emprunt</span><span class="t-es">Capacidad de préstamo</span></div>
+        <div class="feat-sample">$1,830</div>
+        <div class="feat-sub"><span class="t-en">Remaining capacity to borrow more against your current collateral.</span><span class="t-fr">Capacité restante d'emprunt sur votre collatéral actuel.</span><span class="t-es">Capacidad restante de préstamo sobre tu colateral actual.</span></div>
+      </div>
+    </div>
+
+    <!-- Steps -->
+    <div class="steps-panel">
+      <div class="steps-title"><span class="t-en">How it works</span><span class="t-fr">Comment ça marche</span><span class="t-es">Cómo funciona</span></div>
+      <div class="steps-list">
+        <div class="step-row">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <div class="step-title"><span class="t-en">Select a chain and paste your address</span><span class="t-fr">Choisissez une chaîne et collez votre adresse</span><span class="t-es">Elige una cadena y pega tu dirección</span></div>
+            <div class="step-desc"><span class="t-en">Your own wallet, a friend's, or a whale you're tracking. No wallet connection needed.</span><span class="t-fr">Votre wallet, celui d'un ami, ou une baleine que vous suivez. Aucune connexion wallet nécessaire.</span><span class="t-es">Tu propio wallet, el de un amigo, o una ballena que quieres rastrear. Sin conexión de wallet necesaria.</span></div>
+          </div>
+        </div>
+        <div class="step-row">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <div class="step-title"><span class="t-en">We query Aave V3 directly on-chain</span><span class="t-fr">On interroge Aave V3 directement on-chain</span><span class="t-es">Consultamos Aave V3 directamente en la blockchain</span></div>
+            <div class="step-desc"><span class="t-en">RPC call to <code>getUserAccountData()</code> — the same function Aave's UI uses. No intermediary, no API key, no delay.</span><span class="t-fr">Appel RPC à <code>getUserAccountData()</code> — la même fonction qu'utilise l'UI Aave. Pas d'intermédiaire, pas de clé API.</span><span class="t-es">Llamada RPC a <code>getUserAccountData()</code> — la misma función que usa la UI de Aave. Sin intermediario, sin clave API.</span></div>
+          </div>
+        </div>
+        <div class="step-row">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <div class="step-title"><span class="t-en">Get your full risk picture instantly</span><span class="t-fr">Obtenez votre tableau de risque instantanément</span><span class="t-es">Obtén tu mapa de riesgo al instante</span></div>
+            <div class="step-desc"><span class="t-en">Health factor, collateral, debt, liquidation distance — plus shortcuts to Aave Calculator and RedZone for deeper analysis.</span><span class="t-fr">Health factor, collatéral, dette, distance de liquidation — avec raccourcis vers Aave Calculator et RedZone.</span><span class="t-es">Health factor, colateral, deuda, distancia de liquidación — con accesos directos a Aave Calculator y RedZone.</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 
   <!-- Dashboard content (hidden until loaded) -->
@@ -208,19 +338,43 @@
 </div>
 
 <footer>
-  <span class="t-en">Reads data directly from Aave V3 contracts on Arbitrum · no wallet connection · read-only · ornytools.xyz</span>
-  <span class="t-fr">Données lues directement depuis les contrats Aave V3 sur Arbitrum · aucune connexion wallet · lecture seule · ornytools.xyz</span>
-  <span class="t-es">Datos leídos directamente de los contratos Aave V3 en Arbitrum · sin conexión de wallet · solo lectura · ornytools.xyz</span>
+  <span class="t-en">Reads data directly from Aave V3 contracts · Arbitrum · Ethereum · Base · no wallet connection · read-only · ornytools.xyz</span>
+  <span class="t-fr">Données lues directement depuis les contrats Aave V3 · Arbitrum · Ethereum · Base · aucune connexion wallet · lecture seule · ornytools.xyz</span>
+  <span class="t-es">Datos leídos directamente de los contratos Aave V3 · Arbitrum · Ethereum · Base · sin conexión de wallet · solo lectura · ornytools.xyz</span>
 </footer>
 
 <script>
-// Aave V3 Pool on Arbitrum
-const AAVE_POOL = '0x794a61358D6845594F94dc1DB02A252b5b4814aD';
-const ARB_RPC   = 'https://arbitrum-one-rpc.publicnode.com';
+// Aave V3 multi-chain config
+const CHAINS = {
+  arbitrum: { name:'Arbitrum', rpc:'https://arbitrum-one-rpc.publicnode.com',  pool:'0x794a61358D6845594F94dc1DB02A252b5b4814aD' },
+  ethereum: { name:'Ethereum', rpc:'https://ethereum-rpc.publicnode.com',      pool:'0x87870Bca3F3fD6335C3F4ce8392D69350B4fA4E2' },
+  base:     { name:'Base',     rpc:'https://base-rpc.publicnode.com',           pool:'0xA238Dd80C259a72e81d7e4664a9801593F98d1c5' }
+};
+let currentChain = 'arbitrum';
 
 function $(i){ return document.getElementById(i); }
 function fmtUSD(v){ return '$'+v.toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:0}); }
 function fmtHF(v){ return v > 100 ? '∞' : v.toFixed(2); }
+
+function buildSparkline(hist){
+  if(!hist || hist.length < 2) return '';
+  const vals = hist.map(h => h.hf);
+  const minV = Math.max(0, Math.min(...vals) - 0.05);
+  const maxV = Math.min(30, Math.max(...vals) + 0.05);
+  const range = maxV - minV || 0.1;
+  const W = 96, H = 26;
+  const pts = vals.map((v,i) => {
+    const x = (i / (vals.length-1)) * W;
+    const y = H - ((v - minV) / range) * H;
+    return `${x.toFixed(1)},${y.toFixed(1)}`;
+  }).join(' ');
+  const last = vals[vals.length-1];
+  const col = last < 1.2 ? '#dc2626' : last < 1.5 ? '#d97706' : '#16a34a';
+  const lastX = W;
+  const lastY = (H - ((last - minV) / range) * H).toFixed(1);
+  const trend = last > vals[vals.length-2] ? '↑' : last < vals[vals.length-2] ? '↓' : '→';
+  return `<div class="hf-sparkline"><svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" style="display:block;margin:6px auto 0;overflow:visible"><polyline points="${pts}" fill="none" stroke="${col}" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" opacity=".8"/><circle cx="${lastX}" cy="${lastY}" r="2.5" fill="${col}"/></svg><div class="spark-label">${hist.length} reading${hist.length>1?'s':''} ${trend}</div></div>`;
+}
 
 function setStatus(type, msg){
   const s = $('statusStrip');
@@ -229,8 +383,22 @@ function setStatus(type, msg){
   $('statusTxt').innerHTML = msg;
 }
 
+function selectChain(chain){
+  currentChain = chain;
+  document.querySelectorAll('.chain-btn').forEach(b => b.classList.remove('active'));
+  const btn = document.querySelector(`.chain-btn[data-chain="${chain}"]`);
+  if(btn) btn.classList.add('active');
+  const c = CHAINS[chain];
+  $('chainEyebrow').innerHTML = `Aave V3 · ${c.name}<span class="oc-badge">⛓ on-chain live</span>`;
+  $('addrInput').placeholder = `0x… ${c.name} address`;
+  $('emptyState').style.display = 'block';
+  $('dashContent').style.display = 'none';
+  const l = getLang();
+  setStatus('idle', l==='fr' ? 'Entrez une adresse pour commencer' : l==='es' ? 'Ingresa una dirección para comenzar' : 'Enter an address to begin');
+}
+
 async function rpcCall(method, params){
-  const res = await fetch(ARB_RPC, {
+  const res = await fetch(CHAINS[currentChain].rpc, {
     method:'POST',
     headers:{'Content-Type':'application/json'},
     body: JSON.stringify({jsonrpc:'2.0',id:1,method,params})
@@ -262,10 +430,11 @@ async function loadDashboard(){
 
   try {
     const data = encodeGetUserAccountData(raw);
-    const result = await rpcCall('eth_call', [{to: AAVE_POOL, data}, 'latest']);
+    const result = await rpcCall('eth_call', [{to: CHAINS[currentChain].pool, data}, 'latest']);
 
+    const cName = CHAINS[currentChain].name;
     if(!result || result === '0x'){
-      setStatus('err', l==='fr' ? '❌ Aucune position Aave V3 trouvée sur Arbitrum pour cette adresse.' : l==='es' ? '❌ No se encontró posición Aave V3 en Arbitrum para esta dirección.' : '❌ No Aave V3 position found on Arbitrum for this address.');
+      setStatus('err', l==='fr' ? `❌ Aucune position Aave V3 trouvée sur ${cName} pour cette adresse.` : l==='es' ? `❌ No se encontró posición Aave V3 en ${cName} para esta dirección.` : `❌ No Aave V3 position found on ${cName} for this address.`);
       $('emptyState').style.display = 'block';
       $('btnLoad').disabled = false;
       return;
@@ -279,12 +448,21 @@ async function loadDashboard(){
     const totalCollateral  = decode(0) / BASE;
     const totalDebt        = decode(1) / BASE;
     const availableBorrows = decode(2) / BASE;
-    const liqThreshold     = decode(3) / 1e4;  // in basis points → fraction
+    const liqThreshold     = decode(3) / 1e4;
     const ltv              = decode(4) / 1e4;
     const healthFactor     = decode(5) / 1e18;
 
+    // Save snapshot to HF history (localStorage, max 30 entries)
+    const _hfKey = `orny-hf-${raw.toLowerCase()}-${currentChain}`;
+    let _hfHist = JSON.parse(localStorage.getItem(_hfKey) || '[]');
+    _hfHist.push({ts: Date.now(), hf: healthFactor, col: totalCollateral, debt: totalDebt});
+    if(_hfHist.length > 30) _hfHist = _hfHist.slice(-30);
+    localStorage.setItem(_hfKey, JSON.stringify(_hfHist));
+    localStorage.setItem('orny-dash', JSON.stringify({addr: raw, chain: currentChain}));
+    const _spark = buildSparkline(_hfHist);
+
     if(totalCollateral === 0){
-      setStatus('err', l==='fr' ? '⚠️ Aucun collatéral déposé sur Aave V3 Arbitrum pour cette adresse.' : l==='es' ? '⚠️ No hay colateral depositado en Aave V3 Arbitrum para esta dirección.' : '⚠️ No collateral deposited on Aave V3 Arbitrum for this address.');
+      setStatus('err', l==='fr' ? `⚠️ Aucun collatéral déposé sur Aave V3 ${cName} pour cette adresse.` : l==='es' ? `⚠️ No hay colateral depositado en Aave V3 ${cName} para esta dirección.` : `⚠️ No collateral deposited on Aave V3 ${cName} for this address.`);
       $('emptyState').style.display = 'block';
       $('btnLoad').disabled = false;
       return;
@@ -308,6 +486,7 @@ async function loadDashboard(){
         <div class="stat-val ${hfClass}">${fmtHF(healthFactor)}</div>
         <div class="hf-bar-wrap"><div class="hf-bar" style="width:${Math.min(100,healthFactor/3*100)}%;background:${hfClass==='safe'?'#16a34a':hfClass==='warn'?'#d97706':'#dc2626'}"></div></div>
         <div class="stat-sub">${healthFactor < 1.2 ? (l==='fr'?'⚠️ Critique':'⚠️ Critical') : healthFactor < 1.5 ? (l==='fr'?'⚠️ Surveiller':'⚠️ Monitor') : (l==='fr'?'✅ Zone sûre':'✅ Safe zone')}</div>
+        ${_spark}
       </div>
       <div class="stat-card">
         <div class="stat-label">${l==='fr' ? 'Collatéral total' : l==='es' ? 'Colateral total' : 'Total Collateral'}</div>
@@ -354,7 +533,9 @@ async function loadDashboard(){
     `;
 
     $('dashContent').style.display = 'block';
-    setStatus('ok', l==='fr' ? `✅ Position Aave V3 chargée depuis Arbitrum` : l==='es' ? `✅ Posición Aave V3 cargada desde Arbitrum` : `✅ Aave V3 position loaded from Arbitrum`);
+    const _now = new Date();
+    const _hm = _now.getHours().toString().padStart(2,'0')+':'+_now.getMinutes().toString().padStart(2,'0');
+    setStatus('ok', l==='fr' ? `✅ Position chargée depuis ${cName} · <span style="opacity:.65">${_hm}</span>` : l==='es' ? `✅ Posición cargada desde ${cName} · <span style="opacity:.65">${_hm}</span>` : `✅ Loaded from ${cName} on-chain · <span style="opacity:.65">${_hm}</span>`);
 
   } catch(e) {
     console.error(e);
@@ -363,6 +544,15 @@ async function loadDashboard(){
   }
   $('btnLoad').disabled = false;
 }
+
+// Restore last address + chain from localStorage on page load
+(function(){
+  try {
+    const last = JSON.parse(localStorage.getItem('orny-dash') || '{}');
+    if(last.chain && CHAINS[last.chain]) selectChain(last.chain);
+    if(last.addr) $('addrInput').value = last.addr;
+  } catch(e){}
+})();
 </script>
 </body>
 </html>

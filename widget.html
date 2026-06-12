@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta name="robots" content="noindex"/>
+<title>Trade Size Optimizer — Widget</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet"/>
+<style>
+  :root{
+    --gold:#C8841E;--blue:#2563eb;--aqua:#3A9FD4;--green:#16a34a;
+    --text:#111827;--dim:#6B7280;--faint:#9AA5B4;
+    --line:#E4E8F0;--surface:#FFFFFF;--bg:#f7f8fc;
+    --ui:"Hanken Grotesk",system-ui,sans-serif;
+    --mono:"JetBrains Mono",ui-monospace,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--text);font-family:var(--ui);font-size:13px;-webkit-font-smoothing:antialiased;padding:16px}
+  /* Header */
+  .w-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid var(--line)}
+  .w-title{font-weight:800;font-size:.88rem;letter-spacing:-.01em}
+  .w-sub{font-size:.72rem;color:var(--faint);margin-top:2px}
+  .w-brand{font-size:.68rem;color:var(--faint);text-decoration:none}
+  .w-brand:hover{color:var(--blue)}
+  /* Fields */
+  .fields{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+  .field{display:flex;flex-direction:column;gap:4px}
+  .field label{font-size:.7rem;font-weight:700;color:var(--faint);text-transform:uppercase;letter-spacing:.08em}
+  .field-row{display:flex;align-items:center;border:1.5px solid var(--line);border-radius:7px;background:#fff;overflow:hidden;transition:border-color .15s}
+  .field-row:focus-within{border-color:var(--blue)}
+  .pfx{padding:0 8px;color:var(--faint);font-size:.8rem;font-family:var(--mono);background:var(--bg);border-right:1px solid var(--line);height:36px;display:flex;align-items:center}
+  .field-row input{flex:1;border:none;outline:none;padding:0 10px;height:36px;font-family:var(--mono);font-size:.83rem;background:transparent;color:var(--text);min-width:0}
+  /* Network select */
+  .net-row{margin-bottom:12px}
+  .net-row label{font-size:.7rem;font-weight:700;color:var(--faint);text-transform:uppercase;letter-spacing:.08em;display:block;margin-bottom:4px}
+  .net-row select{width:100%;border:1.5px solid var(--line);border-radius:7px;padding:0 10px;height:36px;font-family:var(--ui);font-size:.83rem;color:var(--text);background:#fff;outline:none;cursor:pointer}
+  .net-row select:focus{border-color:var(--blue)}
+  /* Result */
+  .result-box{background:#fff;border:1.5px solid var(--line);border-top:3px solid var(--gold);border-radius:9px;padding:14px 16px}
+  .result-box.has-result{border-top-color:var(--gold)}
+  .res-main{display:flex;align-items:baseline;gap:6px;margin-bottom:8px}
+  .res-label{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--faint)}
+  .res-val{font-family:var(--mono);font-size:1.5rem;font-weight:700;color:var(--gold);letter-spacing:-.02em}
+  .res-breakdown{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:8px;padding-top:8px;border-top:1px solid var(--line)}
+  .res-item{text-align:center}
+  .res-item .k{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--faint);margin-bottom:2px}
+  .res-item .v{font-family:var(--mono);font-size:.85rem;font-weight:700}
+  .v-gas{color:var(--aqua)}
+  .v-slip{color:var(--gold)}
+  .v-fee{color:var(--green)}
+  /* Branding footer */
+  .w-footer{margin-top:12px;text-align:center;font-size:.68rem;color:var(--faint)}
+  .w-footer a{color:var(--blue);text-decoration:none;font-weight:600}
+</style>
+</head>
+<body>
+
+<div class="w-header">
+  <div>
+    <div class="w-title">Trade Size Optimizer</div>
+    <div class="w-sub">Gas vs. slippage crossover — exact constant-product math</div>
+  </div>
+  <a href="optimizer.html" target="_blank" class="w-brand">OrnyTools ↗</a>
+</div>
+
+<div class="net-row">
+  <label>Network</label>
+  <select id="wNet">
+    <option value="eth">Ethereum</option>
+    <option value="arbitrum" selected>Arbitrum</option>
+    <option value="base">Base</option>
+    <option value="optimism">Optimism</option>
+    <option value="bsc">BNB Chain</option>
+    <option value="polygon_pos">Polygon</option>
+  </select>
+</div>
+
+<div class="fields">
+  <div class="field">
+    <label>Pool TVL</label>
+    <div class="field-row">
+      <span class="pfx">$</span>
+      <input id="wTvl" type="number" value="5000000" min="1000" step="10000"/>
+    </div>
+  </div>
+  <div class="field">
+    <label>Gas cost ($)</label>
+    <div class="field-row">
+      <span class="pfx">$</span>
+      <input id="wGas" type="number" value="0.05" min="0.001" step="0.01"/>
+    </div>
+  </div>
+  <div class="field">
+    <label>Pool fee (%)</label>
+    <div class="field-row">
+      <span class="pfx">%</span>
+      <input id="wFee" type="number" value="0.30" min="0.01" step="0.01"/>
+    </div>
+  </div>
+  <div class="field">
+    <label>Your trade ($)</label>
+    <div class="field-row">
+      <span class="pfx">$</span>
+      <input id="wMine" type="number" value="1000" min="1" step="100"/>
+    </div>
+  </div>
+</div>
+
+<div class="result-box" id="wResult">
+  <div class="res-label">Optimal trade size</div>
+  <div class="res-main"><span class="res-val" id="wOpt">—</span></div>
+  <div class="res-breakdown">
+    <div class="res-item"><div class="k">Gas</div><div class="v v-gas" id="wGasV">—</div></div>
+    <div class="res-item"><div class="k">Slippage</div><div class="v v-slip" id="wSlipV">—</div></div>
+    <div class="res-item"><div class="k">Total %</div><div class="v" id="wTotV">—</div></div>
+  </div>
+</div>
+
+<div class="w-footer">
+  Powered by <a href="optimizer.html" target="_blank">OrnyTools</a> · Exact x·y=k formula · Free
+</div>
+
+<script>
+const GAS_DEF = {eth:2.50,arbitrum:0.05,base:0.02,optimism:0.03,bsc:0.15,polygon_pos:0.02};
+const $ = id => document.getElementById(id);
+function num(v,d){const n=parseFloat(v);return isNaN(n)||n<=0?d:n;}
+function fmt(v){return v>=10000?'$'+Math.round(v/1000)+'k':v>=1000?'$'+v.toFixed(0):'$'+v.toFixed(2);}
+function pct(v){return v.toFixed(3)+'%';}
+
+function calc(){
+  const tvl = num($('wTvl').value,5000000);
+  const gas = num($('wGas').value,0.05);
+  const fee = num($('wFee').value,0.30)/100;
+  const mine = num($('wMine').value,1000);
+  const R = tvl / 2;
+
+  // Optimal size: A* = sqrt(gas × R)
+  const opt = Math.sqrt(gas * R);
+
+  // Costs at optimal
+  const gasAtOpt = gas;
+  const slipAtOpt = opt / (R + opt);
+  const totAtOpt = (gas / opt + slipAtOpt + fee) * 100;
+
+  $('wOpt').textContent = fmt(opt);
+  $('wGasV').textContent = fmt(gasAtOpt);
+  $('wSlipV').textContent = pct(slipAtOpt * 100);
+  $('wTotV').textContent = pct(totAtOpt);
+}
+
+$('wNet').addEventListener('change', e => {
+  $('wGas').value = GAS_DEF[e.target.value] ?? 0.05;
+  calc();
+});
+['wTvl','wGas','wFee','wMine'].forEach(id => $( id).addEventListener('input', calc));
+calc();
+</script>
+
+</body>
+</html>
