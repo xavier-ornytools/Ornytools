@@ -206,7 +206,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- HERO -->
 <div class="page-hero">
   <div class="eyebrow"><span class="t-en">Leverage Loop Calculator — Aave V3</span><span class="t-fr">Calculateur de Levier — Aave V3</span><span class="t-es">Calculadora de Loop de Apalancamiento — Aave V3</span></div>
-  <h1><span class="t-en">How much <em>real leverage</em><br>does your loop give you?</span><span class="t-fr">Quel <em>vrai levier</em><br>offre votre loop ?</span><span class="t-es">How much <em>real leverage</em><br>does your loop give you?</span></h1>
+  <h1><span class="t-en">How much <em>real leverage</em><br>does your loop give you?</span><span class="t-fr">Quel <em>vrai levier</em><br>offre votre loop ?</span><span class="t-es">¿Cuánto <em>apalancamiento real</em><br>te da tu loop?</span></h1>
   <p>Deposit collateral → borrow → rebuy → repeat. See your effective leverage, final liquidation price, and the APY you need to be profitable at each step.</p>
 </div>
 
@@ -243,7 +243,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <input id="ltv" class="mono" value="73" inputmode="decimal"/>
       </div>
       <div class="field">
-        <label><span class="t-en">Liquidation Threshold</span><span class="t-fr">Seuil de liquidation</span><span class="t-es">Liquidation Threshold</span> <span class="hint">%</span></label>
+        <label><span class="t-en">Liquidation Threshold</span><span class="t-fr">Seuil de liquidation</span><span class="t-es">Umbral de Liquidación</span> <span class="hint">%</span></label>
         <input id="ltPct" class="mono" value="78" inputmode="decimal"/>
       </div>
     </div>
@@ -257,7 +257,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <input id="borrowApy" class="mono" value="5" inputmode="decimal" style="padding-left:26px"/>
       </div>
       <div class="field with-prefix">
-        <label><span class="t-en">Collateral APY</span><span class="t-fr">APY du collateral</span><span class="t-es">Collateral APY</span> <span class="hint"><span class="t-en">optional</span><span class="t-fr">optionnel</span><span class="t-es">optional</span></span></label>
+        <label><span class="t-en">Collateral APY</span><span class="t-fr">APY du collateral</span><span class="t-es">APY del Colateral</span> <span class="hint"><span class="t-en">optional</span><span class="t-fr">optionnel</span><span class="t-es">optional</span></span></label>
         <span class="pfx" style="font-family:var(--ui);font-size:13px">%</span>
         <input id="colApy" class="mono" value="0" inputmode="decimal" style="padding-left:26px"/>
       </div>
@@ -278,7 +278,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="result-side">
 
     <div class="result-card">
-      <div class="result-label"><span class="t-en">Effective Leverage</span><span class="t-fr">Levier Effectif</span><span class="t-es">Effective Leverage</span></div>
+      <div class="result-label"><span class="t-en">Effective Leverage</span><span class="t-fr">Levier Effectif</span><span class="t-es">Apalancamiento Efectivo</span></div>
       <div class="result-big" id="resLeverage">—</div>
       <div class="result-sub" id="resSub"><span class="t-en">Enter your position above</span><span class="t-fr">Renseignez votre position</span><span class="t-es">Ingresa tu posición arriba</span></div>
 
@@ -303,15 +303,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- LOOP TABLE -->
 <div class="loop-table-wrap">
   <div style="max-width:900px;margin:0 auto">
-    <h3><span class="t-en">Step-by-step breakdown</span><span class="t-fr">Décomposition étape par étape</span><span class="t-es">Step-by-step breakdown</span></h3>
+    <h3><span class="t-en">Step-by-step breakdown</span><span class="t-fr">Décomposition étape par étape</span><span class="t-es">Desglose paso a paso</span></h3>
     <p><span class="t-en">Each loop: deposit → borrow at LTV → rebuy collateral.</span><span class="t-fr">Chaque loop : dépôt → emprunt au LTV → rachat du collateral.</span><span class="t-es">Cada loop: depositar → pedir prestado al LTV → recomprar colateral.</span></p>
     <table class="ltable" id="loopTable">
       <thead>
         <tr>
           <th>Loop</th>
-          <th><span class="t-en">Deposited (USD)</span><span class="t-fr">Déposé (USD)</span><span class="t-es">Deposited (USD)</span></th>
+          <th><span class="t-en">Deposited (USD)</span><span class="t-fr">Déposé (USD)</span><span class="t-es">Depositado (USD)</span></th>
           <th><span class="t-en">Borrowed (USD)</span><span class="t-fr">Emprunté (USD)</span><span class="t-es">Prestado (USD)</span></th>
-          <th><span class="t-en">Cumul. collateral</span><span class="t-fr">Collateral cumulé</span><span class="t-es">Cumul. collateral</span></th>
+          <th><span class="t-en">Cumul. collateral</span><span class="t-fr">Collateral cumulé</span><span class="t-es">Colateral acumulado</span></th>
           <th><span class="t-en">Cumul. debt</span><span class="t-fr">Dette cumulée</span><span class="t-es">Deuda acumulada</span></th>
           <th>Health Factor</th>
         </tr>
@@ -330,7 +330,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </div>
 
 <footer>
-  <div class="ft-tag"><span class="t-en">Leverage smart. <span>Survive the dip.</span></span><span class="t-fr">Levier intelligent. <span>Survivez à la baisse.</span><span class="t-es">Leverage smart. <span>Survive the dip.</span></span></span></div>
+  <div class="ft-tag"><span class="t-en">Leverage smart. <span>Survive the dip.</span></span><span class="t-fr">Levier intelligent. <span>Survivez à la baisse.</span><span class="t-es">Apalanca inteligente. <span>Sobrevive la caída.</span></span></span></div>
   Read-only · no wallet connection · Health Factor = (Collateral × LT) / Debt · ornytools.xyz<br/>
   <span style="margin-top:8px;display:inline-block">Built by <a href="https://www.linkedin.com/in/xavier-maquin-5576643b9/" target="_blank" rel="noopener" style="color:var(--purple);text-decoration:none;font-weight:600">Xavier Maquin</a></span>
 </footer>

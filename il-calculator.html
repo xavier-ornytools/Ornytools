@@ -293,7 +293,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </div>
       <hr class="divider"/>
       <div class="field with-prefix">
-        <label><span class="t-en">Initial investment</span><span class="t-fr">Investissement initial</span><span class="t-es">Initial investment</span> <span class="hint"><span class="t-en">optional</span><span class="t-fr">optionnel</span><span class="t-es">optional</span></span></label>
+        <label><span class="t-en">Initial investment</span><span class="t-fr">Investissement initial</span><span class="t-es">Inversión inicial</span> <span class="hint"><span class="t-en">optional</span><span class="t-fr">optionnel</span><span class="t-es">optional</span></span></label>
         <span class="pfx">$</span>
         <input id="ilDeposit" class="mono" value="10000" inputmode="decimal"/>
       </div>
@@ -386,16 +386,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <div class="br-row"><span><span class="t-en">Value if held</span><span class="t-fr">Valeur si conservé</span><span class="t-es">Valor si mantuvieras</span></span><b id="ilHeld">—</b></div>
         <div class="br-row"><span><span class="t-en">Value in pool</span><span class="t-fr">Valeur dans le pool</span><span class="t-es">Valor en el pool</span></span><b id="ilPool">—</b></div>
         <div class="br-row loss"><span><span class="t-en">Loss from IL</span><span class="t-fr">Perte due à l'IL</span><span class="t-es">Pérdida por IL</span></span><b id="ilLoss">—</b></div>
-        <div class="br-row"><span><span class="t-en">Token A change</span><span class="t-fr">Variation Token A</span><span class="t-es">Token A change</span></span><b id="ilChgA">—</b></div>
-        <div class="br-row"><span><span class="t-en">Token B change</span><span class="t-fr">Variation Token B</span><span class="t-es">Token B change</span></span><b id="ilChgB">—</b></div>
+        <div class="br-row"><span><span class="t-en">Token A change</span><span class="t-fr">Variation Token A</span><span class="t-es">Cambio Token A</span></span><b id="ilChgA">—</b></div>
+        <div class="br-row"><span><span class="t-en">Token B change</span><span class="t-fr">Variation Token B</span><span class="t-es">Cambio Token B</span></span><b id="ilChgB">—</b></div>
         <p class="br-note" id="ilNote"></p>
       </div>
     </div>
 
     <div class="breakeven-card" id="beCard" style="display:none">
       <div class="be-title"><span class="t-en">Break-even analysis</span><span class="t-fr">Analyse du seuil de rentabilité</span><span class="t-es">Análisis de equilibrio</span></div>
-      <div class="be-row"><span><span class="t-en">Fees earned (est.)</span><span class="t-fr">Frais gagnés (est.)</span><span class="t-es">Fees earned (est.)</span></span><b id="beEarned">—</b></div>
-      <div class="be-row"><span><span class="t-en">IL to cover</span><span class="t-fr">IL à couvrir</span><span class="t-es">IL to cover</span></span><b id="beLoss">—</b></div>
+      <div class="be-row"><span><span class="t-en">Fees earned (est.)</span><span class="t-fr">Frais gagnés (est.)</span><span class="t-es">Comisiones ganadas (est.)</span></span><b id="beEarned">—</b></div>
+      <div class="be-row"><span><span class="t-en">IL to cover</span><span class="t-fr">IL à couvrir</span><span class="t-es">PI por cubrir</span></span><b id="beLoss">—</b></div>
       <div class="be-row"><span><span class="t-en">Break-even APR needed</span><span class="t-fr">APR nécessaire au seuil</span><span class="t-es">APR necesario para equilibrio</span></span><b id="beNeeded">—</b></div>
       <div class="be-verdict" id="beVerdict"></div>
     </div>
@@ -442,7 +442,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <div class="chart-section">
   <div class="chart-header">
     <h3 id="chartTitle"><span class="t-en">IL curve — price ratio vs loss</span><span class="t-fr">Courbe IL — ratio de prix vs perte</span><span class="t-es">IL curve — price ratio vs loss</span></h3>
-    <p id="chartDesc"><span class="t-en">How impermanent loss grows as the price of Token A diverges from entry, with Token B stable.</span><span class="t-fr">Comment la perte impermanente croît au fur et à mesure que le prix du Token A diverge de l'entrée, Token B stable.</span><span class="t-es">How impermanent loss grows as the price of Token A diverges from entry, with Token B stable.</span></p>
+    <p id="chartDesc"><span class="t-en">How impermanent loss grows as the price of Token A diverges from entry, with Token B stable.</span><span class="t-fr">Comment la perte impermanente croît au fur et à mesure que le prix du Token A diverge de l'entrée, Token B stable.</span><span class="t-es">Cómo crece la pérdida impermanente al alejarse el precio del Token A de la entrada, con Token B estable.</span></p>
   </div>
   <div class="chart-wrap">
     <canvas id="ilChart"></canvas>
@@ -456,7 +456,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </a>
 </div>
 <footer>
-  <div class="ft-tag"><span class="t-en">Precision. <span>Strategy.</span> Freedom.</span><span class="t-fr">Précision. <span>Stratégie.</span><span class="t-es">Precision. <span>Strategy.</span> Freedom.</span> Liberté.</span></div>
+  <div class="ft-tag"><span class="t-en">Precision. <span>Strategy.</span> Freedom.</span><span class="t-fr">Précision. <span>Stratégie.</span><span class="t-es">Precisión. <span>Estrategia.</span> Libertad.</span> Liberté.</span></div>
   V2: IL = 2√k/(1+k) − 1 · V3: L = V₀/(2√P₀ − √Pₐ − P₀/√Pb) · IL = LP(P₁)/HODL − 1 · ornytools.xyz<br/>
   <span style="margin-top:8px;display:inline-block">Built by <a href="https://www.linkedin.com/in/xavier-maquin-5576643b9/" target="_blank" rel="noopener" style="color:var(--aqua);text-decoration:none;font-weight:600">Xavier Maquin</a></span>
 </footer>
@@ -500,7 +500,7 @@ function updateChartHeader() {
       : 'Blue: V3 concentrated IL. Gray dashed: V2 full-range reference. Blue band = your range [Pₐ → Pb].';
   } else {
     $('chartTitle').innerHTML = '<span class="t-en">IL curve — price ratio vs loss</span><span class="t-fr">Courbe IL — ratio de prix vs perte</span><span class="t-es">IL curve — price ratio vs loss</span>';
-    $('chartDesc').innerHTML  = '<span class="t-en">How impermanent loss grows as the price of Token A diverges from entry, with Token B stable.</span><span class="t-fr">Comment la perte impermanente croît au fur et à mesure que le prix du Token A diverge de l\'entrée, Token B stable.</span><span class="t-es">How impermanent loss grows as the price of Token A diverges from entry, with Token B stable.</span>';
+    $('chartDesc').innerHTML  = '<span class="t-en">How impermanent loss grows as the price of Token A diverges from entry, with Token B stable.</span><span class="t-fr">Comment la perte impermanente croît au fur et à mesure que le prix du Token A diverge de l\'entrée, Token B stable.</span><span class="t-es">Cómo crece la pérdida impermanente al alejarse el precio del Token A de la entrada, con Token B estable.</span>';
   }
 }
 

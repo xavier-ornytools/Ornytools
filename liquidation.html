@@ -826,7 +826,7 @@ function renderProtocolTabs(){
       document.getElementById('verifyLinkFR').textContent = proto.urlLabel;
       // Update panel title
       const titleEl = $('panelTitle');
-      titleEl.innerHTML = `<span class="t-en">Your ${proto.label} position</span><span class="t-fr">Votre position ${proto.label}</span><span class="t-es">Your ${proto.label} position</span>`;
+      titleEl.innerHTML = `<span class="t-en">Your ${proto.label} position</span><span class="t-fr">Votre position ${proto.label}</span><span class="t-es">Tu posición ${proto.label}</span>`;
       renderProtocolTabs();
       renderChainTabs();
       renderTokens();
@@ -1286,7 +1286,7 @@ window.onLangChange=function(){ renderParamChips(); calc(); };
     if(el1){ el1.href=proto.url; el1.textContent=proto.urlLabel; }
     if(el2){ el2.href=proto.url; el2.textContent=proto.urlLabel; }
     const titleEl=$('panelTitle');
-    if(titleEl) titleEl.innerHTML=`<span class="t-en">Your ${proto.label} position</span><span class="t-fr">Votre position ${proto.label}</span><span class="t-es">Your ${proto.label} position</span>`;
+    if(titleEl) titleEl.innerHTML=`<span class="t-en">Your ${proto.label} position</span><span class="t-fr">Votre position ${proto.label}</span><span class="t-es">Tu posición ${proto.label}</span>`;
   }
 
   renderProtocolTabs();
