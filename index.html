@@ -458,6 +458,8 @@
     .fcol ul { list-style: none; display: flex; flex-direction: column; gap: 9px; }
     .fcol ul li a { font-size: .83rem; color: var(--muted); transition: color .2s; }
     .fcol ul li a:hover { color: var(--blue); }
+    .fcol ul li a.soon { pointer-events: none; opacity: .4; cursor: default; }
+    .fcol ul li a.soon::after { content: ' ·'; font-size: .65rem; opacity: .7; }
     .fnews-desc { font-size: .82rem; color: var(--muted); line-height: 1.65; margin-bottom: 12px; }
     .news-form { display: flex; gap: 7px; }
     .news-form input {
@@ -563,15 +565,13 @@
 
 <!-- ════════════════════════════ NAVBAR ════════════════════════════ -->
 <nav class="navbar">
-  <a href="#" class="nav-logo">
+  <a href="index.html" class="nav-logo">
     <img src="logo.png" alt="OrnyTools" />
     <span class="nav-brand">ORNY<span>TOOL</span></span>
   </a>
   <ul class="nav-links">
     <li><a href="#tools">Tools</a></li>
-    <li><a href="#">Resources</a></li>
-    <li><a href="#">Blog</a></li>
-    <li><a href="#">About</a></li>
+    <li><a href="methodology.html">Methodology</a></li>
   </ul>
   <div class="nav-right">
     <div class="btn-theme" title="Toggle theme">🌙</div>
@@ -1106,28 +1106,28 @@
       <div class="fcol">
         <h4><span class="t-en">Product</span><span class="t-fr">Produit</span><span class="t-es">Producto</span></h4>
         <ul>
-          <li><a href="#">All Tools</a></li>
-          <li><a href="#">Risk Engine</a></li>
-          <li><a href="#">Roadmap</a></li>
-          <li><a href="#">API (Soon)</a></li>
+          <li><a href="#tools">All Tools</a></li>
+          <li><a href="methodology.html">Methodology</a></li>
+          <li><a href="#" class="soon">Roadmap</a></li>
+          <li><a href="#" class="soon">API (Soon)</a></li>
         </ul>
       </div>
       <div class="fcol">
         <h4><span class="t-en">Resources</span><span class="t-fr">Ressources</span><span class="t-es">Recursos</span></h4>
         <ul>
-          <li><a href="#">Blog</a></li>
-          <li><a href="#">Guides</a></li>
-          <li><a href="#">Glossary</a></li>
-          <li><a href="#">FAQ</a></li>
+          <li><a href="#" class="soon">Blog</a></li>
+          <li><a href="#" class="soon">Guides</a></li>
+          <li><a href="#" class="soon">Glossary</a></li>
+          <li><a href="#" class="soon">FAQ</a></li>
         </ul>
       </div>
       <div class="fcol">
         <h4><span class="t-en">Company</span><span class="t-fr">Société</span><span class="t-es">Empresa</span></h4>
         <ul>
-          <li><a href="#">About</a></li>
-          <li><a href="#">Contact</a></li>
-          <li><a href="#">Privacy</a></li>
-          <li><a href="#">Terms</a></li>
+          <li><a href="#" class="soon">About</a></li>
+          <li><a href="mailto:john3289@protonmail.com">Contact</a></li>
+          <li><a href="#" class="soon">Privacy</a></li>
+          <li><a href="#" class="soon">Terms</a></li>
         </ul>
       </div>
       <div>
