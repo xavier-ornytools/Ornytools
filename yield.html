@@ -11,11 +11,11 @@
 <meta property="og:title" content="Yield Allocation Optimizer — OrnyTools"/>
 <meta property="og:description" content="Live APY from Aave, Morpho, Spark and Compound. Optimal stablecoin allocation by risk profile — updated in real time."/>
 <meta property="og:url" content="https://ornytools.xyz/yield.html"/>
-<meta property="og:image" content="https://ornytools.xyz/orny-banner.png"/>
+<meta property="og:image" content="https://ornytools.xyz/orny-banner.webp"/>
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:title" content="Yield Allocation Optimizer — OrnyTools"/>
 <meta name="twitter:description" content="Live APY from Aave, Morpho, Spark and Compound. Optimal stablecoin allocation by risk profile — updated in real time."/>
-<meta name="twitter:image" content="https://ornytools.xyz/orny-banner.png"/>
+<meta name="twitter:image" content="https://ornytools.xyz/orny-banner.webp"/>
 <title>Yield Allocation Optimizer — OrnyTools</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
@@ -185,6 +185,20 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
 })(window,document,'script','dataLayer','GTM-5XT34MFV');</script>
 <!-- End Google Tag Manager -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"WebApplication",
+    "name":"Yield Allocation Optimizer — OrnyTools",
+    "url":"https://ornytools.xyz/yield.html",
+    "description":"Compare and optimize yield allocation across DeFi protocols with live APY data from DeFiLlama.",
+    "applicationCategory":"FinanceApplication",
+    "operatingSystem":"Any",
+    "browserRequirements":"Requires JavaScript",
+    "offers":{ "@type":"Offer","price":"0","priceCurrency":"USD" },
+    "provider":{ "@type":"Organization","name":"OrnyTools","url":"https://ornytools.xyz" }
+  }
+  </script>
 </head>
 <body>
 <!-- Google Tag Manager (noscript) -->
@@ -193,16 +207,17 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
 
 <nav class="navbar">
-  <img class="nav-logo" src="logo.png" alt="OrnyTools"/>
+  <img class="nav-logo" src="logo.webp" alt="OrnyTools"/>
   <div>
     <div class="nav-brand">Orny<span class="dot">Tools</span></div>
-    <div class="nav-tag"><span class="t-en">Yield Allocation Optimizer</span><span class="t-fr">Optimiseur de Rendement</span></div>
+    <div class="nav-tag"><span class="t-en">Yield Allocation Optimizer</span><span class="t-fr">Optimiseur de Rendement</span><span class="t-es">Optimizador de Asignación de Yield</span></div>
   </div>
-  <a href="index.html" class="nav-home"><span class="t-en">← All tools</span><span class="t-fr">← Tous les outils</span></a>
-  <div class="lang-switch" style="margin-left:8px">
-    <button id="btnEN" class="lang-btn active" onclick="setLang('en')">EN</button>
-    <button id="btnFR" class="lang-btn" onclick="setLang('fr')">FR</button>
-  </div>
+  <a href="index.html" class="nav-home"><span class="t-en">← All tools</span><span class="t-fr">← Tous les outils</span><span class="t-es">← Todas las herramientas</span></a>
+  <div class="lang-switch">
+      <button id="btnEN" class="lang-btn active" onclick="setLang('en')">🇬🇧 EN</button>
+      <button id="btnFR" class="lang-btn" onclick="setLang('fr')">🇫🇷 FR</button>
+      <button id="btnES" class="lang-btn" onclick="setLang('es')">🇪🇸 ES</button>
+    </div>
 </nav>
 
 <div style="padding-top:72px;text-align:center;background:#fff;padding-bottom:0">
@@ -210,9 +225,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </div>
 
 <div class="page-hero">
-  <div class="eyebrow"><span class="t-en">Yield Allocation Optimizer — Live APY</span><span class="t-fr">Optimiseur de Rendement — APY en direct</span></div>
-  <h1><span class="t-en">Where should you put<br>your <em>stablecoins</em>?</span><span class="t-fr">Où placer vos<br><em>stablecoins</em> ?</span></h1>
-  <p><span class="t-en">Live APY from Aave, Morpho, Spark and Compound. One allocation recommendation, tuned to your risk profile.</span><span class="t-fr">APY en direct depuis DeFiLlama. Une recommandation d'allocation adaptée à votre profil de risque.</span></p>
+  <div class="eyebrow"><span class="t-en">Yield Allocation Optimizer — Live APY</span><span class="t-fr">Optimiseur de Rendement — APY en direct</span><span class="t-es">Optimizador de Asignación de Yield — APY en vivo</span></div>
+  <h1><span class="t-en">Where should you put<br>your <em>stablecoins</em>?</span><span class="t-fr">Où placer vos<br><em>stablecoins</em> ?</span><span class="t-es">Where should you put<br>your <em>stablecoins</em>?</span></h1>
+  <p><span class="t-en">Live APY from Aave, Morpho, Spark and Compound. One allocation recommendation, tuned to your risk profile.</span><span class="t-fr">APY en direct depuis DeFiLlama. Une recommandation d'allocation adaptée à votre profil de risque.</span><span class="t-es">Live APY from Aave, Morpho, Spark and Compound. One allocation recommendation, tuned to your risk profile.</span></p>
 </div>
 
 <div class="tool-zone">
@@ -220,10 +235,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <!-- INPUTS -->
   <div>
     <div class="panel">
-      <div class="panel-title"><span class="t-en">Your position</span><span class="t-fr">Votre position</span></div>
+      <div class="panel-title"><span class="t-en">Your position</span><span class="t-fr">Votre position</span><span class="t-es">Tu posición</span></div>
 
       <div class="field">
-        <label><span class="t-en">Asset</span><span class="t-fr">Actif</span></label>
+        <label><span class="t-en">Asset</span><span class="t-fr">Actif</span><span class="t-es">Activo</span></label>
         <select id="asset">
           <option value="USDC">USDC</option>
           <option value="USDT">USDT</option>
@@ -238,7 +253,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </div>
 
       <div class="field">
-        <label><span class="t-en">Chain</span><span class="t-fr">Réseau</span></label>
+        <label><span class="t-en">Chain</span><span class="t-fr">Réseau</span><span class="t-es">Red</span></label>
         <select id="chain">
           <option value="Ethereum">Ethereum</option>
           <option value="Arbitrum">Arbitrum</option>
@@ -249,7 +264,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </div>
 
       <div class="field with-prefix">
-        <label><span class="t-en">Capital to allocate</span><span class="t-fr">Capital à allouer</span> <span class="hint">USD</span></label>
+        <label><span class="t-en">Capital to allocate</span><span class="t-fr">Capital à allouer</span><span class="t-es">Capital a asignar</span> <span class="hint">USD</span></label>
         <span class="pfx">$</span>
         <input id="capital" value="10000" inputmode="decimal"/>
       </div>
@@ -259,20 +274,20 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <div class="field">
         <label>Risk profile</label>
         <div class="risk-toggle">
-          <button class="risk-btn active-conservative" data-risk="conservative"><span class="t-en">Conservative</span><span class="t-fr">Conservateur</span></button>
-          <button class="risk-btn" data-risk="moderate"><span class="t-en">Moderate</span><span class="t-fr">Modéré</span></button>
-          <button class="risk-btn" data-risk="aggressive"><span class="t-en">Aggressive</span><span class="t-fr">Agressif</span></button>
+          <button class="risk-btn active-conservative" data-risk="conservative"><span class="t-en">Conservative</span><span class="t-fr">Conservateur</span><span class="t-es">Conservador</span></button>
+          <button class="risk-btn" data-risk="moderate"><span class="t-en">Moderate</span><span class="t-fr">Modéré</span><span class="t-es">Moderado</span></button>
+          <button class="risk-btn" data-risk="aggressive"><span class="t-en">Aggressive</span><span class="t-fr">Agressif</span><span class="t-es">Agresivo</span></button>
         </div>
       </div>
 
       <div class="fetch-status" id="fetchStatus">
         <span class="fetch-dot" id="fetchDot"></span>
-        <span id="fetchText"><span class="t-en">Loading live APY…</span><span class="t-fr">Chargement APY…</span></span>
+        <span id="fetchText"><span class="t-en">Loading live APY…</span><span class="t-fr">Chargement APY…</span><span class="t-es">Cargando APY en vivo…</span></span>
       </div>
     </div>
 
     <div class="disclaimer" style="margin-top:12px">
-      <span class="t-en">APY data via DeFiLlama · updates on load · rates change continuously · not financial advice</span><span class="t-fr">APY via DeFiLlama · mis à jour au chargement · taux en constante évolution · pas de conseil financier</span>
+      <span class="t-en">APY data via DeFiLlama · updates on load · rates change continuously · not financial advice</span><span class="t-fr">APY via DeFiLlama · mis à jour au chargement · taux en constante évolution · pas de conseil financier</span><span class="t-es">APY vía DeFiLlama · actualizado al cargar · tasas en constante cambio · no asesoramiento financiero</span>
     </div>
   </div>
 
@@ -289,12 +304,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <div class="back-section">
   <a class="back-link" href="index.html">
     <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 1.5L1.5 9 9 16.5M1.5 9h15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    <span class="t-en">Back to all tools</span><span class="t-fr">Retour aux outils</span>
+    <span class="t-en">Back to all tools</span><span class="t-fr">Retour aux outils</span><span class="t-es">Volver a todas las herramientas</span>
   </a>
 </div>
 
 <footer>
-  <div class="ft-tag"><span class="t-en">Allocate smart. <span>Yield more.</span></span><span class="t-fr">Allouez intelligemment. <span>Rendez plus.</span></span></div>
+  <div class="ft-tag"><span class="t-en">Allocate smart. <span>Yield more.</span></span><span class="t-fr">Allouez intelligemment. <span>Rendez plus.</span><span class="t-es">Asigna inteligentemente. <span>Rinde más.</span></span></span></div>
   Live APY via DeFiLlama · read-only · no wallet connection · ornytools.xyz<br/>
   <span style="margin-top:8px;display:inline-block">Built by <a href="https://www.linkedin.com/in/xavier-maquin-5576643b9/" target="_blank" rel="noopener" style="color:var(--good);text-decoration:none;font-weight:600">Xavier Maquin</a></span>
 </footer>
@@ -572,5 +587,31 @@ calc();
 window.onLangChange = calc;
 </script>
 <script src="lang.js"></script>
+
+<style>
+.tools-nav-band{background:#f7f8fc;border-top:1px solid #e4e8f0;padding:32px 28px 36px;text-align:center}
+.tools-nav-lbl{font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;color:#6b7280;margin-bottom:14px}
+.tools-nav-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;max-width:900px;margin:0 auto}
+.tools-nav-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 15px;border:1px solid #e4e8f0;border-radius:99px;background:#fff;font-size:.8rem;font-weight:600;color:#374151;text-decoration:none;transition:.15s}
+.tools-nav-btn:hover{border-color:#2563eb;color:#2563eb;background:#eff6ff}
+.tools-nav-btn.current{border-color:#2563eb;background:#2563eb;color:#fff;pointer-events:none}
+</style>
+
+<!-- Related tools navigation -->
+<div class="tools-nav-band">
+  <div class="tools-nav-lbl"><span class="t-en">All OrnyTools</span><span class="t-fr">Tous les outils</span><span class="t-es">Todas las herramientas</span></div>
+  <div class="tools-nav-grid">
+    <a href="optimizer.html" class="tools-nav-btn"><span>🔄</span><span class="t-en">Trade Optimizer</span><span class="t-fr">Optimiseur de Trade</span><span class="t-es">Optimizador de Trade</span></a>
+    <a href="liquidation.html" class="tools-nav-btn"><span>🛡️</span><span class="t-en">Liquidation Calculator</span><span class="t-fr">Calculateur de Liquidation</span><span class="t-es">Calculadora de Liquidación</span></a>
+    <a href="aave.html" class="tools-nav-btn"><span>🏦</span><span class="t-en">Aave V3 Calculator</span><span class="t-fr">Calculateur Aave V3</span><span class="t-es">Calculadora Aave V3</span></a>
+    <a href="il-calculator.html" class="tools-nav-btn"><span>💧</span><span class="t-en">IL Calculator</span><span class="t-fr">Calculateur IL</span><span class="t-es">Calculadora de PI</span></a>
+    <a href="leverage.html" class="tools-nav-btn"><span>📈</span><span class="t-en">Leverage Calculator</span><span class="t-fr">Calculateur Levier</span><span class="t-es">Calculadora de Apalancamiento</span></a>
+    <a href="v3range.html" class="tools-nav-btn"><span>📐</span><span class="t-en">V3 Range Optimizer</span><span class="t-fr">Optimiseur Plage V3</span><span class="t-es">Optimizador de Rango V3</span></a>
+    <a href="stablecoin.html" class="tools-nav-btn"><span>🪙</span><span class="t-en">Stablecoin Analyzer</span><span class="t-fr">Analyseur Stablecoins</span><span class="t-es">Analizador de Stablecoins</span></a>
+    <span class="tools-nav-btn current"><span>💰</span><span class="t-en">Yield Optimizer</span><span class="t-fr">Optimiseur Rendement</span><span class="t-es">Optimizador de Rendimiento</span></span>
+    <a href="waste.html" class="tools-nav-btn"><span>🔥</span><span class="t-en">Waste Detector</span><span class="t-fr">Détecteur de Gaspillage</span><span class="t-es">Detector de Desperdicio</span></a>
+
+  </div>
+</div>
 </body>
 </html>

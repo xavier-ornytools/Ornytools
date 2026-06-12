@@ -3,19 +3,19 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<meta name="description" content="Impermanent Loss Calculator — OrnyTools. Calculate IL, break-even fees, and visualise the full IL curve."/>
+<meta name="description" content="Impermanent Loss Calculator — OrnyTools. V2 full-range and Uniswap V3 concentrated liquidity modes. Entry price, range bounds, break-even APR, capital efficiency vs V2."/>
 <meta name="robots" content="index,follow"/>
 <link rel="canonical" href="https://ornytools.xyz/il-calculator.html"/>
 <meta property="og:type" content="website"/>
 <meta property="og:site_name" content="OrnyTools"/>
 <meta property="og:title" content="Impermanent Loss Calculator — OrnyTools"/>
-<meta property="og:description" content="Calculate your exact impermanent loss, break-even fee APR and full IL curve before entering any LP position."/>
+<meta property="og:description" content="V2 and V3 IL calculator. Uniswap V3 concentrated liquidity: range bounds, capital efficiency multiplier, position composition, break-even APR."/>
 <meta property="og:url" content="https://ornytools.xyz/il-calculator.html"/>
-<meta property="og:image" content="https://ornytools.xyz/orny-banner.png"/>
+<meta property="og:image" content="https://ornytools.xyz/orny-banner.webp"/>
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:title" content="Impermanent Loss Calculator — OrnyTools"/>
 <meta name="twitter:description" content="Calculate your exact impermanent loss, break-even fee APR and full IL curve before entering any LP position."/>
-<meta name="twitter:image" content="https://ornytools.xyz/orny-banner.png"/>
+<meta name="twitter:image" content="https://ornytools.xyz/orny-banner.webp"/>
 <title>Impermanent Loss Calculator — OrnyTools</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
@@ -153,6 +153,46 @@
     .bottom-img-wrap{padding:32px 14px}
     .back-section{padding:28px 14px}
   }
+
+  /* ── MODE TABS ── */
+  .mode-tabs{display:flex;gap:6px;margin-bottom:20px;background:var(--surface-2);border-radius:10px;padding:4px}
+  .mode-btn{flex:1;display:flex;flex-direction:column;align-items:center;padding:9px 12px;border-radius:7px;border:none;cursor:pointer;font-family:var(--ui);transition:.15s;background:transparent}
+  .mode-btn .mb-label{font-size:13px;font-weight:800;color:var(--dim);letter-spacing:.04em}
+  .mode-btn .mb-sub{font-size:10px;color:var(--faint);margin-top:2px;font-weight:500}
+  .mode-btn.active{background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.10)}
+  .mode-btn.active .mb-label{color:var(--aqua)}
+  .mode-btn.active .mb-sub{color:var(--aqua);opacity:.75}
+  .v3-badge{display:inline-block;font-size:9.5px;font-weight:800;padding:1px 6px;border-radius:4px;background:var(--aqua);color:#fff;margin-left:4px;vertical-align:middle;letter-spacing:.04em}
+
+  /* ── V3 PRESET TOKENS ── */
+  .v3-presets{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}
+  .v3-preset{font-size:11.5px;font-weight:700;padding:5px 11px;border-radius:99px;border:1px solid var(--line);background:var(--surface-2);color:var(--dim);cursor:pointer;font-family:var(--ui);transition:.15s}
+  .v3-preset:hover,.v3-preset.active{border-color:var(--aqua);color:var(--aqua);background:var(--aqua-pale)}
+
+  /* ── V3 PRICE ROW (with live fetch button) ── */
+  .price-row-v3{display:flex;gap:8px;align-items:flex-start}
+  .price-row-v3 .field{flex:1;margin-bottom:0}
+  .fetch-btn{flex-shrink:0;margin-top:22px;padding:10px 13px;border:1px solid var(--line);border-radius:9px;background:var(--surface-2);cursor:pointer;font-family:var(--ui);font-size:12px;font-weight:700;color:var(--dim);transition:.15s;white-space:nowrap;display:flex;align-items:center;gap:5px}
+  .fetch-btn:hover{border-color:var(--aqua);color:var(--aqua)}
+  .fetch-btn.fetching{opacity:.6;pointer-events:none}
+
+  /* ── V3 COMPOSITION ── */
+  .v3-composition{margin-top:12px;padding:12px;background:var(--surface-2);border-radius:9px}
+  .v3-comp-bar{height:8px;border-radius:99px;overflow:hidden;margin:8px 0;display:flex}
+  .v3-comp-t0{background:var(--aqua);transition:.4s}
+  .v3-comp-t1{background:var(--gold);transition:.4s}
+  .v3-comp-labels{display:flex;justify-content:space-between;font-size:11px;font-weight:700}
+  .v3-range-status{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;padding:4px 10px;border-radius:99px;margin-top:8px}
+  .v3-range-status.inrange{background:rgba(14,159,110,.12);color:var(--good)}
+  .v3-range-status.outlow{background:rgba(232,118,90,.14);color:var(--coral)}
+  .v3-range-status.outhigh{background:rgba(200,132,30,.12);color:var(--gold)}
+
+  /* ── V3 EFFICIENCY CARD ── */
+  .v3-eff-card{margin-top:14px;padding:14px 16px;background:var(--aqua-pale);border:1px solid rgba(58,159,212,.18);border-radius:var(--radius)}
+  .v3-eff-title{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--aqua);margin-bottom:8px}
+  .v3-eff-row{display:flex;justify-content:space-between;font-size:13px;color:var(--dim);margin-bottom:6px}
+  .v3-eff-row b{font-family:var(--mono);color:var(--text)}
+  .v3-eff-row:last-child{margin-bottom:0}
 </style>
 <!-- Google Tag Manager -->
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -161,6 +201,20 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
 })(window,document,'script','dataLayer','GTM-5XT34MFV');</script>
 <!-- End Google Tag Manager -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"WebApplication",
+    "name":"Impermanent Loss Calculator — OrnyTools",
+    "url":"https://ornytools.xyz/il-calculator.html",
+    "description":"Calculate impermanent loss for V2 full-range and Uniswap V3 concentrated LP positions. Exact IL curve, break-even APR, capital efficiency multiplier.",
+    "applicationCategory":"FinanceApplication",
+    "operatingSystem":"Any",
+    "browserRequirements":"Requires JavaScript",
+    "offers":{ "@type":"Offer","price":"0","priceCurrency":"USD" },
+    "provider":{ "@type":"Organization","name":"OrnyTools","url":"https://ornytools.xyz" }
+  }
+  </script>
 </head>
 <body>
 <!-- Google Tag Manager (noscript) -->
@@ -169,16 +223,17 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
 
 <nav class="navbar">
-  <img class="nav-logo" src="logo.png" alt="OrnyTools"/>
+  <img class="nav-logo" src="logo.webp" alt="OrnyTools"/>
   <div>
     <div class="nav-brand">Orny<span class="dot">Tools</span></div>
-    <div class="nav-tag"><span class="t-en">Impermanent Loss Calculator</span><span class="t-fr">Calculateur de Perte Impermanente</span></div>
+    <div class="nav-tag"><span class="t-en">Impermanent Loss Calculator</span><span class="t-fr">Calculateur de Perte Impermanente</span><span class="t-es">Calculadora de Pérdida Impermanente</span></div>
   </div>
-  <a href="index.html" class="nav-home"><span class="t-en">← All tools</span><span class="t-fr">← Tous les outils</span></a>
-  <div class="lang-switch" style="margin-left:8px">
-    <button id="btnEN" class="lang-btn active" onclick="setLang('en')">EN</button>
-    <button id="btnFR" class="lang-btn" onclick="setLang('fr')">FR</button>
-  </div>
+  <a href="index.html" class="nav-home"><span class="t-en">← All tools</span><span class="t-fr">← Tous les outils</span><span class="t-es">← Todas las herramientas</span></a>
+  <div class="lang-switch">
+      <button id="btnEN" class="lang-btn active" onclick="setLang('en')">🇬🇧 EN</button>
+      <button id="btnFR" class="lang-btn" onclick="setLang('fr')">🇫🇷 FR</button>
+      <button id="btnES" class="lang-btn" onclick="setLang('es')">🇪🇸 ES</button>
+    </div>
 </nav>
 
 <div style="padding-top:72px;text-align:center;background:#fff;padding-bottom:0">
@@ -187,8 +242,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <!-- HERO -->
 <div class="page-hero">
-  <div class="eyebrow"><span class="t-en">Impermanent Loss Calculator</span><span class="t-fr">Calculateur de Perte Impermanente</span></div>
-  <h1><span class="t-en">How much does your LP position <em>really</em> cost?</span><span class="t-fr">Combien coûte <em>vraiment</em> votre position LP ?</span></h1>
+  <div class="eyebrow"><span class="t-en">Impermanent Loss Calculator</span><span class="t-fr">Calculateur de Perte Impermanente</span><span class="t-es">Calculadora de Pérdida Impermanente</span></div>
+  <h1><span class="t-en">How much does your LP position <em>really</em> cost?</span><span class="t-fr">Combien coûte <em>vraiment</em> votre position LP ?</span><span class="t-es">¿Cuánto cuesta <em>realmente</em> tu posición LP?</span></h1>
   <p>Enter entry and current prices. See your exact IL, your break-even fee APR, and the full IL curve.</p>
 </div>
 
@@ -197,55 +252,124 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
   <!-- Inputs -->
   <div class="panel">
-    <div class="panel-title"><span class="t-en">Your LP position</span><span class="t-fr">Votre position LP</span></div>
+    <div class="panel-title"><span class="t-en">Your LP position</span><span class="t-fr">Votre position LP</span><span class="t-es">Tu posición LP</span></div>
 
-    <div class="row2">
-      <div class="field with-prefix">
-        <label><span class="t-en">Token A — entry</span><span class="t-fr">Token A — entrée</span> <span class="hint">$</span></label>
-        <span class="pfx">$</span>
-        <input id="ilA0" class="mono" value="1800" inputmode="decimal"/>
+    <div class="mode-tabs">
+      <button id="modeV2" class="mode-btn active" onclick="setMode('v2')">
+        <span class="mb-label">V2</span>
+        <span class="mb-sub">Full range</span>
+      </button>
+      <button id="modeV3" class="mode-btn" onclick="setMode('v3')">
+        <span class="mb-label">V3 <span class="v3-badge">NEW</span></span>
+        <span class="mb-sub">Concentrated</span>
+      </button>
+    </div>
+
+    <!-- V2 full-range inputs -->
+    <div id="v2section">
+      <div class="row2">
+        <div class="field with-prefix">
+          <label><span class="t-en">Token A — entry</span><span class="t-fr">Token A — entrée</span><span class="t-es">Token A — entrada</span> <span class="hint">$</span></label>
+          <span class="pfx">$</span>
+          <input id="ilA0" class="mono" value="1800" inputmode="decimal"/>
+        </div>
+        <div class="field with-prefix">
+          <label><span class="t-en">Token A — now</span><span class="t-fr">Token A — actuel</span><span class="t-es">Token A — ahora</span> <span class="hint">$</span></label>
+          <span class="pfx">$</span>
+          <input id="ilA1" class="mono" value="2700" inputmode="decimal"/>
+        </div>
       </div>
+      <div class="row2">
+        <div class="field with-prefix">
+          <label><span class="t-en">Token B — entry</span><span class="t-fr">Token B — entrée</span><span class="t-es">Token B — entrada</span> <span class="hint">$</span></label>
+          <span class="pfx">$</span>
+          <input id="ilB0" class="mono" value="1" inputmode="decimal"/>
+        </div>
+        <div class="field with-prefix">
+          <label><span class="t-en">Token B — now</span><span class="t-fr">Token B — actuel</span><span class="t-es">Token B — ahora</span> <span class="hint">$</span></label>
+          <span class="pfx">$</span>
+          <input id="ilB1" class="mono" value="1" inputmode="decimal"/>
+        </div>
+      </div>
+      <hr class="divider"/>
       <div class="field with-prefix">
-        <label><span class="t-en">Token A — now</span><span class="t-fr">Token A — actuel</span> <span class="hint">$</span></label>
+        <label><span class="t-en">Initial investment</span><span class="t-fr">Investissement initial</span><span class="t-es">Initial investment</span> <span class="hint"><span class="t-en">optional</span><span class="t-fr">optionnel</span><span class="t-es">optional</span></span></label>
         <span class="pfx">$</span>
-        <input id="ilA1" class="mono" value="2700" inputmode="decimal"/>
+        <input id="ilDeposit" class="mono" value="10000" inputmode="decimal"/>
+      </div>
+      <hr class="divider"/>
+      <div class="panel-title" style="margin-bottom:16px"><span class="t-en">Break-even analysis</span><span class="t-fr">Analyse du seuil de rentabilité</span><span class="t-es">Análisis de equilibrio</span></div>
+      <div class="row2">
+        <div class="field with-prefix">
+          <label><span class="t-en">Pool fee APR</span><span class="t-fr">APR des frais de pool</span><span class="t-es">APR de comisiones del pool</span> <span class="hint">%</span></label>
+          <span class="pfx" style="font-family:var(--ui)">%</span>
+          <input id="ilFeeApr" class="mono" value="25" inputmode="decimal" style="padding-left:26px"/>
+        </div>
+        <div class="field">
+          <label><span class="t-en">Days in pool</span><span class="t-fr">Jours dans le pool</span><span class="t-es">Días en el pool</span></label>
+          <input id="ilDays" class="mono" value="30" inputmode="decimal"/>
+        </div>
       </div>
     </div>
 
-    <div class="row2">
+    <!-- V3 concentrated liquidity inputs -->
+    <div id="v3section" style="display:none">
+      <div class="v3-presets">
+        <button class="v3-preset active" data-pair="ETH/USDC" data-gecko="ethereum"  data-p0="2500"  data-pa="1800"  data-pb="3500"  onclick="applyPreset(this)">ETH/USDC</button>
+        <button class="v3-preset"        data-pair="WBTC/USDC" data-gecko="bitcoin"   data-p0="65000" data-pa="50000" data-pb="85000" onclick="applyPreset(this)">WBTC/USDC</button>
+        <button class="v3-preset"        data-pair="ARB/USDC"  data-gecko="arbitrum"  data-p0="1.20"  data-pa="0.80"  data-pb="1.80"  onclick="applyPreset(this)">ARB/USDC</button>
+        <button class="v3-preset"        data-pair="wstETH/ETH" data-gecko=""         data-p0="1.18"  data-pa="1.05"  data-pb="1.32"  onclick="applyPreset(this)">wstETH/ETH</button>
+      </div>
+
+      <div class="row2">
+        <div class="field with-prefix">
+          <label><span class="t-en">Entry price (P₀)</span><span class="t-fr">Prix d'entrée (P₀)</span><span class="t-es">Precio entrada (P₀)</span> <span class="hint">$</span></label>
+          <span class="pfx">$</span>
+          <input id="v3P0" class="mono" value="2500" inputmode="decimal"/>
+        </div>
+        <div class="field with-prefix">
+          <label><span class="t-en">Current price (P₁)</span><span class="t-fr">Prix actuel (P₁)</span><span class="t-es">Precio actual (P₁)</span> <span class="hint">$</span></label>
+          <span class="pfx">$</span>
+          <input id="v3P1" class="mono" value="2900" inputmode="decimal"/>
+        </div>
+      </div>
+      <div style="text-align:right;margin-top:-8px;margin-bottom:14px">
+        <button class="fetch-btn" id="fetchBtn" onclick="fetchPriceV3()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-4.99"/></svg>
+          <span class="t-en">Live price</span><span class="t-fr">Prix en direct</span><span class="t-es">Precio en vivo</span>
+        </button>
+      </div>
+
+      <div class="row2">
+        <div class="field with-prefix">
+          <label><span class="t-en">Range lower (Pₐ)</span><span class="t-fr">Borne basse (Pₐ)</span><span class="t-es">Rango bajo (Pₐ)</span> <span class="hint">$</span></label>
+          <span class="pfx">$</span>
+          <input id="v3Pa" class="mono" value="1800" inputmode="decimal"/>
+        </div>
+        <div class="field with-prefix">
+          <label><span class="t-en">Range upper (Pb)</span><span class="t-fr">Borne haute (Pb)</span><span class="t-es">Rango alto (Pb)</span> <span class="hint">$</span></label>
+          <span class="pfx">$</span>
+          <input id="v3Pb" class="mono" value="3500" inputmode="decimal"/>
+        </div>
+      </div>
+      <hr class="divider"/>
       <div class="field with-prefix">
-        <label><span class="t-en">Token B — entry</span><span class="t-fr">Token B — entrée</span> <span class="hint">$</span></label>
+        <label><span class="t-en">Initial investment</span><span class="t-fr">Investissement initial</span><span class="t-es">Inversión inicial</span> <span class="hint"><span class="t-en">optional</span><span class="t-fr">optionnel</span><span class="t-es">opcional</span></span></label>
         <span class="pfx">$</span>
-        <input id="ilB0" class="mono" value="1" inputmode="decimal"/>
+        <input id="v3Deposit" class="mono" value="10000" inputmode="decimal"/>
       </div>
-      <div class="field with-prefix">
-        <label><span class="t-en">Token B — now</span><span class="t-fr">Token B — actuel</span> <span class="hint">$</span></label>
-        <span class="pfx">$</span>
-        <input id="ilB1" class="mono" value="1" inputmode="decimal"/>
-      </div>
-    </div>
-
-    <hr class="divider"/>
-
-    <div class="field with-prefix">
-      <label><span class="t-en">Initial investment</span><span class="t-fr">Investissement initial</span> <span class="hint"><span class="t-en">optional</span><span class="t-fr">optionnel</span></span></label>
-      <span class="pfx">$</span>
-      <input id="ilDeposit" class="mono" value="10000" inputmode="decimal"/>
-    </div>
-
-    <hr class="divider"/>
-
-    <div class="panel-title" style="margin-bottom:16px"><span class="t-en">Break-even analysis</span><span class="t-fr">Analyse du seuil de rentabilité</span></div>
-
-    <div class="row2">
-      <div class="field with-prefix">
-        <label><span class="t-en">Pool fee APR</span><span class="t-fr">APR des frais de pool</span> <span class="hint">%</span></label>
-        <span class="pfx" style="font-family:var(--ui)">%</span>
-        <input id="ilFeeApr" class="mono" value="25" inputmode="decimal" style="padding-left:26px"/>
-      </div>
-      <div class="field">
-        <label><span class="t-en">Days in pool</span><span class="t-fr">Jours dans le pool</span></label>
-        <input id="ilDays" class="mono" value="30" inputmode="decimal"/>
+      <hr class="divider"/>
+      <div class="panel-title" style="margin-bottom:16px"><span class="t-en">Break-even analysis</span><span class="t-fr">Analyse du seuil de rentabilité</span><span class="t-es">Análisis de equilibrio</span></div>
+      <div class="row2">
+        <div class="field with-prefix">
+          <label><span class="t-en">Pool fee APR</span><span class="t-fr">APR des frais de pool</span><span class="t-es">APR de comisiones</span> <span class="hint">%</span></label>
+          <span class="pfx" style="font-family:var(--ui)">%</span>
+          <input id="v3FeeApr" class="mono" value="35" inputmode="decimal" style="padding-left:26px"/>
+        </div>
+        <div class="field">
+          <label><span class="t-en">Days in pool</span><span class="t-fr">Jours dans le pool</span><span class="t-es">Días en el pool</span></label>
+          <input id="v3Days" class="mono" value="30" inputmode="decimal"/>
+        </div>
       </div>
     </div>
   </div>
@@ -254,26 +378,59 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="result-side">
 
     <div class="result-card">
-      <div class="result-label"><span class="t-en">Impermanent Loss</span><span class="t-fr">Perte Impermanente</span></div>
+      <div class="result-label"><span class="t-en">Impermanent Loss</span><span class="t-fr">Perte Impermanente</span><span class="t-es">Pérdida Impermanente</span></div>
       <div class="result-big" id="ilPct" style="color:var(--coral)">—</div>
-      <div class="result-sub" id="ilSub"><span class="t-en">Enter prices to calculate</span><span class="t-fr">Saisissez les prix pour calculer</span></div>
+      <div class="result-sub" id="ilSub"><span class="t-en">Enter prices to calculate</span><span class="t-fr">Saisissez les prix pour calculer</span><span class="t-es">Ingresa los precios para calcular</span></div>
 
       <div class="breakdown" id="ilBreakdown" style="display:none">
-        <div class="br-row"><span><span class="t-en">Value if held</span><span class="t-fr">Valeur si conservé</span></span><b id="ilHeld">—</b></div>
-        <div class="br-row"><span><span class="t-en">Value in pool</span><span class="t-fr">Valeur dans le pool</span></span><b id="ilPool">—</b></div>
-        <div class="br-row loss"><span><span class="t-en">Loss from IL</span><span class="t-fr">Perte due à l'IL</span></span><b id="ilLoss">—</b></div>
-        <div class="br-row"><span><span class="t-en">Token A change</span><span class="t-fr">Variation Token A</span></span><b id="ilChgA">—</b></div>
-        <div class="br-row"><span><span class="t-en">Token B change</span><span class="t-fr">Variation Token B</span></span><b id="ilChgB">—</b></div>
+        <div class="br-row"><span><span class="t-en">Value if held</span><span class="t-fr">Valeur si conservé</span><span class="t-es">Valor si mantuvieras</span></span><b id="ilHeld">—</b></div>
+        <div class="br-row"><span><span class="t-en">Value in pool</span><span class="t-fr">Valeur dans le pool</span><span class="t-es">Valor en el pool</span></span><b id="ilPool">—</b></div>
+        <div class="br-row loss"><span><span class="t-en">Loss from IL</span><span class="t-fr">Perte due à l'IL</span><span class="t-es">Pérdida por IL</span></span><b id="ilLoss">—</b></div>
+        <div class="br-row"><span><span class="t-en">Token A change</span><span class="t-fr">Variation Token A</span><span class="t-es">Token A change</span></span><b id="ilChgA">—</b></div>
+        <div class="br-row"><span><span class="t-en">Token B change</span><span class="t-fr">Variation Token B</span><span class="t-es">Token B change</span></span><b id="ilChgB">—</b></div>
         <p class="br-note" id="ilNote"></p>
       </div>
     </div>
 
     <div class="breakeven-card" id="beCard" style="display:none">
-      <div class="be-title"><span class="t-en">Break-even analysis</span><span class="t-fr">Analyse du seuil de rentabilité</span></div>
-      <div class="be-row"><span><span class="t-en">Fees earned (est.)</span><span class="t-fr">Frais gagnés (est.)</span></span><b id="beEarned">—</b></div>
-      <div class="be-row"><span><span class="t-en">IL to cover</span><span class="t-fr">IL à couvrir</span></span><b id="beLoss">—</b></div>
-      <div class="be-row"><span><span class="t-en">Break-even APR needed</span><span class="t-fr">APR nécessaire au seuil</span></span><b id="beNeeded">—</b></div>
+      <div class="be-title"><span class="t-en">Break-even analysis</span><span class="t-fr">Analyse du seuil de rentabilité</span><span class="t-es">Análisis de equilibrio</span></div>
+      <div class="be-row"><span><span class="t-en">Fees earned (est.)</span><span class="t-fr">Frais gagnés (est.)</span><span class="t-es">Fees earned (est.)</span></span><b id="beEarned">—</b></div>
+      <div class="be-row"><span><span class="t-en">IL to cover</span><span class="t-fr">IL à couvrir</span><span class="t-es">IL to cover</span></span><b id="beLoss">—</b></div>
+      <div class="be-row"><span><span class="t-en">Break-even APR needed</span><span class="t-fr">APR nécessaire au seuil</span><span class="t-es">APR necesario para equilibrio</span></span><b id="beNeeded">—</b></div>
       <div class="be-verdict" id="beVerdict"></div>
+    </div>
+
+    <!-- V3 position composition + efficiency (V3 mode only) -->
+    <div id="v3CompSection" style="display:none">
+      <div class="v3-composition">
+        <div class="result-label" style="margin-bottom:8px"><span class="t-en">Position composition</span><span class="t-fr">Composition de la position</span><span class="t-es">Composición de la posición</span></div>
+        <div class="v3-comp-bar">
+          <div id="v3CompT0" class="v3-comp-t0" style="width:50%"></div>
+          <div id="v3CompT1" class="v3-comp-t1" style="width:50%"></div>
+        </div>
+        <div class="v3-comp-labels">
+          <span id="v3CompT0Lbl" style="color:var(--aqua)">50% token0</span>
+          <span id="v3CompT1Lbl" style="color:var(--gold)">50% token1</span>
+        </div>
+        <div id="v3RangeStatus" class="v3-range-status inrange" style="margin-top:10px">
+          ● <span class="t-en">In range — earning fees</span><span class="t-fr">In range — accumule des frais</span><span class="t-es">In range — acumulando comisiones</span>
+        </div>
+      </div>
+      <div class="v3-eff-card">
+        <div class="v3-eff-title"><span class="t-en">Capital efficiency vs V2</span><span class="t-fr">Efficacité du capital vs V2</span><span class="t-es">Eficiencia del capital vs V2</span></div>
+        <div class="v3-eff-row">
+          <span><span class="t-en">V2 full-range IL</span><span class="t-fr">IL V2 full range</span><span class="t-es">IL V2 full range</span></span>
+          <b id="v3ILV2">—</b>
+        </div>
+        <div class="v3-eff-row">
+          <span><span class="t-en">V3 concentrated IL</span><span class="t-fr">IL V3 concentré</span><span class="t-es">IL V3 concentrado</span></span>
+          <b id="v3ILV3">—</b>
+        </div>
+        <div class="v3-eff-row">
+          <span><span class="t-en">Efficiency multiplier</span><span class="t-fr">Multiplicateur efficacité</span><span class="t-es">Multiplicador de eficiencia</span></span>
+          <b id="v3Efficiency">—</b>
+        </div>
+      </div>
     </div>
 
   </div>
@@ -284,8 +441,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- CHART -->
 <div class="chart-section">
   <div class="chart-header">
-    <h3><span class="t-en">IL curve — price ratio vs loss</span><span class="t-fr">Courbe IL — ratio de prix vs perte</span></h3>
-    <p><span class="t-en">How impermanent loss grows as the price of Token A diverges from entry, with Token B stable.</span><span class="t-fr">Comment la perte impermanente croît au fur et à mesure que le prix du Token A diverge de l'entrée, Token B stable.</span></p>
+    <h3 id="chartTitle"><span class="t-en">IL curve — price ratio vs loss</span><span class="t-fr">Courbe IL — ratio de prix vs perte</span><span class="t-es">IL curve — price ratio vs loss</span></h3>
+    <p id="chartDesc"><span class="t-en">How impermanent loss grows as the price of Token A diverges from entry, with Token B stable.</span><span class="t-fr">Comment la perte impermanente croît au fur et à mesure que le prix du Token A diverge de l'entrée, Token B stable.</span><span class="t-es">How impermanent loss grows as the price of Token A diverges from entry, with Token B stable.</span></p>
   </div>
   <div class="chart-wrap">
     <canvas id="ilChart"></canvas>
@@ -295,12 +452,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <div class="back-section">
   <a class="back-link" href="index.html">
     <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 1.5L1.5 9 9 16.5M1.5 9h15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    <span class="t-en">Back to all tools</span><span class="t-fr">Retour aux outils</span>
+    <span class="t-en">Back to all tools</span><span class="t-fr">Retour aux outils</span><span class="t-es">Volver a todas las herramientas</span>
   </a>
 </div>
 <footer>
-  <div class="ft-tag"><span class="t-en">Precision. <span>Strategy.</span> Freedom.</span><span class="t-fr">Précision. <span>Stratégie.</span> Liberté.</span></div>
-  IL = 2√k/(1+k) − 1 · exact constant-product formula · ornytools.xyz<br/>
+  <div class="ft-tag"><span class="t-en">Precision. <span>Strategy.</span> Freedom.</span><span class="t-fr">Précision. <span>Stratégie.</span><span class="t-es">Precision. <span>Strategy.</span> Freedom.</span> Liberté.</span></div>
+  V2: IL = 2√k/(1+k) − 1 · V3: L = V₀/(2√P₀ − √Pₐ − P₀/√Pb) · IL = LP(P₁)/HODL − 1 · ornytools.xyz<br/>
   <span style="margin-top:8px;display:inline-block">Built by <a href="https://www.linkedin.com/in/xavier-maquin-5576643b9/" target="_blank" rel="noopener" style="color:var(--aqua);text-decoration:none;font-weight:600">Xavier Maquin</a></span>
 </footer>
 
@@ -308,174 +465,487 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <script>
 const $ = id => document.getElementById(id);
 
+let _mode   = 'v2';
+let _geckoId = 'ethereum';
+
+/* ── Formatters ─────────────────────────────────────────────────────────── */
 function fmtUSD(v) {
   if (!isFinite(v)) return '—';
   if (Math.abs(v) >= 1e6) return '$' + (v/1e6).toFixed(2) + 'M';
   if (Math.abs(v) >= 1e3) return '$' + v.toLocaleString('en-US',{maximumFractionDigits:0});
   return '$' + v.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
 }
-function fmtPct(v, digits=2) { return (v>=0?'+':'') + v.toFixed(digits) + '%'; }
+function fmtPct(v, digits) { digits = digits||2; return (v>=0?'+':'')+v.toFixed(digits)+'%'; }
 
-// ── IL Chart ──────────────────────────────────────────────────────────────
+/* ── Mode switch ──────────────────────────────────────────────────────────── */
+function setMode(m) {
+  _mode = m;
+  $('modeV2').classList.toggle('active', m==='v2');
+  $('modeV3').classList.toggle('active', m==='v3');
+  $('v2section').style.display       = m==='v2' ? '' : 'none';
+  $('v3section').style.display       = m==='v3' ? '' : 'none';
+  $('v3CompSection').style.display   = m==='v3' ? ''  : 'none';
+  updateChartHeader();
+  if (m==='v2') calcIL(); else calcV3IL();
+}
+
+function updateChartHeader() {
+  const l = getLang ? getLang() : 'en';
+  if (_mode==='v3') {
+    $('chartTitle').textContent = l==='fr'
+      ? 'Courbe IL — V3 concentré vs V2 full range'
+      : 'IL curve — V3 concentrated vs V2 full range';
+    $('chartDesc').textContent = l==='fr'
+      ? 'Bleu : IL V3 dans votre range. Gris tirets : V2 full range. Zone bleue = votre range [Pₐ → Pb].'
+      : 'Blue: V3 concentrated IL. Gray dashed: V2 full-range reference. Blue band = your range [Pₐ → Pb].';
+  } else {
+    $('chartTitle').innerHTML = '<span class="t-en">IL curve — price ratio vs loss</span><span class="t-fr">Courbe IL — ratio de prix vs perte</span><span class="t-es">IL curve — price ratio vs loss</span>';
+    $('chartDesc').innerHTML  = '<span class="t-en">How impermanent loss grows as the price of Token A diverges from entry, with Token B stable.</span><span class="t-fr">Comment la perte impermanente croît au fur et à mesure que le prix du Token A diverge de l\'entrée, Token B stable.</span><span class="t-es">How impermanent loss grows as the price of Token A diverges from entry, with Token B stable.</span>';
+  }
+}
+
+/* ── V3 preset tokens ─────────────────────────────────────────────────────── */
+function applyPreset(btn) {
+  document.querySelectorAll('.v3-preset').forEach(function(b){b.classList.remove('active');});
+  btn.classList.add('active');
+  _geckoId = btn.dataset.gecko || '';
+  var p0=btn.dataset.p0, pa=btn.dataset.pa, pb=btn.dataset.pb;
+  if(p0){$('v3P0').value=p0; $('v3P1').value=p0;}
+  if(pa) $('v3Pa').value=pa;
+  if(pb) $('v3Pb').value=pb;
+  calcV3IL();
+}
+
+/* ── Live price fetch (CoinGecko) ─────────────────────────────────────────── */
+async function fetchPriceV3() {
+  if(!_geckoId) return;
+  var btn=$('fetchBtn');
+  var svgHtml='<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-4.99"/></svg>';
+  btn.classList.add('fetching');
+  btn.textContent='…';
+  try {
+    var r=await fetch('https://api.coingecko.com/api/v3/simple/price?ids='+_geckoId+'&vs_currencies=usd');
+    var data=await r.json();
+    var price=data[_geckoId]&&data[_geckoId].usd;
+    if(price){$('v3P1').value=price; calcV3IL();}
+  } catch(e){}
+  btn.classList.remove('fetching');
+  btn.innerHTML=svgHtml+'<span class="t-en">Live price</span><span class="t-fr">Prix en direct</span><span class="t-es">Precio en vivo</span>';
+}
+
+/* ── V3 IL calculation ────────────────────────────────────────────────────── */
+function calcV3IL() {
+  var P0 =parseFloat($('v3P0').value);
+  var P1 =parseFloat($('v3P1').value);
+  var Pa =parseFloat($('v3Pa').value);
+  var Pb =parseFloat($('v3Pb').value);
+  var dep=parseFloat($('v3Deposit').value)||0;
+  var apr=parseFloat($('v3FeeApr').value)||0;
+  var days=parseFloat($('v3Days').value)||0;
+  var l=getLang?getLang():'en';
+
+  if(!(P0>0&&P1>0&&Pa>0&&Pb>0&&Pa<Pb)) return;
+
+  if(P0<=Pa||P0>=Pb){
+    $('ilPct').textContent=l==='fr'?'P₀ hors range':'P₀ out of range';
+    $('ilPct').style.color='var(--coral)';
+    $('ilSub').textContent=l==='fr'?'P₀ doit être entre Pₐ et Pb':'P₀ must be between Pₐ and Pb';
+    $('ilBreakdown').style.display='none';
+    $('beCard').style.display='none';
+    return;
+  }
+
+  /* Uniswap V3 concentrated liquidity math:
+   * L   = V0 / (2√P0 − √Pa − P0/√Pb)    virtual liquidity from entry value V0
+   * x0  = L·(1/√P0 − 1/√Pb)              token0 at entry
+   * y0  = L·(√P0 − √Pa)                   token1 at entry
+   * LP in-range : L·(2√P1 − √Pa − P1/√Pb)
+   * LP below Pa : L·P1·(1/√Pa − 1/√Pb)
+   * LP above Pb : L·(√Pb − √Pa)
+   * HODL = x0·P1 + y0   IL = LP/HODL − 1
+   */
+  var sqrtP0=Math.sqrt(P0), sqrtP1=Math.sqrt(P1);
+  var sqrtPa=Math.sqrt(Pa), sqrtPb=Math.sqrt(Pb);
+  var V0=dep>0?dep:10000;
+  var denom=2*sqrtP0-sqrtPa-P0/sqrtPb;
+  if(denom<=0) return;
+  var L =V0/denom;
+  var x0=L*(1/sqrtP0-1/sqrtPb);
+  var y0=L*(sqrtP0-sqrtPa);
+
+  var lpVal, inRange;
+  if(P1<Pa){
+    lpVal=L*P1*(1/sqrtPa-1/sqrtPb); inRange=false;
+  } else if(P1>Pb){
+    lpVal=L*(sqrtPb-sqrtPa); inRange=false;
+  } else {
+    lpVal=L*(2*sqrtP1-sqrtPa-P1/sqrtPb); inRange=true;
+  }
+
+  var hodlVal=x0*P1+y0;
+  var ilFrac=lpVal/hodlVal-1;
+  var ilPct=ilFrac*100;
+
+  $('ilPct').textContent=ilPct.toFixed(2)+'%';
+  $('ilPct').style.color=ilFrac<-0.001?'var(--coral)':'var(--good)';
+
+  var priceChg=(P1/P0-1)*100;
+  $('ilSub').textContent=l==='fr'
+    ?'Prix '+(priceChg>=0?'+':'')+priceChg.toFixed(1)+'% depuis l\'entrée'
+    :'Price '+(priceChg>=0?'+':'')+priceChg.toFixed(1)+'% from entry';
+
+  if(dep>0){
+    var loss=lpVal-hodlVal;
+    $('ilHeld').textContent=fmtUSD(hodlVal);
+    $('ilPool').textContent=fmtUSD(lpVal);
+    $('ilLoss').textContent=fmtUSD(Math.abs(loss));
+    $('ilChgA').textContent=fmtPct(priceChg,1);
+    $('ilChgA').style.color=priceChg>=0?'var(--good)':'var(--coral)';
+    $('ilChgB').textContent=l==='fr'?'stable (token1)':'stable (token1)';
+    $('ilChgB').style.color='var(--dim)';
+    $('ilBreakdown').style.display='flex';
+
+    if(apr>0||days>0){
+      var feesEarned=dep*(apr/100)*(days/365);
+      var ilUSD=Math.abs(loss);
+      var beAPR=ilUSD>0?(ilUSD/dep)*(365/Math.max(days,1))*100:0;
+      $('beEarned').textContent=fmtUSD(feesEarned);
+      $('beLoss').textContent=fmtUSD(ilUSD);
+      $('beNeeded').textContent=beAPR.toFixed(1)+'% APR';
+      var net=feesEarned-ilUSD;
+      var v=$('beVerdict');
+      if(ilUSD<0.01){
+        v.className='be-verdict neutral';
+        v.textContent=l==='fr'?'Pas d\'IL — vous êtes en avance sur un simple hold.':'No IL — you are ahead of a simple hold.';
+      } else if(feesEarned>=ilUSD){
+        v.className='be-verdict good';
+        v.textContent=l==='fr'
+          ?'Les frais couvrent l\'IL. Net +'+fmtUSD(net)+' vs holding.'
+          :'Fees cover IL. Net +'+fmtUSD(net)+' vs holding.';
+      } else {
+        v.className='be-verdict bad';
+        v.textContent=l==='fr'
+          ?'Les frais ne couvrent pas encore l\'IL. Il faut '+beAPR.toFixed(1)+'% APR — pool actuel : '+apr+'%.'
+          :'Fees don\'t cover IL yet. Need '+beAPR.toFixed(1)+'% APR — current pool: '+apr+'%.';
+      }
+      $('beCard').style.display='block';
+    } else {
+      $('beCard').style.display='none';
+    }
+  } else {
+    $('ilBreakdown').style.display='none';
+    $('beCard').style.display='none';
+  }
+
+  $('ilNote').textContent=inRange
+    ?(l==='fr'?'In range — position active, accumule des frais.':'In range — position active, accruing fees.')
+    :P1<Pa
+    ?(l==='fr'?'Hors range (bas) — 100% token0. Aucun frais accumulé.':'Out-of-range (low) — 100% token0. No fees accruing.')
+    :(l==='fr'?'Hors range (haut) — 100% token1. Aucun frais accumulé.':'Out-of-range (high) — 100% token1. No fees accruing.');
+
+  /* Position composition */
+  var t0Pct, t1Pct;
+  if(P1<Pa){t0Pct=100;t1Pct=0;}
+  else if(P1>Pb){t0Pct=0;t1Pct=100;}
+  else {
+    var x1=L*(1/sqrtP1-1/sqrtPb);
+    var y1=L*(sqrtP1-sqrtPa);
+    var tot=x1*P1+y1;
+    t0Pct=tot>0?(x1*P1/tot)*100:50;
+    t1Pct=100-t0Pct;
+  }
+  var activeBtn=document.querySelector('.v3-preset.active');
+  var pair=activeBtn?activeBtn.dataset.pair:'T0/T1';
+  var parts=pair.split('/');
+  var t0n=parts[0]||'T0', t1n=parts[1]||'T1';
+
+  $('v3CompT0').style.width=t0Pct.toFixed(1)+'%';
+  $('v3CompT1').style.width=t1Pct.toFixed(1)+'%';
+  $('v3CompT0Lbl').textContent=t0Pct.toFixed(0)+'% '+t0n;
+  $('v3CompT1Lbl').textContent=t1Pct.toFixed(0)+'% '+t1n;
+
+  var st=$('v3RangeStatus');
+  if(P1<Pa){st.className='v3-range-status outlow';st.textContent='↓ Below range — 100% '+t0n;}
+  else if(P1>Pb){st.className='v3-range-status outhigh';st.textContent='↑ Above range — 100% '+t1n;}
+  else{st.className='v3-range-status inrange';st.textContent='● In range — earning fees';}
+
+  /* Capital efficiency: L_V3/L_V2 = (2√P0) / denom */
+  var k2=P1/P0;
+  var v2IL=((2*Math.sqrt(k2)/(1+k2))-1)*100;
+  var effMu=(2*sqrtP0)/denom;
+  $('v3ILV2').textContent=v2IL.toFixed(2)+'%';
+  $('v3ILV3').textContent=ilPct.toFixed(2)+'%';
+  $('v3Efficiency').textContent=effMu.toFixed(1)+'× vs V2';
+
+  buildChartV3(P0,P1,Pa,Pb);
+}
+
+/* ── V2 chart ─────────────────────────────────────────────────────────────── */
 let ilChart;
 
 function buildChart(currentK) {
-  const ratios = [];
-  const ilVals = [];
-  for (let i = 1; i <= 200; i++) {
-    const k = i * 0.1;
-    ratios.push(k.toFixed(1) + '×');
+  var ratios=[], ilVals=[];
+  for(var i=1;i<=200;i++){
+    var k=i*0.1;
+    ratios.push(k.toFixed(1)+'×');
     ilVals.push(((2*Math.sqrt(k)/(1+k))-1)*100);
   }
-
-  const pointIdx = Math.round(currentK * 10) - 1;
-
-  const ctx = $('ilChart').getContext('2d');
-  if (ilChart) ilChart.destroy();
-
-  ilChart = new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels: ratios,
-      datasets: [{
-        label: 'IL %',
-        data: ilVals,
-        borderColor: '#E8765A',
-        backgroundColor: 'rgba(232,118,90,.08)',
-        borderWidth: 2,
-        fill: true,
-        tension: 0.4,
-        pointRadius: (ctx) => ctx.dataIndex === pointIdx ? 7 : 0,
-        pointBackgroundColor: '#C8841E',
-        pointBorderColor: '#fff',
-        pointBorderWidth: 2,
+  var pointIdx=Math.min(199,Math.max(0,Math.round(currentK*10)-1));
+  var ctx=$('ilChart').getContext('2d');
+  if(ilChart) ilChart.destroy();
+  ilChart=new Chart(ctx,{
+    type:'line',
+    data:{
+      labels:ratios,
+      datasets:[{
+        label:'IL %',data:ilVals,
+        borderColor:'#E8765A',backgroundColor:'rgba(232,118,90,.08)',
+        borderWidth:2,fill:true,tension:0.4,
+        pointRadius:function(c){return c.dataIndex===pointIdx?7:0;},
+        pointBackgroundColor:'#C8841E',pointBorderColor:'#fff',pointBorderWidth:2,
       }]
     },
-    options: {
-      responsive: true,
-      plugins: {
-        legend: {display: false},
-        tooltip: {
-          callbacks: {
-            label: ctx => ' IL: ' + ctx.parsed.y.toFixed(2) + '%',
-            title: ctx => 'Price ratio: ' + ctx[0].label,
-          }
-        }
+    options:{
+      responsive:true,
+      plugins:{
+        legend:{display:false},
+        tooltip:{callbacks:{label:function(c){return ' IL: '+c.parsed.y.toFixed(2)+'%';},title:function(c){return 'Ratio: '+c[0].label;}}}
       },
-      scales: {
-        x: {
-          ticks: {
-            maxTicksLimit: 10,
-            font: {family: 'JetBrains Mono', size: 11},
-            color: '#9AA5B4',
-          },
-          grid: {color: '#E4E8F0'},
-        },
-        y: {
-          ticks: {
-            callback: v => v.toFixed(1) + '%',
-            font: {family: 'JetBrains Mono', size: 11},
-            color: '#9AA5B4',
-          },
-          grid: {color: '#E4E8F0'},
-        }
+      scales:{
+        x:{ticks:{maxTicksLimit:10,font:{family:'JetBrains Mono',size:11},color:'#9AA5B4'},grid:{color:'#E4E8F0'}},
+        y:{ticks:{callback:function(v){return v.toFixed(1)+'%';},font:{family:'JetBrains Mono',size:11},color:'#9AA5B4'},grid:{color:'#E4E8F0'}}
       }
     }
   });
 }
 
-// ── Main calculation ──────────────────────────────────────────────────────
-function calcIL() {
-  const l = getLang ? getLang() : 'en';
-  const a0  = parseFloat($('ilA0').value);
-  const a1  = parseFloat($('ilA1').value);
-  const b0  = parseFloat($('ilB0').value);
-  const b1  = parseFloat($('ilB1').value);
-  const dep = parseFloat($('ilDeposit').value) || 0;
-  const apr = parseFloat($('ilFeeApr').value) || 0;
-  const days= parseFloat($('ilDays').value)   || 0;
+/* ── V3 chart ─────────────────────────────────────────────────────────────── */
+function buildChartV3(P0,P1,Pa,Pb) {
+  var pMin=Pa*0.45, pMax=Pb*1.65;
+  var N=110, step=(pMax-pMin)/N;
+  var sqrtPa=Math.sqrt(Pa), sqrtPb=Math.sqrt(Pb), sqrtP0=Math.sqrt(P0);
+  var denom0=2*sqrtP0-sqrtPa-P0/sqrtPb;
+  if(denom0<=0) return;
+  /* Normalised L (V0=1) for pure IL curve shape */
+  var L1=1/denom0;
+  var x0n=L1*(1/sqrtP0-1/sqrtPb);
+  var y0n=L1*(sqrtP0-sqrtPa);
 
-  if (!(a0>0 && a1>0 && b0>0 && b1>0)) return;
+  var labels=[], v3Data=[], v2Data=[];
+  var paIdx=0, pbIdx=N, p1Idx=0;
 
-  const rA = a1 / a0;
-  const rB = b1 / b0;
-  const k  = rA / rB;
+  for(var i=0;i<=N;i++){
+    var p=pMin+i*step;
+    if(p<=Pa) paIdx=i;
+    if(p<=Pb) pbIdx=i;
+    if(p<=P1) p1Idx=i;
 
-  const ilFrac = (2*Math.sqrt(k)/(1+k)) - 1;
-  const ilPct  = ilFrac * 100;
+    labels.push(p<1?p.toFixed(3):p<100?p.toFixed(1):Math.round(p).toString());
 
-  $('ilPct').textContent = ilPct.toFixed(2) + '%';
-  $('ilPct').style.color = ilFrac < -0.001 ? 'var(--coral)' : 'var(--good)';
+    var sqrtP=Math.sqrt(p), lp3;
+    if(p<Pa)      lp3=L1*p*(1/sqrtPa-1/sqrtPb);
+    else if(p>Pb) lp3=L1*(sqrtPb-sqrtPa);
+    else          lp3=L1*(2*sqrtP-sqrtPa-p/sqrtPb);
+    var hodl=x0n*p+y0n;
+    v3Data.push((lp3/hodl-1)*100);
 
-  $('ilChgA').textContent = fmtPct((rA-1)*100,1);
-  $('ilChgA').style.color = rA >= 1 ? 'var(--good)' : 'var(--coral)';
-  $('ilChgB').textContent = fmtPct((rB-1)*100,1);
-  $('ilChgB').style.color = rB >= 1 ? 'var(--good)' : 'var(--coral)';
-
-  if (dep > 0) {
-    const held = (dep/2)*rA + (dep/2)*rB;
-    const pool = held * (1+ilFrac);
-    const loss = pool - held;
-
-    $('ilHeld').textContent = fmtUSD(held);
-    $('ilPool').textContent = fmtUSD(pool);
-    $('ilLoss').textContent = fmtUSD(Math.abs(loss));
-    $('ilSub').textContent  = l==='fr'
-      ? `${fmtUSD(Math.abs(loss))} ${loss<0?'de moins':'de plus'} qu'en conservant`
-      : `${fmtUSD(Math.abs(loss))} ${loss<0?'less':'more'} than holding`;
-    $('ilBreakdown').style.display = 'flex';
-
-    // Break-even
-    if (apr > 0 || days > 0) {
-      const feesEarned = dep * (apr/100) * (days/365);
-      const ilUSD      = Math.abs(loss);
-      const beAPR      = ilUSD > 0 ? (ilUSD / dep) * (365 / Math.max(days,1)) * 100 : 0;
-
-      $('beEarned').textContent = fmtUSD(feesEarned);
-      $('beLoss').textContent   = fmtUSD(ilUSD);
-      $('beNeeded').textContent = beAPR.toFixed(1) + '% APR';
-
-      const net = feesEarned - ilUSD;
-      const v   = $('beVerdict');
-      if (ilUSD < 0.01) {
-        v.className = 'be-verdict neutral';
-        v.textContent = l==='fr' ? 'Pas d\'IL — vous êtes en avance sur un simple hold.' : 'No IL — you are ahead of a simple hold.';
-      } else if (feesEarned >= ilUSD) {
-        v.className = 'be-verdict good';
-        v.textContent = l==='fr'
-          ? `Les frais couvrent l'IL. Vous êtes net +${fmtUSD(net)} vs holding.`
-          : `Fees cover IL. You are net +${fmtUSD(net)} vs holding.`;
-      } else {
-        v.className = 'be-verdict bad';
-        v.textContent = l==='fr'
-          ? `Les frais ne couvrent pas encore l'IL. Il faut ${beAPR.toFixed(1)}% APR — pool actuel : ${apr}%.`
-          : `Fees don't cover IL yet. You need ${beAPR.toFixed(1)}% APR — current pool: ${apr}%.`;
-      }
-      $('beCard').style.display = 'block';
-    } else {
-      $('beCard').style.display = 'none';
-    }
-  } else {
-    $('ilSub').textContent = l==='fr' ? `Ratio de prix : ${k.toFixed(3)}×` : `Price ratio: ${k.toFixed(3)}×`;
-    $('ilBreakdown').style.display = 'none';
-    $('beCard').style.display = 'none';
+    var k=p/P0;
+    v2Data.push(((2*Math.sqrt(k)/(1+k))-1)*100);
   }
 
-  const note = Math.abs(ilPct) < 0.1
-    ? (l==='fr' ? 'Les prix ont évolué ensemble — l\'IL est négligeable.' : 'Prices moved together — IL is negligible.')
-    : Math.abs(ilPct) > 5
-    ? (l==='fr' ? 'IL élevé. Les frais doivent être conséquents pour justifier cette position.' : 'High IL. Fees must be substantial to justify this position.')
-    : (l==='fr' ? 'IL modéré — vérifiez que votre APR de frais le couvre.' : 'Moderate IL — verify your fee APR covers it.');
-  $('ilNote').textContent = note;
+  /* Inline plugin: draws range band + Pa/Pb dashed vertical lines */
+  var rangePlugin={
+    id:'rangeArea',
+    beforeDraw:function(chart){
+      var c=chart.ctx, ca=chart.chartArea, xs=chart.scales.x;
+      /* interpolate pixel positions from index fractions */
+      var x1=xs.left+(paIdx/N)*(xs.right-xs.left);
+      var x2=xs.left+(pbIdx/N)*(xs.right-xs.left);
+      c.save();
+      c.fillStyle='rgba(58,159,212,.08)';
+      c.fillRect(x1,ca.top,x2-x1,ca.bottom-ca.top);
+      c.setLineDash([5,3]);
+      c.strokeStyle='rgba(58,159,212,.55)';
+      c.lineWidth=1.5;
+      [x1,x2].forEach(function(x){c.beginPath();c.moveTo(x,ca.top);c.lineTo(x,ca.bottom);c.stroke();});
+      c.restore();
+    }
+  };
+
+  var ctx=$('ilChart').getContext('2d');
+  if(ilChart) ilChart.destroy();
+  ilChart=new Chart(ctx,{
+    type:'line',
+    plugins:[rangePlugin],
+    data:{
+      labels:labels,
+      datasets:[
+        {
+          label:'V3 IL',data:v3Data,
+          borderColor:'#3A9FD4',backgroundColor:'rgba(58,159,212,.04)',
+          borderWidth:2.5,fill:false,tension:0.25,
+          pointRadius:function(c){return c.dataIndex===p1Idx?8:0;},
+          pointBackgroundColor:'#3A9FD4',pointBorderColor:'#fff',pointBorderWidth:2.5,
+        },
+        {
+          label:'V2 full-range',data:v2Data,
+          borderColor:'rgba(148,148,160,.7)',borderWidth:1.5,
+          borderDash:[5,3],fill:false,tension:0.25,pointRadius:0,
+        }
+      ]
+    },
+    options:{
+      responsive:true,
+      plugins:{
+        legend:{display:true,labels:{font:{family:'JetBrains Mono',size:11},boxWidth:20,padding:16}},
+        tooltip:{callbacks:{
+          label:function(c){return ' '+c.dataset.label+': '+c.parsed.y.toFixed(2)+'%';},
+          title:function(c){return '$'+c[0].label;}
+        }}
+      },
+      scales:{
+        x:{ticks:{maxTicksLimit:9,font:{family:'JetBrains Mono',size:11},color:'#9AA5B4'},grid:{color:'#E4E8F0'}},
+        y:{ticks:{callback:function(v){return v.toFixed(1)+'%';},font:{family:'JetBrains Mono',size:11},color:'#9AA5B4'},grid:{color:'#E4E8F0'}}
+      }
+    }
+  });
+}
+
+/* ── V2 main calculation ──────────────────────────────────────────────────── */
+function calcIL() {
+  var l=getLang?getLang():'en';
+  var a0=parseFloat($('ilA0').value);
+  var a1=parseFloat($('ilA1').value);
+  var b0=parseFloat($('ilB0').value);
+  var b1=parseFloat($('ilB1').value);
+  var dep=parseFloat($('ilDeposit').value)||0;
+  var apr=parseFloat($('ilFeeApr').value)||0;
+  var days=parseFloat($('ilDays').value)||0;
+
+  if(!(a0>0&&a1>0&&b0>0&&b1>0)) return;
+
+  var rA=a1/a0, rB=b1/b0;
+  /* V2 constant-product IL: IL = 2√k/(1+k) − 1, k = relative price ratio */
+  var k=rA/rB;
+  var ilFrac=(2*Math.sqrt(k)/(1+k))-1;
+  var ilPct=ilFrac*100;
+
+  $('ilPct').textContent=ilPct.toFixed(2)+'%';
+  $('ilPct').style.color=ilFrac<-0.001?'var(--coral)':'var(--good)';
+  $('ilChgA').textContent=fmtPct((rA-1)*100,1);
+  $('ilChgA').style.color=rA>=1?'var(--good)':'var(--coral)';
+  $('ilChgB').textContent=fmtPct((rB-1)*100,1);
+  $('ilChgB').style.color=rB>=1?'var(--good)':'var(--coral)';
+
+  if(dep>0){
+    var held=(dep/2)*rA+(dep/2)*rB;
+    var pool=held*(1+ilFrac);
+    var loss=pool-held;
+    $('ilHeld').textContent=fmtUSD(held);
+    $('ilPool').textContent=fmtUSD(pool);
+    $('ilLoss').textContent=fmtUSD(Math.abs(loss));
+    $('ilSub').textContent=l==='fr'
+      ?fmtUSD(Math.abs(loss))+' '+(loss<0?'de moins':'de plus')+' qu\'en conservant'
+      :fmtUSD(Math.abs(loss))+' '+(loss<0?'less':'more')+' than holding';
+    $('ilBreakdown').style.display='flex';
+
+    if(apr>0||days>0){
+      var feesEarned=dep*(apr/100)*(days/365);
+      var ilUSD=Math.abs(loss);
+      var beAPR=ilUSD>0?(ilUSD/dep)*(365/Math.max(days,1))*100:0;
+      $('beEarned').textContent=fmtUSD(feesEarned);
+      $('beLoss').textContent=fmtUSD(ilUSD);
+      $('beNeeded').textContent=beAPR.toFixed(1)+'% APR';
+      var net=feesEarned-ilUSD;
+      var v=$('beVerdict');
+      if(ilUSD<0.01){
+        v.className='be-verdict neutral';
+        v.textContent=l==='fr'?'Pas d\'IL — vous êtes en avance sur un simple hold.':'No IL — you are ahead of a simple hold.';
+      } else if(feesEarned>=ilUSD){
+        v.className='be-verdict good';
+        v.textContent=l==='fr'
+          ?'Les frais couvrent l\'IL. Vous êtes net +'+fmtUSD(net)+' vs holding.'
+          :'Fees cover IL. You are net +'+fmtUSD(net)+' vs holding.';
+      } else {
+        v.className='be-verdict bad';
+        v.textContent=l==='fr'
+          ?'Les frais ne couvrent pas encore l\'IL. Il faut '+beAPR.toFixed(1)+'% APR — pool actuel : '+apr+'%.'
+          :'Fees don\'t cover IL yet. You need '+beAPR.toFixed(1)+'% APR — current pool: '+apr+'%.';
+      }
+      $('beCard').style.display='block';
+    } else {$('beCard').style.display='none';}
+  } else {
+    $('ilSub').textContent=l==='fr'?'Ratio de prix : '+k.toFixed(3)+'×':'Price ratio: '+k.toFixed(3)+'×';
+    $('ilBreakdown').style.display='none';
+    $('beCard').style.display='none';
+  }
+
+  var note=Math.abs(ilPct)<0.1
+    ?(l==='fr'?'Les prix ont évolué ensemble — l\'IL est négligeable.':'Prices moved together — IL is negligible.')
+    :Math.abs(ilPct)>5
+    ?(l==='fr'?'IL élevé. Les frais doivent être conséquents pour justifier cette position.':'High IL. Fees must be substantial to justify this position.')
+    :(l==='fr'?'IL modéré — vérifiez que votre APR de frais le couvre.':'Moderate IL — verify your fee APR covers it.');
+  $('ilNote').textContent=note;
 
   buildChart(k);
 }
 
-['ilA0','ilA1','ilB0','ilB1','ilDeposit','ilFeeApr','ilDays'].forEach(id => $(id).addEventListener('input', calcIL));
-calcIL();
+['ilA0','ilA1','ilB0','ilB1','ilDeposit','ilFeeApr','ilDays'].forEach(function(id){$(id).addEventListener('input',calcIL);});
+['v3P0','v3P1','v3Pa','v3Pb','v3Deposit','v3FeeApr','v3Days'].forEach(function(id){$(id).addEventListener('input',calcV3IL);});
 
-window.onLangChange = function(l) { if(typeof calcIL==='function') calcIL(); };
+/* Auto-fill from v3range deep-link: ?v3=1&p0=X&pa=Y&pb=Z&gecko=G&pair=T0%2FT1 */
+(function(){
+  var sp=new URLSearchParams(window.location.search);
+  if(sp.get('v3')==='1'){
+    var p0=sp.get('p0'), pa=sp.get('pa'), pb=sp.get('pb');
+    var gecko=sp.get('gecko')||'', pair=sp.get('pair')||'';
+    if(p0){$('v3P0').value=p0; $('v3P1').value=p0;}
+    if(pa) $('v3Pa').value=pa;
+    if(pb) $('v3Pb').value=pb;
+    /* activate matching preset button by gecko ID */
+    if(gecko||pair){
+      var btns=document.querySelectorAll('.v3-preset');
+      btns.forEach(function(b){b.classList.remove('active');});
+      var matched=null;
+      if(gecko) btns.forEach(function(b){if(!matched&&b.dataset.gecko===gecko) matched=b;});
+      if(!matched&&pair) btns.forEach(function(b){if(!matched&&b.dataset.pair===pair) matched=b;});
+      if(matched){matched.classList.add('active'); _geckoId=matched.dataset.gecko||'';}
+    }
+    document.addEventListener('DOMContentLoaded',function(){setMode('v3');});
+    if(document.readyState!=='loading') setMode('v3');
+    return;
+  }
+  calcIL();
+})();
+
+window.onLangChange=function(l){updateChartHeader();if(_mode==='v2')calcIL();else calcV3IL();};
 </script>
 <script src="lang.js"></script>
+
+<style>
+.tools-nav-band{background:#f7f8fc;border-top:1px solid #e4e8f0;padding:32px 28px 36px;text-align:center}
+.tools-nav-lbl{font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;color:#6b7280;margin-bottom:14px}
+.tools-nav-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;max-width:900px;margin:0 auto}
+.tools-nav-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 15px;border:1px solid #e4e8f0;border-radius:99px;background:#fff;font-size:.8rem;font-weight:600;color:#374151;text-decoration:none;transition:.15s}
+.tools-nav-btn:hover{border-color:#2563eb;color:#2563eb;background:#eff6ff}
+.tools-nav-btn.current{border-color:#2563eb;background:#2563eb;color:#fff;pointer-events:none}
+</style>
+
+<!-- Related tools navigation -->
+<div class="tools-nav-band">
+  <div class="tools-nav-lbl"><span class="t-en">All OrnyTools</span><span class="t-fr">Tous les outils</span><span class="t-es">Todas las herramientas</span></div>
+  <div class="tools-nav-grid">
+    <a href="optimizer.html" class="tools-nav-btn"><span>🔄</span><span class="t-en">Trade Optimizer</span><span class="t-fr">Optimiseur de Trade</span><span class="t-es">Optimizador de Trade</span></a>
+    <a href="liquidation.html" class="tools-nav-btn"><span>🛡️</span><span class="t-en">Liquidation Calculator</span><span class="t-fr">Calculateur de Liquidation</span><span class="t-es">Calculadora de Liquidación</span></a>
+    <a href="aave.html" class="tools-nav-btn"><span>🏦</span><span class="t-en">Aave V3 Calculator</span><span class="t-fr">Calculateur Aave V3</span><span class="t-es">Calculadora Aave V3</span></a>
+    <span class="tools-nav-btn current"><span>💧</span><span class="t-en">IL Calculator</span><span class="t-fr">Calculateur IL</span><span class="t-es">Calculadora de PI</span></span>
+    <a href="leverage.html" class="tools-nav-btn"><span>📈</span><span class="t-en">Leverage Calculator</span><span class="t-fr">Calculateur Levier</span><span class="t-es">Calculadora de Apalancamiento</span></a>
+    <a href="v3range.html" class="tools-nav-btn"><span>📐</span><span class="t-en">V3 Range Optimizer</span><span class="t-fr">Optimiseur Plage V3</span><span class="t-es">Optimizador de Rango V3</span></a>
+    <a href="stablecoin.html" class="tools-nav-btn"><span>🪙</span><span class="t-en">Stablecoin Analyzer</span><span class="t-fr">Analyseur Stablecoins</span><span class="t-es">Analizador de Stablecoins</span></a>
+    <a href="yield.html" class="tools-nav-btn"><span>💰</span><span class="t-en">Yield Optimizer</span><span class="t-fr">Optimiseur Rendement</span><span class="t-es">Optimizador de Rendimiento</span></a>
+    <a href="waste.html" class="tools-nav-btn"><span>🔥</span><span class="t-en">Waste Detector</span><span class="t-fr">Détecteur de Gaspillage</span><span class="t-es">Detector de Desperdicio</span></a>
+
+  </div>
+</div>
 </body>
 </html>

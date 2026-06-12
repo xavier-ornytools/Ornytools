@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<meta name="description" content="RedZone — Aave V3 Liquidation Calculator. Multi-chain: Ethereum, Arbitrum, Base, Optimism, Polygon, Avalanche. Know your liquidation price before the market moves."/>
+<meta name="description" content="RedZone — Aave V3 &amp; Compound V3 Liquidation Calculator. Multi-chain: Ethereum, Arbitrum, Base, Optimism, Polygon, Avalanche. Know your liquidation price before the market moves."/>
 <meta name="robots" content="index,follow"/>
 <link rel="canonical" href="https://ornytools.xyz/liquidation.html"/>
 <meta property="og:type" content="website"/>
@@ -11,7 +11,7 @@
 <meta property="og:title" content="RedZone — Aave V3 Liquidation Calculator — OrnyTools"/>
 <meta property="og:description" content="Your exact liquidation price, Health Factor and buffer on Aave V3 — Ethereum, Arbitrum, Base, Optimism, Polygon, Avalanche. Live prices."/>
 <meta property="og:url" content="https://ornytools.xyz/liquidation.html"/>
-<meta property="og:image" content="https://ornytools.xyz/orny-banner.png"/>
+<meta property="og:image" content="https://ornytools.xyz/orny-banner.webp"/>
 <meta name="twitter:card" content="summary_large_image"/>
 <title>RedZone — Liquidation Calculator — OrnyTools</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
@@ -219,7 +219,30 @@ footer{padding:32px 0;text-align:center;color:var(--faint);font-size:13px;border
   .panel{padding:16px 13px}
   .sim-section{padding:30px 16px 40px}
   .sim-result{grid-template-columns:1fr 1fr}
+  .stress-table th,.stress-table td{padding:8px 10px;font-size:.78rem}
 }
+
+/* STRESS TEST */
+.stress-section{background:#fff;padding:44px 28px 52px;border-top:1px solid var(--line)}
+.stress-inner{max-width:900px;margin:0 auto}
+.stress-table-wrap{overflow-x:auto;margin-top:20px;border-radius:12px;border:1px solid var(--line)}
+.stress-table{width:100%;border-collapse:collapse;font-family:var(--ui)}
+.stress-table th{background:var(--surface-2);font-size:.72rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--dim);padding:11px 16px;text-align:left;white-space:nowrap}
+.stress-table td{padding:11px 16px;font-size:.86rem;border-top:1px solid var(--line-soft);white-space:nowrap}
+.stress-table tr.st-current td{background:#f7f8fc;font-weight:700}
+.stress-table tr:last-child td{border-bottom:none}
+.st-badge{display:inline-block;padding:2px 9px;border-radius:99px;font-size:.72rem;font-weight:700}
+.st-safe{background:rgba(14,159,110,.12);color:var(--good)}
+.st-warn{background:rgba(245,158,11,.12);color:var(--warn)}
+.st-danger{background:rgba(232,118,90,.16);color:var(--coral)}
+.st-liq{background:rgba(232,118,90,.25);color:#c0392b;font-weight:800}
+.st-drop{color:var(--faint);font-size:.78rem;font-weight:600}
+
+/* SHARE BAR */
+.share-bar{text-align:center;padding:20px 28px 0;display:flex;align-items:center;justify-content:center;gap:12px}
+.share-btn{display:inline-flex;align-items:center;gap:7px;padding:9px 20px;border:1.5px solid var(--line);border-radius:99px;background:#fff;font-size:.84rem;font-weight:600;color:var(--dim);cursor:pointer;font-family:var(--ui);transition:.15s}
+.share-btn:hover{border-color:var(--coral);color:var(--coral)}
+.share-copied{font-size:.82rem;font-weight:600;color:var(--good);transition:.3s}
 </style>
 <!-- Google Tag Manager -->
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -227,21 +250,36 @@ new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
 j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
 })(window,document,'script','dataLayer','GTM-5XT34MFV');</script>
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"WebApplication",
+    "name":"RedZone Liquidation Calculator — OrnyTools",
+    "url":"https://ornytools.xyz/liquidation.html",
+    "description":"Know your exact liquidation price and health factor on Aave V3 and Compound V3. Live Chainlink prices on 6 chains, 35+ assets.",
+    "applicationCategory":"FinanceApplication",
+    "operatingSystem":"Any",
+    "browserRequirements":"Requires JavaScript",
+    "offers":{ "@type":"Offer","price":"0","priceCurrency":"USD" },
+    "provider":{ "@type":"Organization","name":"OrnyTools","url":"https://ornytools.xyz" }
+  }
+  </script>
 </head>
 <body>
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5XT34MFV" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <nav class="navbar">
-  <img class="nav-logo" src="logo.png" alt="OrnyTools"/>
+  <img class="nav-logo" src="logo.webp" alt="OrnyTools"/>
   <div>
     <div class="nav-brand">Orny<span class="dot">Tools</span></div>
     <div class="nav-tag">RedZone</div>
   </div>
-  <a href="index.html" class="nav-home"><span class="t-en">← All tools</span><span class="t-fr">← Tous les outils</span></a>
-  <div class="lang-switch" style="margin-left:8px">
-    <button id="btnEN" class="lang-btn active" onclick="setLang('en')">EN</button>
-    <button id="btnFR" class="lang-btn" onclick="setLang('fr')">FR</button>
-  </div>
+  <a href="index.html" class="nav-home"><span class="t-en">← All tools</span><span class="t-fr">← Tous les outils</span><span class="t-es">← Todas las herramientas</span></a>
+  <div class="lang-switch">
+      <button id="btnEN" class="lang-btn active" onclick="setLang('en')">🇬🇧 EN</button>
+      <button id="btnFR" class="lang-btn" onclick="setLang('fr')">🇫🇷 FR</button>
+      <button id="btnES" class="lang-btn" onclick="setLang('es')">🇪🇸 ES</button>
+    </div>
 </nav>
 
 <div class="top-img-wrap">
@@ -251,8 +289,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <!-- HERO -->
 <div class="page-hero">
   <div class="eyebrow">RedZone — Aave V3 Liquidation Calculator</div>
-  <h1><span class="t-en">Are you in the <em>RedZone</em>?</span><span class="t-fr">Êtes-vous dans la <em>RedZone</em>&nbsp;?</span></h1>
-  <p><span class="t-en">Health Factor, exact liquidation price, and buffer — live prices, 6 chains, 35+ assets.</span><span class="t-fr">Health Factor, prix de liquidation exact et marge — prix live, 6 blockchains, 35+ actifs.</span></p>
+  <h1><span class="t-en">Are you in the <em>RedZone</em>?</span><span class="t-fr">Êtes-vous dans la <em>RedZone</em>&nbsp;?</span><span class="t-es">¿Estás en la <em>RedZone</em>?</span></h1>
+  <p><span class="t-en">Health Factor, exact liquidation price, and buffer — live prices, 6 chains, 35+ assets.</span><span class="t-fr">Health Factor, prix de liquidation exact et marge — prix live, 6 blockchains, 35+ actifs.</span><span class="t-es">Health Factor, precio exacto de liquidación y margen — precios en vivo, 6 redes, 35+ activos.</span></p>
   <div class="chain-pills-hero">
     <span class="chain-pill-hero">⬡ Ethereum</span>
     <span class="chain-pill-hero">↑ Arbitrum</span>
@@ -268,7 +306,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
   <!-- LEFT: INPUTS -->
   <div class="panel">
-    <div class="panel-title"><span class="t-en">Your Aave V3 position</span><span class="t-fr">Votre position Aave V3</span></div>
+    <div class="panel-title" id="panelTitle"><span class="t-en">Your Aave V3 position</span><span class="t-fr">Votre position Aave V3</span><span class="t-es">Tu posición en Aave V3</span></div>
+
+    <!-- Protocol selector -->
+    <div id="protocolTabs" class="chain-tabs" style="margin-bottom:10px"></div>
 
     <!-- Chain selector -->
     <div id="chainTabs" class="chain-tabs"></div>
@@ -284,7 +325,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     <!-- Collateral amount -->
     <div class="field with-prefix">
       <label>
-        <span><span class="t-en">Collateral amount</span><span class="t-fr">Montant du collateral</span> <span class="hint" id="symHint">BTC</span></span>
+        <span><span class="t-en">Collateral amount</span><span class="t-fr">Montant du collateral</span><span class="t-es">Monto del colateral</span> <span class="hint" id="symHint">BTC</span></span>
       </label>
       <span class="pfx" id="colSym">₿</span>
       <input id="colAmount" type="number" value="1" min="0" step="any"/>
@@ -293,7 +334,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     <!-- Price -->
     <div class="field">
       <label>
-        <span><span class="t-en">Current price</span><span class="t-fr">Prix actuel</span></span>
+        <span><span class="t-en">Current price</span><span class="t-fr">Prix actuel</span><span class="t-es">Precio actual</span></span>
         <span id="priceStatus" style="font-size:11px;font-weight:600"></span>
       </label>
       <div class="price-row">
@@ -311,7 +352,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     <!-- Debt -->
     <div class="field with-prefix">
       <label>
-        <span><span class="t-en">Total debt (all assets)</span><span class="t-fr">Dette totale (tous actifs)</span></span>
+        <span><span class="t-en">Total debt (all assets)</span><span class="t-fr">Dette totale (tous actifs)</span><span class="t-es">Deuda total (todos los activos)</span></span>
         <span class="hint">USD</span>
       </label>
       <span class="pfx">$</span>
@@ -322,13 +363,13 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     <div class="adv-toggle" id="advToggle" onclick="toggleAdv()">
       <span class="arrow">▾</span>
       <span class="t-en">Advanced (LT · Max LTV · Penalty)</span>
-      <span class="t-fr">Avancé (Seuil · LTV max · Pénalité)</span>
+      <span class="t-fr">Avancé (Seuil · LTV max · Pénalité)</span><span class="t-es">Avanzado (Umbral · LTV máx · Penalización)</span>
     </div>
     <div class="adv-fields" id="advFields">
       <div style="margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:10px">
         <div class="field">
           <label>
-            <span><span class="t-en">Liq. Threshold</span><span class="t-fr">Seuil liquidation</span></span>
+            <span><span class="t-en">Liq. Threshold</span><span class="t-fr">Seuil liquidation</span><span class="t-es">Umbral de liq.</span></span>
             <span class="hint" id="ltHint">78%</span>
           </label>
           <input id="ltPct" type="number" value="78" min="1" max="99" step="0.1"/>
@@ -342,7 +383,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         </div>
         <div class="field">
           <label>
-            <span><span class="t-en">Liq. Penalty</span><span class="t-fr">Pénalité</span></span>
+            <span><span class="t-en">Liq. Penalty</span><span class="t-fr">Pénalité</span><span class="t-es">Penalización liq.</span></span>
             <span class="hint">%</span>
           </label>
           <input id="penaltyPct" type="number" value="10" min="0" max="50" step="0.1"/>
@@ -382,7 +423,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
       <!-- Price scale -->
       <div class="price-scale-wrap" id="priceScaleWrap" style="display:none">
-        <div class="ps-section-label"><span class="t-en">Buffer to liquidation</span><span class="t-fr">Marge avant liquidation</span></div>
+        <div class="ps-section-label"><span class="t-en">Buffer to liquidation</span><span class="t-fr">Marge avant liquidation</span><span class="t-es">Margen hasta liquidación</span></div>
         <div class="price-scale" id="priceScale">
           <div class="ps-marker liq" id="psLiq" style="left:20%"></div>
           <div class="ps-marker cur" id="psCur" style="left:75%"></div>
@@ -397,7 +438,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     <div class="breakdown-card">
       <!-- LTV bar -->
       <div class="br-row">
-        <span><span class="t-en">Current LTV</span><span class="t-fr">LTV actuel</span></span>
+        <span><span class="t-en">Current LTV</span><span class="t-fr">LTV actuel</span><span class="t-es">LTV actual</span></span>
         <b id="rLtvPct">—</b>
       </div>
       <div id="ltvBarWrap" class="ltv-bar-wrap" style="display:none">
@@ -408,16 +449,16 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         </div>
         <div class="ltv-bar-labels">
           <span>0%</span>
-          <span id="ltvMaxLabel" style="color:var(--warn)"><span class="t-en">Max LTV</span><span class="t-fr">LTV max</span> <span id="ltvMaxPctLabel">73%</span></span>
+          <span id="ltvMaxLabel" style="color:var(--warn)"><span class="t-en">Max LTV</span><span class="t-fr">LTV max</span><span class="t-es">LTV máximo</span> <span id="ltvMaxPctLabel">73%</span></span>
           <span id="ltvLtLabel" style="color:var(--coral)">LT <span id="ltvLtPctLabel">78%</span></span>
           <span>100%</span>
         </div>
       </div>
-      <div class="br-row"><span><span class="t-en">Collateral value</span><span class="t-fr">Valeur du collateral</span></span><b id="rColUSD">—</b></div>
-      <div class="br-row good"><span><span class="t-en">Max borrowable</span><span class="t-fr">Emprunt restant possible</span></span><b id="rMaxBorrow">—</b></div>
-      <div class="br-row danger"><span><span class="t-en">Liquidation price</span><span class="t-fr">Prix de liquidation</span></span><b id="rLiqPrice">—</b></div>
-      <div class="br-row danger"><span><span class="t-en">Drop to liquidation</span><span class="t-fr">Baisse avant liquidation</span></span><b id="rDrop">—</b></div>
-      <div class="br-row"><span><span class="t-en">Penalty at liquidation</span><span class="t-fr">Pénalité à la liquidation</span></span><b id="rPenalty">—</b></div>
+      <div class="br-row"><span><span class="t-en">Collateral value</span><span class="t-fr">Valeur du collateral</span><span class="t-es">Valor del colateral</span></span><b id="rColUSD">—</b></div>
+      <div class="br-row good"><span><span class="t-en">Max borrowable</span><span class="t-fr">Emprunt restant possible</span><span class="t-es">Máximo prestable</span></span><b id="rMaxBorrow">—</b></div>
+      <div class="br-row danger"><span><span class="t-en">Liquidation price</span><span class="t-fr">Prix de liquidation</span><span class="t-es">Precio de liquidación</span></span><b id="rLiqPrice">—</b></div>
+      <div class="br-row danger"><span><span class="t-en">Drop to liquidation</span><span class="t-fr">Baisse avant liquidation</span><span class="t-es">Caída hasta liquidación</span></span><b id="rDrop">—</b></div>
+      <div class="br-row"><span><span class="t-en">Penalty at liquidation</span><span class="t-fr">Pénalité à la liquidation</span><span class="t-es">Penalización en la liquidación</span></span><b id="rPenalty">—</b></div>
     </div>
 
     <!-- Alert -->
@@ -428,12 +469,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
     <!-- Action card -->
     <div class="action-card" id="actionCard" style="display:none">
-      <div class="ac-title"><span class="t-en">To reach HF 2.0</span><span class="t-fr">Pour atteindre HF 2,0</span></div>
-      <div class="ac-row"><span><span class="t-en">Repay</span><span class="t-fr">Rembourser</span></span><b id="actionRepay">—</b></div>
-      <div class="ac-row"><span><span class="t-en">Or add collateral</span><span class="t-fr">Ou ajouter du collateral</span></span><b id="actionAdd">—</b></div>
-      <div class="disclaimer">
-        <span class="t-en">Parameters are approximate. Always verify on <a href="https://app.aave.com" target="_blank" rel="noopener">app.aave.com</a>.</span>
-        <span class="t-fr">Paramètres indicatifs. Vérifiez sur <a href="https://app.aave.com" target="_blank" rel="noopener">app.aave.com</a>.</span>
+      <div class="ac-title"><span class="t-en">To reach HF 2.0</span><span class="t-fr">Pour atteindre HF 2,0</span><span class="t-es">Para alcanzar HF 2,0</span></div>
+      <div class="ac-row"><span><span class="t-en">Repay</span><span class="t-fr">Rembourser</span><span class="t-es">Reembolsar</span></span><b id="actionRepay">—</b></div>
+      <div class="ac-row"><span><span class="t-en">Or add collateral</span><span class="t-fr">Ou ajouter du collateral</span><span class="t-es">O añadir colateral</span></span><b id="actionAdd">—</b></div>
+      <div class="disclaimer" id="disclaimerEl">
+        <span class="t-en">Parameters are approximate. Always verify on <a id="verifyLinkEN" href="https://app.aave.com" target="_blank" rel="noopener">app.aave.com</a>.</span>
+        <span class="t-fr">Paramètres indicatifs. Vérifiez sur <a id="verifyLinkFR" href="https://app.aave.com" target="_blank" rel="noopener">app.aave.com</a>.</span><span class="t-es">Parameters are approximate. Always verify on <a id="verifyLinkEN" href="https://app.aave.com" target="_blank" rel="noopener">app.aave.com</a>.</span>
       </div>
     </div>
 
@@ -443,8 +484,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <!-- SIMULATOR -->
 <div class="sim-section">
   <div class="sim-inner">
-    <h2 class="sim-title"><span class="t-en">Price drop simulator</span><span class="t-fr">Simulateur de baisse de prix</span></h2>
-    <p class="sim-sub"><span class="t-en">Drag to simulate a market crash. See the impact on your Health Factor and liquidation risk in real time.</span><span class="t-fr">Glissez pour simuler un crash du marché. Impact sur votre HF et risque de liquidation en temps réel.</span></p>
+    <h2 class="sim-title"><span class="t-en">Price drop simulator</span><span class="t-fr">Simulateur de baisse de prix</span><span class="t-es">Simulador de caída de precio</span></h2>
+    <p class="sim-sub"><span class="t-en">Drag to simulate a market crash. See the impact on your Health Factor and liquidation risk in real time.</span><span class="t-fr">Glissez pour simuler un crash du marché. Impact sur votre HF et risque de liquidation en temps réel.</span><span class="t-es">Arrastra para simular un crash de mercado. Ve el impacto en tu Health Factor y riesgo de liquidación en tiempo real.</span></p>
 
     <div class="sim-slider-row">
       <span style="font-size:12px;color:var(--faint);font-weight:600">0%</span>
@@ -455,7 +496,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
     <div class="sim-result">
       <div class="sr-cell">
-        <div class="sr-label"><span class="t-en">Simulated price</span><span class="t-fr">Prix simulé</span></div>
+        <div class="sr-label"><span class="t-en">Simulated price</span><span class="t-fr">Prix simulé</span><span class="t-es">Precio simulado</span></div>
         <div class="sr-val" id="simPrice">—</div>
       </div>
       <div class="sr-cell">
@@ -463,37 +504,113 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         <div class="sr-val" id="simHF">—</div>
       </div>
       <div class="sr-cell">
-        <div class="sr-label"><span class="t-en">Simulated LTV</span><span class="t-fr">LTV simulé</span></div>
+        <div class="sr-label"><span class="t-en">Simulated LTV</span><span class="t-fr">LTV simulé</span><span class="t-es">LTV simulado</span></div>
         <div class="sr-val" id="simLtv">—</div>
       </div>
       <div class="sr-cell">
-        <div class="sr-label"><span class="t-en">Status</span><span class="t-fr">Statut</span></div>
+        <div class="sr-label"><span class="t-en">Status</span><span class="t-fr">Statut</span><span class="t-es">Estado</span></div>
         <div class="sr-val" id="simStatus">—</div>
       </div>
     </div>
   </div>
 </div>
 
+<!-- STRESS TEST TABLE -->
+<div class="stress-section" id="stressSection" style="display:none">
+  <div class="stress-inner">
+    <h2 class="sim-title">
+      <span class="t-en">Crash Stress Test</span>
+      <span class="t-fr">Stress Test de Crash</span><span class="t-es">Prueba de Estrés de Crash</span>
+    </h2>
+    <p class="sim-sub">
+      <span class="t-en">Your position at each price level. Where does it break?</span>
+      <span class="t-fr">Votre position à chaque niveau de prix. Où est la rupture&nbsp;?</span><span class="t-es">Tu posición en cada nivel de precio. ¿Dónde se rompe?</span>
+    </p>
+    <div class="stress-table-wrap">
+      <table class="stress-table" id="stressTable">
+        <thead>
+          <tr>
+            <th><span class="t-en">Price drop</span><span class="t-fr">Baisse prix</span><span class="t-es">Caída de precio</span></th>
+            <th><span class="t-en">Collateral price</span><span class="t-fr">Prix collateral</span><span class="t-es">Precio del colateral</span></th>
+            <th>Health Factor</th>
+            <th><span class="t-en">Current LTV</span><span class="t-fr">LTV actuel</span><span class="t-es">LTV actual</span></th>
+            <th><span class="t-en">Status</span><span class="t-fr">Statut</span><span class="t-es">Estado</span></th>
+          </tr>
+        </thead>
+        <tbody id="stressTbody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- SHARE BUTTON -->
+<div class="share-bar" id="shareBar" style="display:none">
+  <button class="share-btn" id="shareBtn" onclick="sharePosition()">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+    <span class="t-en">Share this position</span>
+    <span class="t-fr">Partager cette position</span><span class="t-es">Compartir esta posición</span>
+  </button>
+  <span class="share-copied" id="shareCopied"></span>
+</div>
+
 <div class="bottom-img-wrap">
-  <img src="orny-karate.png" alt="OrnyTools — Know your risk, defend your position"/>
+  <img src="orny-karate.webp" alt="OrnyTools — Know your risk, defend your position"/>
 </div>
 
 <!-- BACK -->
 <div class="back-section">
   <a class="back-link" href="index.html">
     <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 1.5L1.5 9 9 16.5M1.5 9h15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    <span class="t-en">Back to all tools</span><span class="t-fr">Retour aux outils</span>
+    <span class="t-en">Back to all tools</span><span class="t-fr">Retour aux outils</span><span class="t-es">Volver a todas las herramientas</span>
   </a>
 </div>
 
 <footer>
-  <div class="ft-tag"><span class="t-en">RedZone — <span>know your risk</span> before the market does.</span><span class="t-fr">RedZone — <span>connaissez votre risque</span> avant le marché.</span></div>
-  <span class="t-en">HF = (Collateral × LT) / Debt · Read-only · no wallet connection</span><span class="t-fr">HF = (Collateral × Seuil) / Dette · Lecture seule · sans connexion</span> · ornytools.xyz<br/>
+  <div class="ft-tag"><span class="t-en">RedZone — <span>know your risk</span> before the market does.</span><span class="t-fr">RedZone — <span>connaissez votre risque</span><span class="t-es">RedZone — <span>conoce tu riesgo</span> antes que el mercado.</span> avant le marché.</span></div>
+  <span class="t-en">HF = (Collateral × LT) / Debt · Read-only · no wallet connection</span><span class="t-fr">HF = (Collateral × Seuil) / Dette · Lecture seule · sans connexion</span><span class="t-es">HF = (Colateral × Umbral) / Deuda · Solo lectura · sin conexión de wallet</span> · ornytools.xyz<br/>
   <span style="margin-top:7px;display:inline-block">Built by <a href="https://www.linkedin.com/in/xavier-maquin-5576643b9/" target="_blank" rel="noopener" style="color:var(--coral);text-decoration:none;font-weight:600">Xavier Maquin</a></span>
 </footer>
 
 <script>
 const $ = id => document.getElementById(id);
+
+/* ── CHAINLINK PRICE FEEDS ────────────────────────────────── */
+// latestRoundData() 0xfeaf968c → [roundId, answer, startedAt, updatedAt, answeredInRound]
+// decimals()        0x313ce567 → uint8 (8 pour les feeds USD)
+// prix_usd = answer / 10^decimals  |  stale si age > heartbeat + 3600s
+const CL_RPCS = {
+  ethereum: ['https://ethereum-rpc.publicnode.com','https://eth.llamarpc.com'],
+  arbitrum: ['https://arbitrum-one-rpc.publicnode.com','https://arb1.arbitrum.io/rpc','https://arbitrum.llamarpc.com'],
+  base:     ['https://base-rpc.publicnode.com','https://mainnet.base.org'],
+  optimism: ['https://optimism-rpc.publicnode.com','https://mainnet.optimism.io'],
+  polygon:  ['https://polygon-bor-rpc.publicnode.com','https://polygon-rpc.com'],
+};
+// Clé : "{chain}_{geckoId}" → { feed, hb(heartbeat s) }
+const CL_FEEDS = {
+  // Ethereum mainnet (vérifié reference-data-directory.vercel.app)
+  'ethereum_ethereum':            { feed:'0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419', hb:3600  }, // ETH/USD
+  'ethereum_wrapped-bitcoin':     { feed:'0xF4030086522a5bEEa4988F8cA5B36dbC97BeE88c', hb:3600  }, // BTC/USD
+  'ethereum_chainlink':           { feed:'0x2c1d072e956AFFC0D435Cb7AC308d97936Ed4a77', hb:3600  }, // LINK/USD
+  'ethereum_uniswap':             { feed:'0x553303d460EE0afB37EdFf9bE42922D8FF63220e', hb:3600  }, // UNI/USD
+  'ethereum_aave':                { feed:'0x547a514d5e3769680Ce22B2361c10Ea13619e8a9', hb:3600  }, // AAVE/USD
+  // Arbitrum One
+  'arbitrum_ethereum':            { feed:'0x639Fe6ab55C921f74e7fac1ee960C0B6293ba612', hb:86400 }, // ETH/USD
+  'arbitrum_wrapped-bitcoin':     { feed:'0x6ce185539ad4fdaecd7274954bd5a3d80c616598', hb:86400 }, // BTC/USD
+  'arbitrum_chainlink':           { feed:'0x86E53CF1B873786aC9Cc3e6F6d4F9dD01AF72f3b', hb:3600  }, // LINK/USD
+  'arbitrum_arbitrum':            { feed:'0xb2A824043730FE05F3DA2efaFa1CBbe83fa548D6', hb:86400 }, // ARB/USD
+  // Base
+  'base_ethereum':                { feed:'0x71041dddad3595F9CEd3DcCFBe3D1F4b0a16Bb70', hb:1200  }, // ETH/USD
+  'base_usd-coin':                { feed:'0x7e860098F58bBFC8648a4311b374B1D669a2bc9b', hb:86400 }, // USDC/USD
+  // Optimism
+  'optimism_ethereum':            { feed:'0x13e3Ee699D1909E989722E753853AE30b17e08c5', hb:1200  }, // ETH/USD
+  'optimism_wrapped-bitcoin':     { feed:'0xD702DD976Fb76Fffc2D3963D037dfDae5b04E593', hb:1200  }, // BTC/USD
+  'optimism_chainlink':           { feed:'0xCc232dcFAAE6354cE191Bd574108c1aD03f86450', hb:1200  }, // LINK/USD
+  // Polygon
+  'polygon_ethereum':             { feed:'0xF9680D99D6C9589e2a93a78A04A279e509205945', hb:3600  }, // ETH/USD
+  'polygon_wrapped-bitcoin':      { feed:'0xDE31F8bFBD8c84b5360CFACCa3539B938dd78ae6', hb:86400 }, // BTC/USD
+  'polygon_matic-network':        { feed:'0xAB594600376Ec9fD91F8e885dADF0CE036862dE0', hb:3600  }, // MATIC/USD
+};
+let _lastPriceSrc = 'coingecko'; // source du dernier fetchPrice
 
 /* ── CHAIN + TOKEN DATA (Aave V3 risk params, indicative) ─── */
 // lt = Liquidation Threshold %, ltv = Max LTV %, penalty = Liq Bonus %
@@ -577,9 +694,99 @@ const CHAINS = {
   },
 };
 
-let _chain  = 'arbitrum'; // default = Arbitrum (Xavier's chain)
-let _token  = 'WBTC';
+/* ── COMPOUND V3 — USDC market risk parameters (indicative, verify on app.compound.finance) ── */
+const COMPOUND_CHAINS = {
+  ethereum: {
+    name:'Ethereum', dot:'#627EEA',
+    tokens:{
+      WETH:   {lt:85,  ltv:82.5,penalty:5,   sym:'Ξ',  hint:'WETH',    gecko:'ethereum',                    def:3800},
+      WBTC:   {lt:77,  ltv:70,  penalty:10,  sym:'₿',  hint:'WBTC',    gecko:'wrapped-bitcoin',             def:105000},
+      wstETH: {lt:83,  ltv:80,  penalty:7.5, sym:'Ξ',  hint:'wstETH',  gecko:'wrapped-steth',               def:4400},
+      cbETH:  {lt:83,  ltv:80,  penalty:7.5, sym:'Ξ',  hint:'cbETH',   gecko:'coinbase-wrapped-staked-eth', def:3900},
+      LINK:   {lt:79,  ltv:73,  penalty:10,  sym:'⬡',  hint:'LINK',    gecko:'chainlink',                   def:18},
+      UNI:    {lt:79,  ltv:73,  penalty:10,  sym:'🦄', hint:'UNI',     gecko:'uniswap',                     def:12},
+      COMP:   {lt:70,  ltv:65,  penalty:10,  sym:'C',  hint:'COMP',    gecko:'compound-governance-token',   def:55},
+      Custom: {lt:null,ltv:null,penalty:10,  sym:'◈',  hint:'token',   gecko:null,                          def:null},
+    }
+  },
+  arbitrum: {
+    name:'Arbitrum', dot:'#28A0F0',
+    tokens:{
+      WETH:   {lt:85,  ltv:80,  penalty:5,   sym:'Ξ',  hint:'WETH',   gecko:'ethereum',              def:3800},
+      WBTC:   {lt:77,  ltv:70,  penalty:10,  sym:'₿',  hint:'WBTC',   gecko:'wrapped-bitcoin',       def:105000},
+      wstETH: {lt:83,  ltv:78,  penalty:7.5, sym:'Ξ',  hint:'wstETH', gecko:'wrapped-steth',         def:4400},
+      ARB:    {lt:62,  ltv:55,  penalty:10,  sym:'↑',  hint:'ARB',    gecko:'arbitrum',              def:1.2},
+      GMX:    {lt:45,  ltv:35,  penalty:15,  sym:'G',  hint:'GMX',    gecko:'gmx',                   def:35},
+      Custom: {lt:null,ltv:null,penalty:10,  sym:'◈',  hint:'token',  gecko:null,                    def:null},
+    }
+  },
+  base: {
+    name:'Base', dot:'#0052FF',
+    tokens:{
+      WETH:   {lt:85,  ltv:82.5,penalty:5,   sym:'Ξ',  hint:'WETH',   gecko:'ethereum',                    def:3800},
+      cbETH:  {lt:82,  ltv:78,  penalty:7.5, sym:'Ξ',  hint:'cbETH',  gecko:'coinbase-wrapped-staked-eth', def:3900},
+      wstETH: {lt:82,  ltv:78,  penalty:7.5, sym:'Ξ',  hint:'wstETH', gecko:'wrapped-steth',               def:4400},
+      cbBTC:  {lt:77,  ltv:70,  penalty:10,  sym:'₿',  hint:'cbBTC',  gecko:'coinbase-wrapped-btc',        def:105000},
+      Custom: {lt:null,ltv:null,penalty:10,  sym:'◈',  hint:'token',  gecko:null,                          def:null},
+    }
+  },
+  optimism: {
+    name:'Optimism', dot:'#FF0420',
+    tokens:{
+      WETH:   {lt:85,  ltv:82.5,penalty:5,   sym:'Ξ',  hint:'WETH',   gecko:'ethereum',        def:3800},
+      WBTC:   {lt:77,  ltv:70,  penalty:10,  sym:'₿',  hint:'WBTC',   gecko:'wrapped-bitcoin', def:105000},
+      OP:     {lt:65,  ltv:57.5,penalty:10,  sym:'⭕', hint:'OP',     gecko:'optimism',         def:2.5},
+      Custom: {lt:null,ltv:null,penalty:10,  sym:'◈',  hint:'token',  gecko:null,               def:null},
+    }
+  },
+  polygon: {
+    name:'Polygon', dot:'#8247E5',
+    tokens:{
+      WETH:   {lt:82.5,ltv:80,  penalty:5,   sym:'Ξ',  hint:'WETH',   gecko:'ethereum',        def:3800},
+      WBTC:   {lt:77,  ltv:70,  penalty:10,  sym:'₿',  hint:'WBTC',   gecko:'wrapped-bitcoin', def:105000},
+      WMATIC: {lt:70,  ltv:60,  penalty:10,  sym:'⬟', hint:'WMATIC', gecko:'matic-network',    def:0.7},
+      Custom: {lt:null,ltv:null,penalty:10,  sym:'◈',  hint:'token',  gecko:null,               def:null},
+    }
+  },
+};
+
+/* ── MORPHO BLUE — LLTV markets (in Morpho, ltv === lt = LLTV, penalty = liquidation incentive) ── */
+const MORPHO_CHAINS = {
+  ethereum: {
+    name:'Ethereum', dot:'#627EEA',
+    tokens:{
+      WETH:   {lt:86,  ltv:86,  penalty:4.17, sym:'Ξ',  hint:'WETH',    gecko:'ethereum',                    def:3800},
+      WBTC:   {lt:80,  ltv:80,  penalty:8.33, sym:'₿',  hint:'WBTC',    gecko:'wrapped-bitcoin',             def:105000},
+      wstETH: {lt:86,  ltv:86,  penalty:4.17, sym:'Ξ',  hint:'wstETH',  gecko:'wrapped-steth',               def:4400},
+      cbETH:  {lt:86,  ltv:86,  penalty:4.17, sym:'Ξ',  hint:'cbETH',   gecko:'coinbase-wrapped-staked-eth', def:3900},
+      weETH:  {lt:86,  ltv:86,  penalty:4.17, sym:'Ξ',  hint:'weETH',   gecko:'ether-fi-staked-eth',         def:4100},
+      rETH:   {lt:86,  ltv:86,  penalty:4.17, sym:'Ξ',  hint:'rETH',    gecko:'rocket-pool-eth',             def:4200},
+      Custom: {lt:null,ltv:null,penalty:5,    sym:'◈',  hint:'token',   gecko:null,                          def:null},
+    }
+  },
+  base: {
+    name:'Base', dot:'#0052FF',
+    tokens:{
+      WETH:   {lt:86,  ltv:86,  penalty:4.17, sym:'Ξ',  hint:'WETH',   gecko:'ethereum',                    def:3800},
+      cbETH:  {lt:86,  ltv:86,  penalty:4.17, sym:'Ξ',  hint:'cbETH',  gecko:'coinbase-wrapped-staked-eth', def:3900},
+      cbBTC:  {lt:80,  ltv:80,  penalty:8.33, sym:'₿',  hint:'cbBTC',  gecko:'coinbase-wrapped-btc',        def:105000},
+      wstETH: {lt:86,  ltv:86,  penalty:4.17, sym:'Ξ',  hint:'wstETH', gecko:'wrapped-steth',               def:4400},
+      Custom: {lt:null,ltv:null,penalty:5,    sym:'◈',  hint:'token',  gecko:null,                          def:null},
+    }
+  },
+};
+
+let _chain    = 'arbitrum'; // default = Arbitrum
+let _token    = 'WBTC';
+let _protocol = 'aave';     // 'aave' | 'compound' | 'morpho'
 const _priceCache = {};
+
+/* Return the active chains object for the current protocol */
+function activeChains(){
+  if(_protocol==='compound') return COMPOUND_CHAINS;
+  if(_protocol==='morpho')   return MORPHO_CHAINS;
+  return CHAINS;
+}
 
 /* ── HELPERS ──────────────────────────────────────────────── */
 function fmtUSD(v, dec=0){
@@ -590,12 +797,50 @@ function fmtUSD(v, dec=0){
 function fmtNum(v,d=2){ return isFinite(v)?v.toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d}):'—'; }
 function L(){ return (typeof getLang==='function')?getLang():'en'; }
 
-function getToken(){ return CHAINS[_chain]?.tokens[_token] || null; }
+function getToken(){ return activeChains()[_chain]?.tokens[_token] || null; }
+
+/* ── RENDER PROTOCOL TABS ─────────────────────────────────── */
+const PROTOCOLS = [
+  { key:'aave',     label:'Aave V3',     url:'https://app.aave.com',             urlLabel:'app.aave.com'         },
+  { key:'compound', label:'Compound V3', url:'https://app.compound.finance',     urlLabel:'app.compound.finance' },
+  { key:'morpho',   label:'Morpho Blue', url:'https://app.morpho.org',           urlLabel:'app.morpho.org'       },
+];
+
+function renderProtocolTabs(){
+  const el = $('protocolTabs');
+  el.innerHTML = PROTOCOLS.map(p=>
+    `<button class="chain-btn${p.key===_protocol?' active':''}" style="font-size:12px" data-protocol="${p.key}">${p.label}</button>`
+  ).join('');
+  el.querySelectorAll('[data-protocol]').forEach(btn=>{
+    btn.addEventListener('click', async ()=>{
+      _protocol = btn.dataset.protocol;
+      const proto = PROTOCOLS.find(p=>p.key===_protocol);
+      // Reset chain to first available in new protocol
+      const chains = activeChains();
+      if(!chains[_chain]) _chain = Object.keys(chains)[0];
+      _token = Object.keys(chains[_chain].tokens)[0];
+      // Update disclaimer links
+      document.getElementById('verifyLinkEN').href = proto.url;
+      document.getElementById('verifyLinkEN').textContent = proto.urlLabel;
+      document.getElementById('verifyLinkFR').href = proto.url;
+      document.getElementById('verifyLinkFR').textContent = proto.urlLabel;
+      // Update panel title
+      const titleEl = $('panelTitle');
+      titleEl.innerHTML = `<span class="t-en">Your ${proto.label} position</span><span class="t-fr">Votre position ${proto.label}</span><span class="t-es">Your ${proto.label} position</span>`;
+      renderProtocolTabs();
+      renderChainTabs();
+      renderTokens();
+      renderParamChips();
+      applyTokenToForm();
+      await refreshPrice();
+    });
+  });
+}
 
 /* ── RENDER CHAIN TABS ────────────────────────────────────── */
 function renderChainTabs(){
   const el = $('chainTabs');
-  el.innerHTML = Object.entries(CHAINS).map(([key,c])=>
+  el.innerHTML = Object.entries(activeChains()).map(([key,c])=>
     `<button class="chain-btn${key===_chain?' active':''}" data-chain="${key}">
       <span class="chain-dot" style="background:${c.dot}"></span>
       <span class="chain-name">${c.name}</span>
@@ -604,7 +849,7 @@ function renderChainTabs(){
   el.querySelectorAll('.chain-btn').forEach(btn=>{
     btn.addEventListener('click', async ()=>{
       _chain = btn.dataset.chain;
-      const tokens = CHAINS[_chain].tokens;
+      const tokens = activeChains()[_chain].tokens;
       _token = Object.keys(tokens)[0]; // select first token of new chain
       renderChainTabs();
       renderTokens();
@@ -618,10 +863,10 @@ function renderChainTabs(){
 /* ── RENDER TOKEN PRESETS ─────────────────────────────────── */
 function renderTokens(){
   const el = $('presets');
-  const tokens = CHAINS[_chain].tokens;
+  const tokens = activeChains()[_chain].tokens;
   el.innerHTML = Object.keys(tokens).map(key=>{
     const isCustom = !tokens[key].gecko;
-    return `<button class="preset-btn${key===_token?' active':''}" data-token="${key}">${isCustom?('<span class="t-en">Custom</span><span class="t-fr">Manuel</span>'):key}</button>`;
+    return `<button class="preset-btn${key===_token?' active':''}" data-token="${key}">${isCustom?('<span class="t-en">Custom</span><span class="t-fr">Manuel</span><span class="t-es">Personalizado</span>'):key}</button>`;
   }).join('');
   el.querySelectorAll('.preset-btn').forEach(btn=>{
     btn.addEventListener('click', async ()=>{
@@ -661,15 +906,55 @@ function applyTokenToForm(){
 }
 
 /* ── LIVE PRICE FETCH ─────────────────────────────────────── */
+// Essaie Chainlink on-chain en premier, CoinGecko en fallback.
+// Retourne un nombre (USD) ou null.
 async function fetchPrice(gecko){
   if(!gecko) return null;
-  if(_priceCache[gecko] && Date.now()-_priceCache[gecko].ts < 60000) return _priceCache[gecko].v;
+  const cacheKey = _chain + '_' + gecko;
+  if(_priceCache[cacheKey] && Date.now()-_priceCache[cacheKey].ts < 60000){
+    _lastPriceSrc = _priceCache[cacheKey].src;
+    return _priceCache[cacheKey].v;
+  }
+
+  // ── Tentative Chainlink ──────────────────────────────────
+  const clEntry = CL_FEEDS[cacheKey];
+  const rpcs    = CL_RPCS[_chain];
+  if(clEntry && rpcs){
+    const now = Math.floor(Date.now()/1000);
+    for(const rpc of rpcs){
+      try{
+        const c=new AbortController(); setTimeout(()=>c.abort(),4000);
+        // latestRoundData() selector 0xfeaf968c → 5 mots ABI-encodés
+        const r=await fetch(rpc,{method:'POST',headers:{'Content-Type':'application/json'},
+          body:JSON.stringify({jsonrpc:'2.0',method:'eth_call',params:[{to:clEntry.feed,data:'0xfeaf968c'},'latest'],id:1}),
+          signal:c.signal});
+        const d=await r.json();
+        if(!d.result||d.result==='0x') continue;
+        const hex=d.result.replace(/^0x/,'');
+        const w=i=>BigInt('0x'+hex.slice(i*64,(i+1)*64));
+        const answer=Number(w(1)), updatedAt=Number(w(3));
+        if(answer<=0||(now-updatedAt)>clEntry.hb+3600) continue; // stale ou invalide
+        // decimals() 0x313ce567
+        const rd=await fetch(rpc,{method:'POST',headers:{'Content-Type':'application/json'},
+          body:JSON.stringify({jsonrpc:'2.0',method:'eth_call',params:[{to:clEntry.feed,data:'0x313ce567'},'latest'],id:2})});
+        const dd=await rd.json();
+        const decimals=dd.result?parseInt(dd.result,16):8;
+        const price=answer/Math.pow(10,decimals);
+        _priceCache[cacheKey]={v:price,src:'chainlink',ts:Date.now()};
+        _lastPriceSrc='chainlink';
+        return price;
+      }catch(_){ /* essayer le RPC suivant */ }
+    }
+  }
+
+  // ── Fallback CoinGecko ───────────────────────────────────
   try{
-    const r = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${gecko}&vs_currencies=usd`);
+    const c=new AbortController(); setTimeout(()=>c.abort(),6000);
+    const r=await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${gecko}&vs_currencies=usd`,{signal:c.signal});
     if(!r.ok) throw '';
-    const d = await r.json();
-    const v = d[gecko]?.usd || null;
-    if(v) _priceCache[gecko] = {v, ts:Date.now()};
+    const data=await r.json();
+    const v=data[gecko]?.usd||null;
+    if(v){ _priceCache[cacheKey]={v,src:'coingecko',ts:Date.now()}; _lastPriceSrc='coingecko'; }
     return v;
   }catch{ return null; }
 }
@@ -684,7 +969,10 @@ async function refreshPrice(){
   btn.classList.remove('loading');
   if(price){
     $('colPrice').value = price;
-    $('priceStatus').innerHTML = '<span style="color:var(--good)">● live</span>';
+    const srcLabel = _lastPriceSrc==='chainlink'
+      ? '● <a href="https://data.chain.link" target="_blank" style="color:var(--good);text-decoration:none;font-weight:700">Chainlink</a>'
+      : '● CoinGecko';
+    $('priceStatus').innerHTML = `<span style="color:var(--good)">${srcLabel}</span>`;
   } else {
     $('priceStatus').textContent = L()==='fr'?'erreur API':'API error';
     $('priceStatus').style.color = 'var(--coral)';
@@ -874,6 +1162,12 @@ function calc(){
 
   // Simulator
   if(debt>0&&colAmt>0&&colPrice>0&&lt>0) updateSim(colPrice,lt,colAmt,debt);
+
+  // Stress test table
+  updateStressTable(colPrice, colAmt, debt, lt, maxLtv);
+
+  // Update shareable URL
+  encodeHash();
 }
 
 /* ── INPUT LISTENERS ──────────────────────────────────────── */
@@ -885,22 +1179,139 @@ $('simSlider').addEventListener('input',function(){
   if(ca>0&&cp>0&&d>0&&lt>0) updateSim(cp,lt,ca,d);
 });
 
+/* ── STRESS TEST TABLE ────────────────────────────────────── */
+const STRESS_DROPS = [0, 10, 20, 30, 40, 50, 60, 70];
+
+function updateStressTable(colPrice, colAmt, debt, lt, maxLtv){
+  const l = L();
+  const tbody = $('stressTbody');
+  if(!(debt>0 && colAmt>0 && lt>0)){
+    $('stressSection').style.display='none';
+    $('shareBar').style.display='none';
+    return;
+  }
+  $('stressSection').style.display='';
+  $('shareBar').style.display='';
+
+  const liqPrice = debt/(colAmt*lt);
+  tbody.innerHTML = STRESS_DROPS.map(drop=>{
+    const pSim    = colPrice*(1-drop/100);
+    const isCur   = drop===0;
+    const colUSD  = pSim*colAmt;
+    const hf      = (colUSD*lt)/debt;
+    const ltvSim  = (debt/colUSD)*100;
+    const isLiq   = pSim <= liqPrice;
+
+    let badgeClass, badgeText;
+    if(isLiq){
+      badgeClass='st-liq';
+      badgeText=l==='fr'?'LIQUIDATION':'LIQUIDATION';
+    } else if(hf>=2){
+      badgeClass='st-safe';
+      badgeText=l==='fr'?'Sûr':'Safe';
+    } else if(hf>=1.5){
+      badgeClass='st-warn';
+      badgeText=l==='fr'?'À surveiller':'Watch';
+    } else {
+      badgeClass='st-danger';
+      badgeText=l==='fr'?'Danger':'Danger';
+    }
+
+    return `<tr class="${isCur?'st-current':''}">
+      <td>${isCur?`<b>${l==='fr'?'Prix actuel':'Current'}</b>`:`<span class="st-drop">−${drop}%</span>`}</td>
+      <td>${fmtUSD(pSim,0)}</td>
+      <td><b style="color:${isLiq?'#c0392b':hf>=2?'var(--good)':hf>=1.5?'var(--warn)':'var(--coral)'}">${isLiq?'< 1.0':fmtNum(hf,2)}</b></td>
+      <td>${ltvSim.toFixed(1)}%</td>
+      <td><span class="st-badge ${badgeClass}">${badgeText}</span></td>
+    </tr>`;
+  }).join('');
+}
+
+/* ── SHAREABLE URL ────────────────────────────────────────── */
+function encodeHash(){
+  const p=encodeURIComponent(_protocol||'aave');
+  const c=encodeURIComponent(_chain||'arbitrum');
+  const t=encodeURIComponent(_token||'WBTC');
+  const a=encodeURIComponent($('colAmount').value||'');
+  const pr=encodeURIComponent($('colPrice').value||'');
+  const d=encodeURIComponent($('debtUSD').value||'');
+  history.replaceState(null,'',`#${p}/${c}/${t}/${a}/${pr}/${d}`);
+}
+
+function decodeHash(){
+  const h=location.hash.replace('#','');
+  if(!h) return false;
+  const parts=h.split('/');
+  if(parts.length<6) return false;
+  try{
+    _protocol=decodeURIComponent(parts[0])||'aave';
+    // Validate protocol
+    if(!['aave','compound','morpho'].includes(_protocol)) _protocol='aave';
+    const chain=decodeURIComponent(parts[1]);
+    // Validate chain exists in protocol
+    if(activeChains()[chain]) _chain=chain;
+    const tok=decodeURIComponent(parts[2]);
+    if(activeChains()[_chain]?.tokens[tok]) _token=tok;
+    if(parts[3]) $('colAmount').value=decodeURIComponent(parts[3]);
+    if(parts[4]) $('colPrice').value=decodeURIComponent(parts[4]);
+    if(parts[5]) $('debtUSD').value=decodeURIComponent(parts[5]);
+    return true;
+  } catch(e){ return false; }
+}
+
+function sharePosition(){
+  encodeHash();
+  const url=location.href;
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(url).then(()=>{
+      const el=$('shareCopied');
+      el.textContent=L()==='fr'?'✓ Lien copié !':'✓ Link copied!';
+      setTimeout(()=>{ el.textContent=''; },2500);
+    });
+  }
+}
+
 /* ── LANG CHANGE ──────────────────────────────────────────── */
 window.onLangChange=function(){ renderParamChips(); calc(); };
 
 /* ── INIT ─────────────────────────────────────────────────── */
 (async function(){
+  // Restore state from URL hash if present
+  const hadHash = decodeHash();
+
+  // Sync protocol disclaimer link if restored from hash
+  if(hadHash){
+    const proto = PROTOCOLS.find(p=>p.key===_protocol)||PROTOCOLS[0];
+    const el1=document.getElementById('verifyLinkEN'), el2=document.getElementById('verifyLinkFR');
+    if(el1){ el1.href=proto.url; el1.textContent=proto.urlLabel; }
+    if(el2){ el2.href=proto.url; el2.textContent=proto.urlLabel; }
+    const titleEl=$('panelTitle');
+    if(titleEl) titleEl.innerHTML=`<span class="t-en">Your ${proto.label} position</span><span class="t-fr">Votre position ${proto.label}</span><span class="t-es">Your ${proto.label} position</span>`;
+  }
+
+  renderProtocolTabs();
   renderChainTabs();
   renderTokens();
   renderParamChips();
   applyTokenToForm();
+
+  // If price was restored from URL, skip live fetch and use it directly
+  if(hadHash && parseFloat($('colPrice').value)>0){
+    $('priceStatus').innerHTML=`<span style="color:var(--faint);font-size:11px">${L()==='fr'?'🔗 depuis lien partagé':'🔗 from shared link'}</span>`;
+    calc();
+    return;
+  }
+
   $('priceStatus').textContent=L()==='fr'?'chargement…':'fetching…';
   $('priceStatus').style.color='var(--faint)';
   const t=getToken();
   const price = await fetchPrice(t?.gecko);
   if(price){
     $('colPrice').value=price;
-    $('priceStatus').innerHTML='<span style="color:var(--good)">● live</span>';
+    const srcLabel = _lastPriceSrc==='chainlink'
+      ? '● <a href="https://data.chain.link" target="_blank" style="color:var(--good);text-decoration:none;font-weight:700">Chainlink</a>'
+      : '● CoinGecko';
+    $('priceStatus').innerHTML=`<span style="color:var(--good)">${srcLabel}</span>`;
   } else {
     $('priceStatus').textContent=L()==='fr'?'prix estimé':'est. price';
     $('priceStatus').style.color='var(--warn)';
@@ -909,5 +1320,31 @@ window.onLangChange=function(){ renderParamChips(); calc(); };
 })();
 </script>
 <script src="lang.js"></script>
+
+<style>
+.tools-nav-band{background:#f7f8fc;border-top:1px solid #e4e8f0;padding:32px 28px 36px;text-align:center}
+.tools-nav-lbl{font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;color:#6b7280;margin-bottom:14px}
+.tools-nav-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;max-width:900px;margin:0 auto}
+.tools-nav-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 15px;border:1px solid #e4e8f0;border-radius:99px;background:#fff;font-size:.8rem;font-weight:600;color:#374151;text-decoration:none;transition:.15s}
+.tools-nav-btn:hover{border-color:#2563eb;color:#2563eb;background:#eff6ff}
+.tools-nav-btn.current{border-color:#2563eb;background:#2563eb;color:#fff;pointer-events:none}
+</style>
+
+<!-- Related tools navigation -->
+<div class="tools-nav-band">
+  <div class="tools-nav-lbl"><span class="t-en">All OrnyTools</span><span class="t-fr">Tous les outils</span><span class="t-es">Todas las herramientas</span></div>
+  <div class="tools-nav-grid">
+    <a href="optimizer.html" class="tools-nav-btn"><span>🔄</span><span class="t-en">Trade Optimizer</span><span class="t-fr">Optimiseur de Trade</span><span class="t-es">Optimizador de Trade</span></a>
+    <span class="tools-nav-btn current"><span>🛡️</span><span class="t-en">Liquidation Calculator</span><span class="t-fr">Calculateur de Liquidation</span><span class="t-es">Calculadora de Liquidación</span></span>
+    <a href="aave.html" class="tools-nav-btn"><span>🏦</span><span class="t-en">Aave V3 Calculator</span><span class="t-fr">Calculateur Aave V3</span><span class="t-es">Calculadora Aave V3</span></a>
+    <a href="il-calculator.html" class="tools-nav-btn"><span>💧</span><span class="t-en">IL Calculator</span><span class="t-fr">Calculateur IL</span><span class="t-es">Calculadora de PI</span></a>
+    <a href="leverage.html" class="tools-nav-btn"><span>📈</span><span class="t-en">Leverage Calculator</span><span class="t-fr">Calculateur Levier</span><span class="t-es">Calculadora de Apalancamiento</span></a>
+    <a href="v3range.html" class="tools-nav-btn"><span>📐</span><span class="t-en">V3 Range Optimizer</span><span class="t-fr">Optimiseur Plage V3</span><span class="t-es">Optimizador de Rango V3</span></a>
+    <a href="stablecoin.html" class="tools-nav-btn"><span>🪙</span><span class="t-en">Stablecoin Analyzer</span><span class="t-fr">Analyseur Stablecoins</span><span class="t-es">Analizador de Stablecoins</span></a>
+    <a href="yield.html" class="tools-nav-btn"><span>💰</span><span class="t-en">Yield Optimizer</span><span class="t-fr">Optimiseur Rendement</span><span class="t-es">Optimizador de Rendimiento</span></a>
+    <a href="waste.html" class="tools-nav-btn"><span>🔥</span><span class="t-en">Waste Detector</span><span class="t-fr">Détecteur de Gaspillage</span><span class="t-es">Detector de Desperdicio</span></a>
+
+  </div>
+</div>
 </body>
 </html>

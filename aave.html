@@ -11,11 +11,11 @@
 <meta property="og:title" content="Aave V3 Calculator — OrnyTools"/>
 <meta property="og:description" content="Real-time Aave V3 health factor, liquidation price, and borrow power. Built for WBTC, ETH, wstETH positions."/>
 <meta property="og:url" content="https://ornytools.xyz/aave.html"/>
-<meta property="og:image" content="https://ornytools.xyz/orny-banner.png"/>
+<meta property="og:image" content="https://ornytools.xyz/orny-banner.webp"/>
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:title" content="Aave V3 Calculator — OrnyTools"/>
 <meta name="twitter:description" content="Real-time Aave V3 health factor, liquidation price, and borrow power."/>
-<meta name="twitter:image" content="https://ornytools.xyz/orny-banner.png"/>
+<meta name="twitter:image" content="https://ornytools.xyz/orny-banner.webp"/>
 <title>Aave V3 Calculator — OrnyTools</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
@@ -183,19 +183,36 @@ footer{padding:36px 0;text-align:center;color:var(--faint);font-size:13px;border
 @media(max-width:640px){.col-row{grid-template-columns:1fr 1fr;gap:8px}.col-row .field:first-child{grid-column:1/-1}.debt-row{grid-template-columns:1fr 1fr}}
 @media(max-width:480px){.navbar{padding:8px 14px}.page-hero{padding:80px 16px 32px}.hf-zone,.calc-layout,.params-section{padding-left:14px;padding-right:14px}.hf-card{padding:18px}}
 </style>
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"WebApplication",
+    "name":"Aave V3 Calculator — OrnyTools",
+    "url":"https://ornytools.xyz/aave.html",
+    "description":"Health factor, borrow power, liquidation price and stress test for Aave V3 positions.",
+    "applicationCategory":"FinanceApplication",
+    "operatingSystem":"Any",
+    "browserRequirements":"Requires JavaScript",
+    "offers":{ "@type":"Offer","price":"0","priceCurrency":"USD" },
+    "provider":{ "@type":"Organization","name":"OrnyTools","url":"https://ornytools.xyz" }
+  }
+  </script>
 </head>
 <body>
 <!-- Google Tag Manager (noscript) -->
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5XT34MFV" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <nav class="navbar">
-  <img class="nav-logo" src="logo.png" alt="OrnyTools"/>
+  <img class="nav-logo" src="logo.webp" alt="OrnyTools"/>
   <div>
     <div class="nav-brand">Orny<span class="dot">Tools</span></div>
     <div class="nav-tag" id="navTag">Aave V3 Calculator</div>
   </div>
-  <button class="lang-btn active" id="btnEN" onclick="setLang('en')">EN</button>
-  <button class="lang-btn" id="btnFR" onclick="setLang('fr')">FR</button>
+  <div class="lang-switch">
+    <button id="btnEN" class="lang-btn active" onclick="setLang('en')">🇬🇧 EN</button>
+    <button id="btnFR" class="lang-btn" onclick="setLang('fr')">🇫🇷 FR</button>
+    <button id="btnES" class="lang-btn" onclick="setLang('es')">🇪🇸 ES</button>
+  </div>
   <a href="index.html" class="nav-home" id="navBack">← All tools</a>
 </nav>
 
@@ -405,6 +422,39 @@ const LANG = {
     insLTVEff:'LTV utilisé :', insCapitalIdle:'capital significatif inutilisé. Envisagez d\'emprunter pour générer du rendement.',
     insPriceLive:'prix live', insLiqAt:'Liquidation à', insBelow:'en dessous du cours actuel',
     insSetAlert:'', insHealthy:'La position semble saine.',
+  },
+  es: {
+    navTag:'Calculadora Aave V3', navBack:'← Todas las herramientas', eyebrow:'Aave V3 · Arbitrum / Ethereum',
+    heroTitle:'¿Tu <em>posición</em><br>está segura ahora?',
+    heroSub:'Ingresa tu colateral y deuda — obtén tu Health Factor, precio de liquidación y un stress test a cualquier caída.',
+    hfLabel:'Health Factor', collLabel:'Valor del colateral', debtLabel:'Deuda total',
+    liqLabel:'Precio liq. (1er col.)', availLabel:'Disponible para pedir prestado',
+    colPanelTitle:'Activos de colateral', addColText:'Añadir colateral',
+    debtPanelTitle:'Activos prestados', addDebtText:'Añadir deuda',
+    sumTitle:'Resumen de posición',
+    sk1:'Colateral (USD)', sk2:'Umbral efectivo', sk3:'Valor umbral ponderado',
+    sk4:'Deuda total (USD)', sk5:'Health Factor', sk6:'LTV usado / LTV máx', sk7:'Poder de préstamo usado',
+    scenTitle:'Stress test — caída de precio', scenSliderLabel:'Si el colateral cae un',
+    scenHFLabel:'Nuevo HF', scenLiqLabel:'¿Liquidación?', scenNewCollLabel:'Nuevo col.', scenSafetyLabel:'Margen restante',
+    paramsTitle:'Aave V3 — Parámetros de activos',
+    paramsSub:'Parámetros de riesgo oficiales de Aave V3. LTV = máximo prestable. Umbral de liquidación = base del cálculo del HF.',
+    th1:'Activo', th2:'LTV máx', th3:'Umbral liq.', th4:'Bonus liq.', th5:'Categoría',
+    backText:'Volver a todas las herramientas',
+    footerTag:'Tu posición, <span>calculada.</span>',
+    footerSub:'Parámetros oficiales Aave V3 · precios en tiempo real CoinGecko · solo lectura · ornytools.xyz',
+    assetLbl:'Activo', amountLbl:'Cantidad', priceLbl:'Precio (USD)',
+    hfSafe:'Zona segura', hfCaution:'Vigilar de cerca', hfDanger:'Peligro — cerca de la liquidación', hfCritical:'CRÍTICO — liquidación inminente',
+    verdSafe:'Posición segura', verdCaution:'Vigilar de cerca', verdDanger:'Alto riesgo', verdCritical:'Riesgo crítico',
+    noDebt:'Sin deuda ingresada', enterPos:'Ingresa tu posición',
+    liqAt:'Liquidación a',
+    insightTitle:'Análisis de posición',
+    insLiqDist:'Liquidación si el colateral cae',
+    insCanBorrow:'Puedes pedir prestado hasta', insMoreAtHF:'adicionales manteniendo HF ≥',
+    insUseDeFi:' — considera desplegar este capital en DeFi.',
+    insToReachHF:'Para alcanzar HF seguro de', insRepay:'reembolsa', insOrAdd:'o añade', insCollateral:'en colateral',
+    insLTVEff:'LTV usado:', insCapitalIdle:'capital significativo inactivo. Considera pedir prestado para generar rendimiento.',
+    insPriceLive:'precio en vivo', insLiqAt:'Liquidación a', insBelow:'por debajo del precio actual',
+    insSetAlert:'', insHealthy:'La posición parece saludable.',
   }
 };
 
@@ -414,6 +464,8 @@ function setLang(l) {
   lang = l;
   document.getElementById('btnEN').classList.toggle('active', l === 'en');
   document.getElementById('btnFR').classList.toggle('active', l === 'fr');
+  const btnES = document.getElementById('btnES');
+  if(btnES) btnES.classList.toggle('active', l === 'es');
   const t = LANG[l];
   const ids = ['navTag','navBack','eyebrow','colPanelTitle','debtPanelTitle',
     'sumTitle','sk1','sk2','sk3','sk4','sk5','sk6','sk7',
@@ -817,5 +869,31 @@ _prices = { USDC:1, USDT:1, DAI:1, USDS:1, GHO:1 };
 rerender();
 fetchMissingPrices();
 </script>
+
+<style>
+.tools-nav-band{background:#f7f8fc;border-top:1px solid #e4e8f0;padding:32px 28px 36px;text-align:center}
+.tools-nav-lbl{font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;color:#6b7280;margin-bottom:14px}
+.tools-nav-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;max-width:900px;margin:0 auto}
+.tools-nav-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 15px;border:1px solid #e4e8f0;border-radius:99px;background:#fff;font-size:.8rem;font-weight:600;color:#374151;text-decoration:none;transition:.15s}
+.tools-nav-btn:hover{border-color:#2563eb;color:#2563eb;background:#eff6ff}
+.tools-nav-btn.current{border-color:#2563eb;background:#2563eb;color:#fff;pointer-events:none}
+</style>
+
+<!-- Related tools navigation -->
+<div class="tools-nav-band">
+  <div class="tools-nav-lbl"><span class="t-en">All OrnyTools</span><span class="t-fr">Tous les outils</span><span class="t-es">Todas las herramientas</span></div>
+  <div class="tools-nav-grid">
+    <a href="optimizer.html" class="tools-nav-btn"><span>🔄</span><span class="t-en">Trade Optimizer</span><span class="t-fr">Optimiseur de Trade</span><span class="t-es">Optimizador de Trade</span></a>
+    <a href="liquidation.html" class="tools-nav-btn"><span>🛡️</span><span class="t-en">Liquidation Calculator</span><span class="t-fr">Calculateur de Liquidation</span><span class="t-es">Calculadora de Liquidación</span></a>
+    <span class="tools-nav-btn current"><span>🏦</span><span class="t-en">Aave V3 Calculator</span><span class="t-fr">Calculateur Aave V3</span><span class="t-es">Calculadora Aave V3</span></span>
+    <a href="il-calculator.html" class="tools-nav-btn"><span>💧</span><span class="t-en">IL Calculator</span><span class="t-fr">Calculateur IL</span><span class="t-es">Calculadora de PI</span></a>
+    <a href="leverage.html" class="tools-nav-btn"><span>📈</span><span class="t-en">Leverage Calculator</span><span class="t-fr">Calculateur Levier</span><span class="t-es">Calculadora de Apalancamiento</span></a>
+    <a href="v3range.html" class="tools-nav-btn"><span>📐</span><span class="t-en">V3 Range Optimizer</span><span class="t-fr">Optimiseur Plage V3</span><span class="t-es">Optimizador de Rango V3</span></a>
+    <a href="stablecoin.html" class="tools-nav-btn"><span>🪙</span><span class="t-en">Stablecoin Analyzer</span><span class="t-fr">Analyseur Stablecoins</span><span class="t-es">Analizador de Stablecoins</span></a>
+    <a href="yield.html" class="tools-nav-btn"><span>💰</span><span class="t-en">Yield Optimizer</span><span class="t-fr">Optimiseur Rendement</span><span class="t-es">Optimizador de Rendimiento</span></a>
+    <a href="waste.html" class="tools-nav-btn"><span>🔥</span><span class="t-en">Waste Detector</span><span class="t-fr">Détecteur de Gaspillage</span><span class="t-es">Detector de Desperdicio</span></a>
+
+  </div>
+</div>
 </body>
 </html>

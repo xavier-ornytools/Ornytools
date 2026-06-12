@@ -11,11 +11,11 @@
 <meta property="og:title" content="Trade Size Optimizer — OrnyTools"/>
 <meta property="og:description" content="Find the exact optimal trade size for any AMM pool. Gas vs slippage crossover from real constant-product math — free."/>
 <meta property="og:url" content="https://ornytools.xyz/optimizer.html"/>
-<meta property="og:image" content="https://ornytools.xyz/orny-banner.png"/>
+<meta property="og:image" content="https://ornytools.xyz/orny-banner.webp"/>
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:title" content="Trade Size Optimizer — OrnyTools"/>
 <meta name="twitter:description" content="Find the exact optimal trade size for any AMM pool. Gas vs slippage crossover from real constant-product math — free."/>
-<meta name="twitter:image" content="https://ornytools.xyz/orny-banner.png"/>
+<meta name="twitter:image" content="https://ornytools.xyz/orny-banner.webp"/>
 <title>Trade Size Optimizer — OrnyTools</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -217,6 +217,8 @@
   .oc-row{display:flex;justify-content:space-between;gap:12px;font-size:12.5px;color:var(--dim);padding:4px 0}
   .oc-row b{color:var(--text);font-weight:600}
   .oc-row b.hi{color:var(--aqua)}
+  .oc-il-link{display:inline-block;margin-top:10px;font-size:12px;font-weight:600;color:var(--aqua);border:1px solid var(--aqua);border-radius:7px;padding:5px 12px;text-decoration:none;transition:.15s}
+  .oc-il-link:hover{background:rgba(58,159,212,.1)}
 
   /* ── CHART SECTION ───────────────────────── */
   .chart-section{margin-bottom:56px}
@@ -430,6 +432,20 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
 })(window,document,'script','dataLayer','GTM-5XT34MFV');</script>
 <!-- End Google Tag Manager -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"WebApplication",
+    "name":"Trade Size Optimizer — OrnyTools",
+    "url":"https://ornytools.xyz/optimizer.html",
+    "description":"Find the exact optimal trade size for any AMM pool. Live Chainlink data, 6 chains, 28 pools.",
+    "applicationCategory":"FinanceApplication",
+    "operatingSystem":"Any",
+    "browserRequirements":"Requires JavaScript",
+    "offers":{ "@type":"Offer","price":"0","priceCurrency":"USD" },
+    "provider":{ "@type":"Organization","name":"OrnyTools","url":"https://ornytools.xyz" }
+  }
+  </script>
 </head>
 <body>
 <!-- Google Tag Manager (noscript) -->
@@ -439,26 +455,27 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <!-- STICKY NAVBAR -->
 <nav class="navbar" id="navbar">
-  <img class="nav-logo" src="logo.png" alt="OrnyTools" />
+  <img class="nav-logo" src="logo.webp" alt="OrnyTools" />
   <div>
     <div class="nav-brand">Orny<span class="dot">Tools</span></div>
-    <div class="nav-tag"><span class="t-en">Trade Size Optimizer</span><span class="t-fr">Optimiseur de Taille de Trade</span></div>
+    <div class="nav-tag"><span class="t-en">Trade Size Optimizer</span><span class="t-fr">Optimiseur de Taille de Trade</span><span class="t-es">Optimizador de Tamaño de Trade</span></div>
   </div>
-  <a href="index.html" class="btn-nav" style="text-decoration:none"><span class="t-en">← All tools</span><span class="t-fr">← Tous les outils</span></a>
-  <button class="btn-nav" onclick="document.getElementById('tool').scrollIntoView({behavior:'smooth'})"><span class="t-en">Open tool ↓</span><span class="t-fr">Ouvrir l'outil ↓</span></button>
-  <div style="display:flex;gap:5px;margin-left:6px">
-    <button id="btnEN" class="lang-btn active" onclick="setLang('en')">EN</button>
-    <button id="btnFR" class="lang-btn" onclick="setLang('fr')">FR</button>
+  <a href="index.html" class="btn-nav" style="text-decoration:none"><span class="t-en">← All tools</span><span class="t-fr">← Tous les outils</span><span class="t-es">← Todas las herramientas</span></a>
+  <button class="btn-nav" onclick="document.getElementById('tool').scrollIntoView({behavior:'smooth'})"><span class="t-en">Open tool ↓</span><span class="t-fr">Ouvrir l'outil ↓</span><span class="t-es">Abrir herramienta ↓</span></button>
+  <div class="lang-switch">
+    <button id="btnEN" class="lang-btn active" onclick="setLang('en')">🇬🇧 EN</button>
+    <button id="btnFR" class="lang-btn" onclick="setLang('fr')">🇫🇷 FR</button>
+    <button id="btnES" class="lang-btn" onclick="setLang('es')">🇪🇸 ES</button>
   </div>
 </nav>
 
 <!-- HERO — logo centré, propre -->
 <div class="hero-landing">
-  <img class="hero-logo-img" src="logo.png" alt="OrnyTools" />
-  <h1><span class="t-en">Your trade has an <em>optimal size.</em><br>Most traders never find it.</span><span class="t-fr">Votre trade a une <em>taille optimale.</em><br>La plupart des traders ne la trouvent jamais.</span></h1>
-  <p class="hero-desc"><span class="t-en">Too small: gas eats your profit. Too big: slippage does. <b>OrnyTools finds the exact crossover point</b> — calculated from the real constant-product curve.</span><span class="t-fr">Trop petit : le gas ronge votre profit. Trop grand : le slippage s'en charge. <b>OrnyTools trouve le point de croisement exact</b> — calculé depuis la vraie courbe constant-product.</span></p>
+  <img class="hero-logo-img" src="logo.webp" alt="OrnyTools" />
+  <h1><span class="t-en">Your trade has an <em>optimal size.</em><br>Most traders never find it.</span><span class="t-fr">Votre trade a une <em>taille optimale.</em><br>La plupart des traders ne la trouvent jamais.</span><span class="t-es">Tu trade tiene un <em>tamaño óptimo.</em><br>La mayoría nunca lo encuentra.</span></h1>
+  <p class="hero-desc"><span class="t-en">Too small: gas eats your profit. Too big: slippage does. <b>OrnyTools finds the exact crossover point</b> — calculated from the real constant-product curve.</span><span class="t-fr">Trop petit : le gas ronge votre profit. Trop grand : le slippage s'en charge. <b>OrnyTools trouve le point de croisement exact</b> — calculé depuis la vraie courbe constant-product.</span><span class="t-es">Too small: gas eats your profit. Too big: slippage does. <b>OrnyTools finds the exact crossover point</b> — calculated from the real constant-product curve.</span></p>
   <div class="scroll-cue" onclick="document.getElementById('tool').scrollIntoView({behavior:'smooth'})">
-    <span><span class="t-en">Calculate now</span><span class="t-fr">Calculer maintenant</span></span>
+    <span><span class="t-en">Calculate now</span><span class="t-fr">Calculer maintenant</span><span class="t-es">Calcular ahora</span></span>
     <div class="scroll-arrow">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
     </div>
@@ -468,17 +485,17 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <!-- TOOL + décos dans les marges -->
 <div class="page-deco-zone">
-  <div class="page-deco page-deco-left  pd-1"><img src="orny-pensif.png"   alt=""/></div>
-  <div class="page-deco page-deco-right pd-2"><img src="orny-pointeur.png" alt=""/></div>
-  <div class="page-deco page-deco-left  pd-3"><img src="orny-victoire.png" alt=""/></div>
-  <div class="page-deco page-deco-right pd-4"><img src="orny-karate.png"   alt=""/></div>
+  <div class="page-deco page-deco-left  pd-1"></div>
+  <div class="page-deco page-deco-right pd-2"></div>
+  <div class="page-deco page-deco-left  pd-3"><img src="orny-victoire.webp" alt=""/></div>
+  <div class="page-deco page-deco-right pd-4"><img src="orny-karate.webp"   alt=""/></div>
 <div class="wrap" id="tool">
 
   <!-- Intro strip -->
   <div class="tool-header">
-    <div class="eyebrow"><span class="t-en">Trade Size Optimizer</span><span class="t-fr">Optimiseur de Taille de Trade</span></div>
-    <h2><span class="t-en">Paste your pool. Get <em>the number</em>.</span><span class="t-fr">Collez votre pool. Obtenez <em>le chiffre</em>.</span></h2>
-    <p class="tool-lede"><span class="t-en">The size where gas cost equals slippage cost — the bottom of the U-curve. Below it, gas dominates. Above it, slippage takes over. <b>Load a live pool or enter manually.</b></span><span class="t-fr">La taille où le coût du gas égale le coût du slippage — le bas de la courbe en U. En dessous, le gas domine. Au-dessus, le slippage prend le dessus. <b>Chargez un pool en direct ou saisissez manuellement.</b></span></p>
+    <div class="eyebrow"><span class="t-en">Trade Size Optimizer</span><span class="t-fr">Optimiseur de Taille de Trade</span><span class="t-es">Optimizador de Tamaño de Trade</span></div>
+    <h2><span class="t-en">Paste your pool. Get <em>the number</em>.</span><span class="t-fr">Collez votre pool. Obtenez <em>le chiffre</em>.</span><span class="t-es">Paste your pool. Get <em>the number</em>.</span></h2>
+    <p class="tool-lede"><span class="t-en">The size where gas cost equals slippage cost — the bottom of the U-curve. Below it, gas dominates. Above it, slippage takes over. <b>Load a live pool or enter manually.</b></span><span class="t-fr">La taille où le coût du gas égale le coût du slippage — le bas de la courbe en U. En dessous, le gas domine. Au-dessus, le slippage prend le dessus. <b>Chargez un pool en direct ou saisissez manuellement.</b></span><span class="t-es">The size where gas cost equals slippage cost — the bottom of the U-curve. Below it, gas dominates. Above it, slippage takes over. <b>Load a live pool or enter manually.</b></span></p>
   </div>
 
   <!-- STEP 1 — Configure + Live result (sticky) -->
@@ -486,9 +503,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     <!-- Inputs -->
     <div class="panel">
-      <div class="panel-title"><span class="t-en">Pool parameters</span><span class="t-fr">Paramètres du pool</span></div>
+      <div class="panel-title"><span class="t-en">Pool parameters</span><span class="t-fr">Paramètres du pool</span><span class="t-es">Parámetros del pool</span></div>
       <div class="field">
-        <label><span class="t-en">Network</span><span class="t-fr">Réseau</span></label>
+        <label><span class="t-en">Network</span><span class="t-fr">Réseau</span><span class="t-es">Red</span></label>
         <select id="network">
           <option value="eth">Ethereum</option>
           <option value="arbitrum">Arbitrum</option>
@@ -500,62 +517,65 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </div>
       <div class="reg-wrap" id="regWrap"></div>
       <div class="field">
-        <label><span class="t-en">Search pool <span class="hint">by name or token pair</span></span><span class="t-fr">Rechercher un pool <span class="hint">par nom ou paire de tokens</span></span></label>
+        <label><span class="t-en">Search pool <span class="hint">by name or token pair</span></span><span class="t-fr">Rechercher un pool <span class="hint">par nom ou paire de tokens</span><span class="t-es">Search pool <span class="hint">by name or token pair</span></span></span></label>
         <div class="search-box">
           <input id="poolSearch" placeholder="WBTC/USDC, ETH/USDC, stETH…" autocomplete="off" spellcheck="false" />
           <div class="search-drop" id="searchDrop"></div>
         </div>
       </div>
       <div class="field">
-        <label><span class="t-en">Pool address <span class="hint">or paste directly</span></span><span class="t-fr">Adresse du pool <span class="hint">ou coller directement</span></span></label>
+        <label><span class="t-en">Pool address <span class="hint">or paste directly</span></span><span class="t-fr">Adresse du pool <span class="hint">ou coller directement</span><span class="t-es">Pool address <span class="hint">or paste directly</span></span></span></label>
         <div class="pool-load">
           <input id="poolAddr" placeholder="0x… pool contract" spellcheck="false" />
-          <button class="btn" id="loadBtn"><span class="t-en">Load</span><span class="t-fr">Charger</span></button>
+          <button class="btn" id="loadBtn"><span class="t-en">Load</span><span class="t-fr">Charger</span><span class="t-es">Load</span></button>
         </div>
         <div class="status" id="loadStatus"></div>
         <div id="feeCompare" style="display:none"></div>
       </div>
       <div class="row2">
         <div class="field with-prefix">
-          <label><span class="t-en">Total liquidity (TVL)</span><span class="t-fr">Liquidité totale (TVL)</span></label>
+          <label><span class="t-en">Total liquidity (TVL)</span><span class="t-fr">Liquidité totale (TVL)</span><span class="t-es">Liquidez total (TVL)</span></label>
           <span class="pfx">$</span>
           <input id="tvl" class="mono" value="5000000" inputmode="decimal" />
         </div>
         <div class="field with-prefix">
-          <label><span class="t-en">Network fee (gas)</span><span class="t-fr">Frais réseau (gas)</span></label>
+          <label><span class="t-en">Network fee (gas)</span><span class="t-fr">Frais réseau (gas)</span><span class="t-es">Comisión de red (gas)</span></label>
           <span class="pfx">$</span>
           <input id="gas" class="mono" value="2.50" inputmode="decimal" />
         </div>
       </div>
       <div class="field">
-        <label><span class="t-en">Pool fee <span class="hint">% per trade</span></span><span class="t-fr">Frais de pool <span class="hint">% par trade</span></span></label>
+        <label><span class="t-en">Pool fee <span class="hint">% per trade</span></span><span class="t-fr">Frais de pool <span class="hint">% par trade</span><span class="t-es">Pool fee <span class="hint">% per trade</span></span></span></label>
         <input id="fee" class="mono" value="0.30" inputmode="decimal" />
+        <div class="status" id="feeSource"></div>
       </div>
       <div class="field">
-        <label><span class="t-en">Pool type</span><span class="t-fr">Type de pool</span></label>
+        <label><span class="t-en">Pool type</span><span class="t-fr">Type de pool</span><span class="t-es">Tipo de pool</span></label>
         <div class="toggle" id="poolType">
-          <button data-type="v2" class="active"><span class="t-en">Constant product (v2)</span><span class="t-fr">Constant product (v2)</span></button>
-          <button data-type="v3"><span class="t-en">Concentrated (v3)</span><span class="t-fr">Concentrée (v3)</span></button>
+          <button data-type="v2" class="active"><span class="t-en">Constant product (v2)</span><span class="t-fr">Constant product (v2)</span><span class="t-es">Constant product (v2)</span></button>
+          <button data-type="v3"><span class="t-en">Concentrated (v3)</span><span class="t-fr">Concentrée (v3)</span><span class="t-es">Concentrated (v3)</span></button>
         </div>
       </div>
       <details class="adv">
-        <summary><span class="chev">›</span><span class="t-en">Advanced — v3 active liquidity</span><span class="t-fr">Avancé — liquidité active v3</span></summary>
+        <summary><span class="chev">›</span><span class="t-en">Advanced — v3 active liquidity</span><span class="t-fr">Avancé — liquidité active v3</span><span class="t-es">Avanzado — liquidez activa v3</span></summary>
         <div class="adv-body">
           <div class="field slider-field" id="v3Field" style="display:none">
-            <label><span class="t-en">Active liquidity near price</span><span class="t-fr">Liquidité active près du prix</span> <span class="sv" id="v3Val">20% of TVL</span></label>
+            <label><span class="t-en">Active liquidity near price</span><span class="t-fr">Liquidité active près du prix</span><span class="t-es">Liquidez activa cerca del precio</span> <span class="sv" id="v3Val">20% of TVL</span></label>
             <input type="range" id="v3frac" min="2" max="100" value="20" />
-            <p class="note-inline"><span class="t-en">In v3, only a fraction of TVL sits at the current price. The slider is a manual estimate — the button below reads the real figure from the contract.</span><span class="t-fr">En v3, seule une fraction du TVL est au prix actuel. Le slider est une estimation manuelle — le bouton ci-dessous lit la vraie valeur depuis le contrat.</span></p>
-            <button class="btn" id="chainBtn" style="width:100%;margin-top:8px"><span class="t-en">⛓ Read on-chain liquidity</span><span class="t-fr">⛓ Lire la liquidité on-chain</span></button>
+            <p class="note-inline"><span class="t-en">In v3, only a fraction of TVL sits at the current price. The slider is a manual estimate — the button below reads the real figure from the contract.</span><span class="t-fr">En v3, seule une fraction du TVL est au prix actuel. Le slider est une estimation manuelle — le bouton ci-dessous lit la vraie valeur depuis le contrat.</span><span class="t-es">En v3, solo una fracción del TVL está al precio actual. El slider es una estimación manual — el botón de abajo lee la cifra real del contrato.</span></p>
+            <button class="btn" id="chainBtn" style="width:100%;margin-top:8px"><span class="t-en">⛓ Read on-chain liquidity</span><span class="t-fr">⛓ Lire la liquidité on-chain</span><span class="t-es">⛓ Read on-chain liquidity</span></button>
             <div class="status" id="chainStatus"></div>
             <div class="onchain" id="v3chain" style="display:none">
-              <div class="oc-row"><span><span class="t-en">Effective depth at price</span><span class="t-fr">Profondeur effective au prix</span></span><b class="mono" id="ocDepth">—</b></div>
-              <div class="oc-row"><span><span class="t-en">Active liquidity (notional)</span><span class="t-fr">Liquidité active (notionnelle)</span></span><b class="mono" id="ocActive">—</b></div>
-              <div class="oc-row"><span><span class="t-en">Concentration vs TVL</span><span class="t-fr">Concentration vs TVL</span></span><b class="mono hi" id="ocConc">—</b></div>
-              <div class="oc-row"><span><span class="t-en">Spot price</span><span class="t-fr">Prix spot</span></span><b class="mono" id="ocPrice">—</b></div>
+              <div class="oc-row"><span><span class="t-en">Effective depth at price</span><span class="t-fr">Profondeur effective au prix</span><span class="t-es">Profundidad efectiva al precio</span></span><b class="mono" id="ocDepth">—</b></div>
+              <div class="oc-row"><span><span class="t-en">Active liquidity (notional)</span><span class="t-fr">Liquidité active (notionnelle)</span><span class="t-es">Liquidez activa (nocional)</span></span><b class="mono" id="ocActive">—</b></div>
+              <div class="oc-row"><span><span class="t-en">Concentration vs TVL</span><span class="t-fr">Concentration vs TVL</span><span class="t-es">Concentración vs TVL</span></span><b class="mono hi" id="ocConc">—</b></div>
+              <div class="oc-row"><span><span class="t-en">Spot price</span><span class="t-fr">Prix spot</span><span class="t-es">Precio spot</span></span><b class="mono" id="ocPrice">—</b></div>
               <p class="note-inline" id="ocExplain"></p>
+              <p class="note-inline" id="ocSources"></p>
+              <div id="ocIlLink"></div>
             </div>
           </div>
-          <p class="note-inline" id="v2Note"><span class="t-en">Constant-product assumes a balanced 50/50 pool, single-hop swap. Switch to v3 to model concentrated liquidity.</span><span class="t-fr">Le constant-product suppose un pool équilibré 50/50, swap en une étape. Passez en v3 pour modéliser la liquidité concentrée.</span></p>
+          <p class="note-inline" id="v2Note"><span class="t-en">Constant-product assumes a balanced 50/50 pool, single-hop swap. Switch to v3 to model concentrated liquidity.</span><span class="t-fr">Le constant-product suppose un pool équilibré 50/50, swap en une étape. Passez en v3 pour modéliser la liquidité concentrée.</span><span class="t-es">El constant-product asume un pool equilibrado 50/50, swap en una sola etapa. Cambia a v3 para modelar liquidez concentrada.</span></p>
         </div>
       </details>
     </div>
@@ -564,9 +584,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="result-side">
 
       <div class="result-card">
-        <div class="result-label"><span class="t-en">Optimal trade size</span><span class="t-fr">Taille de trade optimale</span></div>
+        <div class="result-label"><span class="t-en">Optimal trade size</span><span class="t-fr">Taille de trade optimale</span><span class="t-es">Tamaño de trade óptimo</span></div>
         <div class="result-big mono" id="optSize">$2,498</div>
-        <div class="result-sub"><span class="t-en">Total cost:</span><span class="t-fr">Coût total :</span> <span class="mono" id="optTotalPct">0.50%</span> · <span class="mono" id="optTotalUsd">$12.4</span></div>
+        <div class="result-sub"><span class="t-en">Total cost:</span><span class="t-fr">Coût total :</span><span class="t-es">Total cost:</span> <span class="mono" id="optTotalPct">0.50%</span> · <span class="mono" id="optTotalUsd">$12.4</span></div>
         <div class="balance">
           <div class="bcell">
             <div class="k"><span class="swatch" style="background:var(--aqua)"></span>Gas</div>
@@ -577,18 +597,18 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <div class="v" id="balSlip" style="color:var(--coral)">$2.50</div>
           </div>
         </div>
-        <div class="balance-note"><span class="eq" id="balEq">≈ balanced</span> — <span class="t-en">at optimum: gas cost = slippage cost.</span><span class="t-fr">à l'optimum : coût gas = coût slippage.</span></div>
+        <div class="balance-note"><span class="eq" id="balEq">≈ balanced</span> — <span class="t-en">at optimum: gas cost = slippage cost.</span><span class="t-fr">à l'optimum : coût gas = coût slippage.</span><span class="t-es">at optimum: gas cost = slippage cost.</span></div>
       </div>
 
       <div class="panel">
-        <div class="panel-title"><span class="t-en">Breakdown at optimum</span><span class="t-fr">Détail à l'optimum</span></div>
+        <div class="panel-title"><span class="t-en">Breakdown at optimum</span><span class="t-fr">Détail à l'optimum</span><span class="t-es">Detalle en el óptimo</span></div>
         <div class="stat-grid">
-          <div class="stat"><div class="k"><span class="t-en">Optimal size</span><span class="t-fr">Taille optimale</span></div><div class="v gold mono" id="rOpt">$2,498</div></div>
-          <div class="stat"><div class="k"><span class="t-en">Total cost %</span><span class="t-fr">Coût total %</span></div><div class="v mono" id="rTotPct">0.50%</div></div>
-          <div class="stat"><div class="k"><span class="t-en">Gas cost</span><span class="t-fr">Coût gas</span></div><div class="v aqua mono" id="rGas">$2.50</div></div>
-          <div class="stat"><div class="k"><span class="t-en">Slippage</span><span class="t-fr">Slippage</span></div><div class="v coral mono" id="rSlip">$2.50</div></div>
-          <div class="stat"><div class="k"><span class="t-en">Pool fee</span><span class="t-fr">Frais de pool</span></div><div class="v mono" id="rFee">$7.49</div></div>
-          <div class="stat"><div class="k"><span class="t-en">Total cost $</span><span class="t-fr">Coût total $</span></div><div class="v mono" id="rTotUsd">$12.49</div></div>
+          <div class="stat"><div class="k"><span class="t-en">Optimal size</span><span class="t-fr">Taille optimale</span><span class="t-es">Tamaño óptimo</span></div><div class="v gold mono" id="rOpt">$2,498</div></div>
+          <div class="stat"><div class="k"><span class="t-en">Total cost %</span><span class="t-fr">Coût total %</span><span class="t-es">Total cost %</span></div><div class="v mono" id="rTotPct">0.50%</div></div>
+          <div class="stat"><div class="k"><span class="t-en">Gas cost</span><span class="t-fr">Coût gas</span><span class="t-es">Costo de gas</span></div><div class="v aqua mono" id="rGas">$2.50</div></div>
+          <div class="stat"><div class="k"><span class="t-en">Slippage</span><span class="t-fr">Slippage</span><span class="t-es">Deslizamiento</span></div><div class="v coral mono" id="rSlip">$2.50</div></div>
+          <div class="stat"><div class="k"><span class="t-en">Pool fee</span><span class="t-fr">Frais de pool</span><span class="t-es">Comisión del pool</span></div><div class="v mono" id="rFee">$7.49</div></div>
+          <div class="stat"><div class="k"><span class="t-en">Total cost $</span><span class="t-fr">Coût total $</span><span class="t-es">Total cost $</span></div><div class="v mono" id="rTotUsd">$12.49</div></div>
         </div>
         <div class="stat-explain" id="explain">
           This size sits at the bottom of the U: trade smaller and fixed gas dominates; trade larger and slippage on a finite pool takes over.
@@ -600,19 +620,19 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <div class="orny-header">
           <div class="orny-badge">
             <span style="font-size:20px">🦅</span>
-            <span class="lbl" id="ornyStateLabel"><span class="t-en">Orny Thinking…</span><span class="t-fr">Orny Analyse…</span></span>
+            <span class="lbl" id="ornyStateLabel"><span class="t-en">Orny Thinking…</span><span class="t-fr">Orny Analyse…</span><span class="t-es">Orny analizando…</span></span>
           </div>
           <div class="orny-score-wrap">
-            <div class="sc-label"><span class="t-en">Confidence</span><span class="t-fr">Confiance</span></div>
+            <div class="sc-label"><span class="t-en">Confidence</span><span class="t-fr">Confiance</span><span class="t-es">Confianza</span></div>
             <div class="sc-val" id="ornyScore">—</div>
           </div>
         </div>
         <div class="orny-insights" id="ornyInsights"></div>
         <div class="orny-metrics">
-          <div class="o-metric"><div class="mk"><span class="t-en">Cost Efficiency</span><span class="t-fr">Efficacité du coût</span></div><div class="mv" id="ornyEfficiency">—</div></div>
-          <div class="o-metric"><div class="mk"><span class="t-en">Expected Slippage</span><span class="t-fr">Slippage attendu</span></div><div class="mv" id="ornySlippage">—</div></div>
-          <div class="o-metric"><div class="mk"><span class="t-en">Risk Level</span><span class="t-fr">Niveau de risque</span></div><div class="mv" id="ornyRisk">—</div></div>
-          <div class="o-metric"><div class="mk"><span class="t-en">Recommended Size</span><span class="t-fr">Taille recommandée</span></div><div class="mv c-good mono" id="ornyOptSize">—</div></div>
+          <div class="o-metric"><div class="mk"><span class="t-en">Cost Efficiency</span><span class="t-fr">Efficacité du coût</span><span class="t-es">Eficiencia de coste</span></div><div class="mv" id="ornyEfficiency">—</div></div>
+          <div class="o-metric"><div class="mk"><span class="t-en">Expected Slippage</span><span class="t-fr">Slippage attendu</span><span class="t-es">Slippage esperado</span></div><div class="mv" id="ornySlippage">—</div></div>
+          <div class="o-metric"><div class="mk"><span class="t-en">Risk Level</span><span class="t-fr">Niveau de risque</span><span class="t-es">Nivel de riesgo</span></div><div class="mv" id="ornyRisk">—</div></div>
+          <div class="o-metric"><div class="mk"><span class="t-en">Recommended Size</span><span class="t-fr">Taille recommandée</span><span class="t-es">Tamaño recomendado</span></div><div class="mv c-good mono" id="ornyOptSize">—</div></div>
         </div>
         <div class="orny-action" id="ornyAction">—</div>
       </div>
@@ -624,8 +644,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="chart-section">
     <div class="chart-section-head">
       <div>
-        <h3><span class="t-en">The U-curve</span><span class="t-fr">La courbe en U</span></h3>
-        <p><span class="t-en">Below the optimum, fixed gas dominates. Above it, slippage takes over. Hover to read exact values at any size.</span><span class="t-fr">En dessous de l'optimum, le gas fixe domine. Au-dessus, le slippage prend le dessus. Survolez pour lire les valeurs exactes à n'importe quelle taille.</span></p>
+        <h3><span class="t-en">The U-curve</span><span class="t-fr">La courbe en U</span><span class="t-es">La curva en U</span></h3>
+        <p><span class="t-en">Below the optimum, fixed gas dominates. Above it, slippage takes over. Hover to read exact values at any size.</span><span class="t-fr">En dessous de l'optimum, le gas fixe domine. Au-dessus, le slippage prend le dessus. Survolez pour lire les valeurs exactes à n'importe quelle taille.</span><span class="t-es">Por debajo del óptimo, el gas fijo domina. Por encima, el slippage toma el relevo. Pasa el cursor para ver valores exactos.</span></p>
       </div>
       <div class="legend">
         <span><span class="swatch" style="background:var(--aqua)"></span>Gas</span>
@@ -643,24 +663,24 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <section>
     <div class="sec-head">
       <span class="sec-num">01</span>
-      <h2><span class="t-en">Test your trade</span><span class="t-fr">Testez votre trade</span></h2>
-      <span class="sec-sub"><span class="t-en">Enter your amount. See the real cost — and whether splitting saves more.</span><span class="t-fr">Entrez votre montant. Voyez le vrai coût — et si diviser économise plus.</span></span>
+      <h2><span class="t-en">Test your trade</span><span class="t-fr">Testez votre trade</span><span class="t-es">Test your trade</span></h2>
+      <span class="sec-sub"><span class="t-en">Enter your amount. See the real cost — and whether splitting saves more.</span><span class="t-fr">Entrez votre montant. Voyez le vrai coût — et si diviser économise plus.</span><span class="t-es">Enter your amount. See the real cost — and whether splitting saves more.</span></span>
     </div>
     <div class="panel">
       <div class="sim-layout">
         <div>
-          <div class="sim-input-label"><span class="t-en">I want to swap</span><span class="t-fr">Je veux swapper</span></div>
+          <div class="sim-input-label"><span class="t-en">I want to swap</span><span class="t-fr">Je veux swapper</span><span class="t-es">I want to swap</span></div>
           <div class="sim-input-big">
             <span class="pfx">$</span>
             <input id="myTrade" class="mono" value="500" inputmode="decimal" />
           </div>
-          <div class="sim-context" id="simContext"><span class="t-en">vs optimal:</span><span class="t-fr">vs optimal :</span> <span id="simVsOpt" class="mono">—</span></div>
+          <div class="sim-context" id="simContext"><span class="t-en">vs optimal:</span><span class="t-fr">vs optimal :</span><span class="t-es">vs optimal:</span> <span id="simVsOpt" class="mono">—</span></div>
         </div>
         <div>
           <div class="sim-results">
-            <div class="stat"><div class="k"><span class="t-en">Total cost</span><span class="t-fr">Coût total</span></div><div class="v mono" id="simTotUsd">—</div></div>
-            <div class="stat"><div class="k"><span class="t-en">As % of trade</span><span class="t-fr">En % du trade</span></div><div class="v mono" id="simTotPct">—</div></div>
-            <div class="stat"><div class="k"><span class="t-en">vs optimal</span><span class="t-fr">vs optimal</span></div><div class="v mono" id="simDelta">—</div></div>
+            <div class="stat"><div class="k"><span class="t-en">Total cost</span><span class="t-fr">Coût total</span><span class="t-es">Costo total</span></div><div class="v mono" id="simTotUsd">—</div></div>
+            <div class="stat"><div class="k"><span class="t-en">As % of trade</span><span class="t-fr">En % du trade</span><span class="t-es">Como % del trade</span></div><div class="v mono" id="simTotPct">—</div></div>
+            <div class="stat"><div class="k"><span class="t-en">vs optimal</span><span class="t-fr">vs optimal</span><span class="t-es">vs óptimo</span></div><div class="v mono" id="simDelta">—</div></div>
           </div>
           <div class="sim-tip" id="simSavings"></div>
         </div>
@@ -672,20 +692,20 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <section>
     <div class="sec-head">
       <span class="sec-num">02</span>
-      <h2><span class="t-en">Scenario comparison</span><span class="t-fr">Comparaison de scénarios</span></h2>
-      <span class="sec-sub"><span class="t-en">Same pool, different sizes. See where gas and slippage cross.</span><span class="t-fr">Même pool, tailles différentes. Voyez où gas et slippage se croisent.</span></span>
+      <h2><span class="t-en">Scenario comparison</span><span class="t-fr">Comparaison de scénarios</span><span class="t-es">Scenario comparison</span></h2>
+      <span class="sec-sub"><span class="t-en">Same pool, different sizes. See where gas and slippage cross.</span><span class="t-fr">Même pool, tailles différentes. Voyez où gas et slippage se croisent.</span><span class="t-es">Same pool, different sizes. See where gas and slippage cross.</span></span>
     </div>
     <div class="tbl-wrap">
       <table>
         <thead>
           <tr>
-            <th><span class="t-en">Trade size</span><span class="t-fr">Taille du trade</span></th>
-            <th><span class="t-en">Gas $</span><span class="t-fr">Gas $</span></th>
-            <th><span class="t-en">Slippage $</span><span class="t-fr">Slippage $</span></th>
-            <th><span class="t-en">Fee $</span><span class="t-fr">Frais $</span></th>
-            <th><span class="t-en">Total $</span><span class="t-fr">Total $</span></th>
-            <th><span class="t-en">Total %</span><span class="t-fr">Total %</span></th>
-            <th><span class="t-en">Verdict</span><span class="t-fr">Verdict</span></th>
+            <th><span class="t-en">Trade size</span><span class="t-fr">Taille du trade</span><span class="t-es">Trade size</span></th>
+            <th><span class="t-en">Gas $</span><span class="t-fr">Gas $</span><span class="t-es">Gas $</span></th>
+            <th><span class="t-en">Slippage $</span><span class="t-fr">Slippage $</span><span class="t-es">Slippage $</span></th>
+            <th><span class="t-en">Fee $</span><span class="t-fr">Frais $</span><span class="t-es">Fee $</span></th>
+            <th><span class="t-en">Total $</span><span class="t-fr">Total $</span><span class="t-es">Total $</span></th>
+            <th><span class="t-en">Total %</span><span class="t-fr">Total %</span><span class="t-es">Total %</span></th>
+            <th><span class="t-en">Verdict</span><span class="t-fr">Verdict</span><span class="t-es">Verdict</span></th>
           </tr>
         </thead>
         <tbody id="scenarioBody"></tbody>
@@ -697,13 +717,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <section>
     <div class="sec-head">
       <span class="sec-num">03</span>
-      <h2><span class="t-en">Methodology</span><span class="t-fr">Méthodologie</span></h2>
-      <span class="sec-sub"><span class="t-en">No black box — here's the exact math, and where it stops being reliable.</span><span class="t-fr">Aucune boîte noire — voici les maths exactes, et là où elles cessent d'être fiables.</span></span>
+      <h2><span class="t-en">Methodology</span><span class="t-fr">Méthodologie</span><span class="t-es">Metodología</span></h2>
+      <span class="sec-sub"><span class="t-en">No black box — here's the exact math, and where it stops being reliable.</span><span class="t-fr">Aucune boîte noire — voici les maths exactes, et là où elles cessent d'être fiables.</span><span class="t-es">No black box — here's the exact math, and where it stops being reliable.</span></span>
     </div>
     <div class="method">
       <div class="panel">
-        <p><span class="t-en"><b>Gas</b> is a fixed dollar cost — as a share of your trade, it shrinks the bigger you go. <b>Slippage</b> is the price you move against yourself on a finite pool — it grows with size. The optimizer finds where the sum of the two is lowest.</span><span class="t-fr"><b>Le gas</b> est un coût fixe en dollars — en part de votre trade, il diminue plus vous tradez grand. <b>Le slippage</b> est le prix que vous vous faites contre vous-même sur un pool fini — il croît avec la taille. L'optimiseur trouve là où leur somme est la plus basse.</span></p>
-        <p><span class="t-en">OrnyTools uses the <b>exact constant-product formula</b> (x·y=k) — not the <span class="mono">√(2·gas·TVL)</span> shortcut that overstates optimal size by up to 2×.</span><span class="t-fr">OrnyTools utilise la <b>formule exact du constant-product</b> (x·y=k) — pas le raccourci <span class="mono">√(2·gas·TVL)</span> qui surestime la taille optimale jusqu'à 2×.</span></p>
+        <p><span class="t-en"><b>Gas</b> is a fixed dollar cost — as a share of your trade, it shrinks the bigger you go. <b>Slippage</b> is the price you move against yourself on a finite pool — it grows with size. The optimizer finds where the sum of the two is lowest.</span><span class="t-fr"><b>Le gas</b> est un coût fixe en dollars — en part de votre trade, il diminue plus vous tradez grand. <b>Le slippage</b> est le prix que vous vous faites contre vous-même sur un pool fini — il croît avec la taille. L'optimiseur trouve là où leur somme est la plus basse.</span><span class="t-es"><b>Gas</b> is a fixed dollar cost — as a share of your trade, it shrinks the bigger you go. <b>Slippage</b> is the price you move against yourself on a finite pool — it grows with size. The optimizer finds where the sum of the two is lowest.</span></p>
+        <p><span class="t-en">OrnyTools uses the <b>exact constant-product formula</b> (x·y=k) — not the <span class="mono">√(2·gas·TVL)</span> shortcut that overstates optimal size by up to 2×.</span><span class="t-fr">OrnyTools utilise la <b>formule exact du constant-product</b> (x·y=k) — pas le raccourci <span class="mono">√(2·gas·TVL)</span><span class="t-es">OrnyTools uses the <b>exact constant-product formula</b> (x·y=k) — not the <span class="mono">√(2·gas·TVL)</span> shortcut that overstates optimal size by up to 2×.</span> qui surestime la taille optimale jusqu'à 2×.</span></p>
         <div class="formula">
 <span class="c">// one-sided reserve (balanced pool)</span>
 R = TVL / 2        <span class="c">(× active fraction for v3)</span>
@@ -713,27 +733,27 @@ slippage($) = A² / (R + A)
 cost(%) = gas/A + A/(R+A) + fee
 <span class="c">// optimum = ternary search min of the U</span>
         </div>
-        <p><span class="t-en">At the minimum, gas dollars and slippage dollars are approximately equal — that's the equilibrium point.</span><span class="t-fr">Au minimum, les dollars de gas et les dollars de slippage sont approximativement égaux — c'est le point d'équilibre.</span></p>
+        <p><span class="t-en">At the minimum, gas dollars and slippage dollars are approximately equal — that's the equilibrium point.</span><span class="t-fr">Au minimum, les dollars de gas et les dollars de slippage sont approximativement égaux — c'est le point d'équilibre.</span><span class="t-es">At the minimum, gas dollars and slippage dollars are approximately equal — that's the equilibrium point.</span></p>
       </div>
       <div class="panel">
-        <p style="font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);font-weight:700;margin-bottom:14px"><span class="t-en">Where it's only an estimate</span><span class="t-fr">Où c'est seulement une estimation</span></p>
+        <p style="font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);font-weight:700;margin-bottom:14px"><span class="t-en">Where it's only an estimate</span><span class="t-fr">Où c'est seulement une estimation</span><span class="t-es">Where it's only an estimate</span></p>
         <ul class="limits">
-          <li><span class="t-en">TVL approximates usable liquidity. Real slippage depends on reserves, trade direction, fee tier and the specific AMM curve.</span><span class="t-fr">Le TVL approxime la liquidité utilisable. Le vrai slippage dépend des réserves, du sens du trade, du fee tier et de la courbe AMM spécifique.</span></li>
-          <li><span class="t-en">For v3 pools, accuracy depends on active liquidity at the current price. Use the slider or the on-chain reader for better precision.</span><span class="t-fr">Pour les pools v3, la précision dépend de la liquidité active au prix actuel. Utilisez le slider ou le lecteur on-chain pour plus de précision.</span></li>
-          <li><span class="t-en">Single-hop only. Aggregators split across pools — which changes the slippage profile entirely.</span><span class="t-fr">Swap en une étape uniquement. Les agrégateurs divisent entre plusieurs pools — ce qui change entièrement le profil de slippage.</span></li>
-          <li><span class="t-en">Gas is an estimate. The figure your wallet confirms can differ from any quote.</span><span class="t-fr">Le gas est une estimation. Le montant confirmé par votre wallet peut différer de tout devis.</span></li>
-          <li><span class="t-en">This is execution efficiency analysis — not financial advice.</span><span class="t-fr">Ceci est une analyse d'efficacité d'exécution — pas un conseil financier.</span></li>
+          <li><span class="t-en">TVL approximates usable liquidity. Real slippage depends on reserves, trade direction, fee tier and the specific AMM curve.</span><span class="t-fr">Le TVL approxime la liquidité utilisable. Le vrai slippage dépend des réserves, du sens du trade, du fee tier et de la courbe AMM spécifique.</span><span class="t-es">TVL approximates usable liquidity. Real slippage depends on reserves, trade direction, fee tier and the specific AMM curve.</span></li>
+          <li><span class="t-en">For v3 pools, accuracy depends on active liquidity at the current price. Use the slider or the on-chain reader for better precision.</span><span class="t-fr">Pour les pools v3, la précision dépend de la liquidité active au prix actuel. Utilisez le slider ou le lecteur on-chain pour plus de précision.</span><span class="t-es">Para pools v3, la precisión depende de la liquidez activa al precio actual. Usa el slider o el lector on-chain para mayor precisión.</span></li>
+          <li><span class="t-en">Single-hop only. Aggregators split across pools — which changes the slippage profile entirely.</span><span class="t-fr">Swap en une étape uniquement. Les agrégateurs divisent entre plusieurs pools — ce qui change entièrement le profil de slippage.</span><span class="t-es">Single-hop only. Aggregators split across pools — which changes the slippage profile entirely.</span></li>
+          <li><span class="t-en">Gas is an estimate. The figure your wallet confirms can differ from any quote.</span><span class="t-fr">Le gas est une estimation. Le montant confirmé par votre wallet peut différer de tout devis.</span><span class="t-es">Gas is an estimate. The figure your wallet confirms can differ from any quote.</span></li>
+          <li><span class="t-en">This is execution efficiency analysis — not financial advice.</span><span class="t-fr">Ceci est une analyse d'efficacité d'exécution — pas un conseil financier.</span><span class="t-es">This is execution efficiency analysis — not financial advice.</span></li>
         </ul>
       </div>
     </div>
     <div class="risk">
-      <h3><span class="t-en">Risk note</span><span class="t-fr">Note de risque</span></h3>
-      <p><span class="t-en">This tool estimates <b>execution efficiency only</b>. It does not account for MEV, sandwich attacks, smart-contract risk, oracle failures, bridge risk, token volatility, or failed transaction costs. It is read-only: it never connects a wallet and never asks you to sign anything. <b>Not financial advice.</b></span><span class="t-fr">Cet outil estime <b>l'efficacité d'exécution uniquement</b>. Il ne tient pas compte du MEV, des attaques sandwich, du risque de smart contract, des défaillances d'oracle, du risque de bridge, de la volatilité des tokens, ni des coûts de transactions échouées. Il est en lecture seule : il ne connecte jamais un wallet et ne vous demande jamais de signer quoi que ce soit. <b>Pas un conseil financier.</b></span></p>
+      <h3><span class="t-en">Risk note</span><span class="t-fr">Note de risque</span><span class="t-es">Risk note</span></h3>
+      <p><span class="t-en">This tool estimates <b>execution efficiency only</b>. It does not account for MEV, sandwich attacks, smart-contract risk, oracle failures, bridge risk, token volatility, or failed transaction costs. It is read-only: it never connects a wallet and never asks you to sign anything. <b>Not financial advice.</b></span><span class="t-fr">Cet outil estime <b>l'efficacité d'exécution uniquement</b>. Il ne tient pas compte du MEV, des attaques sandwich, du risque de smart contract, des défaillances d'oracle, du risque de bridge, de la volatilité des tokens, ni des coûts de transactions échouées. Il est en lecture seule : il ne connecte jamais un wallet et ne vous demande jamais de signer quoi que ce soit. <b>Pas un conseil financier.</b></span><span class="t-es">This tool estimates <b>execution efficiency only</b>. It does not account for MEV, sandwich attacks, smart-contract risk, oracle failures, bridge risk, token volatility, or failed transaction costs. It is read-only: it never connects a wallet and never asks you to sign anything. <b>Not financial advice.</b></span></p>
     </div>
     <div style="text-align:center;margin-top:28px">
       <a href="methodology.html" style="display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:var(--dim);text-decoration:none;padding:10px 22px;border:1.5px solid var(--line);border-radius:40px;background:#fff;transition:.15s" onmouseover="this.style.borderColor='var(--gold)';this.style.color='var(--gold)'" onmouseout="this.style.borderColor='var(--line)';this.style.color='var(--dim)'">
         <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><rect x="1" y="1" width="13" height="13" rx="2" stroke="currentColor" stroke-width="1.4"/><path d="M4 5h7M4 7.5h7M4 10h4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
-        <span class="t-en">Full methodology</span><span class="t-fr">Méthodologie complète</span>
+        <span class="t-en">Full methodology</span><span class="t-fr">Méthodologie complète</span><span class="t-es">Full methodology</span>
       </a>
     </div>
   </section>
@@ -805,7 +825,7 @@ cost(%) = gas/A + A/(R+A) + fee
         <div class="result-card">
           <div class="result-label">Impermanent Loss</div>
           <div class="result-big mono" id="ilPct" style="color:var(--coral)">—</div>
-          <div class="result-sub" id="ilUsd"><span class="t-en">Enter prices above</span><span class="t-fr">Saisissez les prix ci-dessus</span></div>
+          <div class="result-sub" id="ilUsd"><span class="t-en">Enter prices above</span><span class="t-fr">Saisissez les prix ci-dessus</span><span class="t-es">Enter prices above</span></div>
 
           <div class="il-breakdown" id="ilBreakdown" style="display:none">
             <div class="il-row">
@@ -841,11 +861,11 @@ cost(%) = gas/A + A/(R+A) + fee
 <!-- BANNER -->
 <section class="banner-section">
   <div class="banner-inner">
-    <img src="orny-banner.png" alt="OrnyTools — Patience. Strategy. Freedom." class="banner-img" />
+    <img src="orny-banner.webp" alt="OrnyTools — Patience. Strategy. Freedom." class="banner-img" />
     <div>
-      <div class="banner-tag"><span class="t-en">Built for DeFi traders</span><span class="t-fr">Conçu pour les traders DeFi</span></div>
-      <h2 class="banner-title"><span class="t-en">Patience.<br>Strategy.<br>Freedom.</span><span class="t-fr">Patience.<br>Stratégie.<br>Liberté.</span></h2>
-      <p class="banner-sub"><span class="t-en">Most traders lose money before the trade even starts — on gas overhead and slippage creep. Every basis point saved compounds. OrnyTools gives you one number so you stop leaving it on the table.</span><span class="t-fr">La plupart des traders perdent de l'argent avant même que le trade commence — sur les frais de gas et la progression du slippage. Chaque point de base économisé se compose. OrnyTools vous donne un seul chiffre pour que vous cessiez de laisser de l'argent sur la table.</span></p>
+      <div class="banner-tag"><span class="t-en">Built for DeFi traders</span><span class="t-fr">Conçu pour les traders DeFi</span><span class="t-es">Creado para traders DeFi</span></div>
+      <h2 class="banner-title"><span class="t-en">Patience.<br>Strategy.<br>Freedom.</span><span class="t-fr">Patience.<br>Stratégie.<br>Liberté.</span><span class="t-es">Patience.<br>Strategy.<br>Freedom.</span></h2>
+      <p class="banner-sub"><span class="t-en">Most traders lose money before the trade even starts — on gas overhead and slippage creep. Every basis point saved compounds. OrnyTools gives you one number so you stop leaving it on the table.</span><span class="t-fr">La plupart des traders perdent de l'argent avant même que le trade commence — sur les frais de gas et la progression du slippage. Chaque point de base économisé se compose. OrnyTools vous donne un seul chiffre pour que vous cessiez de laisser de l'argent sur la table.</span><span class="t-es">Most traders lose money before the trade even starts — on gas overhead and slippage creep. Every basis point saved compounds. OrnyTools gives you one number so you stop leaving it on the table.</span></p>
     </div>
   </div>
 </section>
@@ -853,13 +873,13 @@ cost(%) = gas/A + A/(R+A) + fee
 <div class="back-section">
   <a class="back-link" href="index.html">
     <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 1.5L1.5 9 9 16.5M1.5 9h15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    <span class="t-en">Back to all tools</span><span class="t-fr">Retour à tous les outils</span>
+    <span class="t-en">Back to all tools</span><span class="t-fr">Retour à tous les outils</span><span class="t-es">Volver a todas las herramientas</span>
   </a>
 </div>
 <footer>
-  <div class="ft-tag"><span class="t-en">Patience. <span>Strategy.</span> Freedom.</span><span class="t-fr">Patience. <span>Stratégie.</span> Liberté.</span></div>
-  <span class="t-en">Every basis point saved compounds. OrnyTools gives you the math — you make the move.</span><span class="t-fr">Chaque point de base économisé se compose. OrnyTools vous donne les maths — vous faites le move.</span><br/>
-  <span class="t-en">Live data via GeckoTerminal &amp; public RPCs · ornytools.xyz</span><span class="t-fr">Données en direct via GeckoTerminal &amp; RPCs publics · ornytools.xyz</span><br/>
+  <div class="ft-tag"><span class="t-en">Patience. <span>Strategy.</span> Freedom.</span><span class="t-fr">Patience. <span>Stratégie.</span><span class="t-es">Patience. <span>Strategy.</span> Freedom.</span> Liberté.</span></div>
+  <span class="t-en">Every basis point saved compounds. OrnyTools gives you the math — you make the move.</span><span class="t-fr">Chaque point de base économisé se compose. OrnyTools vous donne les maths — vous faites le move.</span><span class="t-es">Every basis point saved compounds. OrnyTools gives you the math — you make the move.</span><br/>
+  <span class="t-en">Live data via Chainlink oracles, GeckoTerminal &amp; public RPCs · ornytools.xyz</span><span class="t-fr">Données en direct via oracles Chainlink, GeckoTerminal &amp; RPCs publics · ornytools.xyz</span><span class="t-es">Live data via Chainlink oracles, GeckoTerminal &amp; public RPCs · ornytools.xyz</span><br/>
   <span style="margin-top:8px;display:inline-block">Built by <a href="https://www.linkedin.com/in/xavier-maquin-5576643b9/" target="_blank" rel="noopener" style="color:var(--gold);text-decoration:none;font-weight:600">Xavier Maquin</a></span>
 </footer>
 
@@ -873,14 +893,16 @@ const $ = id => document.getElementById(id);
 const _l = () => (typeof getLang === 'function' ? getLang() : 'en');
 
 const state = {
-  network:  'eth',
-  tvl:      5_000_000,
-  gas:      2.50,
-  fee:      0.30,
-  poolType: 'v2',
-  v3frac:   0.20,
-  myTrade:  500
+  network:   'eth',
+  tvl:       5_000_000,
+  gas:       2.50,
+  fee:       0.30,
+  poolType:  'v2',
+  v3frac:    0.20,
+  myTrade:   500,
+  feeSource: 'default', // 'on-chain' | 'geckoterminal' | 'default'
 };
+let _ocPriceUSD = 0; // token0 USD price from last on-chain read — used for IL cross-link
 
 const GAS_DEFAULTS = {
   eth: 2.50, arbitrum: 0.05, base: 0.02,
@@ -889,11 +911,11 @@ const GAS_DEFAULTS = {
 
 const RPCS = {
   eth:         ['https://ethereum-rpc.publicnode.com', 'https://eth.llamarpc.com', 'https://cloudflare-eth.com'],
-  arbitrum:    ['https://arbitrum-one-rpc.publicnode.com', 'https://arb1.arbitrum.io/rpc'],
-  base:        ['https://base-rpc.publicnode.com', 'https://mainnet.base.org'],
-  optimism:    ['https://optimism-rpc.publicnode.com', 'https://mainnet.optimism.io'],
+  arbitrum:    ['https://arbitrum-one-rpc.publicnode.com', 'https://arb1.arbitrum.io/rpc', 'https://arbitrum.llamarpc.com'],
+  base:        ['https://base-rpc.publicnode.com', 'https://mainnet.base.org', 'https://base.llamarpc.com'],
+  optimism:    ['https://optimism-rpc.publicnode.com', 'https://mainnet.optimism.io', 'https://optimism.llamarpc.com'],
   bsc:         ['https://bsc-rpc.publicnode.com', 'https://binance.llamarpc.com'],
-  polygon_pos: ['https://polygon-bor-rpc.publicnode.com', 'https://polygon-rpc.com']
+  polygon_pos: ['https://polygon-bor-rpc.publicnode.com', 'https://polygon-rpc.com', 'https://polygon.llamarpc.com']
 };
 
 // Pool registry — curated shortcuts, one click to load.
@@ -902,16 +924,21 @@ const POOL_REGISTRY = {
   eth: [
     { label:'USDC/ETH',   fee:'0.05%', addr:'0x88e6a0c2ddd26feeb64f039a2c41296fcb3f5640', pair:'USDC-ETH' },
     { label:'USDC/ETH',   fee:'0.3%',  addr:'0x8ad599c3a0ff1de082011efddc58f1908eb6e6d8', pair:'USDC-ETH' },
-    { label:'WBTC/ETH',   fee:'0.3%',  addr:'0xcbcdf9626bc03e24f779434178a73a0b4bad62ed' },
+    { label:'WBTC/ETH',   fee:'0.05%', addr:'0x4585FE77225b41b697C938b018E2AC67AC5a20c0', pair:'WBTC-ETH' },
+    { label:'WBTC/ETH',   fee:'0.3%',  addr:'0xcbcdf9626bc03e24f779434178a73a0b4bad62ed', pair:'WBTC-ETH' },
     { label:'USDT/ETH',   fee:'0.05%', addr:'0x11b815efb8f581194ae79006d24e0d814b7697f6' },
     { label:'DAI/USDC',   fee:'0.01%', addr:'0x5777d92f208679db4b9778590fa3cab3ac9e2168' },
     { label:'wstETH/ETH', fee:'0.01%', addr:'0x109830a1aaad605bbf02a9dfa7a0df6e9bfeb04c' },
+    { label:'LINK/ETH',   fee:'0.3%',  addr:'0xa6cc3c2531fdaa6ae1a3ca84c2855806728693e8' },
+    { label:'UNI/ETH',    fee:'0.3%',  addr:'0x1d42064fc4beb5f8aaf85f4617ae8b3b5b8bd801' },
   ],
   arbitrum: [
-    { label:'USDC/WETH',  fee:'0.05%', addr:'0xc6962004f452be9203591991d15f6b388e09e8d0' },
-    { label:'WBTC/WETH',  fee:'0.05%', addr:'0x2f5e87c9312fa29aed5c179e456625d79015299c' },
+    { label:'USDC/WETH',  fee:'0.05%', addr:'0xc6962004f452be9203591991d15f6b388e09e8d0', pair:'USDC-WETH' },
+    { label:'WBTC/WETH',  fee:'0.05%', addr:'0x2f5e87c9312fa29aed5c179e456625d79015299c', pair:'WBTC-WETH' },
+    { label:'WBTC/WETH',  fee:'0.3%',  addr:'0x339cF11dCE7C05bDeADD0BAF75C3F5C7b8e63C2f', pair:'WBTC-WETH' },
     { label:'USDT/WETH',  fee:'0.05%', addr:'0x641c00a822e8b671738d32a431a4fb6074e5c79d' },
     { label:'ARB/WETH',   fee:'0.3%',  addr:'0xcda53b1f66614552f834ceef361a8d12a0b8dad8' },
+    { label:'LINK/WETH',  fee:'0.3%',  addr:'0x468b88941e7cc0b88c1869d68ab6b570523ef7b1' },
   ],
   base: [
     { label:'WETH/USDC',  fee:'0.05%', addr:'0xd0b53d9277642d899df5c87a3966a349a798f224' },
@@ -922,6 +949,7 @@ const POOL_REGISTRY = {
     { label:'WETH/USDC',  fee:'0.05%', addr:'0x85149247691df622eaf1a8bd0cafd40bc45154a9' },
     { label:'WETH/USDT',  fee:'0.05%', addr:'0xc858a329bf053be78d6239c4a4343b8fbd21472b' },
     { label:'WBTC/WETH',  fee:'0.3%',  addr:'0x73b14a78a0d396c521f954532d43fd5ffe385216' },
+    { label:'OP/WETH',    fee:'0.3%',  addr:'0x68f5c0a2de713a96462934032b834b6b3b7c4b41' },
   ],
   bsc: [
     { label:'WBNB/USDC',  fee:'0.05%', addr:'0x6fe9e9de56356f7edbfcbb29fab7cd69471a4869' },
@@ -938,9 +966,49 @@ const POOL_REGISTRY = {
 const SEL = {
   slot0:'0x3850c7bd', liquidity:'0x1a686502',
   token0:'0x0dfe1681', token1:'0xd21220a7',
-  fee:'0xddca3f43', decimals:'0x313ce567',
+  fee:'0xddca3f43',    // uint24 → 100=0.01% 500=0.05% 3000=0.30% 10000=1.00%
+  decimals:'0x313ce567',
 };
 const Q96 = 2 ** 96;
+
+// Registre Chainlink : adresse token (lowercase) → feed + heartbeat (secondes).
+// Sélecteur latestRoundData() 0xfeaf968c → 5 mots [roundId, answer, startedAt, updatedAt, answeredInRound]
+// Sélecteur decimals()        0x313ce567 → uint8 (8 pour les feeds USD)
+// prix_usd = answer / 10**decimals  |  rejeter si answer<=0 ou age > heartbeat + 3600s
+//
+// Mainnet  : vérifié depuis reference-data-directory.vercel.app/feeds-mainnet.json
+// Arbitrum : docs.chain.link/data-feeds/price-feeds/addresses?network=arbitrum
+// Base     : docs.chain.link/data-feeds/price-feeds/addresses?network=base
+const CHAINLINK = {
+  eth: {
+    '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2': { feed:'0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419', heartbeat:3600  }, // WETH  → ETH/USD
+    '0x2260fac5e5542a773aa44fbcfedf7c193bc2c599': { feed:'0xF4030086522a5bEEa4988F8cA5B36dbC97BeE88c', heartbeat:3600  }, // WBTC  → BTC/USD
+    '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48': { feed:'0x8fFfFfd4AfB6115b954Bd326cbe7B4BA576818f6', heartbeat:86400 }, // USDC  → USDC/USD
+    '0xdac17f958d2ee523a2206206994597c13d831ec7': { feed:'0x3E7d1eAB13ad0104d2750B8863b489D65364e32D', heartbeat:86400 }, // USDT  → USDT/USD
+    '0x6b175474e89094c44da98b954eedeac495271d0f': { feed:'0xAed0c38402a5d19df6E4c03F4E2DceD6e29c1ee9', heartbeat:3600  }, // DAI   → DAI/USD
+    '0x514910771af9ca656af840dff83e8264ecf986ca': { feed:'0x2c1d072e956AFFC0D435Cb7AC308d97936Ed4a77', heartbeat:3600  }, // LINK  → LINK/USD
+  },
+  arbitrum: {
+    '0x82af49447d8a07e3bd95bd0d56f35241523fbab1': { feed:'0x639Fe6ab55C921f74e7fac1ee960C0B6293ba612', heartbeat:86400 }, // WETH  → ETH/USD
+    '0x2f2a2543b76a4166549f7aab2e75bef0aefc5b0f': { feed:'0x6ce185539ad4fdaecd7274954bd5a3d80c616598', heartbeat:86400 }, // WBTC  → BTC/USD
+    '0xaf88d065e77c8cc2239327c5edb3a432268e5831': { feed:'0x50834F3163758fcC1Df9973b6e91f0F0F0434aD3', heartbeat:86400 }, // USDC  → USDC/USD
+    '0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9': { feed:'0x3f3f5dF88dC9F13eac63DF89EC16ef6e7E25DdE7', heartbeat:86400 }, // USDT  → USDT/USD
+    '0xda10009cbd5d07dd0cecc66161fc93d7c9000da1': { feed:'0xc5C8E77B397E531B8EC06BFb0048328B30E9eCfB', heartbeat:86400 }, // DAI   → DAI/USD
+    '0xf97f4df75117a78c1a5a0dbb814af92458539fb4': { feed:'0x86E53CF1B873786aC9Cc3e6F6d4F9dD01AF72f3b', heartbeat:3600  }, // LINK  → LINK/USD
+    '0x912ce59144191c1204e64559fe8253a0e49e6548': { feed:'0xb2A824043730FE05F3DA2efaFa1CBbe83fa548D6', heartbeat:86400 }, // ARB   → ARB/USD
+  },
+  base: {
+    '0x4200000000000000000000000000000000000006': { feed:'0x71041dddad3595F9CEd3DcCFBe3D1F4b0a16Bb70', heartbeat:1200  }, // WETH  → ETH/USD
+    '0x833589fcd6edb6e08f4c7c32d4f71b54bda02913': { feed:'0x7e860098F58bBFC8648a4311b374B1D669a2bc9b', heartbeat:86400 }, // USDC  → USDC/USD
+    '0xd9aaec86b65d86f6a7b5b1b0c42ffa531710b6ca': { feed:'0x7e860098F58bBFC8648a4311b374B1D669a2bc9b', heartbeat:86400 }, // USDbC → USDC/USD
+  },
+  optimism: {
+    '0x4200000000000000000000000000000000000006': { feed:'0x13e3Ee699D1909E989722E753853AE30b17e08c5', heartbeat:1200  }, // WETH  → ETH/USD
+    '0x7f5c764cbc14f9669b88837ca1490cca17c31607': { feed:'0x16a9FA2FDa030272Ce99B29CF780dFA30361d32b', heartbeat:86400 }, // USDC.e → USDC/USD
+    '0x0b2c639c533813f4aa9d7837caf62653d097ff85': { feed:'0x16a9FA2FDa030272Ce99B29CF780dFA30361d32b', heartbeat:86400 }, // USDC natif → USDC/USD
+    '0x94b008aa00579c1307b0ef2c499ad98a8ce58e58': { feed:'0xECef79E109e997bCA29c1c0897ec9d7b03647F5E', heartbeat:86400 }, // USDT  → USDT/USD
+  },
+};
 
 state.v3DepthUSD = null;
 state.v3Source   = 'slider';
@@ -1371,6 +1439,31 @@ function hideCross() {
 }
 
 // ==========================================================================
+// SOURCE LABELS
+// ==========================================================================
+
+// Met à jour le libellé de source sous le champ "Pool fee".
+function updateFeeSourceLabel() {
+  const el = $('feeSource');
+  if (!el) return;
+  const fr = _l() === 'fr';
+  if (state.feeSource === 'on-chain') {
+    el.className = 'status ok';
+    el.textContent = fr
+      ? `Fee tier : ${state.fee}% — lu on-chain (fee())`
+      : `Fee tier: ${state.fee}% — read on-chain (fee())`;
+  } else if (state.feeSource === 'geckoterminal') {
+    el.className = 'status';
+    el.textContent = fr
+      ? `Fee tier : ${state.fee}% — API GeckoTerminal (fallback)`
+      : `Fee tier: ${state.fee}% — GeckoTerminal API (fallback)`;
+  } else {
+    el.className = 'status';
+    el.textContent = '';
+  }
+}
+
+// ==========================================================================
 // V3 ON-CHAIN READER
 // ==========================================================================
 
@@ -1450,6 +1543,27 @@ async function readChainV3() {
     const token0 = toAddr(word(t0Hex, 0));
     const token1 = toAddr(word(t1Hex, 0));
 
+    // Lecture du fee tier on-chain : fee() → uint24, fee_pct = uint24 / 10 000
+    // Valeurs Uniswap v3 : 100=0.01% 500=0.05% 3000=0.30% 10000=1.00%
+    // Non-fatale : .catch() → null en cas d'échec RPC, on garde la valeur GeckoTerminal
+    const feeHex = await rpcCall(net, addr, SEL.fee).catch(() => null);
+    if (feeHex) {
+      const feeUint24 = toNum(word(feeHex, 0));
+      // Cap à 100 000 pour rejeter les valeurs garbage (uint24 max = 16 777 215)
+      if (feeUint24 > 0 && feeUint24 <= 100000) {
+        const feePct = feeUint24 / 10000;
+        state.fee = feePct;
+        $('fee').value = feePct;
+        state.feeSource = 'on-chain';
+        console.log(`[OrnyTools] Fee tier : ${feePct}% — on-chain fee() (uint24=${feeUint24})`);
+        updateFeeSourceLabel();
+      } else {
+        console.warn(`[OrnyTools] fee() : valeur hors plage (${feeUint24}), GeckoTerminal conservé`);
+      }
+    } else {
+      console.log('[OrnyTools] Fee tier : fee() on-chain indisponible, GeckoTerminal conservé');
+    }
+
     const [d0Hex, d1Hex] = await Promise.all([
       rpcCall(net, token0, SEL.decimals),
       rpcCall(net, token1, SEL.decimals),
@@ -1458,7 +1572,8 @@ async function readChainV3() {
     const dec1 = toNum(word(d1Hex, 0));
 
     const px = await fetchPrices(net, addr, token0, token1);
-    if (!px) throw new Error('no USD price (GeckoTerminal)');
+    if (!px) throw new Error('no USD price (GeckoTerminal ou Chainlink)');
+    _ocPriceUSD = px.p0 || 0;
 
     const sqrtP = Number(sqrtPriceX96) / Q96;
     const amt0  = (Number(L) / sqrtP) / 10 ** dec0;
@@ -1485,7 +1600,33 @@ async function readChainV3() {
       : (cfr
           ? `La liquidité est étalée au prix actuel — seulement ${(conc*100).toFixed(0)}% du TVL est actif ici. La taille optimale est plus petite qu'une estimation basée sur le TVL.`
           : `Liquidity is spread thin at the current price — only ${(conc*100).toFixed(0)}% of TVL is active here. Optimal size is smaller than a TVL-based guess.`);
+    // Affiche les sources de prix dans le panneau on-chain
+    const srcEl = $('ocSources');
+    if (srcEl) {
+      const bothCL = px.src0?.startsWith('Chainlink') && px.src1?.startsWith('Chainlink');
+      const noneCL = !px.src0?.startsWith('Chainlink') && !px.src1?.startsWith('Chainlink');
+      if (bothCL) {
+        // Cas nominal : les deux tokens ont un feed Chainlink
+        const ages = [px.src0, px.src1].map(s => s.match(/il y a (.+)\)/)?.[1] || '?');
+        srcEl.textContent = cfr
+          ? `Prix : oracle Chainlink on-chain (token0 maj il y a ${ages[0]}, token1 il y a ${ages[1]})`
+          : `Prices: Chainlink oracle on-chain (token0 ${ages[0]} ago, token1 ${ages[1]} ago)`;
+      } else if (noneCL) {
+        srcEl.textContent = cfr ? 'Prix : API GeckoTerminal (fallback)' : 'Prices: GeckoTerminal API (fallback)';
+      } else {
+        // Mixte
+        srcEl.textContent = cfr
+          ? `Prix : ${px.src0} (token0) · ${px.src1} (token1)`
+          : `Prices: ${px.src0} (token0) · ${px.src1} (token1)`;
+      }
+      console.log(`[OrnyTools] Prix token0 : $${px.p0.toLocaleString('en-US',{maximumFractionDigits:2})} — ${px.src0}`);
+      console.log(`[OrnyTools] Prix token1 : $${px.p1.toLocaleString('en-US',{maximumFractionDigits:2})} — ${px.src1}`);
+    }
     $('v3chain').style.display = 'block';
+    if (_ocPriceUSD > 0) {
+      const lbl = _l() === 'fr' ? '→ Simuler l\'IL V3' : '→ Simulate V3 IL';
+      $('ocIlLink').innerHTML = `<a class="oc-il-link" href="il-calculator.html?v3=1&p0=${_ocPriceUSD.toPrecision(6)}" target="_blank">${lbl}</a>`;
+    }
     st.className   = 'status ok';
     st.textContent = cfr
       ? 'Lu depuis la chaîne — profondeur basée sur la vraie liquidité active.'
@@ -1504,26 +1645,94 @@ async function readChainV3() {
 // POOL DATA FETCHER
 // ==========================================================================
 
-async function fetchPrices(net, addr, token0, token1) {
+// Lit le prix USD d'un token via son feed Chainlink on-chain.
+// Retourne { price, age, feed } ou null si le token n'est pas dans le registre,
+// si la réponse est invalide, ou si le prix est périmé (> heartbeat + 1h de buffer).
+async function fetchChainlinkPrice(net, tokenAddr) {
+  const entry = CHAINLINK[net]?.[tokenAddr.toLowerCase()];
+  if (!entry) return null;
   try {
-    const r = await fetchRetry(`https://api.geckoterminal.com/api/v2/networks/${net}/pools/${addr}`, {headers:{accept:'application/json'}});
-    if (!r.ok) return null;
-    const j = await r.json();
-    const a = j.data.attributes, rel = j.data.relationships;
-    const baseAddr  = (rel.base_token.data.id  || '').toLowerCase().split('_').pop();
-    const quoteAddr = (rel.quote_token.data.id || '').toLowerCase().split('_').pop();
-    const pBase = parseFloat(a.base_token_price_usd);
-    const pQuote = parseFloat(a.quote_token_price_usd);
-    const tvl = parseFloat(a.reserve_in_usd);
-    if (tvl > 0) { state.tvl = tvl; $('tvl').value = Math.round(tvl); }
-    let p0, p1;
-    if      (token0 === baseAddr)  { p0 = pBase;  p1 = pQuote; }
-    else if (token0 === quoteAddr) { p0 = pQuote; p1 = pBase;  }
-    else                           { p0 = pBase;  p1 = pQuote; }
-    if (!(p0 > 0) || !(p1 > 0)) return null;
-    const human = p1 > 0 ? (p0 / p1) : 0;
-    return { p0, p1, priceLabel: `${human.toLocaleString('en-US',{maximumSignificantDigits:6})} · ${a.name||'pool'}` };
-  } catch(e){ return null; }
+    // latestRoundData() 0xfeaf968c → 5 mots : [roundId, answer, startedAt, updatedAt, answeredInRound]
+    // decimals()        0x313ce567 → uint8 (typiquement 8 pour les feeds USD)
+    const [rdHex, decHex] = await Promise.all([
+      rpcCall(net, entry.feed, '0xfeaf968c'),
+      rpcCall(net, entry.feed, '0x313ce567'),
+    ]);
+    const answer    = Number(toBig(word(rdHex, 1)));   // int256 — prix brut
+    const updatedAt = Number(toBig(word(rdHex, 3)));   // uint256 — horodatage
+    const decimals  = toNum(word(decHex, 0));           // uint8
+    if (answer <= 0) return null;                       // prix nul ou négatif → rejeté
+    const now    = Math.floor(Date.now() / 1000);
+    const age    = now - updatedAt;
+    const maxAge = (entry.heartbeat || 86400) + 3600;  // heartbeat + 1h de tolérance
+    if (age > maxAge) {
+      console.warn(`[OrnyTools] Feed Chainlink ${entry.feed} périmé : ${age}s > ${maxAge}s`);
+      return null;
+    }
+    // prix_usd = answer / 10^decimals
+    const price = answer / 10 ** decimals;
+    return { price, age, feed: entry.feed };
+  } catch(e) {
+    console.warn(`[OrnyTools] Chainlink lecture échouée (${tokenAddr}) :`, e.message);
+    return null;
+  }
+}
+
+// Résout les prix USD de token0 et token1.
+// Hiérarchie par token : 1. Chainlink on-chain  2. GeckoTerminal (fallback)
+// Le prix USD sert uniquement à calculer la profondeur effective en USD (Reff) ;
+// le slippage en % ne dépend que du ratio taille/réserve, pas du prix USD.
+async function fetchPrices(net, addr, token0, token1) {
+  // Tentative Chainlink en parallèle pour les deux tokens
+  const [cl0, cl1] = await Promise.all([
+    fetchChainlinkPrice(net, token0),
+    fetchChainlinkPrice(net, token1),
+  ]);
+
+  // Fallback GeckoTerminal si l'un ou les deux tokens ne sont pas dans le registre
+  let gtP0 = null, gtP1 = null, gtName = null, gtTvl = null;
+  if (!cl0 || !cl1) {
+    try {
+      const r = await fetchRetry(
+        `https://api.geckoterminal.com/api/v2/networks/${net}/pools/${addr}`,
+        {headers:{accept:'application/json'}}
+      );
+      if (r.ok) {
+        const j = await r.json();
+        const a = j.data.attributes, rel = j.data.relationships;
+        const baseAddr  = (rel.base_token.data.id  || '').toLowerCase().split('_').pop();
+        const quoteAddr = (rel.quote_token.data.id || '').toLowerCase().split('_').pop();
+        const pBase  = parseFloat(a.base_token_price_usd);
+        const pQuote = parseFloat(a.quote_token_price_usd);
+        gtTvl  = parseFloat(a.reserve_in_usd);
+        gtName = a.name || 'pool';
+        if      (token0 === baseAddr)  { gtP0 = pBase;  gtP1 = pQuote; }
+        else if (token0 === quoteAddr) { gtP0 = pQuote; gtP1 = pBase;  }
+        else                           { gtP0 = pBase;  gtP1 = pQuote; }
+      }
+    } catch(_) {}
+  }
+  if (gtTvl > 0) { state.tvl = gtTvl; $('tvl').value = Math.round(gtTvl); }
+
+  // Résolution finale : Chainlink prioritaire, GeckoTerminal en repli par token
+  const p0 = cl0?.price ?? gtP0;
+  const p1 = cl1?.price ?? gtP1;
+  if (!(p0 > 0) || !(p1 > 0)) return null;
+
+  const fmtAge = s => s < 60 ? `${s}s` : `${Math.round(s/60)}min`;
+  const src0 = cl0
+    ? `Chainlink on-chain (maj il y a ${fmtAge(cl0.age)})`
+    : 'GeckoTerminal (fallback)';
+  const src1 = cl1
+    ? `Chainlink on-chain (maj il y a ${fmtAge(cl1.age)})`
+    : 'GeckoTerminal (fallback)';
+
+  const srcTag = (cl0 && cl1) ? 'Chainlink' : (cl0 || cl1) ? 'Chainlink+GT' : (gtName || 'GeckoTerminal');
+  const human  = p1 > 0 ? (p0 / p1) : 0;
+  return {
+    p0, p1, src0, src1,
+    priceLabel: `${human.toLocaleString('en-US',{maximumSignificantDigits:6})} · ${srcTag}`,
+  };
 }
 
 async function fetchPoolData() {
@@ -1538,6 +1747,9 @@ async function fetchPoolData() {
     const c = _poolCache[cacheKey];
     state.tvl = c.tvl; $('tvl').value = Math.round(c.tvl);
     state.fee = c.fee; $('fee').value = c.fee;
+    state.feeSource = 'geckoterminal';
+    console.log(`[OrnyTools] Fee tier : ${state.fee}% — GeckoTerminal (cache)`);
+    updateFeeSourceLabel();
     st.className = 'status ok';
     st.textContent = `${c.name} · TVL ${fmtUSD(c.tvl)} (${pfr ? 'en cache' : 'cached'})`;
     recompute();
@@ -1558,7 +1770,14 @@ async function fetchPoolData() {
     const tvl = parseFloat(a.reserve_in_usd);
     const gtFee = parseFloat(a.pool_fee_percentage);
     if (tvl > 0) { state.tvl = tvl; $('tvl').value = Math.round(tvl); }
-    if (isFinite(gtFee) && gtFee > 0) { state.fee = gtFee; $('fee').value = gtFee; }
+    if (isFinite(gtFee) && gtFee > 0) {
+      state.fee = gtFee;
+      $('fee').value = gtFee;
+      // Fee GeckoTerminal : fallback, sera remplacé par on-chain si le pool est v3
+      state.feeSource = 'geckoterminal';
+      console.log(`[OrnyTools] Fee tier : ${gtFee}% — GeckoTerminal (sera lu on-chain pour pool v3)`);
+      updateFeeSourceLabel();
+    }
     const name = a.name || 'pool';
     _poolCache[cacheKey] = {tvl, fee: state.fee, name};
     st.className   = 'status ok';
@@ -1580,6 +1799,9 @@ async function fetchPoolData() {
   } catch(err) {
     st.className = 'status err';
     const msg = String(err.message||'');
+    // En cas d'erreur réseau, réinitialiser la source pour ne pas afficher un label périmé
+    state.feeSource = 'default';
+    updateFeeSourceLabel();
     if (/rate.limit|429/.test(msg))
       st.textContent = pfr ? 'Limite de taux GeckoTerminal — attends 30 sec puis réessaie.' : 'GeckoTerminal rate limit — wait 30 s then retry.';
     else if (/not found/.test(msg))
@@ -1799,7 +2021,7 @@ $('network').addEventListener('change', e => {
 });
 $('tvl').addEventListener('input',     e => { state.tvl     = num(e.target.value, state.tvl);  recompute(); });
 $('gas').addEventListener('input',     e => { state.gas     = num(e.target.value, state.gas);  recompute(); });
-$('fee').addEventListener('input',     e => { state.fee     = num(e.target.value, state.fee);  recompute(); });
+$('fee').addEventListener('input',     e => { state.fee = num(e.target.value, state.fee); state.feeSource = 'default'; updateFeeSourceLabel(); recompute(); });
 $('myTrade').addEventListener('input', e => { state.myTrade = num(e.target.value, 0); renderSim(); renderFeeComparison(); });
 $('loadBtn').addEventListener('click', fetchPoolData);
 
@@ -1816,8 +2038,9 @@ $('poolType').querySelectorAll('button').forEach(b => {
 $('v3frac').addEventListener('input', e => {
   state.v3frac = num(e.target.value, 20) / 100;
   $('v3Val').textContent = Math.round(state.v3frac * 100) + (_l()==='fr' ? '% du TVL' : '% of TVL');
-  state.v3DepthUSD = null; state.v3Source = 'slider';
+  state.v3DepthUSD = null; state.v3Source = 'slider'; _ocPriceUSD = 0;
   $('v3chain').style.display = 'none';
+  $('ocIlLink').innerHTML = '';
   recompute();
 });
 $('chainBtn').addEventListener('click', readChainV3);
@@ -1894,10 +2117,36 @@ window.onLangChange = function() {
   recompute();                // redraws result card, explain, chart, scenario table, sim, orny panel
   renderRegistryChips();      // Quick-load label
   renderFeeComparison();      // fee tier comparison strings
-  // update v3Val label if visible
+  updateFeeSourceLabel();     // libellé source fee tier
   $('v3Val').textContent = Math.round(state.v3frac * 100) + (_l()==='fr' ? '% du TVL' : '% of TVL');
 };
 </script>
 <script src="lang.js"></script>
+
+<style>
+.tools-nav-band{background:#f7f8fc;border-top:1px solid #e4e8f0;padding:32px 28px 36px;text-align:center}
+.tools-nav-lbl{font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;color:#6b7280;margin-bottom:14px}
+.tools-nav-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;max-width:900px;margin:0 auto}
+.tools-nav-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 15px;border:1px solid #e4e8f0;border-radius:99px;background:#fff;font-size:.8rem;font-weight:600;color:#374151;text-decoration:none;transition:.15s}
+.tools-nav-btn:hover{border-color:#2563eb;color:#2563eb;background:#eff6ff}
+.tools-nav-btn.current{border-color:#2563eb;background:#2563eb;color:#fff;pointer-events:none}
+</style>
+
+<!-- Related tools navigation -->
+<div class="tools-nav-band">
+  <div class="tools-nav-lbl"><span class="t-en">All OrnyTools</span><span class="t-fr">Tous les outils</span><span class="t-es">Todas las herramientas</span></div>
+  <div class="tools-nav-grid">
+    <span class="tools-nav-btn current"><span>🔄</span><span class="t-en">Trade Optimizer</span><span class="t-fr">Optimiseur de Trade</span><span class="t-es">Optimizador de Trade</span></span>
+    <a href="liquidation.html" class="tools-nav-btn"><span>🛡️</span><span class="t-en">Liquidation Calculator</span><span class="t-fr">Calculateur de Liquidation</span><span class="t-es">Calculadora de Liquidación</span></a>
+    <a href="aave.html" class="tools-nav-btn"><span>🏦</span><span class="t-en">Aave V3 Calculator</span><span class="t-fr">Calculateur Aave V3</span><span class="t-es">Calculadora Aave V3</span></a>
+    <a href="il-calculator.html" class="tools-nav-btn"><span>💧</span><span class="t-en">IL Calculator</span><span class="t-fr">Calculateur IL</span><span class="t-es">Calculadora de PI</span></a>
+    <a href="leverage.html" class="tools-nav-btn"><span>📈</span><span class="t-en">Leverage Calculator</span><span class="t-fr">Calculateur Levier</span><span class="t-es">Calculadora de Apalancamiento</span></a>
+    <a href="v3range.html" class="tools-nav-btn"><span>📐</span><span class="t-en">V3 Range Optimizer</span><span class="t-fr">Optimiseur Plage V3</span><span class="t-es">Optimizador de Rango V3</span></a>
+    <a href="stablecoin.html" class="tools-nav-btn"><span>🪙</span><span class="t-en">Stablecoin Analyzer</span><span class="t-fr">Analyseur Stablecoins</span><span class="t-es">Analizador de Stablecoins</span></a>
+    <a href="yield.html" class="tools-nav-btn"><span>💰</span><span class="t-en">Yield Optimizer</span><span class="t-fr">Optimiseur Rendement</span><span class="t-es">Optimizador de Rendimiento</span></a>
+    <a href="waste.html" class="tools-nav-btn"><span>🔥</span><span class="t-en">Waste Detector</span><span class="t-fr">Détecteur de Gaspillage</span><span class="t-es">Detector de Desperdicio</span></a>
+
+  </div>
+</div>
 </body>
 </html>

@@ -11,11 +11,11 @@
 <meta property="og:title" content="Leverage Loop Calculator — OrnyTools"/>
 <meta property="og:description" content="Real leverage, liquidation price and net APY on Aave recursive borrowing. Step-by-step loop breakdown — free."/>
 <meta property="og:url" content="https://ornytools.xyz/leverage.html"/>
-<meta property="og:image" content="https://ornytools.xyz/orny-banner.png"/>
+<meta property="og:image" content="https://ornytools.xyz/orny-banner.webp"/>
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:title" content="Leverage Loop Calculator — OrnyTools"/>
 <meta name="twitter:description" content="Real leverage, liquidation price and net APY on Aave recursive borrowing. Step-by-step loop breakdown — free."/>
-<meta name="twitter:image" content="https://ornytools.xyz/orny-banner.png"/>
+<meta name="twitter:image" content="https://ornytools.xyz/orny-banner.webp"/>
 <title>Leverage Loop Calculator — OrnyTools</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
@@ -163,6 +163,20 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
 })(window,document,'script','dataLayer','GTM-5XT34MFV');</script>
 <!-- End Google Tag Manager -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"WebApplication",
+    "name":"Leverage Loop Calculator — OrnyTools",
+    "url":"https://ornytools.xyz/leverage.html",
+    "description":"Calculate real APY, borrow costs and find the optimal leverage for DeFi loop strategies.",
+    "applicationCategory":"FinanceApplication",
+    "operatingSystem":"Any",
+    "browserRequirements":"Requires JavaScript",
+    "offers":{ "@type":"Offer","price":"0","priceCurrency":"USD" },
+    "provider":{ "@type":"Organization","name":"OrnyTools","url":"https://ornytools.xyz" }
+  }
+  </script>
 </head>
 <body>
 <!-- Google Tag Manager (noscript) -->
@@ -171,16 +185,17 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
 
 <nav class="navbar">
-  <img class="nav-logo" src="logo.png" alt="OrnyTools"/>
+  <img class="nav-logo" src="logo.webp" alt="OrnyTools"/>
   <div>
     <div class="nav-brand">Orny<span class="dot">Tools</span></div>
-    <div class="nav-tag"><span class="t-en">Leverage Loop Calculator</span><span class="t-fr">Calculateur de Levier</span></div>
+    <div class="nav-tag"><span class="t-en">Leverage Loop Calculator</span><span class="t-fr">Calculateur de Levier</span><span class="t-es">Calculadora de Loop de Apalancamiento</span></div>
   </div>
-  <a href="index.html" class="nav-home"><span class="t-en">← All tools</span><span class="t-fr">← Tous les outils</span></a>
-  <div class="lang-switch" style="margin-left:8px">
-    <button id="btnEN" class="lang-btn active" onclick="setLang('en')">EN</button>
-    <button id="btnFR" class="lang-btn" onclick="setLang('fr')">FR</button>
-  </div>
+  <a href="index.html" class="nav-home"><span class="t-en">← All tools</span><span class="t-fr">← Tous les outils</span><span class="t-es">← Todas las herramientas</span></a>
+  <div class="lang-switch">
+      <button id="btnEN" class="lang-btn active" onclick="setLang('en')">🇬🇧 EN</button>
+      <button id="btnFR" class="lang-btn" onclick="setLang('fr')">🇫🇷 FR</button>
+      <button id="btnES" class="lang-btn" onclick="setLang('es')">🇪🇸 ES</button>
+    </div>
 </nav>
 
 <!-- TOP IMAGE -->
@@ -190,8 +205,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <!-- HERO -->
 <div class="page-hero">
-  <div class="eyebrow"><span class="t-en">Leverage Loop Calculator — Aave V3</span><span class="t-fr">Calculateur de Levier — Aave V3</span></div>
-  <h1><span class="t-en">How much <em>real leverage</em><br>does your loop give you?</span><span class="t-fr">Quel <em>vrai levier</em><br>offre votre loop ?</span></h1>
+  <div class="eyebrow"><span class="t-en">Leverage Loop Calculator — Aave V3</span><span class="t-fr">Calculateur de Levier — Aave V3</span><span class="t-es">Calculadora de Loop de Apalancamiento — Aave V3</span></div>
+  <h1><span class="t-en">How much <em>real leverage</em><br>does your loop give you?</span><span class="t-fr">Quel <em>vrai levier</em><br>offre votre loop ?</span><span class="t-es">How much <em>real leverage</em><br>does your loop give you?</span></h1>
   <p>Deposit collateral → borrow → rebuy → repeat. See your effective leverage, final liquidation price, and the APY you need to be profitable at each step.</p>
 </div>
 
@@ -199,7 +214,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <div class="config-zone">
 
   <div class="panel">
-    <div class="panel-title"><span class="t-en">Position setup</span><span class="t-fr">Configuration</span></div>
+    <div class="panel-title"><span class="t-en">Position setup</span><span class="t-fr">Configuration</span><span class="t-es">Configuración de posición</span></div>
 
     <div class="presets">
       <button class="preset-btn active" data-lt="73" data-sym="₿" data-label="WBTC">WBTC — LTV 73%</button>
@@ -211,12 +226,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     <div class="row2">
       <div class="field with-prefix">
-        <label><span class="t-en">Initial collateral</span><span class="t-fr">Collateral initial</span> <span class="hint" id="symHint">BTC</span></label>
+        <label><span class="t-en">Initial collateral</span><span class="t-fr">Collateral initial</span><span class="t-es">Colateral inicial</span> <span class="hint" id="symHint">BTC</span></label>
         <span class="pfx" id="colSym" style="font-family:var(--ui);font-size:13px">₿</span>
         <input id="colAmount" class="mono" value="1" inputmode="decimal"/>
       </div>
       <div class="field with-prefix">
-        <label><span class="t-en">Current price</span><span class="t-fr">Prix actuel</span> <span class="hint" id="priceHint">USD</span></label>
+        <label><span class="t-en">Current price</span><span class="t-fr">Prix actuel</span><span class="t-es">Precio actual</span> <span class="hint" id="priceHint">USD</span></label>
         <span class="pfx">$</span>
         <input id="colPrice" class="mono" value="65000" inputmode="decimal"/>
       </div>
@@ -228,7 +243,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <input id="ltv" class="mono" value="73" inputmode="decimal"/>
       </div>
       <div class="field">
-        <label><span class="t-en">Liquidation Threshold</span><span class="t-fr">Seuil de liquidation</span> <span class="hint">%</span></label>
+        <label><span class="t-en">Liquidation Threshold</span><span class="t-fr">Seuil de liquidation</span><span class="t-es">Liquidation Threshold</span> <span class="hint">%</span></label>
         <input id="ltPct" class="mono" value="78" inputmode="decimal"/>
       </div>
     </div>
@@ -237,12 +252,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     <div class="row2">
       <div class="field with-prefix">
-        <label><span class="t-en">Borrow APY</span><span class="t-fr">APY d'emprunt</span> <span class="hint">USDC</span></label>
+        <label><span class="t-en">Borrow APY</span><span class="t-fr">APY d'emprunt</span><span class="t-es">APY de préstamo</span> <span class="hint">USDC</span></label>
         <span class="pfx" style="font-family:var(--ui);font-size:13px">%</span>
         <input id="borrowApy" class="mono" value="5" inputmode="decimal" style="padding-left:26px"/>
       </div>
       <div class="field with-prefix">
-        <label><span class="t-en">Collateral APY</span><span class="t-fr">APY du collateral</span> <span class="hint"><span class="t-en">optional</span><span class="t-fr">optionnel</span></span></label>
+        <label><span class="t-en">Collateral APY</span><span class="t-fr">APY du collateral</span><span class="t-es">Collateral APY</span> <span class="hint"><span class="t-en">optional</span><span class="t-fr">optionnel</span><span class="t-es">optional</span></span></label>
         <span class="pfx" style="font-family:var(--ui);font-size:13px">%</span>
         <input id="colApy" class="mono" value="0" inputmode="decimal" style="padding-left:26px"/>
       </div>
@@ -250,12 +265,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     <hr class="divider"/>
 
-    <div class="panel-title" style="margin-bottom:14px"><span class="t-en">Number of loops</span><span class="t-fr">Nombre de loops</span></div>
+    <div class="panel-title" style="margin-bottom:14px"><span class="t-en">Number of loops</span><span class="t-fr">Nombre de loops</span><span class="t-es">Número de loops</span></div>
     <div class="loop-counter">
       <button class="loop-btn" id="loopMinus">−</button>
       <span class="loop-val" id="loopVal">3</span>
       <button class="loop-btn" id="loopPlus">+</button>
-      <span class="loop-label"><span class="t-en">loops (1 = no leverage)</span><span class="t-fr">loops (1 = sans levier)</span></span>
+      <span class="loop-label"><span class="t-en">loops (1 = no leverage)</span><span class="t-fr">loops (1 = sans levier)</span><span class="t-es">loops (1 = sin apalancamiento)</span></span>
     </div>
   </div>
 
@@ -263,17 +278,17 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="result-side">
 
     <div class="result-card">
-      <div class="result-label"><span class="t-en">Effective Leverage</span><span class="t-fr">Levier Effectif</span></div>
+      <div class="result-label"><span class="t-en">Effective Leverage</span><span class="t-fr">Levier Effectif</span><span class="t-es">Effective Leverage</span></div>
       <div class="result-big" id="resLeverage">—</div>
-      <div class="result-sub" id="resSub"><span class="t-en">Enter your position above</span><span class="t-fr">Renseignez votre position</span></div>
+      <div class="result-sub" id="resSub"><span class="t-en">Enter your position above</span><span class="t-fr">Renseignez votre position</span><span class="t-es">Ingresa tu posición arriba</span></div>
 
       <div class="breakdown">
-        <div class="br-row purple"><span><span class="t-en">Total collateral</span><span class="t-fr">Collateral total</span></span><b id="resTotalCol">—</b></div>
-        <div class="br-row danger"><span><span class="t-en">Total debt (USD)</span><span class="t-fr">Dette totale (USD)</span></span><b id="resTotalDebt">—</b></div>
-        <div class="br-row danger"><span><span class="t-en">Liquidation price</span><span class="t-fr">Prix de liquidation</span></span><b id="resLiqPrice">—</b></div>
-        <div class="br-row"><span><span class="t-en">Drop to liquidation</span><span class="t-fr">Baisse avant liquidation</span></span><b id="resDrop">—</b></div>
-        <div class="br-row"><span><span class="t-en">Net APY</span><span class="t-fr">APY Net</span></span><b id="resNetApy">—</b></div>
-        <div class="br-row"><span><span class="t-en">Break-even collateral APY</span><span class="t-fr">APY seuil de rentabilité</span></span><b id="resBreakEven">—</b></div>
+        <div class="br-row purple"><span><span class="t-en">Total collateral</span><span class="t-fr">Collateral total</span><span class="t-es">Colateral total</span></span><b id="resTotalCol">—</b></div>
+        <div class="br-row danger"><span><span class="t-en">Total debt (USD)</span><span class="t-fr">Dette totale (USD)</span><span class="t-es">Deuda total (USD)</span></span><b id="resTotalDebt">—</b></div>
+        <div class="br-row danger"><span><span class="t-en">Liquidation price</span><span class="t-fr">Prix de liquidation</span><span class="t-es">Precio de liquidación</span></span><b id="resLiqPrice">—</b></div>
+        <div class="br-row"><span><span class="t-en">Drop to liquidation</span><span class="t-fr">Baisse avant liquidation</span><span class="t-es">Caída hasta liquidación</span></span><b id="resDrop">—</b></div>
+        <div class="br-row"><span><span class="t-en">Net APY</span><span class="t-fr">APY Net</span><span class="t-es">APY neto</span></span><b id="resNetApy">—</b></div>
+        <div class="br-row"><span><span class="t-en">Break-even collateral APY</span><span class="t-fr">APY seuil de rentabilité</span><span class="t-es">APY colateral en equilibrio</span></span><b id="resBreakEven">—</b></div>
       </div>
     </div>
 
@@ -288,16 +303,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- LOOP TABLE -->
 <div class="loop-table-wrap">
   <div style="max-width:900px;margin:0 auto">
-    <h3><span class="t-en">Step-by-step breakdown</span><span class="t-fr">Décomposition étape par étape</span></h3>
-    <p><span class="t-en">Each loop: deposit → borrow at LTV → rebuy collateral.</span><span class="t-fr">Chaque loop : dépôt → emprunt au LTV → rachat du collateral.</span></p>
+    <h3><span class="t-en">Step-by-step breakdown</span><span class="t-fr">Décomposition étape par étape</span><span class="t-es">Step-by-step breakdown</span></h3>
+    <p><span class="t-en">Each loop: deposit → borrow at LTV → rebuy collateral.</span><span class="t-fr">Chaque loop : dépôt → emprunt au LTV → rachat du collateral.</span><span class="t-es">Cada loop: depositar → pedir prestado al LTV → recomprar colateral.</span></p>
     <table class="ltable" id="loopTable">
       <thead>
         <tr>
           <th>Loop</th>
-          <th><span class="t-en">Deposited (USD)</span><span class="t-fr">Déposé (USD)</span></th>
-          <th><span class="t-en">Borrowed (USD)</span><span class="t-fr">Emprunté (USD)</span></th>
-          <th><span class="t-en">Cumul. collateral</span><span class="t-fr">Collateral cumulé</span></th>
-          <th><span class="t-en">Cumul. debt</span><span class="t-fr">Dette cumulée</span></th>
+          <th><span class="t-en">Deposited (USD)</span><span class="t-fr">Déposé (USD)</span><span class="t-es">Deposited (USD)</span></th>
+          <th><span class="t-en">Borrowed (USD)</span><span class="t-fr">Emprunté (USD)</span><span class="t-es">Prestado (USD)</span></th>
+          <th><span class="t-en">Cumul. collateral</span><span class="t-fr">Collateral cumulé</span><span class="t-es">Cumul. collateral</span></th>
+          <th><span class="t-en">Cumul. debt</span><span class="t-fr">Dette cumulée</span><span class="t-es">Deuda acumulada</span></th>
           <th>Health Factor</th>
         </tr>
       </thead>
@@ -310,12 +325,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <div class="back-section">
   <a class="back-link" href="index.html">
     <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 1.5L1.5 9 9 16.5M1.5 9h15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    <span class="t-en">Back to all tools</span><span class="t-fr">Retour aux outils</span>
+    <span class="t-en">Back to all tools</span><span class="t-fr">Retour aux outils</span><span class="t-es">Volver a todas las herramientas</span>
   </a>
 </div>
 
 <footer>
-  <div class="ft-tag"><span class="t-en">Leverage smart. <span>Survive the dip.</span></span><span class="t-fr">Levier intelligent. <span>Survivez à la baisse.</span></span></div>
+  <div class="ft-tag"><span class="t-en">Leverage smart. <span>Survive the dip.</span></span><span class="t-fr">Levier intelligent. <span>Survivez à la baisse.</span><span class="t-es">Leverage smart. <span>Survive the dip.</span></span></span></div>
   Read-only · no wallet connection · Health Factor = (Collateral × LT) / Debt · ornytools.xyz<br/>
   <span style="margin-top:8px;display:inline-block">Built by <a href="https://www.linkedin.com/in/xavier-maquin-5576643b9/" target="_blank" rel="noopener" style="color:var(--purple);text-decoration:none;font-weight:600">Xavier Maquin</a></span>
 </footer>
@@ -475,5 +490,31 @@ calc();
 window.onLangChange = function(l) { if(typeof calc==='function') calc(); };
 </script>
 <script src="lang.js"></script>
+
+<style>
+.tools-nav-band{background:#f7f8fc;border-top:1px solid #e4e8f0;padding:32px 28px 36px;text-align:center}
+.tools-nav-lbl{font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;color:#6b7280;margin-bottom:14px}
+.tools-nav-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;max-width:900px;margin:0 auto}
+.tools-nav-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 15px;border:1px solid #e4e8f0;border-radius:99px;background:#fff;font-size:.8rem;font-weight:600;color:#374151;text-decoration:none;transition:.15s}
+.tools-nav-btn:hover{border-color:#2563eb;color:#2563eb;background:#eff6ff}
+.tools-nav-btn.current{border-color:#2563eb;background:#2563eb;color:#fff;pointer-events:none}
+</style>
+
+<!-- Related tools navigation -->
+<div class="tools-nav-band">
+  <div class="tools-nav-lbl"><span class="t-en">All OrnyTools</span><span class="t-fr">Tous les outils</span><span class="t-es">Todas las herramientas</span></div>
+  <div class="tools-nav-grid">
+    <a href="optimizer.html" class="tools-nav-btn"><span>🔄</span><span class="t-en">Trade Optimizer</span><span class="t-fr">Optimiseur de Trade</span><span class="t-es">Optimizador de Trade</span></a>
+    <a href="liquidation.html" class="tools-nav-btn"><span>🛡️</span><span class="t-en">Liquidation Calculator</span><span class="t-fr">Calculateur de Liquidation</span><span class="t-es">Calculadora de Liquidación</span></a>
+    <a href="aave.html" class="tools-nav-btn"><span>🏦</span><span class="t-en">Aave V3 Calculator</span><span class="t-fr">Calculateur Aave V3</span><span class="t-es">Calculadora Aave V3</span></a>
+    <a href="il-calculator.html" class="tools-nav-btn"><span>💧</span><span class="t-en">IL Calculator</span><span class="t-fr">Calculateur IL</span><span class="t-es">Calculadora de PI</span></a>
+    <span class="tools-nav-btn current"><span>📈</span><span class="t-en">Leverage Calculator</span><span class="t-fr">Calculateur Levier</span><span class="t-es">Calculadora de Apalancamiento</span></span>
+    <a href="v3range.html" class="tools-nav-btn"><span>📐</span><span class="t-en">V3 Range Optimizer</span><span class="t-fr">Optimiseur Plage V3</span><span class="t-es">Optimizador de Rango V3</span></a>
+    <a href="stablecoin.html" class="tools-nav-btn"><span>🪙</span><span class="t-en">Stablecoin Analyzer</span><span class="t-fr">Analyseur Stablecoins</span><span class="t-es">Analizador de Stablecoins</span></a>
+    <a href="yield.html" class="tools-nav-btn"><span>💰</span><span class="t-en">Yield Optimizer</span><span class="t-fr">Optimiseur Rendement</span><span class="t-es">Optimizador de Rendimiento</span></a>
+    <a href="waste.html" class="tools-nav-btn"><span>🔥</span><span class="t-en">Waste Detector</span><span class="t-fr">Détecteur de Gaspillage</span><span class="t-es">Detector de Desperdicio</span></a>
+
+  </div>
+</div>
 </body>
 </html>
