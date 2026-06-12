@@ -369,7 +369,6 @@ document.getElementById('presetGrid').querySelectorAll('.preset-btn').forEach(bt
   document.getElementById(id).addEventListener('input', () => {
     updateRangeBar();
     updatePctLabels();
-    if(_preset !== 'custom') fetchLivePrice();
   });
 });
 
