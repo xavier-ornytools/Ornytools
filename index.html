@@ -77,7 +77,7 @@
 
     /* ══════════════════ HERO ══════════════════ */
     .hero-section {
-      min-height: 100vh; padding: 100px 40px 70px;
+      min-height: 70vh; padding: 60px 40px 50px;
       background: #080e28;
       display: flex; align-items: center;
       position: relative; overflow: hidden;
@@ -309,10 +309,10 @@
     .tool-section-header p { font-size: .94rem; color: var(--muted); }
 
     /* ══════════════════ TOOL INTERNALS (preserved) ══════════════════ */
-    main { max-width: 1060px; margin: 0 auto; padding: 44px 28px 100px; position: relative; }
+    main { max-width: 860px; margin: 0 auto; padding: 24px 20px 60px; position: relative; }
     .grid { display: grid; gap: 22px; grid-template-columns: 1fr 1fr; position: relative; z-index: 1; }
     @media (max-width: 680px) { .grid { grid-template-columns: 1fr; } }
-    .card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 30px; box-shadow: var(--shadow); }
+    .card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); }
     .card h2 { font-size: .72rem; font-weight: 700; letter-spacing: 1.8px; text-transform: uppercase; color: var(--muted); margin-bottom: 22px; }
     .full { grid-column: 1 / -1; }
     .fetch-card { border-top: 3px solid var(--gold); }
@@ -473,6 +473,71 @@
     .footer-bottom { border-top: 1px solid var(--border); padding-top: 20px; text-align: center; font-size: .74rem; color: #adb5c7; }
     .footer-bottom a { color: var(--blue); }
 
+    /* ══════════════════ TOP HERO BANNER ══════════════════ */
+    .top-hero-banner {
+      margin-top: 64px;
+      width: 100%;
+      background: linear-gradient(180deg, #eef2ff 0%, #f5f7ff 100%);
+      overflow: hidden;
+      line-height: 0;
+    }
+    .top-hero-banner img {
+      width: 100%;
+      display: block;
+      max-height: 460px;
+      object-fit: cover;
+      object-position: center 18%;
+    }
+
+    /* ══════════════════ CTA FINALE ══════════════════ */
+    .cta-finale {
+      background: #080e28;
+      position: relative; overflow: hidden;
+      padding: 80px 40px;
+      text-align: center;
+    }
+    .cta-finale::before {
+      content: '';
+      position: absolute; inset: 0; pointer-events: none;
+      background:
+        radial-gradient(ellipse 70% 80% at 50% 60%, rgba(37,99,235,.18) 0%, transparent 65%),
+        radial-gradient(ellipse 40% 50% at 20% 30%, rgba(124,58,237,.10) 0%, transparent 55%);
+    }
+    .cta-finale-inner { max-width: 760px; margin: 0 auto; position: relative; z-index: 1; }
+    .cta-finale-tag {
+      display: inline-flex; align-items: center; gap: 7px; margin-bottom: 24px;
+      background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.14);
+      border-radius: 999px; padding: 5px 16px;
+      font-size: .72rem; font-weight: 700; letter-spacing: 1.8px;
+      text-transform: uppercase; color: rgba(255,255,255,.55);
+    }
+    .cta-finale h2 {
+      font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 900; color: #fff;
+      line-height: 1.1; letter-spacing: -.5px; margin-bottom: 20px;
+    }
+    .cta-finale h2 .blue { color: #60a5fa; }
+    .cta-finale p {
+      font-size: 1rem; color: rgba(255,255,255,.58); line-height: 1.8;
+      max-width: 560px; margin: 0 auto 36px;
+    }
+    .cta-finale-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .cta-finale-btns .btn-primary {
+      background: var(--blue); color: #fff; border: none; border-radius: 9px;
+      font-size: .95rem; font-weight: 700; padding: 13px 28px; cursor: pointer;
+      box-shadow: 0 4px 20px rgba(37,99,235,.45); transition: background .2s, transform .1s;
+    }
+    .cta-finale-btns .btn-primary:hover { background: var(--blue-dark); transform: translateY(-1px); }
+    .cta-finale-btns .btn-ghost {
+      background: transparent; color: rgba(255,255,255,.75);
+      border: 1px solid rgba(255,255,255,.22); border-radius: 9px;
+      font-size: .95rem; font-weight: 600; padding: 13px 28px; cursor: pointer;
+      transition: background .2s;
+    }
+    .cta-finale-btns .btn-ghost:hover { background: rgba(255,255,255,.07); }
+    .cta-badges { display: flex; justify-content: center; gap: 28px; margin-top: 44px; flex-wrap: wrap; }
+    .cta-badge-item { display: flex; align-items: center; gap: 8px; font-size: .8rem; color: rgba(255,255,255,.38); font-weight: 600; }
+    .cta-badge-item span { font-size: 1.1rem; }
+
     /* ══════════════════ RESPONSIVE ══════════════════ */
     @media (max-width: 960px) {
       .hero-inner { grid-template-columns: 1fr; }
@@ -536,6 +601,11 @@
     </button>
   </div>
 </nav>
+
+<!-- ════════════════════════════ TOP HERO BANNER ════════════════════════════ -->
+<div class="top-hero-banner">
+  <img src="orny-hero.png" alt="OrnyTools — Votre Partenaire Data &amp; IA" />
+</div>
 
 <!-- ════════════════════════════ HERO ════════════════════════════ -->
 <section class="hero-section">
@@ -842,7 +912,7 @@
 </section>
 
 <!-- ════════════════════════════ TRADE OPTIMIZER TOOL ════════════════════════════ -->
-<div style="background:var(--bg);padding:32px 32px 8px">
+<div style="background:var(--bg);padding:20px 24px 4px">
 <div class="tool-section-wrap" style="border:3px solid #C8841E;border-radius:18px;overflow:hidden;box-shadow:0 0 0 6px rgba(200,132,30,.15),0 12px 40px rgba(200,132,30,.22);outline:1px solid rgba(200,132,30,.25)">
   <div class="tool-section-header" style="position:relative">
     <div style="display:inline-flex;align-items:center;gap:8px;background:#fef3e2;border:1.5px solid #e8a040;border-radius:999px;padding:4px 14px;font-size:.7rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);margin-bottom:14px">⭐ Featured Tool</div>
@@ -1007,13 +1077,32 @@
 </div>
 
 <!-- ════════════════════════════ BANNER ════════════════════════════ -->
-<section class="banner-section">
-  <div class="banner-inner">
-    <img src="orny-banner.png" alt="OrnyTools — Patience. Strategy. Freedom." class="banner-img" />
-    <div class="banner-text">
-      <div class="banner-tag"><span class="t-en">Built for DeFi traders</span><span class="t-fr">Conçu pour les traders DeFi</span><span class="t-es">Creado para traders DeFi</span></div>
-      <h2 class="banner-title"><span class="t-en">Patience.<br>Strategy.<br>Freedom.</span><span class="t-fr">Patience.<br>Stratégie.<br>Liberté.</span><span class="t-es">Paciencia.<br>Estrategia.<br>Libertad.</span></h2>
-      <p class="banner-sub"><span class="t-en">Every basis point saved compounds. Most traders focus on entry price — few think about the cost of the transaction itself. OrnyTools fills that gap: one number, derived live from the blockchain, so you stop leaving money on the table before the trade even starts. The math is simple. The edge is real.</span><span class="t-fr">Chaque point de base économisé se compose. La plupart des traders se concentrent sur le prix d'entrée — peu pensent au coût de la transaction elle-même. OrnyTools comble ce fossé : un chiffre, dérivé en direct de la blockchain, pour que vous arrêtiez de laisser de l'argent sur la table avant même de trader. Le calcul est simple. L'avantage est réel.</span><span class="t-es">Cada punto básico ahorrado se compone. La mayoría de traders se centra en el precio de entrada — pocos piensan en el coste de la propia transacción. OrnyTools llena ese hueco: un número, derivado en tiempo real de la blockchain, para que dejes de dejar dinero sobre la mesa antes de que el trade empiece. La matemática es simple. La ventaja es real.</span></p>
+<section class="cta-finale">
+  <div class="cta-finale-inner">
+    <div class="cta-finale-tag">⚡ <span class="t-en">The DeFi Edge</span><span class="t-fr">L'Avantage DeFi</span><span class="t-es">La Ventaja DeFi</span></div>
+    <h2>
+      <span class="t-en">Stop leaving money<br>on the <span class="blue">table.</span></span>
+      <span class="t-fr">Arrêtez de laisser<br>de l'argent sur la <span class="blue">table.</span></span>
+      <span class="t-es">Deja de perder dinero<br>sobre la <span class="blue">mesa.</span></span>
+    </h2>
+    <p>
+      <span class="t-en">Every basis point saved compounds. OrnyTools gives you live on-chain data and precise math — so you trade smarter, every single time.</span>
+      <span class="t-fr">Chaque point de base économisé se compose. OrnyTools vous donne des données on-chain en direct et une mathématique précise — pour trader plus intelligemment, à chaque fois.</span>
+      <span class="t-es">Cada punto básico ahorrado se compone. OrnyTools te da datos on-chain en vivo y matemáticas precisas — para operar de forma más inteligente, cada vez.</span>
+    </p>
+    <div class="cta-finale-btns">
+      <button class="btn-primary" onclick="location.href='optimizer.html'">
+        <span class="t-en">🚀 Launch Tools</span><span class="t-fr">🚀 Lancer les Outils</span><span class="t-es">🚀 Lanzar herramientas</span>
+      </button>
+      <button class="btn-ghost" onclick="document.getElementById('tools').scrollIntoView({behavior:'smooth'})">
+        <span class="t-en">Explore All Tools</span><span class="t-fr">Explorer les Outils</span><span class="t-es">Explorar herramientas</span>
+      </button>
+    </div>
+    <div class="cta-badges">
+      <div class="cta-badge-item"><span>⚡</span> <span class="t-en">9 Free Tools</span><span class="t-fr">9 Outils gratuits</span><span class="t-es">9 Herramientas gratuitas</span></div>
+      <div class="cta-badge-item"><span>🔗</span> <span class="t-en">Live on-chain data</span><span class="t-fr">Données on-chain en direct</span><span class="t-es">Datos on-chain en vivo</span></div>
+      <div class="cta-badge-item"><span>🛡️</span> <span class="t-en">No wallet needed</span><span class="t-fr">Sans connexion wallet</span><span class="t-es">Sin wallet necesaria</span></div>
+      <div class="cta-badge-item"><span>🌐</span> EN · FR · ES</div>
     </div>
   </div>
 </section>
