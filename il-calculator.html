@@ -328,7 +328,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <input id="v3P0" class="mono" value="2500" inputmode="decimal"/>
         </div>
         <div class="field with-prefix">
-          <label><span class="t-en">Current price (P₁)</span><span class="t-fr">Prix actuel (P₁)</span><span class="t-es">Precio actual (P₁)</span> <span class="hint">$</span></label>
+          <label><span class="t-en">Current price (P₁)</span><span class="t-fr">Prix actuel (P₁)</span><span class="t-es">Precio actual (P₁)</span> <span class="hint">$</span><span class="oc-badge">⛓ CoinGecko live</span></label>
           <span class="pfx">$</span>
           <input id="v3P1" class="mono" value="2900" inputmode="decimal"/>
         </div>
@@ -514,6 +514,8 @@ function applyPreset(btn) {
   if(pa) $('v3Pa').value=pa;
   if(pb) $('v3Pb').value=pb;
   calcV3IL();
+
+  if(_geckoId) fetchPriceV3();
 }
 
 /* ── Live price fetch (CoinGecko) ─────────────────────────────────────────── */

@@ -20,7 +20,12 @@
     'display:inline-flex;align-items:center;gap:4px;line-height:1}',
     '.lang-btn:hover{color:var(--text,#111827)}',
     '.lang-btn.active{background:#fff;color:var(--text,#111827);',
-    'box-shadow:0 1px 4px rgba(0,0,0,.10);border-radius:7px}'
+    'box-shadow:0 1px 4px rgba(0,0,0,.10);border-radius:7px}',
+    // On-chain badge — shared across all pages
+    '.oc-badge{display:inline-flex;align-items:center;gap:3px;font-size:9.5px;font-weight:700;',
+    'background:rgba(37,99,235,.07);color:#2563eb;border:1px solid rgba(37,99,235,.18);',
+    'border-radius:5px;padding:2px 7px;vertical-align:middle;margin-left:6px;letter-spacing:.02em;',
+    'white-space:nowrap;flex-shrink:0}'
   ].join('');
   document.head.appendChild(s);
 

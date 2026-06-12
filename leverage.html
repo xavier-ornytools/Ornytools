@@ -231,7 +231,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <input id="colAmount" class="mono" value="1" inputmode="decimal"/>
       </div>
       <div class="field with-prefix">
-        <label><span class="t-en">Current price</span><span class="t-fr">Prix actuel</span><span class="t-es">Precio actual</span> <span class="hint" id="priceHint">USD</span></label>
+        <label><span class="t-en">Current price</span><span class="t-fr">Prix actuel</span><span class="t-es">Precio actual</span> <span class="hint" id="priceHint">USD</span><span class="oc-badge">⛓ CoinGecko live</span></label>
         <span class="pfx">$</span>
         <input id="colPrice" class="mono" value="65000" inputmode="decimal"/>
       </div>
@@ -252,7 +252,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     <div class="row2">
       <div class="field with-prefix">
-        <label><span class="t-en">Borrow APY</span><span class="t-fr">APY d'emprunt</span><span class="t-es">APY de préstamo</span> <span class="hint">USDC</span></label>
+        <label><span class="t-en">Borrow APY</span><span class="t-fr">APY d'emprunt</span><span class="t-es">APY de préstamo</span> <span class="hint">USDC</span><span class="oc-badge" id="borrowApyBadge" style="display:none">⛓ DeFiLlama live</span></label>
         <span class="pfx" style="font-family:var(--ui);font-size:13px">%</span>
         <input id="borrowApy" class="mono" value="5" inputmode="decimal" style="padding-left:26px"/>
       </div>
@@ -391,6 +391,29 @@ document.querySelectorAll('.preset-btn').forEach(btn => {
 
 // Auto-fetch on load for active preset (WBTC)
 fetchPrice('wrapped-bitcoin').then(p => setPriceLive(p));
+
+// Live Aave V3 USDC borrow APY from DeFiLlama
+(async function fetchAaveBorrowApy(){
+  try {
+    const r = await fetch('https://yields.llama.fi/pools');
+    const pools = (await r.json()).data;
+    const sel = document.querySelector('.preset-btn.active');
+    const chain = sel ? (sel.dataset.label === 'wstETH' ? 'Ethereum' : 'Arbitrum') : 'Arbitrum';
+    const pool = pools.find(p =>
+      p.project === 'aave-v3' &&
+      p.symbol === 'USDC' &&
+      p.chain === chain &&
+      p.apyBaseBorrow > 0
+    ) || pools.find(p => p.project === 'aave-v3' && p.symbol === 'USDC' && p.apyBaseBorrow > 0);
+    if (pool && pool.apyBaseBorrow > 0) {
+      $('borrowApy').value = pool.apyBaseBorrow.toFixed(2);
+      $('borrowApy').classList.add('live');
+      var badge = document.getElementById('borrowApyBadge');
+      if (badge) badge.style.display = 'inline-flex';
+      calc();
+    }
+  } catch(e) {}
+})();
 
 $('loopMinus').addEventListener('click', () => { if(loops>1){loops--;$('loopVal').textContent=loops;calc();} });
 $('loopPlus').addEventListener('click',  () => { if(loops<10){loops++;$('loopVal').textContent=loops;calc();} });

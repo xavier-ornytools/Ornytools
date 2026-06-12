@@ -262,7 +262,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
 
     <div class="field price-field-wrap">
-      <label><span class="t-en">Current Price</span><span class="t-fr">Prix actuel</span><span class="t-es">Precio actual</span> <span id="priceUnit">USDC per ETH</span></label>
+      <label><span class="t-en">Current Price</span><span class="t-fr">Prix actuel</span><span class="t-es">Precio actual</span> <span id="priceUnit">USDC per ETH</span><span class="oc-badge">⛓ CoinGecko live</span></label>
       <input type="number" id="inputPc" placeholder="3400" min="0" step="any"/>
       <button class="live-btn" id="livePriceBtn" onclick="fetchLivePrice()">
         <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-4.99"/></svg>
@@ -361,6 +361,7 @@ document.getElementById('presetGrid').querySelectorAll('.preset-btn').forEach(bt
     }
     updateRangeBar();
     updatePctLabels();
+    if(_preset !== 'custom') fetchLivePrice();
   });
 });
 
@@ -368,6 +369,7 @@ document.getElementById('presetGrid').querySelectorAll('.preset-btn').forEach(bt
   document.getElementById(id).addEventListener('input', () => {
     updateRangeBar();
     updatePctLabels();
+    if(_preset !== 'custom') fetchLivePrice();
   });
 });
 
