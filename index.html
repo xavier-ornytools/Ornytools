@@ -314,20 +314,46 @@
       font-size: .72rem; color: rgba(255,255,255,.55); font-weight: 700;
     }
 
-    /* ══════════════════ TOOL SECTION ══════════════════ */
-    .tool-section-wrap { background: var(--bg); }
-    .tool-section-header {
-      max-width: 1060px; margin: 0 auto;
-      padding: 28px 28px 0; text-align: center;
+    /* ══════════════════ OPTIMIZER EMBED ══════════════════ */
+    .optimizer-outer { background: var(--bg); padding: 0 24px 40px; }
+    .optimizer-frame {
+      max-width: 920px; margin: 0 auto;
+      border-radius: 20px; overflow: hidden;
+      box-shadow: 0 0 0 1px rgba(200,132,30,.18), 0 24px 64px rgba(0,0,0,.13), 0 8px 24px rgba(200,132,30,.12);
     }
-    .tool-section-header h2 { font-size: 1.2rem; font-weight: 800; color: var(--text); margin-bottom: 6px; }
-    .tool-section-header p { font-size: .87rem; color: var(--muted); }
+    .optimizer-head {
+      background: linear-gradient(135deg, #0d1421 0%, #0f2547 55%, #131b2e 100%);
+      padding: 36px 36px 44px; text-align: center; position: relative; overflow: hidden;
+    }
+    .optimizer-head::before {
+      content:''; position:absolute; inset:0; pointer-events:none;
+      background: radial-gradient(ellipse 70% 80% at 50% 120%, rgba(200,132,30,.18) 0%, transparent 60%),
+                  radial-gradient(ellipse 40% 50% at 20% 0%, rgba(37,99,235,.08) 0%, transparent 50%);
+    }
+    .optimizer-head::after {
+      content:''; position:absolute; bottom:0; left:0; right:0; height:1px;
+      background: linear-gradient(90deg, transparent, rgba(200,132,30,.5), rgba(37,99,235,.3), transparent);
+    }
+    .opt-tag {
+      display:inline-flex; align-items:center; gap:6px; position:relative; z-index:1;
+      background:rgba(200,132,30,.12); border:1px solid rgba(200,132,30,.3);
+      color:#F0A030; border-radius:999px; padding:4px 14px;
+      font-size:.63rem; font-weight:800; letter-spacing:2px; text-transform:uppercase; margin-bottom:12px;
+    }
+    .optimizer-head h2 {
+      font-size:clamp(1.3rem,2.4vw,1.75rem); font-weight:900; color:#fff;
+      margin-bottom:8px; letter-spacing:-.3px; position:relative; z-index:1;
+    }
+    .optimizer-head p { color:rgba(255,255,255,.48); font-size:.88rem; position:relative; z-index:1; }
+    .tool-section-wrap { background: #ffffff; }
+    .tool-section-header { display:none; } /* replaced by optimizer-head */
 
-    /* ══════════════════ TOOL INTERNALS (preserved) ══════════════════ */
-    main { max-width: 860px; margin: 0 auto; padding: 16px 16px 36px; position: relative; }
+    /* ══════════════════ TOOL INTERNALS ══════════════════ */
+    main { max-width: 860px; margin: 0 auto; padding: 20px 20px 36px; position: relative; }
     .grid { display: grid; gap: 14px; grid-template-columns: 1fr 1fr; position: relative; z-index: 1; }
     @media (max-width: 680px) { .grid { grid-template-columns: 1fr; } }
-    .card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px; box-shadow: var(--shadow); }
+    .card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; box-shadow: var(--shadow); transition: box-shadow .2s; }
+    .card:hover { box-shadow: var(--shadow-lg); }
     .card h2 { font-size: .72rem; font-weight: 700; letter-spacing: 1.8px; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; }
     .full { grid-column: 1 / -1; }
     .fetch-card { border-top: 3px solid var(--gold); }
@@ -387,7 +413,9 @@
     }
     .alert strong { color: var(--red); }
     .results { grid-column: 1/-1; display: flex; gap: 14px; flex-wrap: wrap; }
-    .rblock { flex: 1 1 120px; background: var(--white); border: 1px solid var(--border); border-radius: 12px; padding: 12px; text-align: center; box-shadow: var(--shadow); }
+    .rblock { flex: 1 1 120px; background: var(--white); border: 1px solid var(--border); border-radius: 12px; padding: 14px 12px; text-align: center; box-shadow: var(--shadow); transition: transform .15s, box-shadow .15s; }
+    .rblock:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+    .rblock:first-child { border-color: rgba(200,132,30,.3); background: linear-gradient(135deg,#fffcf8,#fef3e2); }
     .rblock .rl { font-size: .68rem; color: var(--muted); font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; margin-bottom: 8px; }
     .rblock .rv { font-size: 1.35rem; font-weight: 800; }
     .rblock .rs { font-size: .7rem; color: var(--muted); margin-top: 4px; }
@@ -441,6 +469,58 @@
     .how { text-align: center; }
     .how p { font-size: .9rem; color: var(--muted); line-height: 1.85; margin-bottom: 10px; }
     .how p:last-child { margin-bottom: 0; }
+
+    /* ══════════════════ INTENT CARDS ENHANCED ══════════════════ */
+    .intent-card { position:relative; overflow:hidden; }
+    .intent-card::before {
+      content:''; position:absolute; top:0; left:0; right:0; height:3px;
+      opacity:0; transition:opacity .2s;
+    }
+    .intent-card:nth-child(1)::before { background:linear-gradient(90deg,var(--blue),#60a5fa); }
+    .intent-card:nth-child(2)::before { background:linear-gradient(90deg,var(--green),#34d399); }
+    .intent-card:nth-child(3)::before { background:linear-gradient(90deg,var(--purple),#a78bfa); }
+    .intent-card:nth-child(4)::before { background:linear-gradient(90deg,var(--gold),#fbbf24); }
+    .intent-card:hover::before { opacity:1; }
+    .intent-card:hover { transform:translateY(-3px); }
+
+    /* ══════════════════ STATS BAR ENHANCED ══════════════════ */
+    .stat-num { text-shadow: 0 0 28px rgba(147,197,253,.45); }
+    .stat-item { transition: transform .2s; }
+    .stat-item:hover { transform: translateY(-2px); }
+    .tl { transition: all .2s; }
+    .tl:hover { background:rgba(255,255,255,.18)!important; border-color:rgba(255,255,255,.35)!important; transform:scale(1.1); }
+
+    /* ══════════════════ TOOL CARDS ENHANCED ══════════════════ */
+    .tool-card { transition: transform .18s, box-shadow .18s; }
+    .tool-card:hover { transform: translateY(-3px); }
+    .tools-grid .tool-card:nth-child(1) {
+      border-color: rgba(37,99,235,.25);
+      background: linear-gradient(160deg, #fafbff 0%, #f5f8ff 100%);
+    }
+    .tools-grid .tool-card:nth-child(1)::before {
+      content:''; position:absolute; top:0; left:0; right:0; height:2px;
+      background: linear-gradient(90deg, var(--blue), #60a5fa);
+    }
+    .tool-card { position:relative; overflow:hidden; }
+
+    /* ══════════════════ DAILY INSIGHT ENHANCED ══════════════════ */
+    @keyframes borderPulse {
+      0%,100% { box-shadow: 0 0 0 4px rgba(37,99,235,.07), var(--shadow); }
+      50%      { box-shadow: 0 0 0 6px rgba(37,99,235,.13), var(--shadow); }
+    }
+    .insight-quote {
+      background: linear-gradient(135deg, #f0f9ff, #eff6ff);
+      border-left: 3px solid var(--blue);
+      padding: 14px 16px; border-radius: 0 10px 10px 0;
+      font-style:italic; color:var(--text);
+    }
+    .why-card[style*="border:2px solid"] { animation: borderPulse 3s ease-in-out infinite; }
+
+    /* ══════════════════ SECTION SEPARATOR ══════════════════ */
+    .sec-divider {
+      height:1px; max-width:240px; margin:0 auto;
+      background:linear-gradient(90deg,transparent,var(--border),transparent);
+    }
 
     /* ══════════════════ BANNER ══════════════════ */
     .banner-section { background: var(--white); border-top: 1px solid var(--border); padding: 80px 28px 90px; text-align: center; }
@@ -662,6 +742,7 @@
 
 <!-- ════════════════════════════ INTENT ════════════════════════════ -->
 <section class="intent-section">
+  <div style="font-size:.63rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--blue);margin-bottom:10px">⚡ <span class="t-en">Quick start</span><span class="t-fr">Démarrage rapide</span><span class="t-es">Inicio rápido</span></div>
   <div class="sec-icon">⚙️</div>
   <h2 class="sec-title"><span class="t-en">What are you trying to do today?</span><span class="t-fr">Que souhaitez-vous faire aujourd'hui ?</span><span class="t-es">¿Qué quieres hacer hoy?</span></h2>
   <p class="sec-sub"><span class="t-en">Choose your objective, we'll help you make the right decision.</span><span class="t-fr">Choisissez votre objectif, nous vous aidons à décider.</span><span class="t-es">Elige tu objetivo, te ayudamos a tomar la decisión correcta.</span></p>
@@ -701,8 +782,8 @@
 <section class="tools-section" id="tools">
   <div class="tools-hd">
     <div class="tools-hd-left">
-      <span style="font-size:1.25rem">⚡</span>
-      <h2><span class="t-en">Powerful tools. Clear decisions.</span><span class="t-fr">Des outils puissants. Des décisions claires.</span><span class="t-es">Herramientas potentes. Decisiones claras.</span></h2>
+      <span style="display:inline-flex;align-items:center;gap:6px;font-size:.65rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--blue);margin-bottom:8px">⚡ <span class="t-en">All tools — free, no wallet needed</span><span class="t-fr">Tous les outils — gratuits, sans wallet</span><span class="t-es">Todas las herramientas — gratis, sin wallet</span></span>
+      <h2><span class="t-en">Powerful tools.<br><span style="background:linear-gradient(90deg,var(--blue),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Clear decisions.</span></span><span class="t-fr">Des outils puissants.<br><span style="background:linear-gradient(90deg,var(--blue),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Des décisions claires.</span></span><span class="t-es">Herramientas potentes.<br><span style="background:linear-gradient(90deg,var(--blue),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Decisiones claras.</span></span></h2>
     </div>
     <a href="#tool" class="view-all" onclick="document.getElementById('tool').scrollIntoView({behavior:'smooth'});return false;"><span class="t-en">View all tools →</span><span class="t-fr">Voir tous les outils →</span><span class="t-es">Ver todas las herramientas →</span></a>
   </div>
@@ -847,9 +928,7 @@
 
     <div class="why-card" style="border:2px solid var(--blue);box-shadow:0 0 0 4px rgba(37,99,235,.07),var(--shadow)">
       <div class="wc-hd"><span>💡</span><h3><span class="t-en">Orny's Daily Insight</span><span class="t-fr">Insight du Jour d'Orny</span><span class="t-es">El Consejo Diario de Orny</span></h3></div>
-      <div class="insight-quote">
-        "Trading a $50 swap in a $50M pool can cost more in gas than in slippage."
-      </div>
+      <div class="insight-quote">"Trading a $50 swap in a $50M pool can cost more in gas than in slippage."</div>
       <div class="insight-foot"><span class="t-en">Most traders never calculate that.</span><span class="t-fr">La plupart des traders ne calculent jamais ça.</span><span class="t-es">La mayoría de traders nunca calcula eso.</span></div>
     </div>
 
@@ -873,22 +952,22 @@
   <div class="stats-inner">
     <div class="stat-item">
       <div class="stat-icon">⚡</div>
-      <div class="stat-num">9</div>
+      <div class="stat-num"><span>11</span></div>
       <div class="stat-lbl"><span class="t-en">Free Tools</span><span class="t-fr">Outils gratuits</span><span class="t-es">Herramientas gratuitas</span></div>
     </div>
     <div class="stat-item">
       <div class="stat-icon">🔗</div>
-      <div class="stat-num">6</div>
+      <div class="stat-num"><span>6</span></div>
       <div class="stat-lbl"><span class="t-en">Chains Supported</span><span class="t-fr">Blockchains</span><span class="t-es">Blockchains</span></div>
     </div>
     <div class="stat-item">
       <div class="stat-icon">🏦</div>
-      <div class="stat-num">20+</div>
+      <div class="stat-num"><span>20+</span></div>
       <div class="stat-lbl"><span class="t-en">Chainlink Feeds</span><span class="t-fr">Flux Chainlink</span><span class="t-es">Feeds Chainlink</span></div>
     </div>
     <div class="stat-item">
       <div class="stat-icon">🛡️</div>
-      <div class="stat-num">0</div>
+      <div class="stat-num"><span>0</span></div>
       <div class="stat-lbl"><span class="t-en">Wallet connections</span><span class="t-fr">Connexions wallet</span><span class="t-es">Conexiones de wallet</span></div>
     </div>
     <div class="trusted-col">
@@ -906,13 +985,15 @@
 </section>
 
 <!-- ════════════════════════════ TRADE OPTIMIZER TOOL ════════════════════════════ -->
-<div style="background:var(--bg);padding:16px 20px 4px">
-<div class="tool-section-wrap" style="border:3px solid #C8841E;border-radius:18px;overflow:hidden;box-shadow:0 0 0 6px rgba(200,132,30,.15),0 12px 40px rgba(200,132,30,.22);outline:1px solid rgba(200,132,30,.25)">
-  <div class="tool-section-header" style="position:relative">
-    <div style="display:inline-flex;align-items:center;gap:6px;background:#fef3e2;border:1.5px solid #e8a040;border-radius:999px;padding:3px 11px;font-size:.65rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);margin-bottom:10px">⭐ Featured Tool</div>
-    <h2>🔄 Trade Size Optimizer</h2>
-    <p>Find the mathematically optimal trade amount — live blockchain data.</p>
+<div class="optimizer-outer">
+<div class="optimizer-frame">
+  <div class="optimizer-head">
+    <div class="opt-tag">⭐ <span class="t-en">Featured Tool</span><span class="t-fr">Outil en Vedette</span><span class="t-es">Herramienta Destacada</span></div>
+    <h2>🔄 <span class="t-en">Trade Size Optimizer</span><span class="t-fr">Optimiseur de Taille de Trade</span><span class="t-es">Optimizador de Tamaño de Trade</span></h2>
+    <p><span class="t-en">Find the mathematically optimal trade amount — live blockchain data.</span><span class="t-fr">Trouvez la taille de trade optimale mathématiquement — données blockchain en direct.</span><span class="t-es">Encuentra la cantidad de trade óptima matemáticamente — datos blockchain en vivo.</span></p>
   </div>
+  <div class="tool-section-wrap">
+  <div class="tool-section-header"></div>
 
   <main id="tool">
     <div class="grid">
@@ -1067,8 +1148,9 @@
 
     </div>
   </main>
-</div>
-</div>
+  </div><!-- /tool-section-wrap -->
+</div><!-- /optimizer-frame -->
+</div><!-- /optimizer-outer -->
 
 <!-- ════════════════════════════ BANNER ════════════════════════════ -->
 <section class="cta-finale">
@@ -1093,7 +1175,7 @@
       </button>
     </div>
     <div class="cta-badges">
-      <div class="cta-badge-item"><span>⚡</span> <span class="t-en">9 Free Tools</span><span class="t-fr">9 Outils gratuits</span><span class="t-es">9 Herramientas gratuitas</span></div>
+      <div class="cta-badge-item"><span>⚡</span> <span class="t-en">11 Free Tools</span><span class="t-fr">11 Outils gratuits</span><span class="t-es">11 Herramientas gratuitas</span></div>
       <div class="cta-badge-item"><span>🔗</span> <span class="t-en">Live on-chain data</span><span class="t-fr">Données on-chain en direct</span><span class="t-es">Datos on-chain en vivo</span></div>
       <div class="cta-badge-item"><span>🛡️</span> <span class="t-en">No wallet needed</span><span class="t-fr">Sans connexion wallet</span><span class="t-es">Sin wallet necesaria</span></div>
       <div class="cta-badge-item"><span>🌐</span> EN · FR · ES</div>
