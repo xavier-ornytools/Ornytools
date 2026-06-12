@@ -182,8 +182,8 @@
     }
     .intent-card {
       background: var(--white); border: 1px solid var(--border); border-radius: 16px;
-      padding: 24px 20px; text-align: left; cursor: pointer;
-      display: flex; flex-direction: column; gap: 0;
+      padding: 24px 20px; text-align: center; cursor: pointer;
+      display: flex; flex-direction: column; gap: 0; align-items: center;
       transition: box-shadow .2s, border-color .2s, transform .15s;
     }
     .intent-card:hover { box-shadow: var(--shadow-lg); border-color: var(--blue); transform: translateY(-3px); }
@@ -194,7 +194,7 @@
     .intent-arrow {
       margin-top: 18px; width: 28px; height: 28px; border: 1px solid var(--border);
       border-radius: 50%; display: flex; align-items: center; justify-content: center;
-      font-size: .9rem; color: var(--blue);
+      font-size: .9rem; color: var(--blue); flex-shrink: 0;
     }
 
     /* ══════════════════ TOOLS ══════════════════ */
