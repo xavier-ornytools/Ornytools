@@ -225,8 +225,15 @@
     .badge-risk { background: #fee2e2; color: #991b1b; }
     .tc-stat { font-size: 1.4rem; font-weight: 900; text-align: right; line-height: 1.2; margin-top: 8px; }
     .tc-stat small { font-size: .68rem; font-weight: 600; color: var(--muted); display: block; }
-    .open-tool { display: inline-flex; align-items: center; gap: 4px; font-size: .8rem; font-weight: 700; color: var(--blue); margin-top: 14px; cursor: pointer; background: none; border: none; padding: 0; }
-    .open-tool:hover { text-decoration: underline; }
+    .open-tool {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: .8rem; font-weight: 700; color: var(--blue);
+      margin-top: 14px; cursor: pointer; background: transparent;
+      border: 1.5px solid var(--blue); border-radius: 8px;
+      padding: 7px 14px; transition: background .18s, color .18s;
+      text-decoration: none;
+    }
+    .open-tool:hover { background: var(--blue); color: #fff; text-decoration: none; }
 
     /* ══════════════════ WHY / INSIGHT / ROADMAP ══════════════════ */
     .why-section { background: var(--white); padding: 60px 40px; }
@@ -758,17 +765,6 @@
       <button class="open-tool" onclick="location.href='aave.html'"><span class="t-en">Open Tool →</span><span class="t-fr">Ouvrir l'outil →</span><span class="t-es">Abrir herramienta →</span></button>
     </div>
 
-    <div class="tool-card">
-      <div class="tc-head">
-        <div class="tc-ico" style="background:#fef9ec">🇫🇷</div>
-        <div class="tc-meta">
-          <h3>Analyse OUSD & pmUSD</h3>
-          <p>Rapport complet en français — mécanisme, risques, scores OrnyTools pour ces deux stablecoins.</p>
-        </div>
-      </div>
-      <button class="open-tool" onclick="location.href='rapport_OUSD_pmUSD.html'">Lire le rapport →</button>
-    </div>
-
   </div>
 </section>
 
@@ -805,7 +801,7 @@
       </div>
     </div>
 
-    <div class="why-card">
+    <div class="why-card" style="border:2px solid var(--blue);box-shadow:0 0 0 4px rgba(37,99,235,.07),var(--shadow)">
       <div class="wc-hd"><span>💡</span><h3><span class="t-en">Orny's Daily Insight</span><span class="t-fr">Insight du Jour d'Orny</span><span class="t-es">El Consejo Diario de Orny</span></h3></div>
       <div class="insight-quote">
         "Trading a $50 swap in a $50M pool can cost more in gas than in slippage."
@@ -866,8 +862,10 @@
 </section>
 
 <!-- ════════════════════════════ TRADE OPTIMIZER TOOL ════════════════════════════ -->
-<div class="tool-section-wrap">
-  <div class="tool-section-header">
+<div style="background:var(--bg);padding:28px 28px 0">
+<div class="tool-section-wrap" style="border:2.5px solid var(--gold);border-radius:18px;overflow:hidden;box-shadow:0 0 0 5px rgba(200,132,30,.09),0 8px 32px rgba(200,132,30,.13)">
+  <div class="tool-section-header" style="position:relative">
+    <div style="display:inline-flex;align-items:center;gap:8px;background:#fef3e2;border:1.5px solid #e8a040;border-radius:999px;padding:4px 14px;font-size:.7rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);margin-bottom:14px">⭐ Featured Tool</div>
     <h2>🔄 Trade Size Optimizer</h2>
     <p>Find the mathematically optimal trade amount — live blockchain data.</p>
   </div>
@@ -1025,6 +1023,7 @@
 
     </div>
   </main>
+</div>
 </div>
 
 <!-- ════════════════════════════ BANNER ════════════════════════════ -->
