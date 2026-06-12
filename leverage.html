@@ -286,6 +286,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <div class="br-row purple"><span><span class="t-en">Total collateral</span><span class="t-fr">Collateral total</span><span class="t-es">Colateral total</span></span><b id="resTotalCol">—</b></div>
         <div class="br-row danger"><span><span class="t-en">Total debt (USD)</span><span class="t-fr">Dette totale (USD)</span><span class="t-es">Deuda total (USD)</span></span><b id="resTotalDebt">—</b></div>
         <div class="br-row danger"><span><span class="t-en">Liquidation price</span><span class="t-fr">Prix de liquidation</span><span class="t-es">Precio de liquidación</span></span><b id="resLiqPrice">—</b></div>
+      <a id="crossLiqLink" href="liquidation.html" style="display:none;margin-top:14px;align-items:center;justify-content:center;gap:7px;padding:9px 16px;background:rgba(37,99,235,.08);color:var(--blue,#2563eb);border:1px solid rgba(37,99,235,.22);border-radius:9px;font-size:.82rem;font-weight:700;text-decoration:none;transition:background .2s">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        <span class="t-en">Verify liquidation in RedZone →</span><span class="t-fr">Vérifier la liquidation dans RedZone →</span><span class="t-es">Verificar liquidación en RedZone →</span>
+      </a>
         <div class="br-row"><span><span class="t-en">Drop to liquidation</span><span class="t-fr">Baisse avant liquidation</span><span class="t-es">Caída hasta liquidación</span></span><b id="resDrop">—</b></div>
         <div class="br-row"><span><span class="t-en">Net APY</span><span class="t-fr">APY Net</span><span class="t-es">APY neto</span></span><b id="resNetApy">—</b></div>
         <div class="br-row"><span><span class="t-en">Break-even collateral APY</span><span class="t-fr">APY seuil de rentabilité</span><span class="t-es">APY colateral en equilibrio</span></span><b id="resBreakEven">—</b></div>
@@ -453,6 +457,12 @@ function calc(){
   const breakEven  = borrow * (leverage - 1) / leverage;
 
   $('resLeverage').textContent = fmtX(leverage);
+  // Cross-link vers liquidation avec valeurs pré-remplies
+  const sel2 = document.querySelector('.preset-btn.active');
+  const asset2 = sel2 ? (sel2.dataset.label === 'wstETH' ? 'WSTETH' : sel2.dataset.label === 'ETH' ? 'ETH' : 'WBTC') : 'WBTC';
+  const crossUrl = `liquidation.html?asset=${asset2}&price=${price.toFixed(0)}&liqprice=${liqPrice.toFixed(0)}`;
+  const lnk = document.getElementById('crossLiqLink');
+  if(lnk){ lnk.href = crossUrl; lnk.style.display='flex'; }
   $('resSub').textContent      = `${loops} loop${loops>1?'s':''} · HF = ${hf.toFixed(2)}`;
   $('resTotalCol').textContent = fmtUSD(lastStep.cumCol);
   $('resTotalDebt').textContent= fmtUSD(lastStep.cumDebt);
@@ -536,6 +546,8 @@ window.onLangChange = function(l) { if(typeof calc==='function') calc(); };
     <a href="stablecoin.html" class="tools-nav-btn"><span>🪙</span><span class="t-en">Stablecoin Analyzer</span><span class="t-fr">Analyseur Stablecoins</span><span class="t-es">Analizador de Stablecoins</span></a>
     <a href="yield.html" class="tools-nav-btn"><span>💰</span><span class="t-en">Yield Optimizer</span><span class="t-fr">Optimiseur Rendement</span><span class="t-es">Optimizador de Rendimiento</span></a>
     <a href="waste.html" class="tools-nav-btn"><span>🔥</span><span class="t-en">Waste Detector</span><span class="t-fr">Détecteur de Gaspillage</span><span class="t-es">Detector de Desperdicio</span></a>
+    <a href="gmx.html" class="tools-nav-btn"><span>⚡</span><span class="t-en">GMX Calculator</span><span class="t-fr">Calculateur GMX</span><span class="t-es">Calculadora GMX</span></a>
+    <a href="dashboard.html" class="tools-nav-btn"><span>🔭</span><span class="t-en">Position Dashboard</span><span class="t-fr">Dashboard Positions</span><span class="t-es">Dashboard de Posiciones</span></a>
 
   </div>
 </div>

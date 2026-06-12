@@ -46,5 +46,20 @@
     if(window.onLangChange) window.onLangChange(l);
   };
 
-  document.addEventListener('DOMContentLoaded', function(){ window.setLang(getLang()); });
+  document.addEventListener('DOMContentLoaded', function(){ window.setLang(getLang()); window._ornyThemeInit && window._ornyThemeInit(); });
+  // Dark mode toggle — injected on all tool pages
+  window._ornyThemeInit = function(){
+    var stored = localStorage.getItem('orny-theme') || 'light';
+    document.documentElement.classList.toggle('dark', stored === 'dark');
+    var btns = document.querySelectorAll('.btn-theme,[data-theme-toggle]');
+    btns.forEach(function(b){ b.textContent = stored==='dark' ? '☀️' : '🌙'; });
+  };
+  window.toggleTheme = function(){
+    var next = document.documentElement.classList.contains('dark') ? 'light' : 'dark';
+    localStorage.setItem('orny-theme', next);
+    document.documentElement.classList.toggle('dark', next==='dark');
+    var btns = document.querySelectorAll('.btn-theme,[data-theme-toggle]');
+    btns.forEach(function(b){ b.textContent = next==='dark' ? '☀️' : '🌙'; });
+  };
+
 })();

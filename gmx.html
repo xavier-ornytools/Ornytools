@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta name="description" content="GMX V2 Position Calculator — OrnyTools. Liquidation price, fees, funding cost and break-even for perp positions on Arbitrum."/>
+<meta name="robots" content="index,follow"/>
+<link rel="canonical" href="https://ornytools.xyz/gmx.html"/>
+<meta property="og:type" content="website"/>
+<meta property="og:site_name" content="OrnyTools"/>
+<meta property="og:title" content="GMX V2 Position Calculator — OrnyTools"/>
+<meta property="og:description" content="Liquidation price, total fees and break-even for GMX V2 perpetual positions on Arbitrum. Live prices via CoinGecko."/>
+<meta property="og:url" content="https://ornytools.xyz/gmx.html"/>
+<meta property="og:image" content="https://ornytools.xyz/orny-banner.png"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="GMX V2 Position Calculator — OrnyTools"/>
+<meta name="twitter:description" content="Liquidation price, fees and break-even for GMX V2 perps on Arbitrum."/>
+<meta name="twitter:image" content="https://ornytools.xyz/orny-banner.png"/>
+<title>GMX V2 Position Calculator — OrnyTools</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet"/>
+<style>
+  :root{
+    --gold:#C8841E;--gold-pale:rgba(200,132,30,.08);
+    --purple:#7C3AED;--purple-pale:rgba(124,58,237,.08);
+    --coral:#E8765A;--coral-pale:rgba(232,118,90,.08);
+    --good:#0E9F6E;--good-pale:rgba(14,159,110,.08);
+    --warn:#F59E0B;--warn-pale:rgba(245,158,11,.08);
+    --blue:#2563eb;--blue-pale:rgba(37,99,235,.08);
+    --text:#111827;--dim:#6B7280;--faint:#9AA5B4;
+    --line:#E4E8F0;--line-soft:#EDF0F5;
+    --surface:#FFFFFF;--surface-2:#F0F2F5;
+    --display:"Fraunces",Georgia,serif;
+    --ui:"Hanken Grotesk",system-ui,sans-serif;
+    --mono:"JetBrains Mono",ui-monospace,monospace;
+    --radius:14px;
+    --shadow:0 2px 8px rgba(0,0,0,.07),0 8px 32px rgba(0,0,0,.07);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:#fff;color:var(--text);font-family:var(--ui);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+
+  .navbar{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(255,255,255,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);padding:10px 24px;display:flex;align-items:center;gap:12px;box-shadow:0 2px 12px rgba(0,0,0,.04)}
+  .nav-logo{width:36px;height:36px;object-fit:cover;object-position:center 15%;border-radius:8px}
+  .nav-brand{font-family:var(--display);font-size:1.05rem;font-weight:600;letter-spacing:-.02em}
+  .nav-brand .dot{color:var(--gold)}
+  .nav-home{margin-left:auto;font-size:.82rem;font-weight:600;color:var(--dim);text-decoration:none;padding:7px 14px;border:1px solid var(--line);border-radius:7px;transition:.15s}
+  .nav-home:hover{border-color:var(--blue);color:var(--blue)}
+
+  .page-hero{padding:100px 28px 40px;text-align:center;background:#fff}
+  .eyebrow{font-size:11.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--blue);font-weight:700;margin-bottom:16px}
+  .page-hero h1{font-family:var(--display);font-weight:500;font-size:clamp(1.7rem,3.2vw,2.4rem);letter-spacing:-.02em;line-height:1.12;margin-bottom:14px}
+  .page-hero h1 em{font-style:italic;color:var(--blue)}
+  .page-hero p{color:var(--dim);font-size:1rem;max-width:50ch;margin:0 auto;line-height:1.75}
+
+  main{max-width:900px;margin:0 auto;padding:32px 24px 80px;display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  @media(max-width:680px){main{grid-template-columns:1fr}}
+  .full{grid-column:1/-1}
+
+  .panel{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow)}
+  .panel-title{font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--faint);margin-bottom:18px}
+
+  /* Direction tabs */
+  .dir-tabs{display:flex;gap:0;border:1px solid var(--line);border-radius:10px;overflow:hidden;margin-bottom:20px}
+  .dir-tab{flex:1;padding:10px;text-align:center;font-size:.88rem;font-weight:700;cursor:pointer;transition:background .15s,color .15s;background:var(--surface-2);color:var(--dim)}
+  .dir-tab.long.active{background:#dcfce7;color:#15803d;border-color:#86efac}
+  .dir-tab.short.active{background:#fee2e2;color:#b91c1c;border-color:#fca5a5}
+
+  /* Asset presets */
+  .preset-row{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:18px}
+  .preset-btn{padding:6px 14px;border:1.5px solid var(--line);border-radius:99px;font-size:.78rem;font-weight:700;cursor:pointer;background:var(--surface-2);color:var(--dim);transition:.15s;font-family:var(--ui)}
+  .preset-btn.active{border-color:var(--blue);background:var(--blue-pale);color:var(--blue)}
+
+  .field{margin-bottom:14px}
+  .field label{display:flex;align-items:center;gap:6px;font-size:.75rem;font-weight:700;color:var(--faint);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px}
+  .field input,.field select{width:100%;background:var(--surface-2);border:1px solid var(--line);color:var(--text);font-family:var(--mono);font-size:14px;padding:10px 12px;border-radius:9px;outline:none;transition:border-color .15s}
+  .field input:focus,.field select:focus{border-color:var(--blue);box-shadow:0 0 0 3px var(--blue-pale)}
+  .field .hint{font-size:.7rem;color:var(--faint);margin-top:4px}
+  .lev-row{display:flex;align-items:center;gap:10px;margin-bottom:18px}
+  .lev-val{font-family:var(--mono);font-weight:700;font-size:1.15rem;color:var(--blue);min-width:44px}
+  .lev-slider{flex:1;accent-color:var(--blue)}
+  .btn-calc{width:100%;padding:13px;background:var(--blue);color:#fff;border:none;border-radius:10px;font-size:.95rem;font-weight:700;cursor:pointer;transition:background .2s,transform .1s;font-family:var(--ui);margin-top:4px}
+  .btn-calc:hover{background:#1d4ed8;transform:translateY(-1px)}
+
+  /* Results */
+  .result-placeholder{text-align:center;padding:32px 20px;color:var(--faint)}
+  .result-placeholder .ph-icon{font-size:2.2rem;margin-bottom:12px}
+  .result-placeholder p{font-size:.9rem;line-height:1.7}
+  .result-big{font-family:var(--display);font-size:2.6rem;font-weight:500;letter-spacing:-.03em;margin:16px 0 6px;line-height:1}
+  .result-label{font-size:.7rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--faint)}
+  .br-row{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--line-soft);font-size:.88rem}
+  .br-row:last-child{border-bottom:none}
+  .br-row b{font-family:var(--mono);font-weight:700}
+  .br-row.danger b{color:var(--coral)}
+  .br-row.good b{color:var(--good)}
+  .br-row.warn b{color:var(--warn)}
+  .br-row.blue b{color:var(--blue)}
+
+  /* Fee breakdown */
+  .fee-bar{margin:14px 0 8px;height:8px;border-radius:4px;background:var(--line-soft);overflow:hidden;display:flex}
+  .fee-seg{height:100%;transition:width .4s}
+
+  /* Direction badge */
+  .dir-badge{display:inline-flex;align-items:center;gap:5px;padding:3px 12px;border-radius:99px;font-size:.75rem;font-weight:800;margin-bottom:14px}
+  .dir-badge.long{background:#dcfce7;color:#15803d}
+  .dir-badge.short{background:#fee2e2;color:#b91c1c}
+
+  .orny-comment{margin-top:14px;padding:14px;background:var(--blue-pale);border-radius:10px;font-size:.84rem;line-height:1.7;color:var(--text);border-left:3px solid var(--blue)}
+
+  /* Tools nav */
+  .tools-nav-band{background:#f7f8fc;border-top:1px solid #e4e8f0;padding:28px 28px 32px;text-align:center}
+  .tools-nav-lbl{font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;color:#6b7280;margin-bottom:14px}
+  .tools-nav-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;max-width:900px;margin:0 auto}
+  .tools-nav-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 15px;border:1px solid #e4e8f0;border-radius:99px;background:#fff;font-size:.8rem;font-weight:600;color:#374151;text-decoration:none;transition:.15s}
+  .tools-nav-btn:hover{border-color:#2563eb;color:#2563eb;background:#eff6ff}
+  .tools-nav-btn.current{border-color:#2563eb;background:#2563eb;color:#fff;pointer-events:none}
+
+  footer{text-align:center;padding:20px;font-size:.72rem;color:var(--faint);border-top:1px solid var(--line)}
+</style>
+<script src="lang.js"></script>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="index.html"><img src="logo.png" class="nav-logo" alt="OrnyTools"/></a>
+  <span class="nav-brand">ORNY<span class="dot">.</span>TOOLS</span>
+  <a href="index.html" class="nav-home">← Home</a>
+  <div style="margin-left:8px">
+    <button id="btnEN" class="lang-btn" onclick="setLang('en')">🇬🇧 EN</button>
+    <button id="btnFR" class="lang-btn" onclick="setLang('fr')">🇫🇷 FR</button>
+    <button id="btnES" class="lang-btn" onclick="setLang('es')">🇪🇸 ES</button>
+  </div>
+</nav>
+
+<div class="page-hero">
+  <div class="eyebrow">GMX V2 · Arbitrum<span class="oc-badge">⛓ CoinGecko live</span></div>
+  <h1><span class="t-en">What does your <em>perp</em> really cost?</span><span class="t-fr">Combien coûte vraiment<br>votre <em>perp</em> ?</span><span class="t-es">¿Cuánto cuesta realmente<br>tu <em>perp</em>?</span></h1>
+  <p><span class="t-en">Liquidation price, total fees and break-even for any GMX V2 position. Live entry price from CoinGecko.</span><span class="t-fr">Prix de liquidation, frais totaux et seuil de rentabilité pour toute position GMX V2. Prix d'entrée en direct via CoinGecko.</span><span class="t-es">Precio de liquidación, comisiones totales y punto de equilibrio para cualquier posición GMX V2. Precio de entrada en vivo vía CoinGecko.</span></p>
+</div>
+
+<main>
+  <!-- INPUTS -->
+  <div class="panel">
+    <div class="panel-title"><span class="t-en">Position Setup</span><span class="t-fr">Configuration</span><span class="t-es">Configuración</span></div>
+
+    <!-- Direction -->
+    <div class="dir-tabs">
+      <div class="dir-tab long active" id="tabLong" onclick="setDir('long')">▲ LONG</div>
+      <div class="dir-tab short" id="tabShort" onclick="setDir('short')">▼ SHORT</div>
+    </div>
+
+    <!-- Asset presets -->
+    <div class="preset-row" id="presetRow">
+      <button class="preset-btn active" data-gecko="bitcoin" data-sym="BTC" onclick="selectAsset(this)">BTC</button>
+      <button class="preset-btn" data-gecko="ethereum" data-sym="ETH" onclick="selectAsset(this)">ETH</button>
+      <button class="preset-btn" data-gecko="arbitrum" data-sym="ARB" onclick="selectAsset(this)">ARB</button>
+      <button class="preset-btn" data-gecko="solana" data-sym="SOL" onclick="selectAsset(this)">SOL</button>
+      <button class="preset-btn" data-gecko="avalanche-2" data-sym="AVAX" onclick="selectAsset(this)">AVAX</button>
+    </div>
+
+    <div class="field">
+      <label><span class="t-en">Entry price ($)</span><span class="t-fr">Prix d'entrée ($)</span><span class="t-es">Precio de entrada ($)</span><span class="oc-badge" id="priceBadge" style="display:none">⛓ live</span></label>
+      <input type="number" id="entryPrice" value="65000" oninput="calc()"/>
+    </div>
+    <div class="field">
+      <label><span class="t-en">Collateral ($)</span><span class="t-fr">Collatéral ($)</span><span class="t-es">Colateral ($)</span></label>
+      <input type="number" id="collateral" value="1000" oninput="calc()"/>
+      <div class="hint"><span class="t-en">Amount you deposit as margin</span><span class="t-fr">Montant déposé en marge</span><span class="t-es">Cantidad depositada como margen</span></div>
+    </div>
+
+    <div class="panel-title" style="margin-top:6px;margin-bottom:10px"><span class="t-en">Leverage</span><span class="t-fr">Levier</span><span class="t-es">Apalancamiento</span></div>
+    <div class="lev-row">
+      <span class="lev-val" id="levDisplay">5×</span>
+      <input type="range" class="lev-slider" id="levSlider" min="1.1" max="50" step="0.1" value="5" oninput="onSlider()"/>
+    </div>
+
+    <div class="field">
+      <label><span class="t-en">Position duration (days)</span><span class="t-fr">Durée de position (jours)</span><span class="t-es">Duración de posición (días)</span></label>
+      <input type="number" id="duration" value="7" min="1" max="365" oninput="calc()"/>
+    </div>
+
+    <button class="btn-calc" onclick="calc()"><span class="t-en">Calculate →</span><span class="t-fr">Calculer →</span><span class="t-es">Calcular →</span></button>
+  </div>
+
+  <!-- RESULTS -->
+  <div class="panel" id="resultPanel">
+    <div class="result-placeholder" id="placeholder">
+      <div class="ph-icon">📊</div>
+      <p><span class="t-en">Configure your position<br>and click Calculate.</span><span class="t-fr">Configurez votre position<br>et cliquez Calculer.</span><span class="t-es">Configura tu posición<br>y haz clic en Calcular.</span></p>
+    </div>
+    <div id="resultContent" style="display:none">
+      <div class="dir-badge" id="dirBadge">LONG</div>
+      <div class="result-label" id="liqLabel"><span class="t-en">Liquidation price</span><span class="t-fr">Prix de liquidation</span><span class="t-es">Precio de liquidación</span></div>
+      <div class="result-big" id="resLiq">—</div>
+
+      <div class="br-row blue"><span><span class="t-en">Position size</span><span class="t-fr">Taille de position</span><span class="t-es">Tamaño de posición</span></span><b id="resSize">—</b></div>
+      <div class="br-row"><span><span class="t-en">Effective leverage</span><span class="t-fr">Levier effectif</span><span class="t-es">Apalancamiento efectivo</span></span><b id="resLev">—</b></div>
+      <div class="br-row warn"><span><span class="t-en">Opening fee (0.07%)</span><span class="t-fr">Frais d'ouverture (0,07%)</span><span class="t-es">Comisión apertura (0,07%)</span></span><b id="resFeeOpen">—</b></div>
+      <div class="br-row warn"><span><span class="t-en">Borrow fee (est.)</span><span class="t-fr">Frais d'emprunt (est.)</span><span class="t-es">Comisión préstamo (est.)</span></span><b id="resFeeBorrow">—</b></div>
+      <div class="br-row danger"><span><span class="t-en">Total fees</span><span class="t-fr">Frais totaux</span><span class="t-es">Comisiones totales</span></span><b id="resFeeTot">—</b></div>
+      <div class="fee-bar">
+        <div class="fee-seg" id="feeBarOpen" style="background:#F59E0B"></div>
+        <div class="fee-seg" id="feeBarBorrow" style="background:#E8765A"></div>
+      </div>
+      <div class="br-row good"><span><span class="t-en">Break-even price</span><span class="t-fr">Prix seuil de rentabilité</span><span class="t-es">Precio de equilibrio</span></span><b id="resBreak">—</b></div>
+      <div class="br-row"><span><span class="t-en">Drop to liquidation</span><span class="t-fr">Baisse jusqu'à liquidation</span><span class="t-es">Caída hasta liquidación</span></span><b id="resDrop">—</b></div>
+
+      <div class="orny-comment" id="ornyComment"></div>
+    </div>
+  </div>
+
+  <!-- HOW IT WORKS -->
+  <div class="panel full" style="background:var(--surface-2);border-style:dashed">
+    <div class="panel-title"><span class="t-en">How GMX V2 fees work</span><span class="t-fr">Comment fonctionnent les frais GMX V2</span><span class="t-es">Cómo funcionan las comisiones de GMX V2</span></div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;font-size:.85rem;color:var(--dim);line-height:1.7">
+      <div><strong style="color:var(--text)"><span class="t-en">Opening fee</span><span class="t-fr">Frais d'ouverture</span><span class="t-es">Comisión de apertura</span></strong><br/><span class="t-en">0.05–0.07% of position size. Charged when you open and when you close.</span><span class="t-fr">0,05–0,07% de la taille de position. Prélevés à l'ouverture et à la fermeture.</span><span class="t-es">0,05–0,07% del tamaño de posición. Se cobra al abrir y al cerrar.</span></div>
+      <div><strong style="color:var(--text)"><span class="t-en">Borrow fee</span><span class="t-fr">Frais d'emprunt</span><span class="t-es">Comisión de préstamo</span></strong><br/><span class="t-en">~0.01%/hour on the borrowed portion (position − collateral). Varies with pool utilization.</span><span class="t-fr">~0,01%/heure sur la partie empruntée (position − collatéral). Varie selon l'utilisation du pool.</span><span class="t-es">~0,01%/hora sobre la parte prestada (posición − colateral). Varía con la utilización del pool.</span></div>
+      <div><strong style="color:var(--text)"><span class="t-en">Liquidation</span><span class="t-fr">Liquidation</span><span class="t-es">Liquidación</span></strong><br/><span class="t-en">Triggered when (collateral − fees) falls below 1% of position size (maintenance margin).</span><span class="t-fr">Déclenchée quand (collatéral − frais) passe sous 1% de la taille de position (marge de maintenance).</span><span class="t-es">Se activa cuando (colateral − comisiones) cae por debajo del 1% del tamaño de posición (margen de mantenimiento).</span></div>
+    </div>
+  </div>
+</main>
+
+<div class="tools-nav-band">
+  <div class="tools-nav-lbl"><span class="t-en">All OrnyTools</span><span class="t-fr">Tous les outils</span><span class="t-es">Todas las herramientas</span></div>
+  <div class="tools-nav-grid">
+    <a href="optimizer.html" class="tools-nav-btn"><span>🔄</span><span class="t-en">Trade Optimizer</span><span class="t-fr">Optimiseur de Trade</span><span class="t-es">Optimizador de Trade</span></a>
+    <a href="liquidation.html" class="tools-nav-btn"><span>🛡️</span><span class="t-en">RedZone</span><span class="t-fr">RedZone</span><span class="t-es">RedZone</span></a>
+    <a href="aave.html" class="tools-nav-btn"><span>🏦</span><span class="t-en">Aave V3 Calculator</span><span class="t-fr">Calculateur Aave V3</span><span class="t-es">Calculadora Aave V3</span></a>
+    <a href="il-calculator.html" class="tools-nav-btn"><span>💧</span><span class="t-en">IL Calculator</span><span class="t-fr">Calculateur IL</span><span class="t-es">Calculadora de PI</span></a>
+    <a href="leverage.html" class="tools-nav-btn"><span>📈</span><span class="t-en">Leverage Calculator</span><span class="t-fr">Calculateur Levier</span><span class="t-es">Calculadora de Apalancamiento</span></a>
+    <a href="v3range.html" class="tools-nav-btn"><span>📐</span><span class="t-en">V3 Range Optimizer</span><span class="t-fr">Optimiseur Plage V3</span><span class="t-es">Optimizador de Rango V3</span></a>
+    <a href="stablecoin.html" class="tools-nav-btn"><span>🪙</span><span class="t-en">Stablecoin Analyzer</span><span class="t-fr">Analyseur Stablecoins</span><span class="t-es">Analizador de Stablecoins</span></a>
+    <a href="yield.html" class="tools-nav-btn"><span>💰</span><span class="t-en">Yield Optimizer</span><span class="t-fr">Optimiseur Rendement</span><span class="t-es">Optimizador de Rendimiento</span></a>
+    <a href="waste.html" class="tools-nav-btn"><span>🔥</span><span class="t-en">Waste Detector</span><span class="t-fr">Détecteur de Gaspillage</span><span class="t-es">Detector de Desperdicio</span></a>
+    <span class="tools-nav-btn current"><span>⚡</span><span class="t-en">GMX Calculator</span><span class="t-fr">Calculateur GMX</span><span class="t-es">Calculadora GMX</span></span>
+    <a href="dashboard.html" class="tools-nav-btn"><span>🔭</span><span class="t-en">Position Dashboard</span><span class="t-fr">Dashboard Positions</span><span class="t-es">Dashboard de Posiciones</span></a>
+  </div>
+</div>
+
+<footer>
+  <span class="t-en">Fees are estimates — verify on GMX V2 before trading · live prices via CoinGecko · read-only · ornytools.xyz</span>
+  <span class="t-fr">Les frais sont des estimations — vérifiez sur GMX V2 avant de trader · prix via CoinGecko · lecture seule · ornytools.xyz</span>
+  <span class="t-es">Las comisiones son estimaciones — verifica en GMX V2 antes de operar · precios vía CoinGecko · solo lectura · ornytools.xyz</span>
+</footer>
+
+<script>
+let _dir = 'long';
+let _leverage = 5;
+let _gecko = 'bitcoin';
+
+const BORROW_RATE_HOURLY = 0.0001; // ~0.01%/h typical GMX V2
+const OPEN_FEE_RATE = 0.0007;      // 0.07%
+const MAINT_MARGIN = 0.01;         // 1%
+
+function $(i){ return document.getElementById(i); }
+function fmtUSD(v){ return '$'+v.toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:0}); }
+function fmtPct(v){ return v.toFixed(2)+'%'; }
+
+function setDir(d){
+  _dir = d;
+  $('tabLong').classList.toggle('active', d==='long');
+  $('tabShort').classList.toggle('active', d==='short');
+  calc();
+}
+
+function selectAsset(btn){
+  document.querySelectorAll('.preset-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  _gecko = btn.dataset.gecko;
+  fetchPrice();
+}
+
+function onSlider(){
+  _leverage = parseFloat($('levSlider').value);
+  $('levDisplay').textContent = _leverage.toFixed(1)+'×';
+  calc();
+}
+
+async function fetchPrice(){
+  try{
+    const r = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${_gecko}&vs_currencies=usd`);
+    const d = await r.json();
+    const p = d[_gecko]?.usd;
+    if(p){
+      $('entryPrice').value = p.toFixed(0);
+      $('priceBadge').style.display = 'inline-flex';
+      calc();
+    }
+  }catch(e){}
+}
+
+function calc(){
+  const entry = parseFloat($('entryPrice').value) || 0;
+  const col   = parseFloat($('collateral').value) || 0;
+  const days  = parseFloat($('duration').value) || 1;
+  if(!(entry>0 && col>0)) return;
+
+  const size   = col * _leverage;
+  const hours  = days * 24;
+  const borrowed = size - col;
+
+  // Fees
+  const feeOpen   = size * OPEN_FEE_RATE * 2; // open + close
+  const feeBorrow = borrowed * BORROW_RATE_HOURLY * hours;
+  const feeTotal  = feeOpen + feeBorrow;
+
+  // Liquidation price
+  // Long: liq when losses = collateral - fees - maintenance
+  // collateral - (entry - liq)/entry * size - fees = maintenance * size
+  // => liq = entry * (1 - (col - fees - MAINT_MARGIN*size)/size)
+  let liqPrice;
+  if(_dir === 'long'){
+    liqPrice = entry * (1 - (col - feeTotal - MAINT_MARGIN * size) / size);
+  } else {
+    liqPrice = entry * (1 + (col - feeTotal - MAINT_MARGIN * size) / size);
+  }
+
+  // Break-even
+  let breakEven;
+  if(_dir === 'long'){
+    breakEven = entry + feeTotal / (size / entry);
+  } else {
+    breakEven = entry - feeTotal / (size / entry);
+  }
+
+  const dropPct = _dir === 'long'
+    ? ((entry - liqPrice) / entry) * 100
+    : ((liqPrice - entry) / entry) * 100;
+
+  // Show results
+  $('placeholder').style.display = 'none';
+  $('resultContent').style.display = 'block';
+
+  const badge = $('dirBadge');
+  badge.className = 'dir-badge ' + _dir;
+  badge.textContent = _dir === 'long' ? '▲ LONG' : '▼ SHORT';
+
+  $('resSize').textContent    = fmtUSD(size);
+  $('resLev').textContent     = _leverage.toFixed(1) + '×';
+  $('resFeeOpen').textContent = fmtUSD(feeOpen) + ' (' + fmtPct(feeOpen/col*100) + ' of col)';
+  $('resFeeBorrow').textContent = fmtUSD(feeBorrow) + ' (' + days + 'd)';
+  $('resFeeTot').textContent  = fmtUSD(feeTotal);
+  $('resLiq').textContent     = fmtUSD(liqPrice);
+  $('resBreak').textContent   = fmtUSD(breakEven);
+  $('resDrop').textContent    = dropPct.toFixed(1) + '%';
+
+  // Fee bar
+  const tot = feeOpen + feeBorrow;
+  $('feeBarOpen').style.width   = tot>0 ? (feeOpen/tot*100)+'%' : '50%';
+  $('feeBarBorrow').style.width = tot>0 ? (feeBorrow/tot*100)+'%' : '50%';
+
+  // Orny comment
+  const l = getLang();
+  let comment = '';
+  if(dropPct < 5){
+    comment = l==='fr'
+      ? `⚠️ <strong>Position très risquée.</strong> La liquidation est à seulement ${dropPct.toFixed(1)}% de baisse. Un spike de volatilité peut vous sortir avant d'avoir raison.`
+      : l==='es'
+      ? `⚠️ <strong>Posición muy arriesgada.</strong> La liquidación está a solo ${dropPct.toFixed(1)}% de caída. Una volatilidad puntual puede sacarte antes de tener razón.`
+      : `⚠️ <strong>Very risky position.</strong> Liquidation is only ${dropPct.toFixed(1)}% away. A volatility spike can take you out before you're right.`;
+  } else if(dropPct < 15){
+    comment = l==='fr'
+      ? `🟡 <strong>Levier élevé.</strong> ${dropPct.toFixed(1)}% de marge avant liquidation. Les frais totaux représentent ${fmtPct(feeTotal/col*100)} de votre collatéral sur ${days} jour(s). Surveillez de près.`
+      : l==='es'
+      ? `🟡 <strong>Apalancamiento alto.</strong> ${dropPct.toFixed(1)}% de margen antes de liquidación. Las comisiones totales representan ${fmtPct(feeTotal/col*100)} de tu colateral en ${days} día(s).`
+      : `🟡 <strong>High leverage.</strong> ${dropPct.toFixed(1)}% margin before liquidation. Total fees are ${fmtPct(feeTotal/col*100)} of your collateral over ${days} day(s). Monitor closely.`;
+  } else {
+    comment = l==='fr'
+      ? `✅ <strong>Marge correcte.</strong> Liquidation à ${dropPct.toFixed(1)}% de distance. Frais totaux : ${fmtUSD(feeTotal)} sur ${days} jour(s). Position tenable si la thèse se confirme dans ce délai.`
+      : l==='es'
+      ? `✅ <strong>Margen adecuado.</strong> Liquidación a ${dropPct.toFixed(1)}% de distancia. Comisiones totales: ${fmtUSD(feeTotal)} en ${days} día(s). Posición sostenible si la tesis se confirma en ese plazo.`
+      : `✅ <strong>Reasonable margin.</strong> Liquidation ${dropPct.toFixed(1)}% away. Total fees: ${fmtUSD(feeTotal)} over ${days} day(s). Sustainable if the thesis plays out in this timeframe.`;
+  }
+  $('ornyComment').innerHTML = comment;
+}
+
+// Init
+fetchPrice();
+calc();
+</script>
+</body>
+</html>

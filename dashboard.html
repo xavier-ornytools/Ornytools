@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta name="description" content="DeFi Position Dashboard — OrnyTools. Enter any Arbitrum address to see your Aave V3 health factor, collateral, debt and liquidation price in real time."/>
+<meta name="robots" content="index,follow"/>
+<link rel="canonical" href="https://ornytools.xyz/dashboard.html"/>
+<meta property="og:type" content="website"/>
+<meta property="og:site_name" content="OrnyTools"/>
+<meta property="og:title" content="DeFi Position Dashboard — OrnyTools"/>
+<meta property="og:description" content="Paste any Arbitrum wallet address — see Aave V3 health factor, collateral, debt and liquidation price live from the blockchain."/>
+<meta property="og:url" content="https://ornytools.xyz/dashboard.html"/>
+<meta property="og:image" content="https://ornytools.xyz/orny-banner.png"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="DeFi Position Dashboard — OrnyTools"/>
+<meta name="twitter:description" content="Paste any Arbitrum address — Aave V3 health factor, collateral, debt and liquidation price live."/>
+<meta name="twitter:image" content="https://ornytools.xyz/orny-banner.png"/>
+<title>DeFi Position Dashboard — OrnyTools</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet"/>
+<style>
+  :root{
+    --gold:#C8841E;--gold-pale:rgba(200,132,30,.08);
+    --purple:#7C3AED;--purple-pale:rgba(124,58,237,.08);
+    --coral:#E8765A;--coral-pale:rgba(232,118,90,.08);
+    --good:#0E9F6E;--good-pale:rgba(14,159,110,.08);
+    --warn:#F59E0B;--warn-pale:rgba(245,158,11,.08);
+    --blue:#2563eb;--blue-pale:rgba(37,99,235,.08);
+    --text:#111827;--dim:#6B7280;--faint:#9AA5B4;
+    --line:#E4E8F0;--line-soft:#EDF0F5;
+    --surface:#FFFFFF;--surface-2:#F0F2F5;
+    --display:"Fraunces",Georgia,serif;
+    --ui:"Hanken Grotesk",system-ui,sans-serif;
+    --mono:"JetBrains Mono",ui-monospace,monospace;
+    --radius:14px;
+    --shadow:0 2px 8px rgba(0,0,0,.07),0 8px 32px rgba(0,0,0,.07);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:#f7f8fc;color:var(--text);font-family:var(--ui);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+
+  .navbar{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(255,255,255,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);padding:10px 24px;display:flex;align-items:center;gap:12px;box-shadow:0 2px 12px rgba(0,0,0,.04)}
+  .nav-logo{width:36px;height:36px;object-fit:cover;object-position:center 15%;border-radius:8px}
+  .nav-brand{font-family:var(--display);font-size:1.05rem;font-weight:600;letter-spacing:-.02em}
+  .nav-brand .dot{color:var(--gold)}
+  .nav-home{margin-left:auto;font-size:.82rem;font-weight:600;color:var(--dim);text-decoration:none;padding:7px 14px;border:1px solid var(--line);border-radius:7px;transition:.15s}
+  .nav-home:hover{border-color:var(--blue);color:var(--blue)}
+
+  .page-hero{padding:100px 28px 36px;text-align:center;background:#fff;border-bottom:1px solid var(--line)}
+  .eyebrow{font-size:11.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--blue);font-weight:700;margin-bottom:16px}
+  .page-hero h1{font-family:var(--display);font-weight:500;font-size:clamp(1.7rem,3.2vw,2.4rem);letter-spacing:-.02em;line-height:1.12;margin-bottom:14px}
+  .page-hero h1 em{font-style:italic;color:var(--blue)}
+  .page-hero p{color:var(--dim);font-size:1rem;max-width:50ch;margin:0 auto 24px;line-height:1.75}
+
+  /* Address input */
+  .addr-bar{display:flex;gap:10px;max-width:620px;margin:0 auto}
+  .addr-bar input{flex:1;padding:12px 16px;border:1.5px solid var(--line);border-radius:10px;font-family:var(--mono);font-size:.82rem;background:#fff;color:var(--text);outline:none;transition:border-color .15s}
+  .addr-bar input:focus{border-color:var(--blue);box-shadow:0 0 0 3px var(--blue-pale)}
+  .addr-bar input::placeholder{color:var(--faint)}
+  .btn-load{padding:12px 22px;background:var(--blue);color:#fff;border:none;border-radius:10px;font-size:.9rem;font-weight:700;cursor:pointer;transition:background .2s;white-space:nowrap;font-family:var(--ui)}
+  .btn-load:hover{background:#1d4ed8}
+  .btn-load:disabled{background:var(--faint);cursor:default}
+
+  main{max-width:960px;margin:0 auto;padding:32px 24px 80px}
+
+  /* Status */
+  .status-strip{display:flex;align-items:center;gap:8px;padding:12px 16px;border-radius:10px;margin-bottom:20px;font-size:.85rem;font-weight:600}
+  .status-strip.idle{background:var(--surface-2);color:var(--faint)}
+  .status-strip.loading{background:#eff6ff;color:var(--blue)}
+  .status-strip.ok{background:#f0fdf4;color:#15803d}
+  .status-strip.err{background:#fef2f2;color:#b91c1c}
+  .dot-anim{width:8px;height:8px;border-radius:50%;animation:pulse 1.2s infinite}
+  .loading .dot-anim{background:var(--blue)}
+  .ok .dot-anim{background:#16a34a;animation:none}
+  .err .dot-anim{background:#dc2626;animation:none}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+
+  /* Cards grid */
+  .cards-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:24px}
+  .stat-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);text-align:center}
+  .stat-card.danger{border-color:rgba(220,38,38,.35);background:#fff5f5}
+  .stat-card.warn{border-color:rgba(245,158,11,.35);background:#fffbeb}
+  .stat-card.safe{border-color:rgba(22,163,74,.3);background:#f0fdf4}
+  .stat-label{font-size:.68rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);margin-bottom:8px}
+  .stat-val{font-family:var(--display);font-size:2rem;font-weight:500;line-height:1;margin-bottom:4px}
+  .stat-val.danger{color:#dc2626}
+  .stat-val.warn{color:#d97706}
+  .stat-val.safe{color:#16a34a}
+  .stat-sub{font-size:.72rem;color:var(--faint)}
+
+  /* HF gauge */
+  .hf-bar-wrap{margin-top:8px;height:6px;border-radius:3px;background:var(--line-soft);overflow:hidden}
+  .hf-bar{height:100%;border-radius:3px;transition:width .6s,background .4s}
+
+  /* Breakdown panel */
+  .panel{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow);margin-bottom:16px}
+  .panel-title{font-size:.68rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);margin-bottom:16px}
+  .br-row{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--line-soft);font-size:.88rem}
+  .br-row:last-child{border-bottom:none}
+  .br-row b{font-family:var(--mono);font-weight:700}
+  .br-row.danger b{color:var(--coral)}
+  .br-row.good b{color:var(--good)}
+  .br-row.blue b{color:var(--blue)}
+  .br-row.warn b{color:var(--warn)}
+
+  /* Cross-tool CTAs */
+  .cta-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:8px}
+  .cta-btn{display:inline-flex;align-items:center;gap:7px;padding:10px 16px;border-radius:9px;font-size:.82rem;font-weight:700;text-decoration:none;transition:background .2s,transform .1s}
+  .cta-btn:hover{transform:translateY(-1px)}
+  .cta-btn.blue{background:var(--blue-pale);color:var(--blue);border:1px solid rgba(37,99,235,.2)}
+  .cta-btn.red{background:var(--coral-pale);color:var(--coral);border:1px solid rgba(232,118,90,.2)}
+  .cta-btn.purple{background:var(--purple-pale);color:var(--purple);border:1px solid rgba(124,58,237,.2)}
+
+  /* Placeholder */
+  .empty-state{text-align:center;padding:60px 20px;color:var(--faint)}
+  .empty-icon{font-size:3rem;margin-bottom:16px}
+  .empty-title{font-family:var(--display);font-size:1.4rem;font-weight:500;color:var(--text);margin-bottom:8px}
+  .empty-sub{font-size:.9rem;line-height:1.7;max-width:38ch;margin:0 auto}
+
+  /* Privacy note */
+  .privacy-note{font-size:.74rem;color:var(--faint);text-align:center;margin-top:12px}
+
+  /* Tools nav */
+  .tools-nav-band{background:#f7f8fc;border-top:1px solid #e4e8f0;padding:28px 28px 32px;text-align:center}
+  .tools-nav-lbl{font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;color:#6b7280;margin-bottom:14px}
+  .tools-nav-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;max-width:900px;margin:0 auto}
+  .tools-nav-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 15px;border:1px solid #e4e8f0;border-radius:99px;background:#fff;font-size:.8rem;font-weight:600;color:#374151;text-decoration:none;transition:.15s}
+  .tools-nav-btn:hover{border-color:#2563eb;color:#2563eb;background:#eff6ff}
+  .tools-nav-btn.current{border-color:#2563eb;background:#2563eb;color:#fff;pointer-events:none}
+
+  footer{text-align:center;padding:20px;font-size:.72rem;color:var(--faint);border-top:1px solid var(--line)}
+</style>
+<script src="lang.js"></script>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="index.html"><img src="logo.png" class="nav-logo" alt="OrnyTools"/></a>
+  <span class="nav-brand">ORNY<span class="dot">.</span>TOOLS</span>
+  <a href="index.html" class="nav-home">← Home</a>
+  <div style="margin-left:8px">
+    <button id="btnEN" class="lang-btn" onclick="setLang('en')">🇬🇧 EN</button>
+    <button id="btnFR" class="lang-btn" onclick="setLang('fr')">🇫🇷 FR</button>
+    <button id="btnES" class="lang-btn" onclick="setLang('es')">🇪🇸 ES</button>
+  </div>
+</nav>
+
+<div class="page-hero">
+  <div class="eyebrow">Aave V3 · Arbitrum<span class="oc-badge">⛓ on-chain live</span></div>
+  <h1><span class="t-en">Is your <em>position</em><br>safe right now?</span><span class="t-fr">Votre <em>position</em><br>est-elle sûre en ce moment ?</span><span class="t-es">¿Tu <em>posición</em><br>está segura ahora mismo?</span></h1>
+  <p><span class="t-en">Paste any Arbitrum address — get your Aave V3 health factor, collateral, debt and liquidation distance, live from the blockchain.</span><span class="t-fr">Collez n'importe quelle adresse Arbitrum — obtenez votre health factor Aave V3, collateral, dette et distance de liquidation, en direct depuis la blockchain.</span><span class="t-es">Pega cualquier dirección de Arbitrum — obtén tu health factor Aave V3, colateral, deuda y distancia de liquidación, en vivo desde la blockchain.</span></p>
+  <div class="addr-bar" style="margin-top:20px">
+    <input type="text" id="addrInput" placeholder="0x… Arbitrum address" maxlength="42" onkeydown="if(event.key==='Enter')loadDashboard()"/>
+    <button class="btn-load" id="btnLoad" onclick="loadDashboard()"><span class="t-en">⚡ Load</span><span class="t-fr">⚡ Charger</span><span class="t-es">⚡ Cargar</span></button>
+  </div>
+  <p class="privacy-note"><span class="t-en">🔒 Read-only · no wallet connection · no data stored</span><span class="t-fr">🔒 Lecture seule · aucune connexion wallet · aucune donnée stockée</span><span class="t-es">🔒 Solo lectura · sin conexión de wallet · sin datos almacenados</span></p>
+</div>
+
+<main>
+  <!-- Status strip -->
+  <div class="status-strip idle" id="statusStrip">
+    <div class="dot-anim"></div>
+    <span id="statusTxt"><span class="t-en">Enter an address to begin</span><span class="t-fr">Entrez une adresse pour commencer</span><span class="t-es">Ingresa una dirección para comenzar</span></span>
+  </div>
+
+  <!-- Empty state -->
+  <div class="empty-state" id="emptyState">
+    <div class="empty-icon">🔭</div>
+    <div class="empty-title"><span class="t-en">Waiting for address</span><span class="t-fr">En attente d'une adresse</span><span class="t-es">Esperando dirección</span></div>
+    <p class="empty-sub"><span class="t-en">Paste an Arbitrum address above. The dashboard reads your Aave V3 position directly from the blockchain — no API key, no wallet needed.</span><span class="t-fr">Collez une adresse Arbitrum ci-dessus. Le dashboard lit votre position Aave V3 directement depuis la blockchain — sans clé API, sans wallet.</span><span class="t-es">Pega una dirección de Arbitrum arriba. El dashboard lee tu posición Aave V3 directamente desde la blockchain — sin clave API, sin wallet.</span></p>
+  </div>
+
+  <!-- Dashboard content (hidden until loaded) -->
+  <div id="dashContent" style="display:none">
+    <!-- Stat cards -->
+    <div class="cards-grid" id="statsGrid"></div>
+
+    <!-- Breakdown -->
+    <div class="panel" id="breakdownPanel">
+      <div class="panel-title"><span class="t-en">Position breakdown</span><span class="t-fr">Détail de la position</span><span class="t-es">Desglose de la posición</span></div>
+      <div id="breakdownRows"></div>
+    </div>
+
+    <!-- Cross-tool actions -->
+    <div class="panel">
+      <div class="panel-title"><span class="t-en">Go deeper</span><span class="t-fr">Approfondir</span><span class="t-es">Ir más lejos</span></div>
+      <div class="cta-row" id="ctaRow"></div>
+    </div>
+  </div>
+</main>
+
+<div class="tools-nav-band">
+  <div class="tools-nav-lbl"><span class="t-en">All OrnyTools</span><span class="t-fr">Tous les outils</span><span class="t-es">Todas las herramientas</span></div>
+  <div class="tools-nav-grid">
+    <a href="optimizer.html" class="tools-nav-btn"><span>🔄</span><span class="t-en">Trade Optimizer</span><span class="t-fr">Optimiseur de Trade</span><span class="t-es">Optimizador de Trade</span></a>
+    <a href="liquidation.html" class="tools-nav-btn"><span>🛡️</span><span class="t-en">RedZone</span><span class="t-fr">RedZone</span><span class="t-es">RedZone</span></a>
+    <a href="aave.html" class="tools-nav-btn"><span>🏦</span><span class="t-en">Aave V3 Calculator</span><span class="t-fr">Calculateur Aave V3</span><span class="t-es">Calculadora Aave V3</span></a>
+    <a href="il-calculator.html" class="tools-nav-btn"><span>💧</span><span class="t-en">IL Calculator</span><span class="t-fr">Calculateur IL</span><span class="t-es">Calculadora de PI</span></a>
+    <a href="leverage.html" class="tools-nav-btn"><span>📈</span><span class="t-en">Leverage Calculator</span><span class="t-fr">Calculateur Levier</span><span class="t-es">Calculadora de Apalancamiento</span></a>
+    <a href="v3range.html" class="tools-nav-btn"><span>📐</span><span class="t-en">V3 Range Optimizer</span><span class="t-fr">Optimiseur Plage V3</span><span class="t-es">Optimizador de Rango V3</span></a>
+    <a href="stablecoin.html" class="tools-nav-btn"><span>🪙</span><span class="t-en">Stablecoin Analyzer</span><span class="t-fr">Analyseur Stablecoins</span><span class="t-es">Analizador de Stablecoins</span></a>
+    <a href="yield.html" class="tools-nav-btn"><span>💰</span><span class="t-en">Yield Optimizer</span><span class="t-fr">Optimiseur Rendement</span><span class="t-es">Optimizador de Rendimiento</span></a>
+    <a href="waste.html" class="tools-nav-btn"><span>🔥</span><span class="t-en">Waste Detector</span><span class="t-fr">Détecteur de Gaspillage</span><span class="t-es">Detector de Desperdicio</span></a>
+    <a href="gmx.html" class="tools-nav-btn"><span>⚡</span><span class="t-en">GMX Calculator</span><span class="t-fr">Calculateur GMX</span><span class="t-es">Calculadora GMX</span></a>
+    <span class="tools-nav-btn current"><span>🔭</span><span class="t-en">Position Dashboard</span><span class="t-fr">Dashboard Positions</span><span class="t-es">Dashboard de Posiciones</span></span>
+  </div>
+</div>
+
+<footer>
+  <span class="t-en">Reads data directly from Aave V3 contracts on Arbitrum · no wallet connection · read-only · ornytools.xyz</span>
+  <span class="t-fr">Données lues directement depuis les contrats Aave V3 sur Arbitrum · aucune connexion wallet · lecture seule · ornytools.xyz</span>
+  <span class="t-es">Datos leídos directamente de los contratos Aave V3 en Arbitrum · sin conexión de wallet · solo lectura · ornytools.xyz</span>
+</footer>
+
+<script>
+// Aave V3 Pool on Arbitrum
+const AAVE_POOL = '0x794a61358D6845594F94dc1DB02A252b5b4814aD';
+const ARB_RPC   = 'https://arbitrum-one-rpc.publicnode.com';
+
+function $(i){ return document.getElementById(i); }
+function fmtUSD(v){ return '$'+v.toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:0}); }
+function fmtHF(v){ return v > 100 ? '∞' : v.toFixed(2); }
+
+function setStatus(type, msg){
+  const s = $('statusStrip');
+  s.className = 'status-strip ' + type;
+  s.querySelector('.dot-anim').style.display = type==='idle' ? 'none' : 'block';
+  $('statusTxt').innerHTML = msg;
+}
+
+async function rpcCall(method, params){
+  const res = await fetch(ARB_RPC, {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({jsonrpc:'2.0',id:1,method,params})
+  });
+  const j = await res.json();
+  if(j.error) throw new Error(j.error.message);
+  return j.result;
+}
+
+function encodeGetUserAccountData(addr){
+  // getUserAccountData(address) → selector 0xbf92857c
+  const adr = addr.replace('0x','').toLowerCase().padStart(64,'0');
+  return '0xbf92857c' + adr;
+}
+
+async function loadDashboard(){
+  const raw = $('addrInput').value.trim();
+  const l = getLang();
+
+  if(!/^0x[0-9a-fA-F]{40}$/.test(raw)){
+    setStatus('err', l==='fr' ? '❌ Adresse Ethereum invalide (0x… 40 caractères)' : l==='es' ? '❌ Dirección Ethereum inválida (0x… 40 caracteres)' : '❌ Invalid Ethereum address (0x… 40 chars)');
+    return;
+  }
+
+  $('btnLoad').disabled = true;
+  setStatus('loading', l==='fr' ? '⚡ Lecture on-chain en cours…' : l==='es' ? '⚡ Leyendo datos on-chain…' : '⚡ Reading on-chain data…');
+  $('emptyState').style.display = 'none';
+  $('dashContent').style.display = 'none';
+
+  try {
+    const data = encodeGetUserAccountData(raw);
+    const result = await rpcCall('eth_call', [{to: AAVE_POOL, data}, 'latest']);
+
+    if(!result || result === '0x'){
+      setStatus('err', l==='fr' ? '❌ Aucune position Aave V3 trouvée sur Arbitrum pour cette adresse.' : l==='es' ? '❌ No se encontró posición Aave V3 en Arbitrum para esta dirección.' : '❌ No Aave V3 position found on Arbitrum for this address.');
+      $('emptyState').style.display = 'block';
+      $('btnLoad').disabled = false;
+      return;
+    }
+
+    // Decode: 6 × uint256 (32 bytes each), values in base currency (USD × 1e8 on Arbitrum)
+    const hex = result.slice(2);
+    const decode = i => parseInt(hex.slice(i*64, (i+1)*64), 16);
+    const BASE = 1e8;
+
+    const totalCollateral  = decode(0) / BASE;
+    const totalDebt        = decode(1) / BASE;
+    const availableBorrows = decode(2) / BASE;
+    const liqThreshold     = decode(3) / 1e4;  // in basis points → fraction
+    const ltv              = decode(4) / 1e4;
+    const healthFactor     = decode(5) / 1e18;
+
+    if(totalCollateral === 0){
+      setStatus('err', l==='fr' ? '⚠️ Aucun collatéral déposé sur Aave V3 Arbitrum pour cette adresse.' : l==='es' ? '⚠️ No hay colateral depositado en Aave V3 Arbitrum para esta dirección.' : '⚠️ No collateral deposited on Aave V3 Arbitrum for this address.');
+      $('emptyState').style.display = 'block';
+      $('btnLoad').disabled = false;
+      return;
+    }
+
+    // Estimated liquidation price factor (if collateral drops uniformly)
+    // HF = collateral × liqThreshold / debt → liquidation when HF = 1
+    // so liquidation at: price_factor = debt / (collateral × liqThreshold)
+    const liqFactor = totalDebt > 0 ? totalDebt / (totalCollateral * liqThreshold) : null;
+    const dropToLiq = liqFactor ? (1 - liqFactor) * 100 : null;
+
+    // HF class
+    let hfClass = 'safe', hfCardClass = 'safe';
+    if(healthFactor < 1.2){ hfClass = 'danger'; hfCardClass = 'danger'; }
+    else if(healthFactor < 1.5){ hfClass = 'warn'; hfCardClass = 'warn'; }
+
+    // Render stat cards
+    $('statsGrid').innerHTML = `
+      <div class="stat-card ${hfCardClass}">
+        <div class="stat-label">${l==='fr' ? 'Health Factor' : l==='es' ? 'Health Factor' : 'Health Factor'}</div>
+        <div class="stat-val ${hfClass}">${fmtHF(healthFactor)}</div>
+        <div class="hf-bar-wrap"><div class="hf-bar" style="width:${Math.min(100,healthFactor/3*100)}%;background:${hfClass==='safe'?'#16a34a':hfClass==='warn'?'#d97706':'#dc2626'}"></div></div>
+        <div class="stat-sub">${healthFactor < 1.2 ? (l==='fr'?'⚠️ Critique':'⚠️ Critical') : healthFactor < 1.5 ? (l==='fr'?'⚠️ Surveiller':'⚠️ Monitor') : (l==='fr'?'✅ Zone sûre':'✅ Safe zone')}</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">${l==='fr' ? 'Collatéral total' : l==='es' ? 'Colateral total' : 'Total Collateral'}</div>
+        <div class="stat-val">${fmtUSD(totalCollateral)}</div>
+        <div class="stat-sub">${l==='fr' ? 'valeur USD on-chain' : l==='es' ? 'valor USD on-chain' : 'USD value on-chain'}</div>
+      </div>
+      <div class="stat-card ${totalDebt > 0 ? '' : ''}">
+        <div class="stat-label">${l==='fr' ? 'Dette totale' : l==='es' ? 'Deuda total' : 'Total Debt'}</div>
+        <div class="stat-val ${totalDebt > 0 ? 'danger' : 'safe'}">${fmtUSD(totalDebt)}</div>
+        <div class="stat-sub">${l==='fr' ? 'emprunts en cours' : l==='es' ? 'préstamos activos' : 'outstanding borrows'}</div>
+      </div>
+      ${dropToLiq !== null ? `
+      <div class="stat-card ${dropToLiq < 10 ? 'danger' : dropToLiq < 25 ? 'warn' : 'safe'}">
+        <div class="stat-label">${l==='fr' ? 'Marge jusqu\'à liquidation' : l==='es' ? 'Margen hasta liquidación' : 'Margin to Liquidation'}</div>
+        <div class="stat-val ${dropToLiq < 10 ? 'danger' : dropToLiq < 25 ? 'warn' : 'safe'}">${dropToLiq > 0 ? dropToLiq.toFixed(1)+'%' : '—'}</div>
+        <div class="stat-sub">${l==='fr' ? 'baisse uniforme estimée' : l==='es' ? 'caída uniforme estimada' : 'estimated uniform drop'}</div>
+      </div>` : ''}
+    `;
+
+    // Breakdown rows
+    $('breakdownRows').innerHTML = `
+      <div class="br-row blue"><span>${l==='fr' ? 'Collatéral total' : l==='es' ? 'Colateral total' : 'Total collateral'}</span><b>${fmtUSD(totalCollateral)}</b></div>
+      <div class="br-row danger"><span>${l==='fr' ? 'Dette totale' : l==='es' ? 'Deuda total' : 'Total debt'}</span><b>${fmtUSD(totalDebt)}</b></div>
+      <div class="br-row good"><span>${l==='fr' ? 'Emprunt disponible' : l==='es' ? 'Préstamo disponible' : 'Available to borrow'}</span><b>${fmtUSD(availableBorrows)}</b></div>
+      <div class="br-row"><span>${l==='fr' ? 'LTV max' : l==='es' ? 'LTV máx' : 'Max LTV'}</span><b>${(ltv*100).toFixed(0)}%</b></div>
+      <div class="br-row"><span>${l==='fr' ? 'Seuil de liquidation' : l==='es' ? 'Umbral de liquidación' : 'Liquidation threshold'}</span><b>${(liqThreshold*100).toFixed(0)}%</b></div>
+      ${dropToLiq !== null ? `<div class="br-row ${dropToLiq<10?'danger':dropToLiq<25?'warn':'good'}"><span>${l==='fr' ? 'Baisse estimée jusqu\'à liquidation' : l==='es' ? 'Caída estimada hasta liquidación' : 'Estimated drop to liquidation'}</span><b>${dropToLiq > 0 ? dropToLiq.toFixed(1)+'%' : '—'}</b></div>` : ''}
+    `;
+
+    // CTA buttons
+    $('ctaRow').innerHTML = `
+      <a href="aave.html" class="cta-btn blue">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        ${l==='fr' ? 'Calculateur Aave V3 →' : l==='es' ? 'Calculadora Aave V3 →' : 'Aave V3 Calculator →'}
+      </a>
+      <a href="liquidation.html" class="cta-btn red">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        ${l==='fr' ? 'RedZone — Liquidation →' : l==='es' ? 'RedZone — Liquidación →' : 'RedZone — Liquidation →'}
+      </a>
+      <a href="leverage.html" class="cta-btn purple">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        ${l==='fr' ? 'Simuler un loop →' : l==='es' ? 'Simular un loop →' : 'Simulate a loop →'}
+      </a>
+    `;
+
+    $('dashContent').style.display = 'block';
+    setStatus('ok', l==='fr' ? `✅ Position Aave V3 chargée depuis Arbitrum` : l==='es' ? `✅ Posición Aave V3 cargada desde Arbitrum` : `✅ Aave V3 position loaded from Arbitrum`);
+
+  } catch(e) {
+    console.error(e);
+    setStatus('err', (l==='fr' ? '❌ Erreur RPC : ' : l==='es' ? '❌ Error RPC: ' : '❌ RPC error: ') + e.message);
+    $('emptyState').style.display = 'block';
+  }
+  $('btnLoad').disabled = false;
+}
+</script>
+</body>
+</html>

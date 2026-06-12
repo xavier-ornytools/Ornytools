@@ -39,6 +39,21 @@
       --shadow: 0 1px 4px rgba(0,0,0,.07), 0 4px 20px rgba(0,0,0,.05);
       --shadow-lg: 0 8px 32px rgba(0,0,0,.11);
     }
+
+    html.dark {
+      --bg: #0d1117; --white: #161b22; --border: #30363d;
+      --text: #e6edf3; --muted: #8b949e; --light: #21262d;
+      --shadow: 0 1px 4px rgba(0,0,0,.3), 0 4px 20px rgba(0,0,0,.2);
+      --shadow-lg: 0 8px 32px rgba(0,0,0,.4);
+    }
+    html.dark body { background: var(--white); }
+    html.dark .navbar { background: rgba(22,27,34,.97); border-color: var(--border); }
+    html.dark .tool-card { background: var(--white); }
+    html.dark .intent-card { background: var(--white); border-color: var(--border); }
+    html.dark .daily-insight { background: var(--white); }
+    html.dark .footer-new { background: #0d1117; border-color: var(--border); }
+    html.dark .footer-cols { background: #0d1117; }
+    html.dark .news-form input { background: var(--light); border-color: var(--border); color: var(--text); }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { background: var(--white); color: var(--text); font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; min-height: 100vh; }
     a { text-decoration: none; color: inherit; }
@@ -574,7 +589,7 @@
     <li><a href="methodology.html">Methodology</a></li>
   </ul>
   <div class="nav-right">
-    <div class="btn-theme" title="Toggle theme">🌙</div>
+    <div class="btn-theme" id="btnTheme" title="Toggle theme" onclick="toggleTheme()">🌙</div>
     <div class="lang-switch">
       <button id="btnEN" class="lang-btn active" onclick="setLang('en')">🇬🇧 EN</button>
       <button id="btnFR" class="lang-btn" onclick="setLang('fr')">🇫🇷 FR</button>
@@ -1082,6 +1097,39 @@
       <div class="cta-badge-item"><span>🔗</span> <span class="t-en">Live on-chain data</span><span class="t-fr">Données on-chain en direct</span><span class="t-es">Datos on-chain en vivo</span></div>
       <div class="cta-badge-item"><span>🛡️</span> <span class="t-en">No wallet needed</span><span class="t-fr">Sans connexion wallet</span><span class="t-es">Sin wallet necesaria</span></div>
       <div class="cta-badge-item"><span>🌐</span> EN · FR · ES</div>
+
+      <!-- GMX CALCULATOR -->
+      <div class="tool-card">
+        <div class="tc-head">
+          <div class="tc-ico" style="background:#eff6ff">⚡</div>
+          <div class="tc-meta">
+            <h3><span class="t-en">GMX V2 Calculator</span><span class="t-fr">Calculateur GMX V2</span><span class="t-es">Calculadora GMX V2</span></h3>
+            <p><span class="t-en">Liquidation price, total fees and break-even for any GMX V2 perpetual position on Arbitrum.</span><span class="t-fr">Prix de liquidation, frais totaux et seuil de rentabilité pour toute position perp GMX V2 sur Arbitrum.</span><span class="t-es">Precio de liquidación, comisiones totales y punto de equilibrio para posiciones perp GMX V2 en Arbitrum.</span></p>
+          </div>
+        </div>
+        <button class="open-tool" onclick="location.href='gmx.html'"><span class="t-en">Open Tool →</span><span class="t-fr">Ouvrir l'outil →</span><span class="t-es">Abrir herramienta →</span></button>
+      </div>
+
+      <!-- POSITION DASHBOARD -->
+      <div class="tool-card">
+        <div class="tc-head">
+          <div class="tc-ico" style="background:#eff6ff">🔭</div>
+          <div class="tc-meta">
+            <h3><span class="t-en">Position Dashboard</span><span class="t-fr">Dashboard Positions</span><span class="t-es">Dashboard de Posiciones</span></h3>
+            <p><span class="t-en">Paste any Arbitrum address — get your Aave V3 health factor, collateral, debt and liquidation distance live from the blockchain.</span><span class="t-fr">Collez une adresse Arbitrum — obtenez votre health factor Aave V3, collatéral, dette et distance de liquidation en direct depuis la blockchain.</span><span class="t-es">Pega una dirección de Arbitrum — obtén tu health factor Aave V3, colateral, deuda y distancia de liquidación en vivo desde la blockchain.</span></p>
+          </div>
+        </div>
+        <button class="open-tool" onclick="location.href='dashboard.html'"><span class="t-en">Open Tool →</span><span class="t-fr">Ouvrir l'outil →</span><span class="t-es">Abrir herramienta →</span></button>
+      </div>
+      <!-- OLD DASHBOARD CARD PLACEHOLDER REMOVED -->
+      <div class="tool-card" style="display:none">
+        <div class="tool-card-inner">
+          <div class="tool-icon">🔭</div>
+          <h3><span class="t-en">Position Dashboard</span><span class="t-fr">Dashboard Positions</span><span class="t-es">Dashboard de Posiciones</span></h3>
+          <p><span class="t-en">Paste any Arbitrum address — get your Aave V3 health factor, collateral, debt and liquidation distance live from the blockchain.</span><span class="t-fr">Collez une adresse Arbitrum — obtenez votre health factor Aave V3, collatéral, dette et distance de liquidation en direct depuis la blockchain.</span><span class="t-es">Pega una dirección de Arbitrum — obtén tu health factor Aave V3, colateral, deuda y distancia de liquidación en vivo desde la blockchain.</span></p>
+          <button class="open-tool" onclick="location.href='dashboard.html'"><span class="t-en">Open Tool →</span><span class="t-fr">Ouvrir l'outil →</span><span class="t-es">Abrir herramienta →</span></button>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -1410,7 +1458,25 @@
     <a href="stablecoin.html" class="tools-nav-btn"><span>🪙</span><span class="t-en">Stablecoin Analyzer</span><span class="t-fr">Analyseur Stablecoins</span><span class="t-es">Analizador de Stablecoins</span></a>
     <a href="yield.html" class="tools-nav-btn"><span>💰</span><span class="t-en">Yield Optimizer</span><span class="t-fr">Optimiseur Rendement</span><span class="t-es">Optimizador de Rendimiento</span></a>
     <a href="waste.html" class="tools-nav-btn"><span>🔥</span><span class="t-en">Waste Detector</span><span class="t-fr">Détecteur de Gaspillage</span><span class="t-es">Detector de Desperdicio</span></a>
+    <a href="gmx.html" class="tools-nav-btn"><span>⚡</span><span class="t-en">GMX Calculator</span><span class="t-fr">Calculateur GMX</span><span class="t-es">Calculadora GMX</span></a>
+    <a href="dashboard.html" class="tools-nav-btn"><span>🔭</span><span class="t-en">Position Dashboard</span><span class="t-fr">Dashboard Positions</span><span class="t-es">Dashboard de Posiciones</span></a>
   </div>
 </div>
+
+<script>
+(function(){
+  function applyTheme(t){
+    document.documentElement.classList.toggle('dark', t==='dark');
+    var btn = document.getElementById('btnTheme');
+    if(btn) btn.textContent = t==='dark' ? '☀️' : '🌙';
+  }
+  window.toggleTheme = function(){
+    var next = document.documentElement.classList.contains('dark') ? 'light' : 'dark';
+    localStorage.setItem('orny-theme', next);
+    applyTheme(next);
+  };
+  applyTheme(localStorage.getItem('orny-theme') || 'light');
+})();
+</script>
 </body>
 </html>

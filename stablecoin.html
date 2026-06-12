@@ -550,7 +550,7 @@ const DB = {
 };
 
 let _selected = 'USDC';
-let _prices = {};
+let _prices = {}, _mcap = {}, _vol = {};
 
 /* ── HELPERS ─────────────────────────────────────────────────────────── */
 function scoreColor(s){
@@ -578,10 +578,26 @@ function computeDepeg(id, base){
   return Math.max(0, Math.min(100, base - penalty));
 }
 
+function computeLiquidity(id, base){
+  const mc = _mcap[DB[id].geckoId] || 0;
+  const vol = _vol[DB[id].geckoId] || 0;
+  if(!mc) return base;
+  // Ajustement dynamique: >$10B mcap = +5, $1B-$10B = 0, <$1B = -10, <$100M = -25
+  let adj = 0;
+  if(mc > 10e9) adj = 5;
+  else if(mc < 1e9) adj = mc < 100e6 ? -25 : -10;
+  // Vol/mcap ratio: faible rotation = liquidité réelle moindre
+  const ratio = mc > 0 ? vol/mc : 0;
+  if(ratio < 0.005) adj -= 5;
+  if(ratio > 0.1)   adj += 3;
+  return Math.max(0, Math.min(100, base + adj));
+}
+
 function overall(id){
   const d = DB[id];
   const depeg = computeDepeg(id, d.depegBase);
-  return Math.round(depeg*0.30 + d.counterparty*0.25 + d.protocol*0.25 + d.liquidity*0.20);
+  const liq = computeLiquidity(id, d.liquidity);
+  return Math.round(depeg*0.30 + d.counterparty*0.25 + d.protocol*0.25 + liq*0.20);
 }
 
 function ornyComment(id, score){
@@ -738,11 +754,15 @@ function renderAll(){
 async function fetchPrices(){
   const ids = [...new Set(Object.values(DB).map(d=>d.geckoId))].join(',');
   try {
-    const r = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${ids}&vs_currencies=usd`);
+    const r = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${ids}&vs_currencies=usd&include_market_cap=true&include_24hr_vol=true`);
     const data = await r.json();
     Object.entries(DB).forEach(([sym,d])=>{
       const p = data[d.geckoId]?.usd;
-      if(p) _prices[d.geckoId] = p;
+      if(p) {
+        _prices[d.geckoId] = p;
+        if(data[d.geckoId].usd_market_cap) _mcap[d.geckoId] = data[d.geckoId].usd_market_cap;
+        if(data[d.geckoId].usd_24h_vol)    _vol[d.geckoId]  = data[d.geckoId].usd_24h_vol;
+      }
     });
     // Map geckoId prices back to sym
     Object.entries(DB).forEach(([sym,d])=>{
@@ -855,6 +875,8 @@ async function fetchAndRenderYield(sym) {
     <span class="tools-nav-btn current"><span>🪙</span><span class="t-en">Stablecoin Analyzer</span><span class="t-fr">Analyseur Stablecoins</span><span class="t-es">Analizador de Stablecoins</span></span>
     <a href="yield.html" class="tools-nav-btn"><span>💰</span><span class="t-en">Yield Optimizer</span><span class="t-fr">Optimiseur Rendement</span><span class="t-es">Optimizador de Rendimiento</span></a>
     <a href="waste.html" class="tools-nav-btn"><span>🔥</span><span class="t-en">Waste Detector</span><span class="t-fr">Détecteur de Gaspillage</span><span class="t-es">Detector de Desperdicio</span></a>
+    <a href="gmx.html" class="tools-nav-btn"><span>⚡</span><span class="t-en">GMX Calculator</span><span class="t-fr">Calculateur GMX</span><span class="t-es">Calculadora GMX</span></a>
+    <a href="dashboard.html" class="tools-nav-btn"><span>🔭</span><span class="t-en">Position Dashboard</span><span class="t-fr">Dashboard Positions</span><span class="t-es">Dashboard de Posiciones</span></a>
 
   </div>
 </div>
