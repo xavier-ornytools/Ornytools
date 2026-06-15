@@ -215,6 +215,12 @@
       <input type="number" id="duration" value="7" min="1" max="365" oninput="calc()"/>
     </div>
 
+    <div class="field">
+      <label><span class="t-en">Funding rate (APR %)</span><span class="t-fr">Taux de financement (APR %)</span><span class="t-es">Tasa de financiación (APR %)</span></label>
+      <input type="number" id="fundingRate" value="0" step="0.1" min="-100" max="500" oninput="calc()"/>
+      <div class="hint"><span class="t-en">Positive = longs pay shorts. Enter from app.gmx.io → Fees. Leave 0 if unknown.</span><span class="t-fr">Positif = les longs paient les shorts. Saisissez depuis app.gmx.io → Frais. Laissez 0 si inconnu.</span><span class="t-es">Positivo = los largos pagan a los cortos. Consulta en app.gmx.io → Tarifas. Deja 0 si desconoces.</span></div>
+    </div>
+
     <button class="btn-calc" onclick="calc()"><span class="t-en">Calculate →</span><span class="t-fr">Calculer →</span><span class="t-es">Calcular →</span></button>
   </div>
 
@@ -240,6 +246,7 @@
       <div class="br-row"><span><span class="t-en">Effective leverage</span><span class="t-fr">Levier effectif</span><span class="t-es">Apalancamiento efectivo</span></span><b id="resLev">—</b></div>
       <div class="br-row warn"><span><span class="t-en">Opening fee (0.07%)</span><span class="t-fr">Frais d'ouverture (0,07%)</span><span class="t-es">Comisión apertura (0,07%)</span></span><b id="resFeeOpen">—</b></div>
       <div class="br-row warn"><span><span class="t-en">Borrow fee (est.)</span><span class="t-fr">Frais d'emprunt (est.)</span><span class="t-es">Comisión préstamo (est.)</span></span><b id="resFeeBorrow">—</b></div>
+      <div class="br-row warn" id="resFundingRow" style="display:none"><span><span class="t-en">Funding cost</span><span class="t-fr">Coût de financement</span><span class="t-es">Costo de financiación</span></span><b id="resFeeFunding">—</b></div>
       <div class="br-row danger"><span><span class="t-en">Total fees</span><span class="t-fr">Frais totaux</span><span class="t-es">Comisiones totales</span></span><b id="resFeeTot">—</b></div>
       <div class="fee-bar">
         <div class="fee-seg" id="feeBarOpen" style="background:#F59E0B"></div>
@@ -249,6 +256,12 @@
       <div class="br-row"><span><span class="t-en">Drop to liquidation</span><span class="t-fr">Baisse jusqu'à liquidation</span><span class="t-es">Caída hasta liquidación</span></span><b id="resDrop">—</b></div>
 
       <div class="orny-comment" id="ornyComment"></div>
+      <div style="margin-top:14px;text-align:center">
+        <a href="https://app.gmx.io/#/trade?ref=ORNYTOOLS" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:7px;background:var(--gold);color:#fff;text-decoration:none;padding:10px 20px;border-radius:9px;font-size:.85rem;font-weight:700;transition:opacity .15s" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">
+          ⚡ <span class="t-en">Open on GMX V2</span><span class="t-fr">Ouvrir sur GMX V2</span><span class="t-es">Abrir en GMX V2</span>
+        </a>
+        <div style="font-size:.68rem;color:var(--faint);margin-top:6px"><span class="t-en">Read-only tool — verify fees live on GMX before trading</span><span class="t-fr">Outil lecture seule — vérifiez les frais en direct sur GMX avant de trader</span><span class="t-es">Herramienta de solo lectura — verifica las tarifas en GMX antes de operar</span></div>
+      </div>
     </div>
   </div>
 
@@ -487,16 +500,17 @@ function calc(){
   const size   = col * _leverage;
   const hours  = days * 24;
   const borrowed = size - col;
+  const fundingAPR = parseFloat($('fundingRate').value) || 0;
 
   // Fees
-  const feeOpen   = size * OPEN_FEE_RATE * 2; // open + close
-  const feeBorrow = borrowed * BORROW_RATE_HOURLY * hours;
-  const feeTotal  = feeOpen + feeBorrow;
+  const feeOpen    = size * OPEN_FEE_RATE * 2; // open + close
+  const feeBorrow  = borrowed * BORROW_RATE_HOURLY * hours;
+  // Funding cost: positive APR = longs pay shorts; negative = shorts pay longs
+  const fundingSign = _dir === 'long' ? 1 : -1;
+  const feeFunding = size * (fundingAPR / 100) * (days / 365) * fundingSign;
+  const feeTotal   = feeOpen + feeBorrow + Math.max(0, feeFunding);
 
   // Liquidation price
-  // Long: liq when losses = collateral - fees - maintenance
-  // collateral - (entry - liq)/entry * size - fees = maintenance * size
-  // => liq = entry * (1 - (col - fees - MAINT_MARGIN*size)/size)
   let liqPrice;
   if(_dir === 'long'){
     liqPrice = entry * (1 - (col - feeTotal - MAINT_MARGIN * size) / size);
@@ -504,7 +518,7 @@ function calc(){
     liqPrice = entry * (1 + (col - feeTotal - MAINT_MARGIN * size) / size);
   }
 
-  // Break-even
+  // Break-even includes all fees
   let breakEven;
   if(_dir === 'long'){
     breakEven = entry + feeTotal / (size / entry);
@@ -528,13 +542,25 @@ function calc(){
   $('resLev').textContent     = _leverage.toFixed(1) + '×';
   $('resFeeOpen').textContent = fmtUSD(feeOpen) + ' (' + fmtPct(feeOpen/col*100) + ' of col)';
   $('resFeeBorrow').textContent = fmtUSD(feeBorrow) + ' (' + days + 'd)';
+
+  // Show/hide funding row
+  const fundingRow = $('resFundingRow');
+  if(fundingRow){
+    if(Math.abs(feeFunding) > 0.01){
+      fundingRow.style.display = 'flex';
+      $('resFeeFunding').textContent = (feeFunding >= 0 ? '-' : '+') + fmtUSD(Math.abs(feeFunding)) + ' (' + days + 'd)';
+    } else {
+      fundingRow.style.display = 'none';
+    }
+  }
+
   $('resFeeTot').textContent  = fmtUSD(feeTotal);
   $('resLiq').textContent     = fmtUSD(liqPrice);
   $('resBreak').textContent   = fmtUSD(breakEven);
   $('resDrop').textContent    = dropPct.toFixed(1) + '%';
 
-  // Fee bar
-  const tot = feeOpen + feeBorrow;
+  // Fee bar (3 segments: open, borrow, funding)
+  const tot = feeOpen + feeBorrow + Math.abs(feeFunding);
   $('feeBarOpen').style.width   = tot>0 ? (feeOpen/tot*100)+'%' : '50%';
   $('feeBarBorrow').style.width = tot>0 ? (feeBorrow/tot*100)+'%' : '50%';
 
