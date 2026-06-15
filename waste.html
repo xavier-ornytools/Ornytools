@@ -257,10 +257,26 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </div>
     </div>
 
+    <div class="field">
+      <label>
+        <span><span class="t-en">% of trades on stablecoins</span><span class="t-fr">% de trades sur stablecoins</span><span class="t-es">% de trades en stablecoins</span></span>
+        <span class="hint" id="stablesHint">40%</span>
+      </label>
+      <div class="slider-row">
+        <input type="range" id="stablesPct" min="0" max="100" value="40" step="5"/>
+        <span class="slider-val" id="stablesDisplay">40%</span>
+      </div>
+      <div style="font-size:10.5px;color:var(--faint);margin-top:3px;line-height:1.5">
+        <span class="t-en">Stable trades use 0.05% fee tier with negligible slippage. Volatile trades use the pool fee below.</span>
+        <span class="t-fr">Les trades stables utilisent le palier 0,05% avec un slippage négligeable. Les volatils utilisent les frais ci-dessous.</span>
+        <span class="t-es">Los trades en stables usan tarifa 0,05% con slippage despreciable. Los volátiles usan la comisión de abajo.</span>
+      </div>
+    </div>
+
     <hr class="divider"/>
 
     <div class="field">
-      <label><span class="t-en">Typical pool fee</span><span class="t-fr">Frais de pool habituels</span><span class="t-es">Comisión de pool habitual</span> <span class="hint">% <span class="t-en">per trade</span><span class="t-fr">par trade</span><span class="t-es">por trade</span></span></label>
+      <label><span class="t-en">Pool fee for volatile trades</span><span class="t-fr">Frais pool pour trades volatils</span><span class="t-es">Comisión pool para trades volátiles</span> <span class="hint">% <span class="t-en">per trade</span><span class="t-fr">par trade</span><span class="t-es">por trade</span></span></label>
       <select id="poolFee">
         <option value="0.05">0.05% — Uniswap V3 stable</option>
         <option value="0.3" selected>0.30% — Standard AMM</option>
@@ -426,6 +442,8 @@ function calc(){
   const A     = parseFloat($('tradeSize').value) || 0;
   const mth   = parseInt($('monthlyTrades').value) || 0;
   const fee   = parseFloat($('poolFee').value) || 0.3;
+  const stabPct = (parseFloat(($('stablesPct')||{value:'40'}).value) || 0) / 100;
+  const volatilePct = 1 - stabPct;
 
   const l = getLang ? getLang() : 'en';
   if(!(A>0 && mth>0)){ $('resultSide').innerHTML=`<div class="result-placeholder"><div class="ph-icon">🦅</div><p>${l==='fr' ? 'Entrez votre profil de trading<br>et Orny calculera<br>votre score d\'efficacité DeFi.' : 'Enter your trading profile<br>and Orny will calculate<br>your DeFi efficiency score.'}</p></div>`; return; }
@@ -433,24 +451,33 @@ function calc(){
   const gas = GAS[chain];
   const R   = TVL[chain] / 2;
   const tradesPerYear = mth * 12;
+  const annualVolume  = A * tradesPerYear;
 
-  const optA     = optimalSize(R, gas);
+  // Volatile trades: existing model
+  const optA      = optimalSize(R, gas);
   const actualPct = totalCostPct(A, R, gas, fee);
   const optPct    = totalCostPct(optA, R, gas, fee);
+  const volVolume = annualVolume * volatilePct;
+  const volActualCost = (actualPct/100) * volVolume;
+  const volOptCost    = (optPct/100)    * volVolume;
+  const volWaste  = Math.max(0, volActualCost - volOptCost);
 
-  // Annual costs based on same total volume
-  const annualVolume = A * tradesPerYear;
-  const annualActualFee = (actualPct/100) * annualVolume;
-  const annualOptFee    = (optPct/100)    * annualVolume;
-  const annualWaste     = Math.max(0, annualActualFee - annualOptFee);
+  // Stable trades: 0.05% fee tier, very deep pool (10× TVL), negligible slippage
+  const stabR     = TVL[chain] * 10;
+  const stabFee   = 0.05;
+  const stabOptA  = optimalSize(stabR, gas);
+  const stabActPct = totalCostPct(A, stabR, gas, stabFee);
+  const stabOptPct = totalCostPct(stabOptA, stabR, gas, stabFee);
+  const stabVolume = annualVolume * stabPct;
+  const stabActualCost = (stabActPct/100) * stabVolume;
+  const stabOptCost    = (stabOptPct/100) * stabVolume;
+  const stabWaste = Math.max(0, stabActualCost - stabOptCost);
 
-  // Breakdown
-  const slipActual = (A*A)/(R+A);
-  const slipOpt    = (optA*optA)/(R+optA);
-  const gasWaste   = A < optA ? Math.max(0, (gas/A - gas/optA) * annualVolume / optA) : 0;
-  const slipWaste  = A > optA ? Math.max(0, ((slipActual/A) - (slipOpt/optA)) * annualVolume) : 0;
-  const sizingWaste = Math.max(0, annualWaste - gasWaste - slipWaste);
-  // Redistribute for cleaner display
+  const annualActualFee = volActualCost + stabActualCost;
+  const annualOptFee    = volOptCost    + stabOptCost;
+  const annualWaste     = volWaste + stabWaste;
+
+  // Breakdown (existing model, volatile portion)
   const gasLoss   = A < optA ? annualWaste * 0.65 : annualWaste * 0.15;
   const slipLoss  = A > optA ? annualWaste * 0.65 : annualWaste * 0.15;
   const sizeLoss  = Math.max(0, annualWaste - gasLoss - slipLoss);
@@ -477,6 +504,17 @@ function calc(){
         <div class="lb-row"><span>${l==='fr' ? 'Inefficacité de gas' : 'Gas inefficiency'}</span><b>${fmtUSD(gasLoss)}</b></div>
         <div class="lb-row"><span>${l==='fr' ? 'Pertes par slippage' : 'Slippage drag'}</span><b>${fmtUSD(slipLoss)}</b></div>
         <div class="lb-row"><span>${l==='fr' ? 'Sizing sous-optimal' : 'Suboptimal sizing'}</span><b>${fmtUSD(sizeLoss)}</b></div>
+        ${stabPct > 0 && volatilePct > 0 ? `
+        <div style="border-top:1px solid var(--line-soft);margin:8px 0;padding-top:8px">
+          <div class="lb-row" style="font-size:11px;opacity:.8">
+            <span>🔵 ${l==='fr' ? 'Stablecoins (' + Math.round(stabPct*100) + '% vol.) — frais 0,05%' : 'Stablecoins (' + Math.round(stabPct*100) + '% vol.) — 0.05% fee'}</span>
+            <b>${fmtUSD(stabWaste)}</b>
+          </div>
+          <div class="lb-row" style="font-size:11px;opacity:.8">
+            <span>🔴 ${l==='fr' ? 'Volatils (' + Math.round(volatilePct*100) + '% vol.) — frais ' + fee + '%' : 'Volatile (' + Math.round(volatilePct*100) + '% vol.) — ' + fee + '% fee'}</span>
+            <b>${fmtUSD(volWaste)}</b>
+          </div>
+        </div>` : ''}
         <div class="lb-row savings"><span>${l==='fr' ? 'Économies potentiables' : 'Potential savings'}</span><b>+${fmtUSD(potentialSavings)}</b></div>
       </div>
       <div class="savings-wrap">
@@ -519,6 +557,12 @@ function shareResult(grade, loss, savings){
 $('monthlyTrades').addEventListener('input', function(){
   $('tradesDisplay').textContent = this.value;
   $('tradesHint').textContent = this.value + ' trades';
+  calc();
+});
+$('stablesPct').addEventListener('input', function(){
+  const v = this.value + '%';
+  $('stablesDisplay').textContent = v;
+  $('stablesHint').textContent = v;
   calc();
 });
 // Fetch live gas: eth_gasPrice via RPC × gas units × native token USD
