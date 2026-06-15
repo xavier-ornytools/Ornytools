@@ -342,6 +342,34 @@
       <div id="breakdownRows"></div>
     </div>
 
+    <!-- Stress Test -->
+    <div class="panel" id="stressPanel" style="display:none">
+      <div class="panel-title">📉 <span class="t-en">Portfolio Stress Test — What if prices crash?</span><span class="t-fr">Stress Test Portefeuille — Et si les prix chutent ?</span><span class="t-es">Stress Test Cartera — ¿Y si los precios caen?</span></div>
+      <p style="font-size:.8rem;color:var(--dim);margin-bottom:14px;line-height:1.6">
+        <span class="t-en">Simulate a uniform price drop on all collateral and see the impact on your health factor.</span>
+        <span class="t-fr">Simulez une baisse uniforme du prix de tous les collatéraux et observez l'impact sur votre health factor.</span>
+        <span class="t-es">Simula una caída de precio uniforme en todos los colaterales y ve el impacto en tu health factor.</span>
+      </p>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+        <input type="range" id="stressSlider" min="0" max="80" value="30" style="flex:1;accent-color:var(--coral)"/>
+        <span style="font-family:var(--mono);font-size:1.1rem;font-weight:700;color:var(--coral);min-width:42px" id="stressDropPct">−30%</span>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px" id="stressResult">
+        <div style="background:var(--surface-2);border-radius:10px;padding:12px;text-align:center">
+          <div style="font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);margin-bottom:4px"><span class="t-en">New HF</span><span class="t-fr">Nouveau FS</span><span class="t-es">Nuevo HF</span></div>
+          <div style="font-family:var(--mono);font-size:1.5rem;font-weight:700" id="stressHF">—</div>
+        </div>
+        <div style="background:var(--surface-2);border-radius:10px;padding:12px;text-align:center">
+          <div style="font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);margin-bottom:4px"><span class="t-en">New collateral</span><span class="t-fr">Nouveau collatéral</span><span class="t-es">Nuevo colateral</span></div>
+          <div style="font-family:var(--mono);font-size:1.3rem;font-weight:700" id="stressColl">—</div>
+        </div>
+        <div style="background:var(--surface-2);border-radius:10px;padding:12px;text-align:center">
+          <div style="font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);margin-bottom:4px"><span class="t-en">Status</span><span class="t-fr">Statut</span><span class="t-es">Estado</span></div>
+          <div style="font-size:1rem;font-weight:700" id="stressStatus">—</div>
+        </div>
+      </div>
+    </div>
+
     <!-- Cross-tool actions -->
     <div class="panel">
       <div class="panel-title"><span class="t-en">Go deeper</span><span class="t-fr">Approfondir</span><span class="t-es">Ir más lejos</span></div>
@@ -445,6 +473,45 @@ function $(i){ return document.getElementById(i); }
 function fmtUSD(v){ return '$'+v.toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:0}); }
 function fmtHF(v){ return v > 100 ? '∞' : v.toFixed(2); }
 
+// Stress test state
+let _stressHF   = null;
+let _stressColl = null;
+let _stressDebt = null;
+
+function updateStress(){
+  if(_stressHF === null) return;
+  const drop = parseFloat(($('stressSlider') || {value:'30'}).value) / 100;
+  const newHF   = _stressHF * (1 - drop);
+  const newColl = _stressColl * (1 - drop);
+  const l = typeof getLang==='function' ? getLang() : 'en';
+  const hfEl   = $('stressHF');
+  const collEl = $('stressColl');
+  const statEl = $('stressStatus');
+  const dropEl = $('stressDropPct');
+  if(dropEl) dropEl.textContent = '−' + Math.round(drop*100) + '%';
+  if(hfEl){
+    hfEl.textContent = newHF > 100 ? '∞' : newHF.toFixed(2);
+    hfEl.style.color = newHF < 1 ? '#dc2626' : newHF < 1.5 ? '#d97706' : '#16a34a';
+  }
+  if(collEl) collEl.textContent = fmtUSD(newColl);
+  if(statEl){
+    const isLiq = newHF < 1.0;
+    statEl.textContent = isLiq
+      ? (l==='fr' ? '⚠ Liquidé' : l==='es' ? '⚠ Liquidado' : '⚠ Liquidated')
+      : newHF < 1.2
+      ? (l==='fr' ? '🔴 Critique' : l==='es' ? '🔴 Crítico' : '🔴 Critical')
+      : newHF < 1.5
+      ? (l==='fr' ? '🟡 Danger' : l==='es' ? '🟡 Peligro' : '🟡 Danger')
+      : (l==='fr' ? '🟢 Sûr' : l==='es' ? '🟢 Seguro' : '🟢 Safe');
+    statEl.style.color = isLiq ? '#dc2626' : newHF < 1.2 ? '#dc2626' : newHF < 1.5 ? '#d97706' : '#16a34a';
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const sl = $('stressSlider');
+  if(sl) sl.addEventListener('input', updateStress);
+});
+
 function buildSparkline(hist){
   if(!hist || hist.length < 2) return '';
   const vals = hist.map(h => h.hf);
@@ -536,6 +603,14 @@ function renderAaveResults(proto, d, addr, l){
   const protoName = PROTO_CONFIG[proto].name;
   const cName = CHAINS[currentChain].name;
   const { totalCollateral, totalDebt, availableBorrows, liqThreshold, ltv, healthFactor } = d;
+
+  // Store for stress test
+  _stressHF   = healthFactor;
+  _stressColl = totalCollateral;
+  _stressDebt = totalDebt;
+  const sp = $('stressPanel'); if(sp) sp.style.display = 'block';
+  updateStress();
+
   const liqFactor = totalDebt > 0 ? totalDebt / (totalCollateral * liqThreshold) : null;
   const dropToLiq = liqFactor ? (1 - liqFactor) * 100 : null;
   let hfClass = 'safe', hfCardClass = 'safe';
