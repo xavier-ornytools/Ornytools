@@ -151,6 +151,35 @@
   .score-pill.s-caution{background:var(--warn-pale);color:var(--warn)}
   .score-pill.s-risky{background:var(--coral-pale);color:var(--coral)}
 
+  /* DEPEG MONITOR */
+  .depeg-section{max-width:1060px;margin:0 auto;padding:0 28px 56px}
+  .depeg-header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:6px}
+  .depeg-header h3{font-family:var(--display);font-size:1.15rem;font-weight:500;letter-spacing:-.02em}
+  .depeg-controls{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .depeg-thresh{font-size:12px;color:var(--dim);display:flex;align-items:center;gap:5px}
+  .depeg-thresh input[type=number]{width:58px;padding:4px 7px;font-family:var(--mono);font-size:12.5px;border:1px solid var(--line);border-radius:6px;background:var(--surface-2);color:var(--text);outline:none}
+  .depeg-thresh input:focus{border-color:var(--aqua)}
+  .depeg-btn{font-size:11.5px;font-weight:700;padding:5px 12px;border:1.5px solid var(--line);border-radius:7px;background:#fff;color:var(--dim);cursor:pointer;transition:.15s;font-family:var(--ui)}
+  .depeg-btn:hover{border-color:var(--aqua);color:var(--aqua)}
+  .depeg-btn.on{background:rgba(59,130,246,.1);color:#3B82F6;border-color:#3B82F6}
+  .depeg-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px;margin-top:16px}
+  .depeg-tile{background:#fff;border:1.5px solid var(--line);border-radius:10px;padding:12px 14px;display:flex;flex-direction:column;gap:4px;transition:border-color .2s,background .2s}
+  .depeg-tile.depegged{border-color:var(--coral);background:var(--coral-pale)}
+  .depeg-tile.warn{border-color:var(--warn);background:var(--warn-pale)}
+  .depeg-sym{font-size:12px;font-weight:700;color:var(--text)}
+  .depeg-price{font-family:var(--mono);font-size:1.1rem;font-weight:700;color:var(--text)}
+  .depeg-delta{font-size:11px;font-weight:600;margin-top:1px}
+  .depeg-dot{width:8px;height:8px;border-radius:50%;background:var(--line);display:inline-block;margin-right:4px;transition:background .3s}
+  .depeg-dot.ok{background:var(--good)}
+  .depeg-dot.warn{background:var(--warn)}
+  .depeg-dot.err{background:var(--coral)}
+  .depeg-sub{font-size:10.5px;color:var(--faint);margin-bottom:14px}
+  .depeg-notif-note{font-size:11px;color:var(--faint);margin-top:10px;font-style:italic}
+  html.dark .depeg-tile{background:var(--surface);border-color:var(--line)}
+  html.dark .depeg-tile.depegged{background:rgba(232,118,90,.12)}
+  html.dark .depeg-tile.warn{background:rgba(245,158,11,.1)}
+  html.dark .depeg-btn{background:var(--surface)}
+
   /* BACK + FOOTER */
   .back-section{padding:40px 28px;text-align:center;border-top:1px solid var(--line);background:var(--surface-2)}
   .back-link{display:inline-flex;align-items:center;gap:10px;text-decoration:none;color:var(--text);font-weight:700;font-size:15px;padding:14px 32px;border:1.5px solid var(--line);border-radius:40px;background:#fff;transition:.18s;box-shadow:0 2px 8px rgba(0,0,0,.05)}
@@ -286,6 +315,43 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <h3><span class="t-en">Full comparison</span><span class="t-fr">Comparaison complète</span><span class="t-es">Comparación completa</span></h3>
   <p><span class="t-en">All stablecoins ranked by overall safety score.</span><span class="t-fr">Tous les stablecoins classés par score de sécurité global.</span><span class="t-es">Todos los stablecoins clasificados por puntuación de seguridad global.</span></p>
   <table class="ctable" id="compareTable"></table>
+</div>
+
+<!-- DEPEG MONITOR -->
+<div class="depeg-section">
+  <div class="depeg-header">
+    <div>
+      <h3>⚡ <span class="t-en">Live Depeg Monitor</span><span class="t-fr">Moniteur de Dépeg en Direct</span><span class="t-es">Monitor de Despeg en Vivo</span></h3>
+    </div>
+    <div class="depeg-controls">
+      <div class="depeg-thresh">
+        <span class="t-en">Alert threshold:</span><span class="t-fr">Seuil d'alerte :</span><span class="t-es">Umbral de alerta:</span>
+        <span>±</span><input type="number" id="depegThresh" value="0.5" min="0.1" max="5" step="0.1"/>
+        <span>%</span>
+      </div>
+      <button id="depegNotifBtn" class="depeg-btn" onclick="toggleDepegNotif()">
+        🔔 <span class="t-en">Enable alerts</span><span class="t-fr">Activer les alertes</span><span class="t-es">Activar alertas</span>
+      </button>
+    </div>
+  </div>
+  <div class="depeg-sub">
+    <span id="depegLastUpdate" style="font-size:11px;color:var(--faint)">—</span>
+    <span style="font-size:10.5px;color:var(--faint);margin-left:8px">
+      <span class="t-en">· Refreshes every 60s via CoinGecko · Read-only</span>
+      <span class="t-fr">· Rafraîchissement toutes les 60s via CoinGecko · Lecture seule</span>
+      <span class="t-es">· Se actualiza cada 60s via CoinGecko · Solo lectura</span>
+    </span>
+  </div>
+  <div class="depeg-grid" id="depegGrid">
+    <div style="grid-column:1/-1;padding:24px;text-align:center;color:var(--faint);font-size:13px">
+      <span class="t-en">Loading prices…</span><span class="t-fr">Chargement des prix…</span><span class="t-es">Cargando precios…</span>
+    </div>
+  </div>
+  <div class="depeg-notif-note">
+    <span class="t-en">Browser alerts fire if any stablecoin price deviates beyond the threshold. No server, no wallet — fully local.</span>
+    <span class="t-fr">Les alertes navigateur se déclenchent si un stablecoin dépasse le seuil. Aucun serveur, aucun wallet — 100% local.</span>
+    <span class="t-es">Las alertas del navegador saltan si algún stablecoin supera el umbral. Sin servidor, sin wallet — 100% local.</span>
+  </div>
 </div>
 
 <div class="back-section">
@@ -982,6 +1048,109 @@ async function fetchAndRenderYield(sym) {
     if(z) z.innerHTML = `<p style="color:var(--faint);text-align:center;padding:16px">Could not load live data</p>`;
   }
 }
+
+/* ── DEPEG MONITOR ──────────────────────────────────────────────────── */
+const DEPEG_STABLES = [
+  { sym:'USDC',  gecko:'usd-coin' },
+  { sym:'USDT',  gecko:'tether' },
+  { sym:'DAI',   gecko:'dai' },
+  { sym:'USDe',  gecko:'usde' },
+  { sym:'GHO',   gecko:'gho' },
+  { sym:'FRAX',  gecko:'frax' },
+  { sym:'crvUSD',gecko:'crvusd' },
+  { sym:'RLUSD', gecko:'ripple-usd' },
+  { sym:'USD0',  gecko:'usual-usd' },
+  { sym:'deUSD', gecko:'elixir-deusd' },
+];
+
+let _depegPrices = {};
+let _depegNotifsOn = false;
+let _depegInterval = null;
+
+function toggleDepegNotif() {
+  if(!_depegNotifsOn){
+    if(!('Notification' in window)){ alert('Browser notifications not supported'); return; }
+    Notification.requestPermission().then(perm => {
+      _depegNotifsOn = perm === 'granted';
+      const btn = document.getElementById('depegNotifBtn');
+      if(btn){ btn.classList.toggle('on', _depegNotifsOn); }
+    });
+  } else {
+    _depegNotifsOn = false;
+    const btn = document.getElementById('depegNotifBtn');
+    if(btn){ btn.classList.remove('on'); }
+  }
+}
+
+function depegNotify(sym, price, delta){
+  if(!_depegNotifsOn || Notification.permission !== 'granted') return;
+  new Notification(`⚠️ Depeg Alert: ${sym}`, {
+    body: `${sym} = $${price.toFixed(4)} (${delta >= 0 ? '+' : ''}${(delta*100).toFixed(2)}%)`,
+    icon: '/logo.png',
+    tag: 'depeg-' + sym
+  });
+}
+
+function renderDepegGrid(){
+  const grid = document.getElementById('depegGrid');
+  if(!grid) return;
+  const thresh = (parseFloat((document.getElementById('depegThresh') || {value:'0.5'}).value) || 0.5) / 100;
+
+  if(!Object.keys(_depegPrices).length){
+    grid.innerHTML = '<div style="grid-column:1/-1;padding:24px;text-align:center;color:var(--faint);font-size:13px">Loading…</div>';
+    return;
+  }
+
+  grid.innerHTML = DEPEG_STABLES.map(item => {
+    const p = _depegPrices[item.gecko];
+    if(!p) return `
+      <div class="depeg-tile">
+        <div class="depeg-sym"><span class="depeg-dot"></span>${item.sym}</div>
+        <div class="depeg-price" style="color:var(--faint)">—</div>
+        <div class="depeg-delta" style="color:var(--faint)">n/a</div>
+      </div>`;
+    const delta = p - 1.0;
+    const absDelta = Math.abs(delta);
+    const isDepegged = absDelta > thresh;
+    const isWarn = absDelta > thresh * 0.6 && !isDepegged;
+    const dotClass = isDepegged ? 'err' : isWarn ? 'warn' : 'ok';
+    const tileClass = isDepegged ? 'depegged' : isWarn ? 'warn' : '';
+    const deltaColor = isDepegged ? 'var(--coral)' : isWarn ? 'var(--warn)' : 'var(--good)';
+    return `
+      <div class="depeg-tile ${tileClass}">
+        <div class="depeg-sym"><span class="depeg-dot ${dotClass}"></span>${item.sym}</div>
+        <div class="depeg-price">$${p.toFixed(4)}</div>
+        <div class="depeg-delta" style="color:${deltaColor}">${delta >= 0 ? '+' : ''}${(delta*100).toFixed(3)}%</div>
+      </div>`;
+  }).join('');
+}
+
+async function fetchDepegPrices(){
+  const ids = DEPEG_STABLES.map(s => s.gecko).join(',');
+  try {
+    const r = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${ids}&vs_currencies=usd`);
+    const data = await r.json();
+    const thresh = (parseFloat((document.getElementById('depegThresh') || {value:'0.5'}).value) || 0.5) / 100;
+    DEPEG_STABLES.forEach(item => {
+      const p = data[item.gecko]?.usd;
+      if(p){
+        const prev = _depegPrices[item.gecko];
+        _depegPrices[item.gecko] = p;
+        if(Math.abs(p - 1.0) > thresh) depegNotify(item.sym, p, p - 1.0);
+      }
+    });
+    const now = new Date();
+    const hm = now.getHours().toString().padStart(2,'0') + ':' + now.getMinutes().toString().padStart(2,'0');
+    const el = document.getElementById('depegLastUpdate');
+    if(el) el.textContent = 'Last update: ' + hm;
+    renderDepegGrid();
+  } catch(e){ renderDepegGrid(); }
+}
+
+// Auto-start monitor on page load
+fetchDepegPrices();
+_depegInterval = setInterval(fetchDepegPrices, 60000);
+document.getElementById('depegThresh')?.addEventListener('input', renderDepegGrid);
 </script>
 <script src="lang.js"></script>
 
