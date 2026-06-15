@@ -168,6 +168,29 @@
   .live-btn.fetching{opacity:.5;pointer-events:none}
   #inputPc{padding-right:78px}
 
+  /* comparator */
+  .compare-toggle{width:100%;margin-top:12px;padding:9px 14px;border-radius:9px;border:1.5px dashed var(--purple);background:transparent;color:var(--purple);font-family:var(--ui);font-size:12.5px;font-weight:700;cursor:pointer;transition:.15s;letter-spacing:.02em}
+  .compare-toggle:hover{background:rgba(124,58,237,.07)}
+  .compare-inputs{display:none;margin-top:14px;border-top:1px solid var(--line);padding-top:12px}
+  .compare-inputs.open{display:block}
+  .cmp-analyze-btn{width:100%;margin-top:10px;padding:10px;border:none;border-radius:9px;background:linear-gradient(135deg,var(--aqua),var(--purple));color:#fff;font-family:var(--ui);font-size:13px;font-weight:700;cursor:pointer;transition:.15s}
+  .cmp-analyze-btn:hover{opacity:.88}
+  .cmp-wrap{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+  .cmp-col{background:var(--surface-2);border-radius:12px;padding:14px;border:2px solid transparent}
+  .cmp-col.cmp-a{border-color:var(--aqua)}
+  .cmp-col.cmp-b{border-color:var(--purple)}
+  .cmp-col-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:10px}
+  .cmp-row{display:flex;justify-content:space-between;align-items:center;font-size:11.5px;padding:5px 0;border-bottom:1px solid var(--line)}
+  .cmp-row:last-child{border:none}
+  .cmp-key{color:var(--faint)}
+  .cmp-val{font-family:var(--mono);font-weight:700;font-size:12px}
+  .cmp-win{color:var(--good)}
+  .cmp-lose{color:var(--coral)}
+  .cmp-neutral{color:var(--text)}
+  .cmp-verdict{grid-column:1/-1;background:var(--surface-2);border-radius:10px;padding:12px 14px;font-size:12.5px;line-height:1.6;color:var(--dim);margin-top:4px}
+  .cmp-verdict b{color:var(--text)}
+  @media(max-width:480px){.cmp-wrap{grid-template-columns:1fr}}
+
   /* cross-tool link */
   .xlink-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:16px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;box-shadow:0 1px 4px rgba(0,0,0,.04)}
   .xlink-card .xl-txt{font-size:13px;color:var(--dim);line-height:1.5}
@@ -339,10 +362,32 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
 
     <button class="analyze-btn" onclick="analyze()"><span class="t-en">Analyze Range →</span><span class="t-fr">Analyser la plage →</span><span class="t-es">Analizar rango →</span></button>
+
+    <!-- Range B comparator -->
+    <button class="compare-toggle" onclick="toggleCompare()"><span class="t-en">⊕ Compare with Range B</span><span class="t-fr">⊕ Comparer avec une plage B</span><span class="t-es">⊕ Comparar con Rango B</span></button>
+    <div class="compare-inputs" id="compareInputs">
+      <div style="font-size:10px;color:var(--faint);margin-bottom:10px;line-height:1.6">
+        <span class="t-en">Same price, same investment as Range A. Only change the bounds.</span>
+        <span class="t-fr">Même prix, même capital que la plage A. Changez seulement les bornes.</span>
+        <span class="t-es">Mismo precio e inversión que el Rango A. Solo cambia los límites.</span>
+      </div>
+      <div class="row-2">
+        <div class="field">
+          <label><span class="t-en">Min Price B (Pa2)</span><span class="t-fr">Prix min B (Pa2)</span><span class="t-es">Precio mín B (Pa2)</span></label>
+          <input type="number" id="inputPa2" placeholder="Pa2" min="0" step="any"/>
+        </div>
+        <div class="field">
+          <label><span class="t-en">Max Price B (Pb2)</span><span class="t-fr">Prix max B (Pb2)</span><span class="t-es">Precio máx B (Pb2)</span></label>
+          <input type="number" id="inputPb2" placeholder="Pb2" min="0" step="any"/>
+        </div>
+      </div>
+      <button class="cmp-analyze-btn" onclick="analyzeCompare()"><span class="t-en">Compare A vs B →</span><span class="t-fr">Comparer A vs B →</span><span class="t-es">Comparar A vs B →</span></button>
+    </div>
   </div>
 
   <!-- RESULTS -->
   <div class="result-col" id="results">
+    <div id="compareResults" style="display:none"></div>
     <div class="empty-state">
       <div class="es-icon">📐</div>
       <p><span class="t-en">Enter a price range and investment<br>to see your concentrated liquidity analysis.</span><span class="t-fr">Saisissez une plage de prix et un capital<br>pour voir votre analyse de liquidité concentrée.</span><span class="t-es">Introduce un rango de precio e inversión<br>para ver tu análisis de liquidez concentrada.</span></p>
@@ -820,6 +865,114 @@ function saveV3R(){
   var el = document.getElementById(id);
   if(el) el.addEventListener('input', saveV3R);
 });
+
+function toggleCompare(){
+  const el = document.getElementById('compareInputs');
+  if(el) el.classList.toggle('open');
+}
+
+function analyzeCompare(){
+  const l = typeof getLang === 'function' ? getLang() : 'en';
+  const Pc  = parseFloat(document.getElementById('inputPc')?.value);
+  const Pa  = parseFloat(document.getElementById('inputPa')?.value);
+  const Pb  = parseFloat(document.getElementById('inputPb')?.value);
+  const Pa2 = parseFloat(document.getElementById('inputPa2')?.value);
+  const Pb2 = parseFloat(document.getElementById('inputPb2')?.value);
+  const V   = parseFloat(document.getElementById('inputV')?.value) || 10000;
+  const feeAPR = parseFloat(document.getElementById('inputFeeAPR')?.value) || 15;
+
+  if(!Pc || !Pa || !Pb || Pa>=Pb || Pc<=Pa || Pc>=Pb){
+    alert(l==='fr' ? 'Analysez d\'abord la plage A (Pa < Prix < Pb).' : 'Analyze Range A first (Pa < Price < Pb).');
+    return;
+  }
+  if(!Pa2 || !Pb2 || Pa2>=Pb2 || Pa2<=0){
+    alert(l==='fr' ? 'Entrez des bornes valides pour la plage B (Pa2 < Pb2).' : 'Enter valid bounds for Range B (Pa2 < Pb2).');
+    return;
+  }
+
+  const posA = computePosition(Pc, Pa, Pb, V);
+  const posB = computePosition(
+    Pc,
+    Math.max(Pa2, Pc*0.001),
+    Math.max(Pb2, Pa2*1.0001),
+    V
+  );
+
+  const beDays = (il, apr) => apr > 0 ? Math.abs(il) / (apr / 365) : Infinity;
+  const fmt2 = (n, d=2) => Number(n).toLocaleString('en-US', {minimumFractionDigits:d, maximumFractionDigits:d});
+
+  // IL at Pa / -30% for each range (clamp price to [Pa,Pb])
+  const ilA_pa    = ilPct(posA.L, Pa,  Pb,  posA.x0, posA.y0, Pa);
+  const ilA_m30   = ilPct(posA.L, Pa,  Pb,  posA.x0, posA.y0, Pc*0.7);
+  const ilB_pa2   = ilPct(posB.L, Math.max(Pa2,Pc*0.001), Math.max(Pb2,Pa2*1.0001), posB.x0, posB.y0, Math.max(Pa2,Pc*0.001));
+  const ilB_m30   = ilPct(posB.L, Math.max(Pa2,Pc*0.001), Math.max(Pb2,Pa2*1.0001), posB.x0, posB.y0, Pc*0.7);
+
+  const beA_pa  = beDays(ilA_pa,  feeAPR);
+  const beA_m30 = beDays(ilA_m30, feeAPR);
+  const beB_pa2 = beDays(ilB_pa2, feeAPR);
+  const beB_m30 = beDays(ilB_m30, feeAPR);
+
+  const widA = ((Pb  - Pa)  / Pc) * 100;
+  const widB = ((Pb2 - Pa2) / Pc) * 100;
+
+  // Verdict
+  const effWinner = posA.mult >= posB.mult ? 'A' : 'B';
+  const ilWinner  = Math.abs(ilA_m30) <= Math.abs(ilB_m30) ? 'A' : 'B';
+  const beWinner  = beA_m30 <= beB_m30 ? 'A' : 'B';
+
+  const multRatio = posA.mult > posB.mult
+    ? (posA.mult / posB.mult).toFixed(1) + '×'
+    : (posB.mult / posA.mult).toFixed(1) + '×';
+
+  const verdictTxt = l==='fr'
+    ? `<b>Range ${effWinner}</b> est ${multRatio} plus efficace en capital. <b>Range ${ilWinner}</b> subit moins d'IL à −30%. <b>Break-even à −30% :</b> ${beA_m30===Infinity?'∞':Math.round(beA_m30)+' j'} (A) vs ${beB_m30===Infinity?'∞':Math.round(beB_m30)+' j'} (B) — plus court = meilleur.`
+    : `<b>Range ${effWinner}</b> is ${multRatio} more capital-efficient. <b>Range ${ilWinner}</b> suffers less IL at −30%. <b>Break-even at −30%:</b> ${beA_m30===Infinity?'∞':Math.round(beA_m30)+'d'} (A) vs ${beB_m30===Infinity?'∞':Math.round(beB_m30)+'d'} (B) — shorter is better.`;
+
+  const dFmt = (v) => v===Infinity ? '∞' : Math.round(v)+(l==='fr'?' j':'d');
+  const win = (a, b, lowerIsBetter=false) => {
+    if(a===b) return ['cmp-neutral','cmp-neutral'];
+    const aWins = lowerIsBetter ? a < b : a > b;
+    return aWins ? ['cmp-win','cmp-lose'] : ['cmp-lose','cmp-win'];
+  };
+
+  const [mA,mB] = win(posA.mult, posB.mult);
+  const [iA,iB] = win(Math.abs(ilA_m30), Math.abs(ilB_m30), true);
+  const [bA,bB] = win(beA_m30, beB_m30, true);
+  const [wA,wB] = win(widA, widB, true);
+
+  const cmpEl = document.getElementById('compareResults');
+  if(!cmpEl) return;
+  cmpEl.style.display = 'block';
+  cmpEl.innerHTML = `
+    <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--faint);margin-bottom:10px">
+      ${l==='fr' ? 'Comparaison Range A vs B' : 'Range A vs B Comparison'}
+    </div>
+    <div class="cmp-wrap">
+      <div class="cmp-col cmp-a">
+        <div class="cmp-col-title" style="color:var(--aqua)">Range A — [${fmt2(Pa,0)} – ${fmt2(Pb,0)}]</div>
+        <div class="cmp-row"><span class="cmp-key">${l==='fr'?'Efficacité':'Efficiency'}</span><span class="cmp-val ${mA}">${posA.mult.toFixed(1)}×</span></div>
+        <div class="cmp-row"><span class="cmp-key">${l==='fr'?'Largeur plage':'Range width'}</span><span class="cmp-val ${wA}">${widA.toFixed(1)}%</span></div>
+        <div class="cmp-row"><span class="cmp-key">${l==='fr'?'Split token0':'Token0 split'}</span><span class="cmp-val cmp-neutral">${posA.pctX.toFixed(1)}%</span></div>
+        <div class="cmp-row"><span class="cmp-key">IL −30%</span><span class="cmp-val ${iA}">${ilA_m30.toFixed(2)}%</span></div>
+        <div class="cmp-row"><span class="cmp-key">IL à Pa</span><span class="cmp-val cmp-neutral">${ilA_pa.toFixed(2)}%</span></div>
+        <div class="cmp-row"><span class="cmp-key">${l==='fr'?'Break-even −30%':'Break-even −30%'}</span><span class="cmp-val ${bA}">${dFmt(beA_m30)}</span></div>
+        <div class="cmp-row"><span class="cmp-key">${l==='fr'?'Break-even à Pa':'Break-even at Pa'}</span><span class="cmp-val cmp-neutral">${dFmt(beA_pa)}</span></div>
+      </div>
+      <div class="cmp-col cmp-b">
+        <div class="cmp-col-title" style="color:var(--purple)">Range B — [${fmt2(Pa2,0)} – ${fmt2(Pb2,0)}]</div>
+        <div class="cmp-row"><span class="cmp-key">${l==='fr'?'Efficacité':'Efficiency'}</span><span class="cmp-val ${mB}">${posB.mult.toFixed(1)}×</span></div>
+        <div class="cmp-row"><span class="cmp-key">${l==='fr'?'Largeur plage':'Range width'}</span><span class="cmp-val ${wB}">${widB.toFixed(1)}%</span></div>
+        <div class="cmp-row"><span class="cmp-key">${l==='fr'?'Split token0':'Token0 split'}</span><span class="cmp-val cmp-neutral">${posB.pctX.toFixed(1)}%</span></div>
+        <div class="cmp-row"><span class="cmp-key">IL −30%</span><span class="cmp-val ${iB}">${ilB_m30.toFixed(2)}%</span></div>
+        <div class="cmp-row"><span class="cmp-key">IL à Pa2</span><span class="cmp-val cmp-neutral">${ilB_pa2.toFixed(2)}%</span></div>
+        <div class="cmp-row"><span class="cmp-key">${l==='fr'?'Break-even −30%':'Break-even −30%'}</span><span class="cmp-val ${bB}">${dFmt(beB_m30)}</span></div>
+        <div class="cmp-row"><span class="cmp-key">${l==='fr'?'Break-even à Pa2':'Break-even at Pa2'}</span><span class="cmp-val cmp-neutral">${dFmt(beB_pa2)}</span></div>
+      </div>
+      <div class="cmp-verdict">🔍 ${verdictTxt}</div>
+    </div>
+  `;
+  cmpEl.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
 </script>
 <script src="lang.js"></script>
 
