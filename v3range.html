@@ -274,6 +274,18 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <button class="preset-btn" data-preset="wbtc-usdc">
         <span class="pb-sym">WBTC/USDC</span><span class="pb-sub">0.3%</span>
       </button>
+      <button class="preset-btn" data-preset="arb-usdc">
+        <span class="pb-sym">ARB/USDC</span><span class="pb-sub">0.05% · Arbitrum</span>
+      </button>
+      <button class="preset-btn" data-preset="arb-eth">
+        <span class="pb-sym">ARB/ETH</span><span class="pb-sub">0.3% · Arbitrum</span>
+      </button>
+      <button class="preset-btn" data-preset="cbeth-eth">
+        <span class="pb-sym">cbETH/ETH</span><span class="pb-sub">0.05% · Base</span>
+      </button>
+      <button class="preset-btn" data-preset="wsteth-eth">
+        <span class="pb-sym">wstETH/ETH</span><span class="pb-sub">0.01% · Ethereum</span>
+      </button>
       <button class="preset-btn" data-preset="custom">
         <span class="pb-sym">Custom</span><span class="pb-sub">manual</span>
       </button>
@@ -352,10 +364,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <script>
 const PRESETS = {
-  'eth-usdc-5':  { label:'ETH/USDC 0.05%', t0:'ETH',  t1:'USDC', price:3400, pa:3200, pb:3600, gecko:'ethereum' },
-  'eth-usdc-30': { label:'ETH/USDC 0.3%',  t0:'ETH',  t1:'USDC', price:3400, pa:2800, pb:4200, gecko:'ethereum' },
-  'wbtc-usdc':   { label:'WBTC/USDC 0.3%', t0:'WBTC', t1:'USDC', price:103000, pa:88000, pb:120000, gecko:'bitcoin' },
-  'custom':      { label:'Custom',          t0:'Token0', t1:'USD', price:null, pa:null, pb:null, gecko:'' },
+  'eth-usdc-5':  { label:'ETH/USDC 0.05%',     t0:'ETH',    t1:'USDC', price:3400,   pa:3200,  pb:3600,   gecko:'ethereum' },
+  'eth-usdc-30': { label:'ETH/USDC 0.3%',      t0:'ETH',    t1:'USDC', price:3400,   pa:2800,  pb:4200,   gecko:'ethereum' },
+  'wbtc-usdc':   { label:'WBTC/USDC 0.3%',     t0:'WBTC',   t1:'USDC', price:103000, pa:88000, pb:120000, gecko:'bitcoin' },
+  'arb-usdc':    { label:'ARB/USDC 0.05% · Arb', t0:'ARB',  t1:'USDC', price:0.82,   pa:0.65,  pb:1.10,   gecko:'arbitrum' },
+  'arb-eth':     { label:'ARB/ETH 0.3% · Arb',   t0:'ARB',  t1:'ETH',  price:0.00024,pa:0.00019,pb:0.00032,gecko:'' },
+  'cbeth-eth':   { label:'cbETH/ETH 0.05% · Base',t0:'cbETH',t1:'ETH',  price:1.065,  pa:1.040,  pb:1.090,  gecko:'' },
+  'wsteth-eth':  { label:'wstETH/ETH 0.01% · Eth',t0:'wstETH',t1:'ETH', price:1.185,  pa:1.160,  pb:1.210,  gecko:'' },
+  'custom':      { label:'Custom',               t0:'Token0', t1:'USD', price:null,   pa:null,  pb:null,   gecko:'' },
 };
 
 let _preset = 'eth-usdc-5';
@@ -774,6 +790,7 @@ function saveV3R(){
     <a href="waste.html" class="tools-nav-btn"><span>🔥</span><span class="t-en">Waste Detector</span><span class="t-fr">Détecteur de Gaspillage</span><span class="t-es">Detector de Desperdicio</span></a>
     <a href="gmx.html" class="tools-nav-btn"><span>⚡</span><span class="t-en">GMX Calculator</span><span class="t-fr">Calculateur GMX</span><span class="t-es">Calculadora GMX</span></a>
     <a href="dashboard.html" class="tools-nav-btn"><span>🔭</span><span class="t-en">Position Dashboard</span><span class="t-fr">Dashboard Positions</span><span class="t-es">Dashboard de Posiciones</span></a>
+    <a href="morpho.html" class="tools-nav-btn"><span>🔷</span><span class="t-en">Morpho Blue</span><span class="t-fr">Morpho Blue</span><span class="t-es">Morpho Blue</span></a>
 
   </div>
 </div>

@@ -144,6 +144,26 @@
   .chain-dot.base{background:#0052FF}
   .chain-btn.active .chain-dot{background:rgba(255,255,255,.75)}
 
+  /* Protocol selector */
+  .proto-selector{display:flex;gap:8px;justify-content:center;margin-bottom:14px;flex-wrap:wrap}
+  .proto-btn{display:flex;align-items:center;gap:6px;padding:7px 15px;border:1.5px solid var(--line);border-radius:8px;background:#fff;font-size:.8rem;font-weight:700;cursor:pointer;color:var(--dim);transition:.15s;font-family:var(--ui)}
+  .proto-btn:hover{border-color:var(--blue);color:var(--blue)}
+  .proto-btn.active{background:var(--blue);border-color:var(--blue);color:#fff}
+  html.dark .proto-btn{background:var(--surface-2);border-color:var(--line);color:var(--dim)}
+  html.dark .proto-btn.active{background:var(--blue);color:#fff}
+
+  /* Compound results */
+  .cmp-market{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);margin-bottom:14px}
+  .cmp-market-title{font-size:.7rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+  .cmp-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+  .cmp-cell{text-align:center}
+  .cmp-label{font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);margin-bottom:4px}
+  .cmp-val{font-family:var(--mono);font-size:1.3rem;font-weight:700;color:var(--text)}
+  .cmp-val.borrow{color:var(--coral)}
+  .cmp-val.supply{color:var(--good)}
+  .cmp-note{margin-top:12px;padding:8px 12px;background:var(--surface-2);border-radius:8px;font-size:.76rem;color:var(--dim);line-height:1.5}
+  html.dark .cmp-market{background:var(--surface);border-color:var(--line)}
+
   /* Privacy note */
   .privacy-note{font-size:.74rem;color:var(--faint);text-align:center;margin-top:12px}
 
@@ -185,6 +205,11 @@
   /* Sparkline HF history */
   .hf-sparkline{margin-top:8px}
   .spark-label{font-size:.66rem;color:var(--faint);text-align:center;margin-top:3px}
+  /* Alert panel */
+  #alertPanel{margin-top:0}
+  .alert-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--warn);animation:pulse 1.2s infinite;margin-right:6px}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+
   /* Mobile */
   @media(max-width:680px){
     .chain-selector{flex-wrap:wrap;gap:6px}
@@ -224,8 +249,13 @@
     <button class="chain-btn eth" data-chain="ethereum" onclick="selectChain('ethereum')"><span class="chain-dot eth"></span>Ethereum</button>
     <button class="chain-btn base" data-chain="base" onclick="selectChain('base')"><span class="chain-dot base"></span>Base</button>
   </div>
+  <div class="proto-selector">
+    <button class="proto-btn active" id="protoAave" onclick="selectProto('aave')">🏦 Aave V3</button>
+    <button class="proto-btn" id="protoCompound" onclick="selectProto('compound')">🔵 Compound V3</button>
+    <button class="proto-btn" id="protoSpark" onclick="selectProto('spark')" style="display:none">✨ Spark</button>
+  </div>
   <h1><span class="t-en">Is your <em>position</em><br>safe right now?</span><span class="t-fr">Votre <em>position</em><br>est-elle sûre en ce moment ?</span><span class="t-es">¿Tu <em>posición</em><br>está segura ahora mismo?</span></h1>
-  <p><span class="t-en">Select a chain, paste any address — get your Aave V3 health factor, collateral, debt and liquidation distance, live from the blockchain.</span><span class="t-fr">Choisissez une chaîne, collez n'importe quelle adresse — obtenez votre health factor Aave V3, collateral, dette et distance de liquidation, en direct depuis la blockchain.</span><span class="t-es">Elige una cadena, pega cualquier dirección — obtén tu health factor Aave V3, colateral, deuda y distancia de liquidación, en vivo desde la blockchain.</span></p>
+  <p><span class="t-en">Select chain + protocol, paste any address — health factor, collateral, debt and liquidation distance, live from the blockchain.</span><span class="t-fr">Choisissez chaîne + protocole, collez n'importe quelle adresse — health factor, collateral, dette et distance de liquidation, en direct depuis la blockchain.</span><span class="t-es">Elige cadena + protocolo, pega cualquier dirección — health factor, colateral, deuda y distancia de liquidación, en vivo desde la blockchain.</span></p>
   <div class="addr-bar" style="margin-top:20px">
     <input type="text" id="addrInput" placeholder="0x… Arbitrum address" maxlength="42" onkeydown="if(event.key==='Enter')loadDashboard()"/>
     <button class="btn-load" id="btnLoad" onclick="loadDashboard()"><span class="t-en">⚡ Load</span><span class="t-fr">⚡ Charger</span><span class="t-es">⚡ Cargar</span></button>
@@ -318,6 +348,27 @@
       <div class="cta-row" id="ctaRow"></div>
     </div>
   </div>
+
+  <!-- HF Alert Panel (always visible) -->
+  <div class="panel" id="alertPanel" style="border-top:3px solid var(--warn);margin-top:8px">
+    <div class="panel-title"><span class="t-en">🔔 HF Alert — Browser Monitoring</span><span class="t-fr">🔔 Alerte HF — Surveillance Navigateur</span><span class="t-es">🔔 Alerta HF — Monitoreo Navegador</span></div>
+    <p style="font-size:.8rem;color:var(--dim);margin-bottom:16px;line-height:1.6"><span class="t-en">Get a browser notification when HF falls below your threshold. The page polls on-chain every 5 minutes as long as it stays open.</span><span class="t-fr">Recevez une notification navigateur quand le HF passe sous votre seuil. La page interroge la blockchain toutes les 5 minutes tant qu'elle reste ouverte.</span><span class="t-es">Recibe una notificación del navegador cuando el HF caiga bajo tu umbral. La página consulta la blockchain cada 5 minutos mientras permanezca abierta.</span></p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">
+      <div>
+        <label style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--faint);display:block;margin-bottom:6px"><span class="t-en">Wallet address</span><span class="t-fr">Adresse wallet</span><span class="t-es">Dirección wallet</span></label>
+        <input type="text" id="alertAddr" placeholder="0x…" style="width:100%;background:var(--surface-2);border:1px solid var(--line);color:var(--text);font-family:var(--mono);font-size:.75rem;padding:9px 12px;border-radius:9px;outline:none"/>
+      </div>
+      <div>
+        <label style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--faint);display:block;margin-bottom:6px"><span class="t-en">Alert when HF below</span><span class="t-fr">Alerter quand HF sous</span><span class="t-es">Alertar cuando HF bajo</span></label>
+        <input type="number" id="alertThreshold" value="1.5" step="0.1" min="1.0" max="5.0" style="width:100%;background:var(--surface-2);border:1px solid var(--line);color:var(--text);font-family:var(--mono);font-size:14px;padding:9px 12px;border-radius:9px;outline:none"/>
+      </div>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+      <button id="alertToggleBtn" onclick="toggleAlert()" style="padding:10px 20px;background:var(--warn);color:#fff;border:none;border-radius:9px;font-size:.85rem;font-weight:700;cursor:pointer;font-family:var(--ui);transition:background .2s"><span class="t-en">Start monitoring</span><span class="t-fr">Démarrer la surveillance</span><span class="t-es">Iniciar monitoreo</span></button>
+      <div id="alertStatus" style="font-size:.8rem;color:var(--faint)"></div>
+    </div>
+    <div id="alertLog" style="margin-top:12px;display:none;background:var(--surface-2);border-radius:9px;padding:12px;font-size:.78rem;font-family:var(--mono);color:var(--dim);max-height:100px;overflow-y:auto"></div>
+  </div>
 </main>
 
 <div class="tools-nav-band">
@@ -334,23 +385,61 @@
     <a href="waste.html" class="tools-nav-btn"><span>🔥</span><span class="t-en">Waste Detector</span><span class="t-fr">Détecteur de Gaspillage</span><span class="t-es">Detector de Desperdicio</span></a>
     <a href="gmx.html" class="tools-nav-btn"><span>⚡</span><span class="t-en">GMX Calculator</span><span class="t-fr">Calculateur GMX</span><span class="t-es">Calculadora GMX</span></a>
     <span class="tools-nav-btn current"><span>🔭</span><span class="t-en">Position Dashboard</span><span class="t-fr">Dashboard Positions</span><span class="t-es">Dashboard de Posiciones</span></span>
+    <a href="morpho.html" class="tools-nav-btn"><span>🔷</span><span class="t-en">Morpho Blue</span><span class="t-fr">Morpho Blue</span><span class="t-es">Morpho Blue</span></a>
   </div>
 </div>
 
 <footer>
-  <span class="t-en">Reads data directly from Aave V3 contracts · Arbitrum · Ethereum · Base · no wallet connection · read-only · ornytools.xyz</span>
-  <span class="t-fr">Données lues directement depuis les contrats Aave V3 · Arbitrum · Ethereum · Base · aucune connexion wallet · lecture seule · ornytools.xyz</span>
-  <span class="t-es">Datos leídos directamente de los contratos Aave V3 · Arbitrum · Ethereum · Base · sin conexión de wallet · solo lectura · ornytools.xyz</span>
+  <span class="t-en">Reads data directly from Aave V3, Compound V3 and Spark contracts · Arbitrum · Ethereum · Base · no wallet connection · read-only · ornytools.xyz</span>
+  <span class="t-fr">Données lues directement depuis les contrats Aave V3, Compound V3 et Spark · Arbitrum · Ethereum · Base · aucune connexion wallet · lecture seule · ornytools.xyz</span>
+  <span class="t-es">Datos leídos directamente de los contratos Aave V3, Compound V3 y Spark · Arbitrum · Ethereum · Base · sin conexión de wallet · solo lectura · ornytools.xyz</span>
 </footer>
 
 <script>
-// Aave V3 multi-chain config
+// Chain RPC config
 const CHAINS = {
-  arbitrum: { name:'Arbitrum', rpc:'https://arbitrum-one-rpc.publicnode.com',  pool:'0x794a61358D6845594F94dc1DB02A252b5b4814aD' },
-  ethereum: { name:'Ethereum', rpc:'https://ethereum-rpc.publicnode.com',      pool:'0x87870Bca3F3fD6335C3F4ce8392D69350B4fA4E2' },
-  base:     { name:'Base',     rpc:'https://base-rpc.publicnode.com',           pool:'0xA238Dd80C259a72e81d7e4664a9801593F98d1c5' }
+  arbitrum: { name:'Arbitrum', rpc:'https://arbitrum-one-rpc.publicnode.com' },
+  ethereum: { name:'Ethereum', rpc:'https://ethereum-rpc.publicnode.com' },
+  base:     { name:'Base',     rpc:'https://base-rpc.publicnode.com' }
 };
 let currentChain = 'arbitrum';
+let currentProto  = 'aave';
+
+// Protocol configuration
+const PROTO_CONFIG = {
+  aave: {
+    name:'Aave V3', type:'aave',
+    pools: {
+      arbitrum: '0x794a61358D6845594F94dc1DB02A252b5b4814aD',
+      ethereum: '0x87870Bca3F3fD6335C3F4ce8392D69350B4fA4E2',
+      base:     '0xA238Dd80C259a72e81d7e4664a9801593F98d1c5'
+    }
+  },
+  spark: {
+    name:'Spark', type:'aave',
+    pools: {
+      ethereum: '0xC13e21B648A5Ee794902342038FF3aDAB66BE987'
+    }
+  },
+  compound: {
+    name:'Compound V3', type:'compound',
+    markets: {
+      arbitrum: [
+        { label:'cUSDCv3',  addr:'0x9c4ec768c28520B50860ea7a15bd7213a9fF58bf', base:'USDC', dec:6, ltv:0.80 },
+        { label:'cWETHv3',  addr:'0x6f7D514bbD4aFf3BCD1140B7344b32f063dEe486', base:'WETH', dec:18, ltv:0.80 }
+      ],
+      ethereum: [
+        { label:'cUSDCv3',  addr:'0xc3d688B66703497DAA19211EEdff47f25384cdc3', base:'USDC', dec:6, ltv:0.80 },
+        { label:'cWETHv3',  addr:'0xA17581A9E3356d9a858b789D68B4d866e593aE94', base:'WETH', dec:18, ltv:0.80 },
+        { label:'cUSDTv3',  addr:'0x3Afdc9BCA9213A35503b077a6072F3D0d5AB0840', base:'USDT', dec:6, ltv:0.80 }
+      ],
+      base: [
+        { label:'cUSDbCv3', addr:'0xb125E6687d4313864e53df431d5425969c15Eb2', base:'USDC', dec:6, ltv:0.80 },
+        { label:'cWETHv3',  addr:'0x46e6b214b524310239732D51387075E0e70970bf', base:'WETH', dec:18, ltv:0.80 }
+      ]
+    }
+  }
+};
 
 function $(i){ return document.getElementById(i); }
 function fmtUSD(v){ return '$'+v.toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:0}); }
@@ -383,24 +472,45 @@ function setStatus(type, msg){
   $('statusTxt').innerHTML = msg;
 }
 
+function selectProto(proto) {
+  currentProto = proto;
+  document.querySelectorAll('.proto-btn').forEach(b => b.classList.remove('active'));
+  const btn = $('proto' + proto.charAt(0).toUpperCase() + proto.slice(1));
+  if(btn) btn.classList.add('active');
+  updateEyebrow();
+  resetDash();
+}
+
 function selectChain(chain){
   currentChain = chain;
   document.querySelectorAll('.chain-btn').forEach(b => b.classList.remove('active'));
   const btn = document.querySelector(`.chain-btn[data-chain="${chain}"]`);
   if(btn) btn.classList.add('active');
-  const c = CHAINS[chain];
-  $('chainEyebrow').innerHTML = `Aave V3 · ${c.name}<span class="oc-badge">⛓ on-chain live</span>`;
-  $('addrInput').placeholder = `0x… ${c.name} address`;
+  // Spark only on Ethereum
+  const sparkBtn = $('protoSpark');
+  if(sparkBtn) sparkBtn.style.display = chain==='ethereum' ? '' : 'none';
+  if(currentProto==='spark' && chain!=='ethereum') selectProto('aave');
+  $('addrInput').placeholder = `0x… ${CHAINS[chain].name} address`;
+  updateEyebrow();
+  resetDash();
+}
+
+function updateEyebrow(){
+  const proto = PROTO_CONFIG[currentProto];
+  const chainName = CHAINS[currentChain].name;
+  $('chainEyebrow').innerHTML = `${proto.name} · ${chainName}<span class="oc-badge">⛓ on-chain live</span>`;
+}
+
+function resetDash(){
   $('emptyState').style.display = 'block';
   $('dashContent').style.display = 'none';
-  const l = getLang();
+  const l = getLang ? getLang() : 'en';
   setStatus('idle', l==='fr' ? 'Entrez une adresse pour commencer' : l==='es' ? 'Ingresa una dirección para comenzar' : 'Enter an address to begin');
 }
 
 async function rpcCall(method, params){
   const res = await fetch(CHAINS[currentChain].rpc, {
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
+    method:'POST', headers:{'Content-Type':'application/json'},
     body: JSON.stringify({jsonrpc:'2.0',id:1,method,params})
   });
   const j = await res.json();
@@ -408,150 +518,342 @@ async function rpcCall(method, params){
   return j.result;
 }
 
-function encodeGetUserAccountData(addr){
-  // getUserAccountData(address) → selector 0xbf92857c
-  const adr = addr.replace('0x','').toLowerCase().padStart(64,'0');
-  return '0xbf92857c' + adr;
+async function rpcCallTo(contractAddr, data){
+  return rpcCall('eth_call', [{to:contractAddr,data},'latest']);
+}
+
+function encodeAddr(addr){ return addr.replace('0x','').toLowerCase().padStart(64,'0'); }
+
+// ABI selectors
+// getUserAccountData(address) → Aave V3 / Spark
+function encodeGetUserAccountData(addr){ return '0xbf92857c' + encodeAddr(addr); }
+// balanceOf(address) → ERC20 / Compound supply
+function encodeBalanceOf(addr){ return '0x70a08231' + encodeAddr(addr); }
+// borrowBalanceOf(address) → Compound V3 borrow
+function encodeBorrowBalanceOf(addr){ return '0x374c49b4' + encodeAddr(addr); }
+
+function renderAaveResults(proto, d, addr, l){
+  const protoName = PROTO_CONFIG[proto].name;
+  const cName = CHAINS[currentChain].name;
+  const { totalCollateral, totalDebt, availableBorrows, liqThreshold, ltv, healthFactor } = d;
+  const liqFactor = totalDebt > 0 ? totalDebt / (totalCollateral * liqThreshold) : null;
+  const dropToLiq = liqFactor ? (1 - liqFactor) * 100 : null;
+  let hfClass = 'safe', hfCardClass = 'safe';
+  if(healthFactor < 1.2){ hfClass = 'danger'; hfCardClass = 'danger'; }
+  else if(healthFactor < 1.5){ hfClass = 'warn'; hfCardClass = 'warn'; }
+  const _hfKey = `orny-hf-${addr.toLowerCase()}-${currentChain}-${proto}`;
+  let _hfHist = JSON.parse(localStorage.getItem(_hfKey) || '[]');
+  _hfHist.push({ts: Date.now(), hf: healthFactor, col: totalCollateral, debt: totalDebt});
+  if(_hfHist.length > 30) _hfHist = _hfHist.slice(-30);
+  localStorage.setItem(_hfKey, JSON.stringify(_hfHist));
+  const _spark = buildSparkline(_hfHist);
+
+  $('statsGrid').innerHTML = `
+    <div class="stat-card ${hfCardClass}">
+      <div class="stat-label">Health Factor</div>
+      <div class="stat-val ${hfClass}">${fmtHF(healthFactor)}</div>
+      <div class="hf-bar-wrap"><div class="hf-bar" style="width:${Math.min(100,healthFactor/3*100)}%;background:${hfClass==='safe'?'#16a34a':hfClass==='warn'?'#d97706':'#dc2626'}"></div></div>
+      <div class="stat-sub">${healthFactor<1.2?(l==='fr'?'⚠️ Critique':'⚠️ Critical'):healthFactor<1.5?(l==='fr'?'⚠️ Surveiller':'⚠️ Monitor'):(l==='fr'?'✅ Zone sûre':'✅ Safe zone')}</div>
+      ${_spark}
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">${l==='fr'?'Collatéral total':l==='es'?'Colateral total':'Total Collateral'}</div>
+      <div class="stat-val">${fmtUSD(totalCollateral)}</div>
+      <div class="stat-sub">${l==='fr'?'valeur USD on-chain':l==='es'?'valor USD on-chain':'USD value on-chain'}</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">${l==='fr'?'Dette totale':l==='es'?'Deuda total':'Total Debt'}</div>
+      <div class="stat-val ${totalDebt>0?'danger':'safe'}">${fmtUSD(totalDebt)}</div>
+      <div class="stat-sub">${l==='fr'?'emprunts en cours':l==='es'?'préstamos activos':'outstanding borrows'}</div>
+    </div>
+    ${dropToLiq!==null?`
+    <div class="stat-card ${dropToLiq<10?'danger':dropToLiq<25?'warn':'safe'}">
+      <div class="stat-label">${l==='fr'?"Marge jusqu'à liquidation":l==='es'?'Margen hasta liquidación':'Margin to Liquidation'}</div>
+      <div class="stat-val ${dropToLiq<10?'danger':dropToLiq<25?'warn':'safe'}">${dropToLiq>0?dropToLiq.toFixed(1)+'%':'—'}</div>
+      <div class="stat-sub">${l==='fr'?'baisse uniforme estimée':l==='es'?'caída uniforme estimada':'estimated uniform drop'}</div>
+    </div>`:''}
+  `;
+  $('breakdownRows').innerHTML = `
+    <div class="br-row blue"><span>${l==='fr'?'Collatéral total':l==='es'?'Colateral total':'Total collateral'}</span><b>${fmtUSD(totalCollateral)}</b></div>
+    <div class="br-row danger"><span>${l==='fr'?'Dette totale':l==='es'?'Deuda total':'Total debt'}</span><b>${fmtUSD(totalDebt)}</b></div>
+    <div class="br-row good"><span>${l==='fr'?'Emprunt disponible':l==='es'?'Préstamo disponible':'Available to borrow'}</span><b>${fmtUSD(availableBorrows)}</b></div>
+    <div class="br-row"><span>${l==='fr'?'LTV max':l==='es'?'LTV máx':'Max LTV'}</span><b>${(ltv*100).toFixed(0)}%</b></div>
+    <div class="br-row"><span>${l==='fr'?'Seuil de liquidation':l==='es'?'Umbral de liquidación':'Liquidation threshold'}</span><b>${(liqThreshold*100).toFixed(0)}%</b></div>
+    ${dropToLiq!==null?`<div class="br-row ${dropToLiq<10?'danger':dropToLiq<25?'warn':'good'}"><span>${l==='fr'?"Baisse estimée jusqu'à liquidation":l==='es'?'Caída estimada hasta liquidación':'Estimated drop to liquidation'}</span><b>${dropToLiq>0?dropToLiq.toFixed(1)+'%':'—'}</b></div>`:''}
+    <div class="br-row"><span>Protocol</span><b>${protoName} · ${cName}</b></div>
+  `;
+  const isAave = proto==='aave';
+  $('ctaRow').innerHTML = `
+    <a href="${isAave?'aave.html':'aave.html'}" class="cta-btn blue">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+      ${l==='fr'?`Calculateur ${protoName} →`:l==='es'?`Calculadora ${protoName} →`:`${protoName} Calculator →`}
+    </a>
+    <a href="liquidation.html" class="cta-btn red">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+      ${l==='fr'?'RedZone — Liquidation →':l==='es'?'RedZone — Liquidación →':'RedZone — Liquidation →'}
+    </a>
+    <a href="leverage.html" class="cta-btn purple">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+      ${l==='fr'?'Simuler un loop →':l==='es'?'Simular un loop →':'Simulate a loop →'}
+    </a>
+  `;
+}
+
+function fmtAsset(v, dec, sym){
+  const n = v / 10**dec;
+  if(n === 0) return '0 ' + sym;
+  if(n < 0.001) return n.toExponential(2) + ' ' + sym;
+  return n.toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:dec===6?2:4}) + ' ' + sym;
 }
 
 async function loadDashboard(){
   const raw = $('addrInput').value.trim();
-  const l = getLang();
-
+  const l = getLang ? getLang() : 'en';
   if(!/^0x[0-9a-fA-F]{40}$/.test(raw)){
-    setStatus('err', l==='fr' ? '❌ Adresse Ethereum invalide (0x… 40 caractères)' : l==='es' ? '❌ Dirección Ethereum inválida (0x… 40 caracteres)' : '❌ Invalid Ethereum address (0x… 40 chars)');
+    setStatus('err', l==='fr'?'❌ Adresse Ethereum invalide (0x… 40 caractères)':l==='es'?'❌ Dirección Ethereum inválida (0x… 40 caracteres)':'❌ Invalid Ethereum address (0x… 40 chars)');
     return;
   }
-
   $('btnLoad').disabled = true;
-  setStatus('loading', l==='fr' ? '⚡ Lecture on-chain en cours…' : l==='es' ? '⚡ Leyendo datos on-chain…' : '⚡ Reading on-chain data…');
+  setStatus('loading', l==='fr'?'⚡ Lecture on-chain en cours…':l==='es'?'⚡ Leyendo datos on-chain…':'⚡ Reading on-chain data…');
   $('emptyState').style.display = 'none';
   $('dashContent').style.display = 'none';
 
   try {
-    const data = encodeGetUserAccountData(raw);
-    const result = await rpcCall('eth_call', [{to: CHAINS[currentChain].pool, data}, 'latest']);
-
     const cName = CHAINS[currentChain].name;
-    if(!result || result === '0x'){
-      setStatus('err', l==='fr' ? `❌ Aucune position Aave V3 trouvée sur ${cName} pour cette adresse.` : l==='es' ? `❌ No se encontró posición Aave V3 en ${cName} para esta dirección.` : `❌ No Aave V3 position found on ${cName} for this address.`);
-      $('emptyState').style.display = 'block';
-      $('btnLoad').disabled = false;
-      return;
+    localStorage.setItem('orny-dash', JSON.stringify({addr:raw, chain:currentChain, proto:currentProto}));
+
+    if(currentProto === 'compound'){
+      await loadCompound(raw, l, cName);
+    } else {
+      // Aave V3 or Spark
+      const cfg = PROTO_CONFIG[currentProto];
+      const poolAddr = cfg.pools[currentChain];
+      if(!poolAddr){
+        setStatus('err', l==='fr'?`❌ ${cfg.name} n'est pas disponible sur ${cName}.`:l==='es'?`❌ ${cfg.name} no está disponible en ${cName}.`:`❌ ${cfg.name} is not available on ${cName}.`);
+        $('emptyState').style.display = 'block';
+        $('btnLoad').disabled = false;
+        return;
+      }
+      const result = await rpcCallTo(poolAddr, encodeGetUserAccountData(raw));
+      if(!result || result==='0x'){
+        setStatus('err', l==='fr'?`❌ Aucune position ${cfg.name} sur ${cName}.`:l==='es'?`❌ No se encontró posición ${cfg.name} en ${cName}.`:`❌ No ${cfg.name} position found on ${cName}.`);
+        $('emptyState').style.display = 'block';
+        $('btnLoad').disabled = false;
+        return;
+      }
+      const hex = result.slice(2);
+      const decode = i => parseInt(hex.slice(i*64,(i+1)*64),16);
+      const BASE = 1e8;
+      const d = {
+        totalCollateral:  decode(0)/BASE,
+        totalDebt:        decode(1)/BASE,
+        availableBorrows: decode(2)/BASE,
+        liqThreshold:     decode(3)/1e4,
+        ltv:              decode(4)/1e4,
+        healthFactor:     decode(5)/1e18
+      };
+      if(d.totalCollateral===0){
+        setStatus('err', l==='fr'?`⚠️ Aucun collatéral déposé sur ${cfg.name} ${cName}.`:l==='es'?`⚠️ No hay colateral depositado en ${cfg.name} ${cName}.`:`⚠️ No collateral deposited on ${cfg.name} ${cName}.`);
+        $('emptyState').style.display = 'block';
+        $('btnLoad').disabled = false;
+        return;
+      }
+      renderAaveResults(currentProto, d, raw, l);
+      $('dashContent').style.display = 'block';
+      const _hm = new Date().toTimeString().slice(0,5);
+      setStatus('ok', l==='fr'?`✅ Position ${cfg.name} chargée · ${cName} · <span style="opacity:.65">${_hm}</span>`:l==='es'?`✅ Posición ${cfg.name} cargada · ${cName} · <span style="opacity:.65">${_hm}</span>`:`✅ ${cfg.name} position loaded · ${cName} · <span style="opacity:.65">${_hm}</span>`);
     }
-
-    // Decode: 6 × uint256 (32 bytes each), values in base currency (USD × 1e8 on Arbitrum)
-    const hex = result.slice(2);
-    const decode = i => parseInt(hex.slice(i*64, (i+1)*64), 16);
-    const BASE = 1e8;
-
-    const totalCollateral  = decode(0) / BASE;
-    const totalDebt        = decode(1) / BASE;
-    const availableBorrows = decode(2) / BASE;
-    const liqThreshold     = decode(3) / 1e4;
-    const ltv              = decode(4) / 1e4;
-    const healthFactor     = decode(5) / 1e18;
-
-    // Save snapshot to HF history (localStorage, max 30 entries)
-    const _hfKey = `orny-hf-${raw.toLowerCase()}-${currentChain}`;
-    let _hfHist = JSON.parse(localStorage.getItem(_hfKey) || '[]');
-    _hfHist.push({ts: Date.now(), hf: healthFactor, col: totalCollateral, debt: totalDebt});
-    if(_hfHist.length > 30) _hfHist = _hfHist.slice(-30);
-    localStorage.setItem(_hfKey, JSON.stringify(_hfHist));
-    localStorage.setItem('orny-dash', JSON.stringify({addr: raw, chain: currentChain}));
-    const _spark = buildSparkline(_hfHist);
-
-    if(totalCollateral === 0){
-      setStatus('err', l==='fr' ? `⚠️ Aucun collatéral déposé sur Aave V3 ${cName} pour cette adresse.` : l==='es' ? `⚠️ No hay colateral depositado en Aave V3 ${cName} para esta dirección.` : `⚠️ No collateral deposited on Aave V3 ${cName} for this address.`);
-      $('emptyState').style.display = 'block';
-      $('btnLoad').disabled = false;
-      return;
-    }
-
-    // Estimated liquidation price factor (if collateral drops uniformly)
-    // HF = collateral × liqThreshold / debt → liquidation when HF = 1
-    // so liquidation at: price_factor = debt / (collateral × liqThreshold)
-    const liqFactor = totalDebt > 0 ? totalDebt / (totalCollateral * liqThreshold) : null;
-    const dropToLiq = liqFactor ? (1 - liqFactor) * 100 : null;
-
-    // HF class
-    let hfClass = 'safe', hfCardClass = 'safe';
-    if(healthFactor < 1.2){ hfClass = 'danger'; hfCardClass = 'danger'; }
-    else if(healthFactor < 1.5){ hfClass = 'warn'; hfCardClass = 'warn'; }
-
-    // Render stat cards
-    $('statsGrid').innerHTML = `
-      <div class="stat-card ${hfCardClass}">
-        <div class="stat-label">${l==='fr' ? 'Health Factor' : l==='es' ? 'Health Factor' : 'Health Factor'}</div>
-        <div class="stat-val ${hfClass}">${fmtHF(healthFactor)}</div>
-        <div class="hf-bar-wrap"><div class="hf-bar" style="width:${Math.min(100,healthFactor/3*100)}%;background:${hfClass==='safe'?'#16a34a':hfClass==='warn'?'#d97706':'#dc2626'}"></div></div>
-        <div class="stat-sub">${healthFactor < 1.2 ? (l==='fr'?'⚠️ Critique':'⚠️ Critical') : healthFactor < 1.5 ? (l==='fr'?'⚠️ Surveiller':'⚠️ Monitor') : (l==='fr'?'✅ Zone sûre':'✅ Safe zone')}</div>
-        ${_spark}
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">${l==='fr' ? 'Collatéral total' : l==='es' ? 'Colateral total' : 'Total Collateral'}</div>
-        <div class="stat-val">${fmtUSD(totalCollateral)}</div>
-        <div class="stat-sub">${l==='fr' ? 'valeur USD on-chain' : l==='es' ? 'valor USD on-chain' : 'USD value on-chain'}</div>
-      </div>
-      <div class="stat-card ${totalDebt > 0 ? '' : ''}">
-        <div class="stat-label">${l==='fr' ? 'Dette totale' : l==='es' ? 'Deuda total' : 'Total Debt'}</div>
-        <div class="stat-val ${totalDebt > 0 ? 'danger' : 'safe'}">${fmtUSD(totalDebt)}</div>
-        <div class="stat-sub">${l==='fr' ? 'emprunts en cours' : l==='es' ? 'préstamos activos' : 'outstanding borrows'}</div>
-      </div>
-      ${dropToLiq !== null ? `
-      <div class="stat-card ${dropToLiq < 10 ? 'danger' : dropToLiq < 25 ? 'warn' : 'safe'}">
-        <div class="stat-label">${l==='fr' ? 'Marge jusqu\'à liquidation' : l==='es' ? 'Margen hasta liquidación' : 'Margin to Liquidation'}</div>
-        <div class="stat-val ${dropToLiq < 10 ? 'danger' : dropToLiq < 25 ? 'warn' : 'safe'}">${dropToLiq > 0 ? dropToLiq.toFixed(1)+'%' : '—'}</div>
-        <div class="stat-sub">${l==='fr' ? 'baisse uniforme estimée' : l==='es' ? 'caída uniforme estimada' : 'estimated uniform drop'}</div>
-      </div>` : ''}
-    `;
-
-    // Breakdown rows
-    $('breakdownRows').innerHTML = `
-      <div class="br-row blue"><span>${l==='fr' ? 'Collatéral total' : l==='es' ? 'Colateral total' : 'Total collateral'}</span><b>${fmtUSD(totalCollateral)}</b></div>
-      <div class="br-row danger"><span>${l==='fr' ? 'Dette totale' : l==='es' ? 'Deuda total' : 'Total debt'}</span><b>${fmtUSD(totalDebt)}</b></div>
-      <div class="br-row good"><span>${l==='fr' ? 'Emprunt disponible' : l==='es' ? 'Préstamo disponible' : 'Available to borrow'}</span><b>${fmtUSD(availableBorrows)}</b></div>
-      <div class="br-row"><span>${l==='fr' ? 'LTV max' : l==='es' ? 'LTV máx' : 'Max LTV'}</span><b>${(ltv*100).toFixed(0)}%</b></div>
-      <div class="br-row"><span>${l==='fr' ? 'Seuil de liquidation' : l==='es' ? 'Umbral de liquidación' : 'Liquidation threshold'}</span><b>${(liqThreshold*100).toFixed(0)}%</b></div>
-      ${dropToLiq !== null ? `<div class="br-row ${dropToLiq<10?'danger':dropToLiq<25?'warn':'good'}"><span>${l==='fr' ? 'Baisse estimée jusqu\'à liquidation' : l==='es' ? 'Caída estimada hasta liquidación' : 'Estimated drop to liquidation'}</span><b>${dropToLiq > 0 ? dropToLiq.toFixed(1)+'%' : '—'}</b></div>` : ''}
-    `;
-
-    // CTA buttons
-    $('ctaRow').innerHTML = `
-      <a href="aave.html" class="cta-btn blue">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-        ${l==='fr' ? 'Calculateur Aave V3 →' : l==='es' ? 'Calculadora Aave V3 →' : 'Aave V3 Calculator →'}
-      </a>
-      <a href="liquidation.html" class="cta-btn red">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-        ${l==='fr' ? 'RedZone — Liquidation →' : l==='es' ? 'RedZone — Liquidación →' : 'RedZone — Liquidation →'}
-      </a>
-      <a href="leverage.html" class="cta-btn purple">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-        ${l==='fr' ? 'Simuler un loop →' : l==='es' ? 'Simular un loop →' : 'Simulate a loop →'}
-      </a>
-    `;
-
-    $('dashContent').style.display = 'block';
-    const _now = new Date();
-    const _hm = _now.getHours().toString().padStart(2,'0')+':'+_now.getMinutes().toString().padStart(2,'0');
-    setStatus('ok', l==='fr' ? `✅ Position chargée depuis ${cName} · <span style="opacity:.65">${_hm}</span>` : l==='es' ? `✅ Posición cargada desde ${cName} · <span style="opacity:.65">${_hm}</span>` : `✅ Loaded from ${cName} on-chain · <span style="opacity:.65">${_hm}</span>`);
-
-  } catch(e) {
+  } catch(e){
     console.error(e);
-    setStatus('err', (l==='fr' ? '❌ Erreur RPC : ' : l==='es' ? '❌ Error RPC: ' : '❌ RPC error: ') + e.message);
+    setStatus('err', (l==='fr'?'❌ Erreur RPC : ':l==='es'?'❌ Error RPC: ':'❌ RPC error: ') + e.message);
     $('emptyState').style.display = 'block';
   }
   $('btnLoad').disabled = false;
 }
 
-// Restore last address + chain from localStorage on page load
+async function loadCompound(addr, l, cName){
+  const markets = PROTO_CONFIG.compound.markets[currentChain];
+  if(!markets){
+    setStatus('err', l==='fr'?`❌ Compound V3 non disponible sur ${cName}.`:l==='es'?`❌ Compound V3 no disponible en ${cName}.`:`❌ Compound V3 not available on ${cName}.`);
+    $('emptyState').style.display = 'block';
+    return;
+  }
+  // Query all markets in parallel
+  const results = await Promise.all(markets.map(async m => {
+    try {
+      const [supplyHex, borrowHex] = await Promise.all([
+        rpcCallTo(m.addr, encodeBalanceOf(addr)),
+        rpcCallTo(m.addr, encodeBorrowBalanceOf(addr))
+      ]);
+      const supply = parseInt(supplyHex,16);
+      const borrow = parseInt(borrowHex,16);
+      return { ...m, supply, borrow, ok:true };
+    } catch(e){ return { ...m, supply:0, borrow:0, ok:false }; }
+  }));
+
+  const active = results.filter(r => r.ok && (r.supply > 0 || r.borrow > 0));
+  if(active.length === 0){
+    setStatus('err', l==='fr'?`❌ Aucune position Compound V3 sur ${cName} pour cette adresse.`:l==='es'?`❌ No se encontró posición Compound V3 en ${cName}.`:`❌ No Compound V3 position found on ${cName}.`);
+    $('emptyState').style.display = 'block';
+    return;
+  }
+
+  // Render stats grid (aggregate supply/borrow across markets)
+  const totalSupplyUSD = active.filter(r=>r.base==='USDC'||r.base==='USDT').reduce((s,r)=>s+r.supply/10**r.dec,0);
+  const totalBorrowUSD = active.filter(r=>r.base==='USDC'||r.base==='USDT').reduce((s,r)=>s+r.borrow/10**r.dec,0);
+
+  $('statsGrid').innerHTML = `
+    <div class="stat-card">
+      <div class="stat-label">${l==='fr'?'Marchés actifs':l==='es'?'Mercados activos':'Active Markets'}</div>
+      <div class="stat-val safe">${active.length}</div>
+      <div class="stat-sub">Compound V3 · ${cName}</div>
+    </div>
+    ${totalSupplyUSD>0?`<div class="stat-card safe">
+      <div class="stat-label">${l==='fr'?'Supply USD total':l==='es'?'Supply USD total':'Total USD Supply'}</div>
+      <div class="stat-val safe">${fmtUSD(totalSupplyUSD)}</div>
+      <div class="stat-sub">USDC/USDT ${l==='fr'?'marchés':'markets'}</div>
+    </div>`:''}
+    ${totalBorrowUSD>0?`<div class="stat-card ${totalBorrowUSD>totalSupplyUSD*0.85?'danger':'warn'}">
+      <div class="stat-label">${l==='fr'?'Emprunt USD total':l==='es'?'Deuda USD total':'Total USD Borrow'}</div>
+      <div class="stat-val ${totalBorrowUSD>totalSupplyUSD*0.85?'danger':'warn'}">${fmtUSD(totalBorrowUSD)}</div>
+      <div class="stat-sub">${totalBorrowUSD>totalSupplyUSD*0.85?(l==='fr'?'⚠️ Surveiller':l==='es'?'⚠️ Vigilar':'⚠️ Monitor'):'USDC/USDT'}</div>
+    </div>`:''}
+  `;
+
+  // Per-market breakdown
+  $('breakdownRows').innerHTML = active.map(r => {
+    const supplyFmt = fmtAsset(r.supply, r.dec, r.base);
+    const borrowFmt = r.borrow>0 ? fmtAsset(r.borrow, r.dec, r.base) : l==='fr'?'Pas d\'emprunt':l==='es'?'Sin deuda':'No borrow';
+    const riskColor = r.borrow>0 && r.supply>0 && r.borrow>r.supply*0.85 ? 'danger' : r.borrow>0 ? 'warn' : 'good';
+    return `
+      <div class="br-row blue"><span style="font-weight:700">${r.label}</span><b style="color:var(--faint);font-size:.72rem">${cName}</b></div>
+      <div class="br-row good"><span>${l==='fr'?'Supply (base asset)':l==='es'?'Supply (activo base)':'Supply (base asset)'}</span><b>${supplyFmt}</b></div>
+      <div class="br-row ${riskColor}"><span>${l==='fr'?'Emprunt':l==='es'?'Deuda':'Borrow'}</span><b>${borrowFmt}</b></div>
+    `;
+  }).join('');
+
+  $('ctaRow').innerHTML = `
+    <a href="https://app.compound.finance" target="_blank" rel="noopener" class="cta-btn blue">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      app.compound.finance →
+    </a>
+    <a href="liquidation.html" class="cta-btn red">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+      ${l==='fr'?'RedZone →':l==='es'?'RedZone →':'RedZone →'}
+    </a>
+  `;
+
+  $('dashContent').style.display = 'block';
+  const _hm = new Date().toTimeString().slice(0,5);
+  setStatus('ok', l==='fr'?`✅ ${active.length} marché(s) Compound V3 chargé(s) · ${cName} · <span style="opacity:.65">${_hm}</span>`:l==='es'?`✅ ${active.length} mercado(s) Compound V3 cargado(s) · ${cName} · <span style="opacity:.65">${_hm}</span>`:`✅ ${active.length} Compound V3 market(s) loaded · ${cName} · <span style="opacity:.65">${_hm}</span>`);
+}
+
+// ===== HF ALERT SYSTEM =====
+let _alertTimer = null;
+let _alertActive = false;
+const ALERT_STORE = 'orny-hf-alert-v1';
+const POLL_INTERVAL = 5 * 60 * 1000; // 5 minutes
+
+function alertLog(msg){
+  const el = $('alertLog');
+  if(!el) return;
+  el.style.display = 'block';
+  const now = new Date().toTimeString().slice(0,8);
+  el.innerHTML = `[${now}] ${msg}<br>` + el.innerHTML;
+}
+
+function toggleAlert(){
+  if(_alertActive){ stopAlert(); return; }
+  const addr = $('alertAddr').value.trim() || $('addrInput').value.trim();
+  const thr = parseFloat($('alertThreshold').value) || 1.5;
+  if(!/^0x[0-9a-fA-F]{40}$/.test(addr)){
+    $('alertStatus').textContent = '❌ Address required';
+    return;
+  }
+  $('alertAddr').value = addr;
+  startAlert(addr, thr);
+}
+
+async function startAlert(addr, threshold){
+  _alertActive = true;
+  const btn = $('alertToggleBtn');
+  if(btn){ btn.innerHTML = '<span class="alert-dot"></span><span class="t-en">Stop monitoring</span><span class="t-fr">Arrêter</span><span class="t-es">Detener</span>'; btn.style.background='var(--coral)'; }
+  localStorage.setItem(ALERT_STORE, JSON.stringify({addr, threshold, chain:currentChain, proto:currentProto}));
+  $('alertStatus').textContent = '';
+  alertLog('Monitoring started · HF threshold: '+threshold);
+
+  // Request notification permission
+  if('Notification' in window && Notification.permission === 'default'){
+    await Notification.requestPermission();
+  }
+
+  // Poll immediately, then on interval
+  await pollHF(addr, threshold);
+  _alertTimer = setInterval(() => pollHF(addr, threshold), POLL_INTERVAL);
+}
+
+function stopAlert(){
+  _alertActive = false;
+  if(_alertTimer){ clearInterval(_alertTimer); _alertTimer = null; }
+  const btn = $('alertToggleBtn');
+  const l = getLang ? getLang() : 'en';
+  if(btn){ btn.innerHTML = l==='fr'?'Démarrer la surveillance':l==='es'?'Iniciar monitoreo':'Start monitoring'; btn.style.background='var(--warn)'; }
+  $('alertStatus').textContent = '';
+  alertLog('Monitoring stopped.');
+}
+
+async function pollHF(addr, threshold){
+  try {
+    // Only poll Aave-type protocols (HF concept)
+    const proto = currentProto === 'compound' ? 'aave' : currentProto;
+    const cfg = PROTO_CONFIG[proto];
+    const poolAddr = cfg && cfg.pools && cfg.pools[currentChain];
+    if(!poolAddr){ alertLog('⚠️ Protocol/chain not available for HF monitoring.'); return; }
+
+    const result = await rpcCallTo(poolAddr, encodeGetUserAccountData(addr));
+    if(!result || result==='0x'){ alertLog('No position found.'); return; }
+    const hex = result.slice(2);
+    const decode = i => parseInt(hex.slice(i*64,(i+1)*64),16);
+    const hf = decode(5)/1e18;
+    const col = decode(0)/1e8;
+    const debt = decode(1)/1e8;
+    const now = new Date().toTimeString().slice(0,8);
+    $('alertStatus').innerHTML = `<span style="color:var(--good)">● Live</span> Last check: ${now} · HF: <strong>${hf.toFixed(3)}</strong>`;
+    alertLog(`HF=${hf.toFixed(3)}, Col=$${col.toFixed(0)}, Debt=$${debt.toFixed(0)}`);
+
+    if(hf < threshold){
+      alertLog(`🚨 ALERT — HF ${hf.toFixed(3)} < threshold ${threshold}`);
+      if('Notification' in window && Notification.permission === 'granted'){
+        new Notification('⚠️ OrnyTools HF Alert', {
+          body: `Health Factor ${hf.toFixed(2)} is below your threshold of ${threshold} on ${CHAINS[currentChain].name}. Check your position immediately.`,
+          icon: '/logo.png',
+          requireInteraction: true
+        });
+      }
+    }
+  } catch(e){
+    alertLog('Poll error: '+e.message);
+  }
+}
+
+// Restore alert state
+(function(){
+  try {
+    const saved = JSON.parse(localStorage.getItem(ALERT_STORE)||'{}');
+    if(saved.addr) $('alertAddr').value = saved.addr;
+    if(saved.threshold) $('alertThreshold').value = saved.threshold;
+  } catch(e){}
+})();
+
+// Restore last address + chain + proto from localStorage on page load
 (function(){
   try {
     const last = JSON.parse(localStorage.getItem('orny-dash') || '{}');
     if(last.chain && CHAINS[last.chain]) selectChain(last.chain);
+    if(last.proto && PROTO_CONFIG[last.proto]) selectProto(last.proto);
     if(last.addr) $('addrInput').value = last.addr;
   } catch(e){}
+  updateEyebrow();
 })();
 </script>
 </body>

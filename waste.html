@@ -377,6 +377,50 @@ function ornyComment(grade, annualWaste, savings, chain){
     : `<strong>Orny Warning — act now.</strong> Over ${fmtUSD(annualWaste)}/year in execution waste. Your current trade size is far from the gas/slippage optimum on ${chainName}. Use the Trade Size Optimizer immediately.`;
 }
 
+const CHAIN_RECS = {
+  arbitrum: {
+    en: ['Paraswap', '1inch', 'Camelot DEX'],
+    fr: ['Paraswap', '1inch', 'Camelot DEX'],
+    es: ['Paraswap', '1inch', 'Camelot DEX'],
+    label_en: 'Best aggregators on Arbitrum',
+    label_fr: 'Meilleurs agrégateurs sur Arbitrum',
+    label_es: 'Mejores agregadores en Arbitrum',
+  },
+  eth: {
+    en: ['CoW Swap', 'Paraswap', '1inch'],
+    fr: ['CoW Swap', 'Paraswap', '1inch'],
+    es: ['CoW Swap', 'Paraswap', '1inch'],
+    label_en: 'Best aggregators on Ethereum',
+    label_fr: 'Meilleurs agrégateurs sur Ethereum',
+    label_es: 'Mejores agregadores en Ethereum',
+  },
+  base: {
+    en: ['Aerodrome', 'Paraswap', '1inch'],
+    fr: ['Aerodrome', 'Paraswap', '1inch'],
+    es: ['Aerodrome', 'Paraswap', '1inch'],
+    label_en: 'Best aggregators on Base',
+    label_fr: 'Meilleurs agrégateurs sur Base',
+    label_es: 'Mejores agregadores en Base',
+  },
+  optimism: {
+    en: ['Velodrome', 'Paraswap', '1inch'],
+    fr: ['Velodrome', 'Paraswap', '1inch'],
+    es: ['Velodrome', 'Paraswap', '1inch'],
+    label_en: 'Best aggregators on Optimism',
+    label_fr: 'Meilleurs agrégateurs sur Optimism',
+    label_es: 'Mejores agregadores en Optimism',
+  },
+};
+
+function chainRecs(chain, l){
+  const rec = CHAIN_RECS[chain];
+  if(!rec) return '';
+  const tools = rec[l] || rec.en;
+  const label = rec['label_'+l] || rec.label_en;
+  const pills = tools.map(t => `<span style="display:inline-block;background:var(--surface-2);border:1px solid var(--line);border-radius:99px;padding:3px 10px;font-size:.75rem;font-weight:600;margin:2px">${t}</span>`).join('');
+  return `<div style="margin-top:12px;padding:11px 14px;background:var(--blue-pale);border-radius:10px;font-size:.78rem;color:var(--dim)"><span style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--blue);display:block;margin-bottom:6px">${label}</span>${pills}</div>`;
+}
+
 function calc(){
   const chain = $('chain').value;
   const A     = parseFloat($('tradeSize').value) || 0;
@@ -454,6 +498,7 @@ function calc(){
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
       ${l==='fr' ? 'Réduire ces pertes → Optimizer' : l==='es' ? 'Reducir estas pérdidas → Optimizer' : 'Reduce these losses → Trade Optimizer'}
     </a>
+    ${chainRecs(chain, l)}
   `;
 }
 
@@ -566,6 +611,7 @@ function saveWaste(){
     <span class="tools-nav-btn current"><span>🔥</span><span class="t-en">Waste Detector</span><span class="t-fr">Détecteur de Gaspillage</span><span class="t-es">Detector de Desperdicio</span></span>
     <a href="gmx.html" class="tools-nav-btn"><span>⚡</span><span class="t-en">GMX Calculator</span><span class="t-fr">Calculateur GMX</span><span class="t-es">Calculadora GMX</span></a>
     <a href="dashboard.html" class="tools-nav-btn"><span>🔭</span><span class="t-en">Position Dashboard</span><span class="t-fr">Dashboard Positions</span><span class="t-es">Dashboard de Posiciones</span></a>
+    <a href="morpho.html" class="tools-nav-btn"><span>🔷</span><span class="t-en">Morpho Blue</span><span class="t-fr">Morpho Blue</span><span class="t-es">Morpho Blue</span></a>
 
   </div>
 </div>

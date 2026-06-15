@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta name="description" content="Morpho Blue Calculator — OrnyTools. Health factor, liquidation price and loop simulator per isolated market pair on Morpho Blue."/>
+<meta name="robots" content="index,follow"/>
+<link rel="canonical" href="https://ornytools.xyz/morpho.html"/>
+<meta property="og:type" content="website"/>
+<meta property="og:site_name" content="OrnyTools"/>
+<meta property="og:title" content="Morpho Blue Calculator — OrnyTools"/>
+<meta property="og:description" content="Health factor, liquidation price and leverage loop simulator for Morpho Blue isolated markets. wstETH/USDC, WBTC/USDC, wstETH/WETH and more."/>
+<meta property="og:url" content="https://ornytools.xyz/morpho.html"/>
+<meta property="og:image" content="https://ornytools.xyz/orny-banner.png"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="Morpho Blue Calculator — OrnyTools"/>
+<meta name="twitter:description" content="Health factor, liquidation price and leverage loop for Morpho Blue markets."/>
+<meta name="twitter:image" content="https://ornytools.xyz/orny-banner.png"/>
+<title>Morpho Blue Calculator — OrnyTools</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet"/>
+<script src="lang.js"></script>
+<style>
+  :root{
+    --purple:#7C3AED;--purple-pale:rgba(124,58,237,.08);
+    --gold:#C8841E;--gold-pale:rgba(200,132,30,.08);
+    --coral:#E8765A;--coral-pale:rgba(232,118,90,.08);
+    --good:#0E9F6E;--good-pale:rgba(14,159,110,.08);
+    --warn:#F59E0B;--warn-pale:rgba(245,158,11,.08);
+    --blue:#2563eb;--blue-pale:rgba(37,99,235,.08);
+    --text:#111827;--dim:#6B7280;--faint:#9AA5B4;
+    --line:#E4E8F0;--line-soft:#EDF0F5;
+    --surface:#FFFFFF;--surface-2:#F0F2F5;
+    --display:"Fraunces",Georgia,serif;
+    --ui:"Hanken Grotesk",system-ui,sans-serif;
+    --mono:"JetBrains Mono",ui-monospace,monospace;
+    --radius:14px;
+    --shadow:0 2px 8px rgba(0,0,0,.07),0 8px 32px rgba(0,0,0,.07);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:#f7f8fc;color:var(--text);font-family:var(--ui);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+
+  .navbar{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(255,255,255,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);padding:10px 24px;display:flex;align-items:center;gap:12px;box-shadow:0 2px 12px rgba(0,0,0,.04)}
+  .nav-logo{width:36px;height:36px;object-fit:cover;object-position:center 15%;border-radius:8px}
+  .nav-brand{font-family:var(--display);font-size:1.05rem;font-weight:600;letter-spacing:-.02em}
+  .nav-brand .dot{color:var(--gold)}
+  .nav-home{margin-left:auto;font-size:.82rem;font-weight:600;color:var(--dim);text-decoration:none;padding:7px 14px;border:1px solid var(--line);border-radius:7px;transition:.15s}
+  .nav-home:hover{border-color:var(--purple);color:var(--purple)}
+
+  .page-hero{padding:100px 28px 36px;text-align:center;background:#fff;border-bottom:1px solid var(--line)}
+  .eyebrow{font-size:11.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--purple);font-weight:700;margin-bottom:16px}
+  .oc-badge{display:inline-flex;align-items:center;gap:4px;background:rgba(124,58,237,.08);color:var(--purple);border:1px solid rgba(124,58,237,.2);border-radius:20px;padding:2px 9px;font-size:10px;font-weight:700;letter-spacing:.06em;margin-left:8px;vertical-align:middle}
+  .page-hero h1{font-family:var(--display);font-weight:500;font-size:clamp(1.7rem,3.2vw,2.4rem);letter-spacing:-.02em;line-height:1.12;margin-bottom:14px}
+  .page-hero h1 em{font-style:italic;color:var(--purple)}
+  .page-hero p{color:var(--dim);font-size:1rem;max-width:52ch;margin:0 auto;line-height:1.75}
+
+  main{max-width:960px;margin:0 auto;padding:32px 24px 80px}
+
+  /* Preset grid */
+  .preset-grid{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px;justify-content:center}
+  .preset-btn{padding:8px 16px;border:1.5px solid var(--line);border-radius:99px;font-size:.78rem;font-weight:700;cursor:pointer;background:#fff;color:var(--dim);transition:.15s;font-family:var(--ui)}
+  .preset-btn:hover{border-color:var(--purple);color:var(--purple)}
+  .preset-btn.active{border-color:var(--purple);background:var(--purple-pale);color:var(--purple)}
+
+  /* Market info strip */
+  .market-strip{display:flex;gap:20px;flex-wrap:wrap;padding:12px 16px;background:var(--purple-pale);border:1px solid rgba(124,58,237,.2);border-radius:10px;margin-bottom:24px;font-size:.8rem;align-items:center}
+  .ms-item{display:flex;flex-direction:column;gap:2px}
+  .ms-label{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--purple)}
+  .ms-val{font-family:var(--mono);font-weight:700;color:var(--text)}
+
+  /* Panels */
+  .panel{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow);margin-bottom:18px}
+  .panel.purple-top{border-top:3px solid var(--purple)}
+  .panel-title{font-size:.68rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);margin-bottom:16px}
+
+  /* Grid layout */
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  @media(max-width:640px){.grid-2{grid-template-columns:1fr}}
+
+  /* Fields */
+  .field{margin-bottom:14px;position:relative}
+  .field label{display:flex;align-items:center;gap:6px;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--faint);margin-bottom:6px}
+  .field input,.field select{width:100%;background:var(--surface-2);border:1px solid var(--line);color:var(--text);font-family:var(--mono);font-size:14px;padding:10px 12px;border-radius:9px;outline:none;transition:border-color .15s}
+  .field input:focus,.field select:focus{border-color:var(--purple);box-shadow:0 0 0 3px var(--purple-pale)}
+  .hint{font-size:.72rem;color:var(--faint);margin-top:4px}
+  .live-btn{position:absolute;right:6px;bottom:8px;padding:4px 9px;background:var(--surface-2);border:1px solid var(--line);border-radius:6px;font-size:.72rem;font-weight:700;color:var(--dim);cursor:pointer;transition:.15s;font-family:var(--ui)}
+  .live-btn:hover{border-color:var(--purple);color:var(--purple)}
+  .price-wrap{position:relative}
+  .price-wrap input{padding-right:70px}
+
+  /* Result card */
+  .result-placeholder{text-align:center;padding:32px 16px;color:var(--faint)}
+  .ph-icon{font-size:2.5rem;margin-bottom:12px}
+  .br-row{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--line-soft);font-size:.88rem}
+  .br-row:last-child{border-bottom:none}
+  .br-row b{font-family:var(--mono);font-weight:700}
+  .br-row.danger b{color:var(--coral)}
+  .br-row.good b{color:var(--good)}
+  .br-row.warn b{color:var(--warn)}
+  .br-row.purple b{color:var(--purple)}
+  .result-big{font-family:var(--display);font-size:2.8rem;font-weight:500;text-align:center;margin:12px 0 4px}
+  .result-big.safe{color:var(--good)}
+  .result-big.warn{color:var(--warn)}
+  .result-big.danger{color:var(--coral)}
+  .result-label{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.14em;color:var(--faint);text-align:center;margin-bottom:4px}
+  .hf-bar-wrap{margin:10px 0;height:7px;border-radius:4px;background:var(--line-soft);overflow:hidden}
+  .hf-bar{height:100%;border-radius:4px;transition:width .5s,background .4s}
+  .orny-comment{background:var(--surface-2);border-radius:10px;padding:12px 14px;font-size:.82rem;color:var(--dim);line-height:1.7;margin-top:14px}
+
+  /* Loop table */
+  .loop-table{width:100%;border-collapse:collapse;font-size:.8rem;margin-top:12px}
+  .loop-table th{text-align:right;padding:7px 10px;font-size:.67rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--faint);background:var(--surface-2)}
+  .loop-table th:first-child{text-align:left}
+  .loop-table td{text-align:right;padding:7px 10px;border-bottom:1px solid var(--line-soft);font-family:var(--mono)}
+  .loop-table td:first-child{text-align:left;font-family:var(--ui);font-weight:700}
+  .loop-table tr:last-child td{border-bottom:none;font-weight:700;background:var(--purple-pale)}
+
+  /* Market reference table */
+  .ref-table{width:100%;border-collapse:collapse;font-size:.8rem}
+  .ref-table th{text-align:left;padding:8px 10px;font-size:.67rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--faint);background:var(--surface-2)}
+  .ref-table th:not(:first-child){text-align:right}
+  .ref-table td{padding:8px 10px;border-bottom:1px solid var(--line-soft)}
+  .ref-table td:not(:first-child){text-align:right;font-family:var(--mono)}
+  .ref-table tr:last-child td{border-bottom:none}
+  .lltv-chip{display:inline-block;padding:2px 8px;border-radius:99px;font-size:.72rem;font-weight:700;background:var(--purple-pale);color:var(--purple)}
+
+  .calc-btn{width:100%;padding:13px;background:var(--purple);color:#fff;border:none;border-radius:10px;font-size:.95rem;font-weight:700;cursor:pointer;transition:background .2s;font-family:var(--ui);margin-top:4px}
+  .calc-btn:hover{background:#6d28d9}
+
+  /* Slider */
+  .slider-row{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+  .slider-val{font-family:var(--mono);font-weight:700;font-size:1.1rem;color:var(--purple);min-width:44px}
+  input[type=range]{flex:1;accent-color:var(--purple)}
+
+  /* Tools nav */
+  .tools-nav-band{background:#f7f8fc;border-top:1px solid #e4e8f0;padding:28px 28px 32px;text-align:center}
+  .tools-nav-lbl{font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;color:#6b7280;margin-bottom:14px}
+  .tools-nav-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;max-width:960px;margin:0 auto}
+  .tools-nav-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 15px;border:1px solid #e4e8f0;border-radius:99px;background:#fff;font-size:.8rem;font-weight:600;color:#374151;text-decoration:none;transition:.15s}
+  .tools-nav-btn:hover{border-color:var(--purple);color:var(--purple);background:var(--purple-pale)}
+  .tools-nav-btn.current{border-color:var(--purple);background:var(--purple);color:#fff;pointer-events:none}
+
+  footer{text-align:center;padding:20px;font-size:.72rem;color:var(--faint);border-top:1px solid var(--line)}
+  .btn-theme{width:34px;height:34px;border-radius:8px;border:1px solid var(--line);background:var(--surface-2);cursor:pointer;font-size:.9rem;transition:.15s;display:inline-flex;align-items:center;justify-content:center}
+  html.dark{--surface:#161b22;--surface-2:#1c2128;--bg:#0d1117;--line:#30363d;--line-soft:#21262d;--text:#e6edf3;--dim:#8b949e;--faint:#6e7681}
+  html.dark body{background:var(--bg)}
+  html.dark .navbar{background:rgba(22,27,34,.96)!important;border-color:var(--line)}
+  html.dark .page-hero{background:var(--surface)!important;border-color:var(--line)}
+  html.dark .panel,.html.dark .loop-table th{background:var(--surface)!important;border-color:var(--line)!important}
+  html.dark .market-strip{background:rgba(124,58,237,.12)}
+  html.dark .preset-btn{background:var(--surface-2);border-color:var(--line);color:var(--dim)}
+  html.dark .preset-btn.active{background:var(--purple-pale);color:var(--purple)}
+  html.dark .tools-nav-band{background:#0d1117;border-color:var(--line)}
+  html.dark .tools-nav-btn{background:var(--surface);border-color:var(--line);color:var(--dim)}
+  @media(max-width:680px){main{padding:20px 16px 60px}.page-hero{padding:80px 16px 24px}}
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="index.html"><img src="logo.png" class="nav-logo" alt="OrnyTools"/></a>
+  <span class="nav-brand">ORNY<span class="dot">.</span>TOOLS</span>
+  <a href="index.html" class="nav-home">← Home</a>
+  <div style="margin-left:8px;display:flex;align-items:center;gap:6px">
+    <button id="btnEN" class="lang-btn" onclick="setLang('en')">🇬🇧 EN</button>
+    <button id="btnFR" class="lang-btn" onclick="setLang('fr')">🇫🇷 FR</button>
+    <button id="btnES" class="lang-btn" onclick="setLang('es')">🇪🇸 ES</button>
+    <button class="btn-theme" onclick="toggleTheme()" title="Dark mode">🌙</button>
+  </div>
+</nav>
+
+<div class="page-hero">
+  <div class="eyebrow">Morpho Blue · Ethereum · Arbitrum<span class="oc-badge">⛓ CoinGecko live</span></div>
+  <h1><span class="t-en">Health factor for <em>isolated</em> markets</span><span class="t-fr">Health factor pour marchés <em>isolés</em></span><span class="t-es">Health factor para mercados <em>aislados</em></span></h1>
+  <p><span class="t-en">Morpho Blue has no global pool — each market has its own LLTV. Calculate your liquidation price, safety margin and optimal loop leverage per pair.</span><span class="t-fr">Morpho Blue n'a pas de pool globale — chaque marché a son propre LLTV. Calculez votre prix de liquidation, marge de sécurité et levier de boucle optimal par paire.</span><span class="t-es">Morpho Blue no tiene pool global — cada mercado tiene su propio LLTV. Calcula tu precio de liquidación, margen de seguridad y apalancamiento óptimo por par.</span></p>
+</div>
+
+<main>
+
+  <!-- Market presets -->
+  <div class="preset-grid" id="presetGrid">
+    <button class="preset-btn active" data-market="wbtc-usdc">WBTC/USDC <span style="opacity:.6;font-weight:400">86%</span></button>
+    <button class="preset-btn" data-market="wsteth-usdc">wstETH/USDC <span style="opacity:.6;font-weight:400">86%</span></button>
+    <button class="preset-btn" data-market="wsteth-weth">wstETH/WETH <span style="opacity:.6;font-weight:400">94.5%</span></button>
+    <button class="preset-btn" data-market="wbtc-usdt">WBTC/USDT <span style="opacity:.6;font-weight:400">86%</span></button>
+    <button class="preset-btn" data-market="sdeusd-usdc">sdeUSD/USDC <span style="opacity:.6;font-weight:400">91.5%</span></button>
+    <button class="preset-btn" data-market="eth-usdc-arb">ETH/USDC <span style="opacity:.6;font-weight:400">86% · Arb</span></button>
+  </div>
+
+  <!-- Market info strip -->
+  <div class="market-strip" id="marketStrip">
+    <div class="ms-item"><span class="ms-label"><span class="t-en">Market</span><span class="t-fr">Marché</span><span class="t-es">Mercado</span></span><span class="ms-val" id="msMarket">WBTC/USDC</span></div>
+    <div class="ms-item"><span class="ms-label">LLTV</span><span class="ms-val" id="msLltv">86%</span></div>
+    <div class="ms-item"><span class="ms-label"><span class="t-en">Borrow APY (ref)</span><span class="t-fr">APY emprunt (réf)</span><span class="t-es">APY préstamo (ref)</span></span><span class="ms-val" id="msBorrowApy">~1.56%</span></div>
+    <div class="ms-item"><span class="ms-label"><span class="t-en">Chain</span><span class="t-fr">Chaîne</span><span class="t-es">Cadena</span></span><span class="ms-val" id="msChain">Ethereum</span></div>
+  </div>
+
+  <!-- Calculator + Results -->
+  <div class="grid-2">
+    <!-- INPUTS -->
+    <div class="panel purple-top">
+      <div class="panel-title"><span class="t-en">Position Setup</span><span class="t-fr">Configuration de position</span><span class="t-es">Configuración de posición</span></div>
+
+      <div class="field">
+        <label><span class="t-en">Collateral amount</span><span class="t-fr">Montant en collatéral</span><span class="t-es">Cantidad de colateral</span></label>
+        <input type="number" id="inputCollateral" value="1" step="any" min="0" oninput="calc()"/>
+        <div class="hint" id="collateralSymHint">units of WBTC</div>
+      </div>
+
+      <div class="field">
+        <label><span class="t-en">Price (collateral in loan token)</span><span class="t-fr">Prix (collatéral en token prêté)</span><span class="t-es">Precio (colateral en token prestado)</span></label>
+        <div class="price-wrap">
+          <input type="number" id="inputPrice" value="103000" step="any" min="0" oninput="calc()"/>
+          <button class="live-btn" onclick="fetchPrice()" id="livePriceBtn">⛓ Live</button>
+        </div>
+        <div class="hint" id="priceHint">USDC per WBTC</div>
+      </div>
+
+      <div class="field">
+        <label><span class="t-en">Borrow amount (loan token)</span><span class="t-fr">Montant emprunté (token prêté)</span><span class="t-es">Cantidad prestada (token préstamo)</span></label>
+        <input type="number" id="inputBorrow" value="70000" step="any" min="0" oninput="calc()"/>
+        <div class="hint" id="borrowHint">USDC</div>
+      </div>
+
+      <button class="calc-btn" onclick="calc()"><span class="t-en">Calculate →</span><span class="t-fr">Calculer →</span><span class="t-es">Calcular →</span></button>
+    </div>
+
+    <!-- RESULTS -->
+    <div class="panel" id="resultPanel">
+      <div class="result-placeholder" id="resultPlaceholder">
+        <div class="ph-icon">🔷</div>
+        <p style="font-weight:700;color:var(--text);margin-bottom:6px"><span class="t-en">Results appear here</span><span class="t-fr">Résultats ici</span><span class="t-es">Resultados aquí</span></p>
+        <p style="font-size:.82rem"><span class="t-en">Defaults loaded — click Calculate.</span><span class="t-fr">Valeurs par défaut — cliquez Calculer.</span><span class="t-es">Valores por defecto — haz clic en Calcular.</span></p>
+      </div>
+      <div id="resultContent" style="display:none">
+        <div class="result-label" id="hfLabel">Health Factor</div>
+        <div class="result-big" id="hfVal">—</div>
+        <div class="hf-bar-wrap"><div class="hf-bar" id="hfBar"></div></div>
+        <div id="breakdownRows" style="margin-top:14px"></div>
+        <div class="orny-comment" id="ornyComment"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loop Simulator -->
+  <div class="panel purple-top">
+    <div class="panel-title"><span class="t-en">Leverage Loop Simulator</span><span class="t-fr">Simulateur de Boucle avec Levier</span><span class="t-es">Simulador de Bucle de Apalancamiento</span></div>
+    <p style="font-size:.82rem;color:var(--dim);margin-bottom:16px;line-height:1.6"><span class="t-en">Estimate the final collateral, debt, leverage and liquidation distance after N loops. Each loop: deposit collateral → borrow at X% of LLTV → buy more collateral → repeat.</span><span class="t-fr">Estimez le collatéral final, la dette, le levier et la distance de liquidation après N boucles. Chaque boucle : déposer → emprunter à X% du LLTV → acheter plus de collatéral → répéter.</span><span class="t-es">Estima el colateral final, deuda, apalancamiento y distancia de liquidación tras N bucles. Cada bucle: depositar → pedir prestado al X% del LLTV → comprar más colateral → repetir.</span></p>
+
+    <div class="grid-2">
+      <div>
+        <div class="field">
+          <label><span class="t-en">Starting capital (USD)</span><span class="t-fr">Capital de départ (USD)</span><span class="t-es">Capital inicial (USD)</span></label>
+          <input type="number" id="loopCapital" value="10000" step="100" min="0" oninput="calcLoop()"/>
+        </div>
+        <div style="margin-bottom:14px">
+          <label style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--faint);display:block;margin-bottom:8px"><span class="t-en">Number of loops</span><span class="t-fr">Nombre de boucles</span><span class="t-es">Número de bucles</span></label>
+          <div class="slider-row">
+            <span class="slider-val" id="loopCountDisplay">5</span>
+            <input type="range" id="loopCount" min="1" max="10" step="1" value="5" oninput="document.getElementById('loopCountDisplay').textContent=this.value;calcLoop()"/>
+          </div>
+        </div>
+        <div style="margin-bottom:14px">
+          <label style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--faint);display:block;margin-bottom:8px"><span class="t-en">LLTV utilization per loop</span><span class="t-fr">Utilisation du LLTV par boucle</span><span class="t-es">Utilización del LLTV por bucle</span></label>
+          <div class="slider-row">
+            <span class="slider-val" id="loopRatioDisplay">80%</span>
+            <input type="range" id="loopRatio" min="50" max="95" step="5" value="80" oninput="document.getElementById('loopRatioDisplay').textContent=this.value+'%';calcLoop()"/>
+          </div>
+          <div class="hint"><span class="t-en">80% of LLTV 86% = 68.8% effective LTV per loop</span><span class="t-fr">80% du LLTV 86% = 68,8% LTV effectif par boucle</span><span class="t-es">80% del LLTV 86% = 68,8% LTV efectivo por bucle</span></div>
+        </div>
+      </div>
+      <div id="loopResults">
+        <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--faint);margin-bottom:10px"><span class="t-en">Loop breakdown</span><span class="t-fr">Détail des boucles</span><span class="t-es">Detalle de bucles</span></div>
+        <div id="loopTableWrap"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Market Reference Table -->
+  <div class="panel">
+    <div class="panel-title"><span class="t-en">Morpho Blue — Key Markets (reference)</span><span class="t-fr">Morpho Blue — Marchés principaux (référence)</span><span class="t-es">Morpho Blue — Mercados principales (referencia)</span></div>
+    <div style="overflow-x:auto">
+      <table class="ref-table">
+        <thead><tr>
+          <th><span class="t-en">Market</span><span class="t-fr">Marché</span><span class="t-es">Mercado</span></th>
+          <th>LLTV</th>
+          <th><span class="t-en">Borrow APY</span><span class="t-fr">APY emprunt</span><span class="t-es">APY préstamo</span></th>
+          <th><span class="t-en">Max leverage</span><span class="t-fr">Levier max</span><span class="t-es">Apalancamiento máx</span></th>
+          <th><span class="t-en">Chain</span><span class="t-fr">Chaîne</span><span class="t-es">Cadena</span></th>
+        </tr></thead>
+        <tbody>
+          <tr><td><strong>WBTC/USDC</strong></td><td><span class="lltv-chip">86%</span></td><td style="color:var(--good)">~1.56%</td><td>7.1×</td><td>Ethereum</td></tr>
+          <tr><td><strong>WBTC/USDT</strong></td><td><span class="lltv-chip">86%</span></td><td style="color:var(--good)">~1.16%</td><td>7.1×</td><td>Ethereum</td></tr>
+          <tr><td><strong>wstETH/USDC</strong></td><td><span class="lltv-chip">86%</span></td><td style="color:var(--warn)">~4.67%</td><td>7.1×</td><td>Ethereum</td></tr>
+          <tr><td><strong>wstETH/WETH</strong></td><td><span class="lltv-chip">94.5%</span></td><td style="color:var(--good)">~1.50%</td><td>18.2×</td><td>Ethereum</td></tr>
+          <tr><td><strong>weETH/WETH</strong></td><td><span class="lltv-chip">86%</span></td><td style="color:var(--warn)">~13.60%</td><td>7.1×</td><td>Ethereum</td></tr>
+          <tr><td><strong>sdeUSD/USDC</strong></td><td><span class="lltv-chip">91.5%</span></td><td style="color:var(--warn)">~6.47%</td><td>11.8×</td><td>Ethereum</td></tr>
+          <tr><td><strong>ETH/USDC</strong></td><td><span class="lltv-chip">86%</span></td><td style="color:var(--good)">~3.20%</td><td>7.1×</td><td>Arbitrum</td></tr>
+          <tr><td><strong>WBTC/USDC</strong></td><td><span class="lltv-chip">86%</span></td><td style="color:var(--good)">~1.80%</td><td>7.1×</td><td>Arbitrum</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="font-size:.72rem;color:var(--faint);margin-top:8px"><span class="t-en">* Max leverage = 1/(1-LLTV). APRs are reference estimates — verify at app.morpho.org.</span><span class="t-fr">* Levier max = 1/(1-LLTV). APR indicatifs — vérifiez sur app.morpho.org.</span><span class="t-es">* Apalancamiento máx = 1/(1-LLTV). APR estimados — verifica en app.morpho.org.</span></div>
+  </div>
+
+</main>
+
+<div class="tools-nav-band">
+  <div class="tools-nav-lbl"><span class="t-en">All OrnyTools</span><span class="t-fr">Tous les outils</span><span class="t-es">Todas las herramientas</span></div>
+  <div class="tools-nav-grid">
+    <a href="optimizer.html" class="tools-nav-btn"><span>🔄</span><span class="t-en">Trade Optimizer</span><span class="t-fr">Optimiseur de Trade</span><span class="t-es">Optimizador de Trade</span></a>
+    <a href="liquidation.html" class="tools-nav-btn"><span>🛡️</span><span class="t-en">RedZone</span><span class="t-fr">RedZone</span><span class="t-es">RedZone</span></a>
+    <a href="aave.html" class="tools-nav-btn"><span>🏦</span><span class="t-en">Aave V3 Calculator</span><span class="t-fr">Calculateur Aave V3</span><span class="t-es">Calculadora Aave V3</span></a>
+    <a href="dashboard.html" class="tools-nav-btn"><span>🔭</span><span class="t-en">Position Dashboard</span><span class="t-fr">Dashboard Positions</span><span class="t-es">Dashboard de Posiciones</span></a>
+    <a href="il-calculator.html" class="tools-nav-btn"><span>💧</span><span class="t-en">IL Calculator</span><span class="t-fr">Calculateur IL</span><span class="t-es">Calculadora de PI</span></a>
+    <a href="leverage.html" class="tools-nav-btn"><span>📈</span><span class="t-en">Leverage Calculator</span><span class="t-fr">Calculateur Levier</span><span class="t-es">Calculadora de Apalancamiento</span></a>
+    <a href="v3range.html" class="tools-nav-btn"><span>📐</span><span class="t-en">V3 Range Optimizer</span><span class="t-fr">Optimiseur Plage V3</span><span class="t-es">Optimizador de Rango V3</span></a>
+    <a href="stablecoin.html" class="tools-nav-btn"><span>🪙</span><span class="t-en">Stablecoin Analyzer</span><span class="t-fr">Analyseur Stablecoins</span><span class="t-es">Analizador de Stablecoins</span></a>
+    <a href="yield.html" class="tools-nav-btn"><span>💰</span><span class="t-en">Yield Optimizer</span><span class="t-fr">Optimiseur Rendement</span><span class="t-es">Optimizador de Rendimiento</span></a>
+    <a href="waste.html" class="tools-nav-btn"><span>🔥</span><span class="t-en">Waste Detector</span><span class="t-fr">Détecteur de Gaspillage</span><span class="t-es">Detector de Desperdicio</span></a>
+    <a href="gmx.html" class="tools-nav-btn"><span>⚡</span><span class="t-en">GMX Calculator</span><span class="t-fr">Calculateur GMX</span><span class="t-es">Calculadora GMX</span></a>
+    <span class="tools-nav-btn current"><span>🔷</span><span class="t-en">Morpho Blue</span><span class="t-fr">Morpho Blue</span><span class="t-es">Morpho Blue</span></span>
+  </div>
+</div>
+
+<footer>
+  <span class="t-en">Calculations based on Morpho Blue liquidation model · APRs are reference estimates · verify at app.morpho.org · read-only · ornytools.xyz</span>
+  <span class="t-fr">Calculs basés sur le modèle de liquidation Morpho Blue · APR indicatifs · vérifiez sur app.morpho.org · lecture seule · ornytools.xyz</span>
+  <span class="t-es">Cálculos basados en el modelo de liquidación Morpho Blue · APR estimados · verifica en app.morpho.org · solo lectura · ornytools.xyz</span>
+</footer>
+
+<script>
+const MARKETS = {
+  'wbtc-usdc':   { label:'WBTC/USDC',     col:'WBTC',   loan:'USDC', lltv:0.86,  apy:1.56, gecko:'bitcoin',      refPrice:103000, chain:'Ethereum' },
+  'wsteth-usdc': { label:'wstETH/USDC',   col:'wstETH', loan:'USDC', lltv:0.86,  apy:4.67, gecko:'wrapped-steth',refPrice:3950,   chain:'Ethereum' },
+  'wsteth-weth': { label:'wstETH/WETH',   col:'wstETH', loan:'WETH', lltv:0.945, apy:1.50, gecko:'wrapped-steth',geckoLoan:'ethereum', refPrice:1.185, chain:'Ethereum' },
+  'wbtc-usdt':   { label:'WBTC/USDT',     col:'WBTC',   loan:'USDT', lltv:0.86,  apy:1.16, gecko:'bitcoin',      refPrice:103000, chain:'Ethereum' },
+  'sdeusd-usdc': { label:'sdeUSD/USDC',   col:'sdeUSD', loan:'USDC', lltv:0.915, apy:6.47, gecko:'',             refPrice:1.00,   chain:'Ethereum' },
+  'eth-usdc-arb':{ label:'ETH/USDC',      col:'ETH',    loan:'USDC', lltv:0.86,  apy:3.20, gecko:'ethereum',     refPrice:3400,   chain:'Arbitrum' },
+};
+let _market = 'wbtc-usdc';
+
+function $(i){ return document.getElementById(i); }
+function fmtUSD(v){ return '$'+v.toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:0}); }
+function fmtN(v,d){ return v.toLocaleString('en-US',{minimumFractionDigits:d||2,maximumFractionDigits:d||2}); }
+
+// Preset selection
+document.getElementById('presetGrid').querySelectorAll('.preset-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    _market = btn.dataset.market;
+    document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    loadMarket();
+    fetchPrice();
+  });
+});
+
+function loadMarket(){
+  const m = MARKETS[_market];
+  $('msMarket').textContent = m.label;
+  $('msLltv').textContent = (m.lltv*100)+'%';
+  $('msBorrowApy').textContent = '~'+m.apy+'%';
+  $('msChain').textContent = m.chain;
+  $('collateralSymHint').textContent = 'units of '+m.col;
+  $('priceHint').textContent = m.loan+' per '+m.col;
+  $('borrowHint').textContent = m.loan;
+  $('inputPrice').value = m.refPrice;
+  $('inputCollateral').value = m.col === 'WBTC' ? 1 : m.col === 'sdeUSD' ? 10000 : 1;
+  const defBorrow = parseFloat($('inputCollateral').value) * m.refPrice * m.lltv * 0.7;
+  $('inputBorrow').value = Math.round(defBorrow);
+  calc();
+  calcLoop();
+}
+
+function calc(){
+  const m = MARKETS[_market];
+  const col = parseFloat($('inputCollateral').value)||0;
+  const price = parseFloat($('inputPrice').value)||0;
+  const borrow = parseFloat($('inputBorrow').value)||0;
+  const l = getLang ? getLang() : 'en';
+
+  if(!col || !price || !borrow){ $('resultPlaceholder').style.display=''; $('resultContent').style.display='none'; return; }
+  $('resultPlaceholder').style.display='none';
+  $('resultContent').style.display='';
+
+  const colUSD = col * price;
+  const ltv = borrow / colUSD;
+  // HF = LLTV / LTV = (col × price × LLTV) / borrow
+  const hf = (colUSD * m.lltv) / borrow;
+  const liqPrice = borrow / (col * m.lltv);
+  const dropToLiq = ((price - liqPrice) / price) * 100;
+
+  const hfClass = hf < 1.05 ? 'danger' : hf < 1.2 ? 'warn' : 'safe';
+  const hfColor = hfClass==='safe'?'#16a34a':hfClass==='warn'?'#d97706':'#dc2626';
+
+  $('hfVal').textContent = hf > 100 ? '∞' : hf.toFixed(3);
+  $('hfVal').className = 'result-big '+hfClass;
+  $('hfBar').style.cssText = `width:${Math.min(100,hf/3*100)}%;background:${hfColor}`;
+
+  const borrowMax = colUSD * m.lltv;
+
+  $('breakdownRows').innerHTML = `
+    <div class="br-row purple"><span>${l==='fr'?'Collatéral total':l==='es'?'Colateral total':'Total collateral'}</span><b>${fmtN(col,4)} ${m.col} = ${fmtUSD(colUSD)}</b></div>
+    <div class="br-row danger"><span>${l==='fr'?'Montant emprunté':l==='es'?'Monto prestado':'Borrow amount'}</span><b>${fmtN(borrow,2)} ${m.loan}</b></div>
+    <div class="br-row ${ltv>m.lltv?'danger':ltv>m.lltv*0.85?'warn':'good'}"><span>LTV / LLTV</span><b>${(ltv*100).toFixed(2)}% / ${(m.lltv*100)}%</b></div>
+    <div class="br-row"><span>${l==='fr'?'Emprunt max':l==='es'?'Préstamo máximo':'Max borrow'}</span><b>${fmtN(borrowMax,0)} ${m.loan}</b></div>
+    <div class="br-row ${hfClass}"><span>${l==='fr'?'Prix de liquidation':l==='es'?'Precio de liquidación':'Liquidation price'}</span><b>${fmtN(liqPrice,liqPrice>100?0:4)} ${m.loan}</b></div>
+    <div class="br-row ${dropToLiq<10?'danger':dropToLiq<25?'warn':'good'}"><span>${l==='fr'?'Distance de liquidation':l==='es'?'Distancia de liquidación':'Drop to liquidation'}</span><b>${dropToLiq.toFixed(1)}%</b></div>
+  `;
+
+  let comment;
+  if(ltv >= m.lltv)
+    comment = l==='fr' ? `⛔ <strong>Position déjà liquidable.</strong> LTV (${(ltv*100).toFixed(1)}%) dépasse le LLTV (${(m.lltv*100)}%). Réduisez l'emprunt immédiatement.` : `⛔ <strong>Position already liquidatable.</strong> LTV (${(ltv*100).toFixed(1)}%) exceeds LLTV (${(m.lltv*100)}%). Reduce borrow immediately.`;
+  else if(hf < 1.1)
+    comment = l==='fr' ? `🔴 <strong>Zone critique.</strong> HF ${hf.toFixed(2)} — liquidation à ${dropToLiq.toFixed(1)}% de baisse. Un seul mouvement de marché peut vous sortir. Remboursez ou ajoutez du collatéral.` : `🔴 <strong>Critical zone.</strong> HF ${hf.toFixed(2)} — liquidation at ${dropToLiq.toFixed(1)}% drop. One market move can take you out. Repay or add collateral.`;
+  else if(hf < 1.3)
+    comment = l==='fr' ? `🟡 <strong>Zone à surveiller.</strong> HF ${hf.toFixed(2)} — marge de ${dropToLiq.toFixed(1)}% avant liquidation. Sur Morpho Blue, il n'y a pas de grace period — la liquidation est immédiate quand LTV > LLTV.` : `🟡 <strong>Monitor zone.</strong> HF ${hf.toFixed(2)} — ${dropToLiq.toFixed(1)}% margin before liquidation. On Morpho Blue there's no grace period — liquidation is immediate when LTV > LLTV.`;
+  else
+    comment = l==='fr' ? `✅ <strong>Position saine.</strong> HF ${hf.toFixed(2)} — liquidation à ${dropToLiq.toFixed(1)}% de baisse. L'emprunt actuel utilise ${(ltv/m.lltv*100).toFixed(0)}% de la capacité maximum.` : `✅ <strong>Healthy position.</strong> HF ${hf.toFixed(2)} — liquidation at ${dropToLiq.toFixed(1)}% drop. Current borrow uses ${(ltv/m.lltv*100).toFixed(0)}% of max capacity.`;
+  $('ornyComment').innerHTML = comment;
+}
+
+function calcLoop(){
+  const m = MARKETS[_market];
+  const C0 = parseFloat($('loopCapital').value)||10000;
+  const N = parseInt($('loopCount').value)||5;
+  const ratioSlider = parseInt($('loopRatio').value)||80;
+  const r = m.lltv * (ratioSlider/100); // effective LTV per loop
+  const l = getLang ? getLang() : 'en';
+
+  let rows = `<table class="loop-table"><thead><tr>
+    <th>${l==='fr'?'Boucle':l==='es'?'Bucle':'Loop'}</th>
+    <th>${l==='fr'?'Collatéral':'Collateral'}</th>
+    <th>${l==='fr'?'Dette':'Debt'}</th>
+    <th>LTV</th>
+    <th>${l==='fr'?'Levier':'Leverage'}</th>
+  </tr></thead><tbody>`;
+
+  let col = C0, debt = 0;
+  rows += `<tr><td>${l==='fr'?'Départ':l==='es'?'Inicio':'Start'}</td><td>${fmtUSD(col)}</td><td>$0</td><td>0%</td><td>1×</td></tr>`;
+  for(let i=1;i<=N;i++){
+    const borrow = col * r;
+    col = col + borrow;
+    debt = debt + borrow;
+    const ltv = debt/col;
+    const lev = col/C0;
+    const isLast = i===N;
+    rows += `<tr${isLast?' style="font-weight:700"':''}><td>${l==='fr'?'Boucle':l==='es'?'Bucle':'Loop'} ${i}</td><td>${fmtUSD(col)}</td><td>${fmtUSD(debt)}</td><td>${(ltv*100).toFixed(1)}%</td><td>${lev.toFixed(2)}×</td></tr>`;
+  }
+  const finalLTV = debt/col;
+  const finalHF = m.lltv / finalLTV;
+  const dropLiq = ((1 - finalLTV/m.lltv)*100);
+
+  rows += `</tbody></table>`;
+  rows += `<div style="margin-top:10px;padding:10px 12px;background:var(--purple-pale);border-radius:9px;font-size:.8rem;color:var(--dim);line-height:1.7">
+    ${l==='fr'?`<strong>État final :</strong> Collatéral ${fmtUSD(col)}, Dette ${fmtUSD(debt)}, Levier ${(col/C0).toFixed(2)}×, HF ${finalHF.toFixed(2)}, Distance liquidation ${dropLiq.toFixed(1)}%`:`<strong>Final state:</strong> Collateral ${fmtUSD(col)}, Debt ${fmtUSD(debt)}, Leverage ${(col/C0).toFixed(2)}×, HF ${finalHF.toFixed(2)}, Liquidation distance ${dropLiq.toFixed(1)}%`}
+  </div>`;
+  $('loopTableWrap').innerHTML = rows;
+}
+
+async function fetchPrice(){
+  const m = MARKETS[_market];
+  if(!m.gecko){ return; }
+  const btn = $('livePriceBtn');
+  btn.textContent = '…';
+  try {
+    let ids = m.gecko;
+    if(m.geckoLoan) ids += ',' + m.geckoLoan;
+    const r = await fetch('https://api.coingecko.com/api/v3/simple/price?ids='+ids+'&vs_currencies=usd');
+    const data = await r.json();
+    const colPrice = data[m.gecko]?.usd;
+    if(colPrice){
+      if(m.geckoLoan){
+        const loanPrice = data[m.geckoLoan]?.usd || 1;
+        $('inputPrice').value = (colPrice/loanPrice).toFixed(6);
+      } else {
+        $('inputPrice').value = colPrice;
+      }
+      calc();
+    }
+  } catch(e){}
+  btn.innerHTML = '⛓ Live';
+}
+
+// Init
+loadMarket();
+calcLoop();
+</script>
+</body>
+</html>

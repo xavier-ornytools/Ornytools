@@ -630,6 +630,42 @@ const DB = {
     risks:['Very recent — no full market cycle test','Lower liquidity than LUSD V1 — ecosystem still building','V2 introduces complexity vs V1 (per-trove interest rates)'],
     risks_fr:['Très récent — pas de test sur un cycle de marché complet','Liquidité inférieure à LUSD V1 — écosystème en construction','V2 introduit de la complexité vs V1 (taux d\'intérêt par trove)'],
   },
+  RLUSD: {
+    name:'RLUSD (Ripple)', issuer:'Ripple / Standard Custody & Trust', type:'Fiat-backed', typeColor:'#346AA9',
+    geckoId:'ripple-usd',
+    counterparty:48, protocol:78, liquidity:55,
+    depegBase:70,
+    history:'Launched Dec 2024 on XRP Ledger and Ethereum. Grew to $500M+ market cap in 6 months. Listed on Aave Horizon Market ($219M supplied). No significant depeg events. Ripple SEC lawsuit settled 2024.',
+    history_fr:'Lancé en déc. 2024 sur XRP Ledger et Ethereum. Croissance à 500M$+ de market cap en 6 mois. Listé sur Aave Horizon Market (219M$ déposés). Aucun dépeg significatif. Procès Ripple/SEC réglé en 2024.',
+    strengths:['Fast institutional adoption — $500M+ in 6 months','Aave Horizon listing provides DeFi yield gateway','1:1 USD backing via Standard Custody & Trust','Dual deployment: XRP Ledger + Ethereum'],
+    strengths_fr:['Adoption institutionnelle rapide — 500M$+ en 6 mois','Listing Aave Horizon fournit un accès au yield DeFi','Adossement 1:1 USD via Standard Custody & Trust','Double déploiement : XRP Ledger + Ethereum'],
+    risks:['Ripple brand concentration risk — tightly linked to XRP ecosystem','Centralized issuer — Ripple can freeze/blacklist addresses','Smaller DeFi footprint vs USDC/USDT','Lower liquidity depth outside Aave Horizon'],
+    risks_fr:['Risque de concentration sur la marque Ripple — lié à l\'écosystème XRP','Émetteur centralisé — Ripple peut geler/blacklister les adresses','Empreinte DeFi plus petite que USDC/USDT','Profondeur de liquidité moindre hors Aave Horizon'],
+  },
+  USD0: {
+    name:'USD0 (Usual)', issuer:'Usual Protocol', type:'RWA-backed', typeColor:'#3B3B3B',
+    geckoId:'usual-usd',
+    counterparty:55, protocol:68, liquidity:60,
+    depegBase:74,
+    history:'Launched 2024 by Usual Protocol. Backed by US T-bills. USD0++ is the yield-bearing version (4.5–6%). MEV Capital Usual USDC vault on Morpho reached $193M. Fast DeFi adoption via Morpho vaults. $300M+ supply by mid-2025.',
+    history_fr:'Lancé en 2024 par Usual Protocol. Adossé aux T-bills US. USD0++ est la version portant du rendement (4,5–6%). Le vault MEV Capital Usual USDC sur Morpho a atteint 193M$. Adoption DeFi rapide via les vaults Morpho. 300M$+ de supply mi-2025.',
+    strengths:['T-bill backed — real-world yield base','USD0++ earns yield while remaining composable','Strong Morpho vault ecosystem (MEV Capital, Steakhouse)','Governance USUAL token creates protocol alignment'],
+    strengths_fr:['Adossé aux T-bills — base de yield du monde réel','USD0++ génère du rendement tout en restant composable','Fort écosystème de vaults Morpho (MEV Capital, Steakhouse)','Token de gouvernance USUAL crée un alignement protocolaire'],
+    risks:['New protocol — smart contract risk, limited track record','USD0++ lock-up mechanics create liquidity risk during unstaking','Regulatory RWA uncertainty for tokenized T-bills','USUAL token incentives may inflate APY beyond sustainable levels'],
+    risks_fr:['Nouveau protocole — risque smart contract, historique limité','La mécanique de lock-up USD0++ crée un risque de liquidité au déstaking','Incertitude réglementaire RWA pour les T-bills tokenisés','Les incitations USUAL peuvent gonfler l\'APY au-delà de niveaux durables'],
+  },
+  deUSD: {
+    name:'deUSD (Elixir)', issuer:'Elixir Protocol', type:'Synthetic (delta-neutral)', typeColor:'#8B5CF6',
+    geckoId:'deusd',
+    counterparty:40, protocol:55, liquidity:42,
+    depegBase:62,
+    history:'Launched 2024/2025 by Elixir Protocol. Delta-neutral design similar to Ethena USDe but with different collateral mix. Used as collateral in Morpho Blue markets (sdeUSD/USDC 91.5% LLTV). Growing institutional DeFi integration.',
+    history_fr:'Lancé en 2024/2025 par Elixir Protocol. Design delta-neutre similaire à USDe d\'Ethena mais avec un mix de collatéral différent. Utilisé comme collatéral dans les marchés Morpho Blue (sdeUSD/USDC LLTV 91,5%). Intégration institutionnelle DeFi croissante.',
+    strengths:['Delta-neutral — market-neutral collateral reduces directional risk','sdeUSD (staked) earns funding rate yield','Morpho Blue integration as collateral (sdeUSD/USDC 91.5% LLTV)','Institutional backing from Elixir team'],
+    strengths_fr:['Delta-neutre — collatéral market-neutral réduit le risque directionnel','sdeUSD (staké) génère le yield du taux de financement','Intégration Morpho Blue comme collatéral (sdeUSD/USDC LLTV 91,5%)','Soutien institutionnel de l\'équipe Elixir'],
+    risks:['Negative funding rates compress backing (same risk as USDe)','CEX counterparty risk for perpetual positions','New protocol — mechanism untested across full market cycle','Lower liquidity depth than USDe/sUSDe'],
+    risks_fr:['Les taux de financement négatifs compriment la collatéralisation (même risque qu\'USDe)','Risque de contrepartie CEX sur les positions perpétuelles','Nouveau protocole — mécanisme non testé sur cycle de marché complet','Profondeur de liquidité moindre qu\'USDe/sUSDe'],
+  },
 };
 
 let _selected = 'USDC';
@@ -1313,6 +1349,60 @@ const EXTENDED = {
     reg_fr:'Ondo Finance Inc. (Delaware USA) + Ondo APAC Ltd pour utilisateurs non-américains. NON disponible aux personnes américaines (Regulation S). Surveillance SEC en cours. Non classifié MiCA.',
     comps:'sDAI, sFRAX, sUSDe', site:'ondo.finance',
   },
+  RLUSD:{
+    peg:'Fiat-backed 1:1 USD. Each RLUSD redeemable for $1.00 via Standard Custody & Trust. On-chain arbitrage maintains secondary market peg. Deployed on XRP Ledger (XRPL) + Ethereum (ERC-20).',
+    peg_fr:'Adossé 1:1 en USD. Chaque RLUSD est remboursable contre $1,00 via Standard Custody & Trust. L\'arbitrage on-chain maintient le peg sur le marché secondaire. Déployé sur XRP Ledger (XRPL) + Ethereum (ERC-20).',
+    mint:'Permissioned — KYC/AML required through Ripple-approved partners. Institution-grade onboarding. Retail access via secondary market (CEX/DEX). Ripple controls minting authority.',
+    mint_fr:'Permissionné — KYC/AML requis via les partenaires approuvés par Ripple. Onboarding de niveau institutionnel. Accès retail via le marché secondaire (CEX/DEX). Ripple contrôle l\'autorité de minting.',
+    reserves:'100% USD cash and US T-bills held at Standard Custody & Trust (regulated NY trust company). Monthly reserve attestations published. No crypto collateral.',
+    reserves_fr:'100% cash USD et T-bills américains détenus chez Standard Custody & Trust (société de fiducie NY réglementée). Attestations de réserves mensuelles publiées. Aucun collatéral crypto.',
+    attestation:'Standard Custody & Trust — monthly reserve attestations. Regulated NY trust company. Not a full GAAP audit.',
+    fail:['Ripple corporate failure or insolvency affecting custody','US regulatory action specifically targeting RLUSD','Standard Custody & Trust failure (custodian risk)','XRP ecosystem shock reducing secondary liquidity','Address blacklisting by Ripple (centralized control)'],
+    fail_fr:['Défaillance ou insolvabilité de Ripple affectant la custody','Action réglementaire américaine ciblant spécifiquement RLUSD','Défaillance de Standard Custody & Trust (risque custodian)','Choc de l\'écosystème XRP réduisant la liquidité secondaire','Blacklisting d\'adresses par Ripple (contrôle centralisé)'],
+    eco:'Aave Horizon Market (RWA-focused): $219M supplied, 5.16% APY, 2.28% borrow APY. Growing XRP Ledger native DeFi. Limited Ethereum DeFi integration so far. Institutional use case via Ripple Payments.',
+    eco_fr:'Aave Horizon Market (orienté RWA) : 219M$ déposés, 5,16% APY, 2,28% taux d\'emprunt. DeFi natif XRP Ledger en croissance. Intégration DeFi Ethereum limitée jusqu\'ici. Cas d\'usage institutionnel via Ripple Payments.',
+    yield:'No native yield on RLUSD. Earn via Aave Horizon (5.16% supply APY). Limited other DeFi yield sources currently.',
+    yield_fr:'Pas de yield natif sur RLUSD. Gains via Aave Horizon (5,16% APY de dépôt). Sources de yield DeFi limitées actuellement.',
+    reg:'Ripple Labs Inc. (San Francisco, CA). Standard Custody & Trust (NY-regulated). SEC lawsuit settled 2024 — XRP classified as not a security in secondary sales. RLUSD under NY DFS oversight. Not MiCA-classified.',
+    reg_fr:'Ripple Labs Inc. (San Francisco, CA). Standard Custody & Trust (régulé NY). Procès SEC réglé en 2024 — XRP classifié non-valeur mobilière pour ventes secondaires. RLUSD sous supervision NY DFS. Non classifié MiCA.',
+    comps:'USDC, USDT, PYUSD', site:'ripple.com/rlusd',
+  },
+  USD0:{
+    peg:'RWA-backed 1:1 USD. USD0 is minted by depositing approved US T-bill tokens (USYC, hashnote). Redemption via primary market. Secondary peg maintained by arbitrage + AMM liquidity.',
+    peg_fr:'Adossé RWA 1:1 USD. USD0 est minté en déposant des tokens T-bills américains approuvés (USYC, Hashnote). Rachat via le marché primaire. Peg secondaire maintenu par arbitrage + liquidité AMM.',
+    mint:'Permissionless for approved RWA collateral (USYC, hashnote tokens). No KYC for DeFi users — only RWA token holders interact directly with Usual. USD0++ minted by staking USD0.',
+    mint_fr:'Permissionless pour les collatéraux RWA approuvés (USYC, tokens Hashnote). Pas de KYC pour les utilisateurs DeFi — seuls les détenteurs de tokens RWA interagissent directement avec Usual. USD0++ minté en stakant USD0.',
+    reserves:'Backed 100% by US Treasury Bills (USYC from Hashnote, Short-Term US Gov. T-bills). On-chain verifiable via T-bill token contracts. No crypto collateral.',
+    reserves_fr:'Adossé à 100% par des bons du Trésor américains (USYC de Hashnote, T-bills US court terme). Vérifiable on-chain via les contrats de tokens T-bill. Aucun collatéral crypto.',
+    attestation:'On-chain verifiable via USYC/Hashnote token balances. Usual publishes reserve dashboards. No formal third-party attestation published as of mid-2026.',
+    fail:['Hashnote/USYC counterparty failure (RWA custodian)','USD0++ unstaking queue creates bank-run risk under stress','Smart contract bug in Usual Protocol (newer codebase)','USUAL token incentive collapse → liquidity withdrawal','US regulatory action on T-bill tokenization'],
+    fail_fr:['Défaillance Hashnote/USYC (custodian RWA)','File d\'attente de déstaking USD0++ crée un risque de bank-run sous stress','Bug de smart contract dans Usual Protocol (codebase plus récente)','Effondrement des incitations USUAL → retrait de liquidité','Action réglementaire US sur la tokenisation des T-bills'],
+    eco:'Strong Morpho Blue integration: MEV Capital Usual USDC vault ($193M). Steakhouse vaults. USD0++ used as collateral in Morpho markets (USDOUSD0++/USDC). Curve USD0 pools. Growing DeFi composability.',
+    eco_fr:'Forte intégration Morpho Blue : vault MEV Capital Usual USDC (193M$). Vaults Steakhouse. USD0++ utilisé comme collatéral dans les marchés Morpho (USDOUSD0++/USDC). Pools Curve USD0. Composabilité DeFi croissante.',
+    yield:'USD0: no native yield — T-bill return goes to USD0++ stakers. USD0++: earns T-bill yield (~4–6% APY) + USUAL token rewards. Staking lock-up applies. Real sustainable yield while T-bill rates positive.',
+    yield_fr:'USD0 : pas de yield natif — le rendement T-bill revient aux stakers USD0++. USD0++ : génère le yield T-bills (~4–6% APY) + récompenses en tokens USUAL. Lock-up de staking applicable. Yield réel durable tant que les taux T-bills sont positifs.',
+    reg:'Usual Protocol (decentralized DAO). Hashnote (regulated US RWA issuer for USYC). RWA tokenization regulatory status evolving. Not MiCA-classified. USUAL token regulatory status unclear.',
+    reg_fr:'Usual Protocol (DAO décentralisé). Hashnote (émetteur RWA américain réglementé pour USYC). Statut réglementaire de la tokenisation RWA en évolution. Non classifié MiCA. Statut réglementaire du token USUAL incertain.',
+    comps:'USDY, sDAI, USDC', site:'usual.money',
+  },
+  deUSD:{
+    peg:'Delta-neutral synthetic dollar. Collateral in ETH/BTC/staked assets + equal-size short perpetual positions on CEX. Net market exposure ≈ 0. Peg via arbitrage + primary redemption. sdeUSD is the yield-bearing staked version.',
+    peg_fr:'Dollar synthétique delta-neutre. Collatéral en ETH/BTC/actifs stakés + positions short perp égales sur CEX. Exposition nette ≈ 0. Peg via arbitrage + rachat primaire. sdeUSD est la version stakée portant du rendement.',
+    mint:'Permissioned primary market (institutional whitelisted). Retail access via secondary DEX (Curve, Uniswap). Collateral custodied at OES providers (similar to Ethena model).',
+    mint_fr:'Marché primaire permissionné (institutions en whitelist). Accès retail via DEX secondaires (Curve, Uniswap). Collatéral en custody chez des prestataires OES (modèle similaire à Ethena).',
+    reserves:'ETH/BTC/LST collateral + offsetting short perp positions on major CEX (Binance, OKX, Bybit). Off-exchange settlement via OES custodians (Copper, Ceffu). Net exposure ≈ $0 per deUSD.',
+    reserves_fr:'Collatéral ETH/BTC/LST + positions short perp compensatoires sur les principaux CEX (Binance, OKX, Bybit). Règlement hors-bourse via custodians OES (Copper, Ceffu). Exposition nette ≈ 0$ par deUSD.',
+    attestation:'On-chain collateral verifiable. Off-chain perp positions reliant on OES custodian reporting. No third-party attestation as of mid-2026. Mechanism transparency similar to Ethena.',
+    fail:['Sustained negative funding rates — perp shorts generate losses instead of yield','CEX exchange failure (Binance/Bybit/OKX) affecting short positions','OES custodian failure (Copper, Ceffu) blocking settlement','Smart contract bug in Elixir Protocol','Mass redemption during negative funding episode → bank-run'],
+    fail_fr:['Taux de financement négatifs prolongés — les shorts perp génèrent des pertes au lieu de gains','Défaillance de CEX (Binance/Bybit/OKX) affectant les positions short','Défaillance du custodian OES (Copper, Ceffu) bloquant le règlement','Bug de smart contract dans Elixir Protocol','Rachat massif lors d\'un épisode de financement négatif → bank-run'],
+    eco:'Morpho Blue: sdeUSD/USDC market (91.5% LLTV) — $34.47M supply. Gauntlet USDC Core vault uses sdeUSD. Growing Curve pools for deUSD. Elixir integrations in institutional DeFi protocols.',
+    eco_fr:'Morpho Blue : marché sdeUSD/USDC (LLTV 91,5%) — 34,47M$ de supply. Le vault Gauntlet USDC Core utilise sdeUSD. Pools Curve deUSD en croissance. Intégrations Elixir dans les protocoles DeFi institutionnels.',
+    yield:'sdeUSD earns: perpetual funding rates on collateral (variable, historically 5–20% APY) + potential Elixir protocol incentives. Negative funding compresses or eliminates yield. No lock-up on sdeUSD.',
+    yield_fr:'sdeUSD génère : taux de financement perpétuels sur le collatéral (variable, historiquement 5–20% APY) + incitations potentielles du protocole Elixir. Un financement négatif comprime ou supprime le rendement. Pas de lock-up sur sdeUSD.',
+    reg:'Elixir Protocol (decentralized). No single legal entity. DeFi-native structure. OES custodians subject to their respective jurisdictions. Not MiCA-classified. No registered securities filing.',
+    reg_fr:'Elixir Protocol (décentralisé). Pas d\'entité légale unique. Structure native DeFi. Custodians OES soumis à leurs juridictions respectives. Non classifié MiCA. Pas de dépôt de valeurs mobilières enregistré.',
+    comps:'USDe, sUSDe, APXUSD', site:'app.elixir.xyz',
+  },
 };
 
 function fmtMCap(m){
@@ -1533,6 +1623,7 @@ section h2 .sn{background:#2563eb;color:#fff;border-radius:4px;padding:1px 7px;f
     <a href="waste.html" class="tools-nav-btn"><span>🔥</span><span class="t-en">Waste Detector</span><span class="t-fr">Détecteur de Gaspillage</span><span class="t-es">Detector de Desperdicio</span></a>
     <a href="gmx.html" class="tools-nav-btn"><span>⚡</span><span class="t-en">GMX Calculator</span><span class="t-fr">Calculateur GMX</span><span class="t-es">Calculadora GMX</span></a>
     <a href="dashboard.html" class="tools-nav-btn"><span>🔭</span><span class="t-en">Position Dashboard</span><span class="t-fr">Dashboard Positions</span><span class="t-es">Dashboard de Posiciones</span></a>
+    <a href="morpho.html" class="tools-nav-btn"><span>🔷</span><span class="t-en">Morpho Blue</span><span class="t-fr">Morpho Blue</span><span class="t-es">Morpho Blue</span></a>
 
   </div>
 </div>

@@ -257,15 +257,32 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <div class="field">
         <label><span class="t-en">Asset</span><span class="t-fr">Actif</span><span class="t-es">Activo</span></label>
         <select id="asset">
-          <option value="USDC">USDC</option>
-          <option value="USDT">USDT</option>
-          <option value="DAI">DAI</option>
-          <option value="USDS">USDS</option>
-          <option value="GHO">GHO</option>
-          <option value="crvUSD">crvUSD</option>
-          <option value="WETH">WETH (ETH)</option>
-          <option value="wstETH">wstETH</option>
-          <option value="WBTC">WBTC</option>
+          <optgroup label="Stablecoins">
+            <option value="USDC">USDC</option>
+            <option value="USDT">USDT</option>
+            <option value="DAI">DAI</option>
+            <option value="USDS">USDS (Sky)</option>
+            <option value="GHO">GHO (Aave)</option>
+            <option value="USDe">USDe (Ethena)</option>
+            <option value="sUSDe">sUSDe (staked Ethena)</option>
+            <option value="FRAX">FRAX</option>
+            <option value="crvUSD">crvUSD (Curve)</option>
+            <option value="LUSD">LUSD (Liquity)</option>
+            <option value="PYUSD">PYUSD (PayPal)</option>
+          </optgroup>
+          <optgroup label="ETH & LSTs">
+            <option value="WETH">WETH / ETH</option>
+            <option value="wstETH">wstETH (Lido)</option>
+            <option value="weETH">weETH (ether.fi)</option>
+            <option value="ezETH">ezETH (Renzo)</option>
+            <option value="cbETH">cbETH (Coinbase)</option>
+            <option value="rsETH">rsETH (KelpDAO)</option>
+            <option value="rETH">rETH (Rocket Pool)</option>
+          </optgroup>
+          <optgroup label="BTC">
+            <option value="WBTC">WBTC</option>
+            <option value="cbBTC">cbBTC (Coinbase)</option>
+          </optgroup>
         </select>
       </div>
 
@@ -277,6 +294,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <option value="Base">Base</option>
           <option value="Optimism">Optimism</option>
           <option value="Polygon">Polygon</option>
+          <option value="Avalanche">Avalanche</option>
+          <option value="Scroll">Scroll</option>
+          <option value="zkSync Era">zkSync Era</option>
+          <option value="Gnosis">Gnosis</option>
+          <option value="Linea">Linea</option>
+          <option value="Blast">Blast</option>
+          <option value="Mantle">Mantle</option>
+          <option value="Mode">Mode</option>
         </select>
       </div>
 
@@ -356,6 +381,17 @@ const PROTO_META = {
   'clearpool':        { name:'Clearpool',       icon:'🌊', color:'#00B4D8', bg:'rgba(0,180,216,.10)', riskLevel:'high',   riskLabel:'Credit risk',   riskDesc:'Uncollateralized · institutional borrowers' },
   'pendle':           { name:'Pendle',          icon:'🔄', color:'#4ADE80', bg:'rgba(74,222,128,.10)', riskLevel:'medium', riskLabel:'Yield token.',  riskDesc:'PT/YT structure · maturity dates · complexity' },
   'seamless-protocol':{ name:'Seamless',        icon:'🔗', color:'#A855F7', bg:'rgba(168,85,247,.10)', riskLevel:'medium', riskLabel:'Established',   riskDesc:'Aave V3 fork on Base · newer protocol' },
+  'moonwell':         { name:'Moonwell',        icon:'🌙', color:'#0E5FC6', bg:'rgba(14,95,198,.10)',  riskLevel:'medium', riskLabel:'Established',   riskDesc:'Base/Moonbeam · $900M TVL · Compound fork · 3yr' },
+  'benqi':            { name:'BENQI',           icon:'🔶', color:'#FF3B3B', bg:'rgba(255,59,59,.10)',  riskLevel:'medium', riskLabel:'Multi-chain',   riskDesc:'Avalanche leader · $500M TVL · 4yr live · audited' },
+  'ionic-protocol':   { name:'Ionic',           icon:'⚡', color:'#7B2CF0', bg:'rgba(123,44,240,.10)', riskLevel:'medium', riskLabel:'Isolated mkts', riskDesc:'Mode/Base native · isolated markets · growing TVL' },
+  'notional-v3':      { name:'Notional V3',     icon:'📋', color:'#006FFF', bg:'rgba(0,111,255,.10)',  riskLevel:'medium', riskLabel:'Fixed-rate',    riskDesc:'Fixed & variable rate lending on ETH · audited' },
+  'lido':             { name:'Lido (stETH)',    icon:'🔷', color:'#00A3FF', bg:'rgba(0,163,255,.10)',  riskLevel:'low',    riskLabel:'Battle-tested', riskDesc:'$33B+ TVL · dominant LST · 4yr · multi-audit' },
+  'rocketpool':       { name:'Rocket Pool',     icon:'🚀', color:'#F4A535', bg:'rgba(244,165,53,.10)', riskLevel:'low',    riskLabel:'Battle-tested', riskDesc:'Decentralized LST · $3B TVL · permissionless nodes' },
+  'etherfi':          { name:'ether.fi',        icon:'🐋', color:'#4F46E5', bg:'rgba(79,70,229,.10)',  riskLevel:'medium', riskLabel:'LRT',           riskDesc:'Largest LRT · weETH · $7B TVL · restaking risk' },
+  'renzo':            { name:'Renzo',           icon:'⭕', color:'#FF4B00', bg:'rgba(255,75,0,.10)',   riskLevel:'medium', riskLabel:'LRT',           riskDesc:'ezETH LRT · restaking via EigenLayer · newer' },
+  'kelp-dao':         { name:'KelpDAO',         icon:'🌿', color:'#22C55E', bg:'rgba(34,197,94,.10)',  riskLevel:'medium', riskLabel:'LRT',           riskDesc:'rsETH LRT on Ethereum · EigenLayer restaking' },
+  'aave-v3-gnosis':   { name:'Aave V3 Gnosis',  icon:'🦉', color:'#04795B', bg:'rgba(4,121,91,.10)',   riskLevel:'low',    riskLabel:'Battle-tested', riskDesc:'Aave V3 on Gnosis · xDAI ecosystem · audited' },
+  'extra-finance':    { name:'Extra Finance',   icon:'💠', color:'#10B981', bg:'rgba(16,185,129,.10)', riskLevel:'medium', riskLabel:'Leveraged LP',  riskDesc:'OP/Base lending + leveraged LP · newer protocol' },
 };
 
 const ALLOC_COLORS = ['#0E9F6E','#3A9FD4','#C8841E','#E8765A'];
@@ -655,6 +691,7 @@ function saveYield(){
     <a href="waste.html" class="tools-nav-btn"><span>🔥</span><span class="t-en">Waste Detector</span><span class="t-fr">Détecteur de Gaspillage</span><span class="t-es">Detector de Desperdicio</span></a>
     <a href="gmx.html" class="tools-nav-btn"><span>⚡</span><span class="t-en">GMX Calculator</span><span class="t-fr">Calculateur GMX</span><span class="t-es">Calculadora GMX</span></a>
     <a href="dashboard.html" class="tools-nav-btn"><span>🔭</span><span class="t-en">Position Dashboard</span><span class="t-fr">Dashboard Positions</span><span class="t-es">Dashboard de Posiciones</span></a>
+    <a href="morpho.html" class="tools-nav-btn"><span>🔷</span><span class="t-en">Morpho Blue</span><span class="t-fr">Morpho Blue</span><span class="t-es">Morpho Blue</span></a>
 
   </div>
 </div>

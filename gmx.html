@@ -261,6 +261,150 @@
       <div><strong style="color:var(--text)"><span class="t-en">Liquidation</span><span class="t-fr">Liquidation</span><span class="t-es">Liquidación</span></strong><br/><span class="t-en">Triggered when (collateral − fees) falls below 1% of position size (maintenance margin).</span><span class="t-fr">Déclenchée quand (collatéral − frais) passe sous 1% de la taille de position (marge de maintenance).</span><span class="t-es">Se activa cuando (colateral − comisiones) cae por debajo del 1% del tamaño de posición (margen de mantenimiento).</span></div>
     </div>
   </div>
+
+  <!-- ===== LP YIELD SECTION ===== -->
+  <div class="panel full" style="border-top:3px solid var(--good);margin-top:4px">
+    <div class="panel-title" style="margin-bottom:4px"><span class="t-en">Liquidity Provider Yield — GLP & GM Pools</span><span class="t-fr">Rendement Fournisseur de Liquidité — GLP & GM Pools</span><span class="t-es">Rendimiento Proveedor de Liquidez — GLP & GM Pools</span></div>
+    <p style="font-size:.8rem;color:var(--dim);margin-bottom:16px;line-height:1.6"><span class="t-en">Estimate your yield as a liquidity provider. GLP (V1) = diversified basket. GM (V2) = market-specific isolated pools. APRs are reference estimates — verify at <a href="https://app.gmx.io/#/earn" target="_blank" rel="noopener" style="color:var(--blue)">app.gmx.io</a>.</span><span class="t-fr">Estimez votre rendement en tant que fournisseur de liquidité. GLP (V1) = panier diversifié. GM (V2) = pools isolées par marché. Les APR sont des estimations de référence — vérifiez sur <a href="https://app.gmx.io/#/earn" target="_blank" rel="noopener" style="color:var(--blue)">app.gmx.io</a>.</span><span class="t-es">Estima tu rendimiento como proveedor de liquidez. GLP (V1) = cesta diversificada. GM (V2) = pools aislados por mercado. Los APR son estimaciones de referencia — verifica en <a href="https://app.gmx.io/#/earn" target="_blank" rel="noopener" style="color:var(--blue)">app.gmx.io</a>.</span></p>
+
+    <!-- Pool type tabs -->
+    <div class="dir-tabs" style="max-width:320px;margin-bottom:20px">
+      <div class="dir-tab long active" id="tabGLP" onclick="switchPool('glp')">GLP (V1)</div>
+      <div class="dir-tab short" id="tabGM" onclick="switchPool('gm')" style="--active-bg:#dcfce7;--active-color:#15803d">GM Pools (V2)</div>
+    </div>
+
+    <!-- GLP SECTION -->
+    <div id="glpSection">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+        <div>
+          <div class="field">
+            <label><span class="t-en">Amount to deposit ($)</span><span class="t-fr">Montant à déposer ($)</span><span class="t-es">Cantidad a depositar ($)</span></label>
+            <input type="number" id="glpAmount" value="5000" oninput="calcLP()" style="width:100%;background:var(--surface-2);border:1px solid var(--line);color:var(--text);font-family:var(--mono);font-size:14px;padding:10px 12px;border-radius:9px;outline:none"/>
+          </div>
+          <div class="field">
+            <label><span class="t-en">Estimated APR (%)</span><span class="t-fr">APR estimé (%)</span><span class="t-es">APR estimado (%)</span></label>
+            <input type="number" id="glpApr" value="18" step="0.5" min="0" max="100" oninput="calcLP()" style="width:100%;background:var(--surface-2);border:1px solid var(--line);color:var(--text);font-family:var(--mono);font-size:14px;padding:10px 12px;border-radius:9px;outline:none"/>
+            <div class="hint"><span class="t-en">GLP V1 historical range: 10–35% APR (ETH fees + esGMX)</span><span class="t-fr">Plage historique GLP V1 : 10–35% APR (frais ETH + esGMX)</span><span class="t-es">Rango histórico GLP V1: 10–35% APR (comisiones ETH + esGMX)</span></div>
+          </div>
+          <div class="field">
+            <label><span class="t-en">Duration</span><span class="t-fr">Durée</span><span class="t-es">Duración</span></label>
+            <select id="glpDur" onchange="calcLP()" style="width:100%;background:var(--surface-2);border:1px solid var(--line);color:var(--text);font-family:var(--ui);font-size:14px;padding:10px 12px;border-radius:9px;outline:none">
+              <option value="1"><span class="t-en">1 day</span><span class="t-fr">1 jour</span><span class="t-es">1 día</span></option>
+              <option value="7" selected><span class="t-en">7 days</span><span class="t-fr">7 jours</span><span class="t-es">7 días</span></option>
+              <option value="30"><span class="t-en">30 days</span><span class="t-fr">30 jours</span><span class="t-es">30 días</span></option>
+              <option value="365"><span class="t-en">1 year</span><span class="t-fr">1 an</span><span class="t-es">1 año</span></option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <div id="glpResult" style="background:var(--good-pale);border:1px solid rgba(14,159,110,.2);border-radius:12px;padding:18px">
+            <div style="font-size:.72rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--good);margin-bottom:12px"><span class="t-en">Estimated yield</span><span class="t-fr">Rendement estimé</span><span class="t-es">Rendimiento estimado</span></div>
+            <div style="font-size:2rem;font-family:var(--mono);font-weight:700;color:var(--text)" id="glpYield">$0</div>
+            <div style="font-size:.8rem;color:var(--dim);margin-top:4px" id="glpYieldLabel">—</div>
+            <div style="border-top:1px solid rgba(14,159,110,.2);margin:14px 0"></div>
+            <div style="display:flex;justify-content:space-between;font-size:.82rem;margin-bottom:6px"><span style="color:var(--dim)"><span class="t-en">Daily</span><span class="t-fr">Par jour</span><span class="t-es">Diario</span></span><b id="glpDaily">—</b></div>
+            <div style="display:flex;justify-content:space-between;font-size:.82rem;margin-bottom:6px"><span style="color:var(--dim)"><span class="t-en">Weekly</span><span class="t-fr">Par semaine</span><span class="t-es">Semanal</span></span><b id="glpWeekly">—</b></div>
+            <div style="display:flex;justify-content:space-between;font-size:.82rem"><span style="color:var(--dim)"><span class="t-en">Monthly</span><span class="t-fr">Par mois</span><span class="t-es">Mensual</span></span><b id="glpMonthly">—</b></div>
+          </div>
+          <div style="margin-top:12px;background:var(--warn-pale);border-radius:10px;padding:12px;font-size:.78rem;color:var(--dim);line-height:1.6">
+            ⚠ <span class="t-en"><strong style="color:var(--text)">GLP risk:</strong> you earn fees from traders, but absorb their P&L. If traders collectively win, GLP value drops. 50% of fees paid in ETH, 50% in esGMX (vested over 1 year).</span><span class="t-fr"><strong style="color:var(--text)">Risque GLP :</strong> vous gagnez les frais des traders, mais absorbez leur P&L. Si les traders gagnent collectivement, la valeur GLP baisse. 50% des frais en ETH, 50% en esGMX (vesté sur 1 an).</span><span class="t-es"><strong style="color:var(--text)">Riesgo GLP:</strong> ganas comisiones de traders, pero absorbes su P&L. Si los traders ganan en conjunto, el valor GLP baja. 50% de comisiones en ETH, 50% en esGMX (vesting 1 año).</span>
+          </div>
+        </div>
+      </div>
+      <!-- GLP Composition reference -->
+      <div style="margin-top:18px;overflow-x:auto">
+        <div style="font-size:.72rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--faint);margin-bottom:10px"><span class="t-en">GLP basket composition (Arbitrum, reference)</span><span class="t-fr">Composition du panier GLP (Arbitrum, référence)</span><span class="t-es">Composición del cesto GLP (Arbitrum, referencia)</span></div>
+        <table style="width:100%;font-size:.8rem;border-collapse:collapse">
+          <thead><tr style="background:var(--surface-2)">
+            <th style="text-align:left;padding:8px 10px;font-weight:700;color:var(--faint);font-size:.7rem;text-transform:uppercase;letter-spacing:.1em"><span class="t-en">Token</span><span class="t-fr">Token</span><span class="t-es">Token</span></th>
+            <th style="text-align:right;padding:8px 10px;font-weight:700;color:var(--faint);font-size:.7rem;text-transform:uppercase;letter-spacing:.1em"><span class="t-en">Target weight</span><span class="t-fr">Poids cible</span><span class="t-es">Peso objetivo</span></th>
+            <th style="text-align:right;padding:8px 10px;font-weight:700;color:var(--faint);font-size:.7rem;text-transform:uppercase;letter-spacing:.1em"><span class="t-en">Type</span><span class="t-fr">Type</span><span class="t-es">Tipo</span></th>
+            <th style="text-align:right;padding:8px 10px;font-weight:700;color:var(--faint);font-size:.7rem;text-transform:uppercase;letter-spacing:.1em"><span class="t-en">Exposure</span><span class="t-fr">Exposition</span><span class="t-es">Exposición</span></th>
+          </tr></thead>
+          <tbody id="glpTable">
+            <tr style="border-bottom:1px solid var(--line-soft)"><td style="padding:8px 10px;font-weight:600">ETH</td><td style="text-align:right;padding:8px 10px;font-family:var(--mono)">~28%</td><td style="text-align:right;padding:8px 10px;color:var(--dim)"><span class="t-en">Crypto</span><span class="t-fr">Crypto</span><span class="t-es">Cripto</span></td><td style="text-align:right;padding:8px 10px;color:var(--warn);font-weight:600"><span class="t-en">Directional</span><span class="t-fr">Directionnel</span><span class="t-es">Direccional</span></td></tr>
+            <tr style="border-bottom:1px solid var(--line-soft)"><td style="padding:8px 10px;font-weight:600">WBTC</td><td style="text-align:right;padding:8px 10px;font-family:var(--mono)">~22%</td><td style="text-align:right;padding:8px 10px;color:var(--dim)"><span class="t-en">Crypto</span><span class="t-fr">Crypto</span><span class="t-es">Cripto</span></td><td style="text-align:right;padding:8px 10px;color:var(--warn);font-weight:600"><span class="t-en">Directional</span><span class="t-fr">Directionnel</span><span class="t-es">Direccional</span></td></tr>
+            <tr style="border-bottom:1px solid var(--line-soft)"><td style="padding:8px 10px;font-weight:600">USDC</td><td style="text-align:right;padding:8px 10px;font-family:var(--mono)">~33%</td><td style="text-align:right;padding:8px 10px;color:var(--dim)"><span class="t-en">Stable</span><span class="t-fr">Stable</span><span class="t-es">Estable</span></td><td style="text-align:right;padding:8px 10px;color:var(--good);font-weight:600"><span class="t-en">Neutral</span><span class="t-fr">Neutre</span><span class="t-es">Neutral</span></td></tr>
+            <tr style="border-bottom:1px solid var(--line-soft)"><td style="padding:8px 10px;font-weight:600">USDT</td><td style="text-align:right;padding:8px 10px;font-family:var(--mono)">~10%</td><td style="text-align:right;padding:8px 10px;color:var(--dim)"><span class="t-en">Stable</span><span class="t-fr">Stable</span><span class="t-es">Estable</span></td><td style="text-align:right;padding:8px 10px;color:var(--good);font-weight:600"><span class="t-en">Neutral</span><span class="t-fr">Neutre</span><span class="t-es">Neutral</span></td></tr>
+            <tr><td style="padding:8px 10px;font-weight:600">Others (ARB, LINK…)</td><td style="text-align:right;padding:8px 10px;font-family:var(--mono)">~7%</td><td style="text-align:right;padding:8px 10px;color:var(--dim)"><span class="t-en">Mixed</span><span class="t-fr">Mixte</span><span class="t-es">Mixto</span></td><td style="text-align:right;padding:8px 10px;color:var(--warn);font-weight:600"><span class="t-en">Directional</span><span class="t-fr">Directionnel</span><span class="t-es">Direccional</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- GM SECTION -->
+    <div id="gmSection" style="display:none">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+        <div>
+          <div class="field">
+            <label><span class="t-en">Amount to deposit ($)</span><span class="t-fr">Montant à déposer ($)</span><span class="t-es">Cantidad a depositar ($)</span></label>
+            <input type="number" id="gmAmount" value="5000" oninput="calcGM()" style="width:100%;background:var(--surface-2);border:1px solid var(--line);color:var(--text);font-family:var(--mono);font-size:14px;padding:10px 12px;border-radius:9px;outline:none"/>
+          </div>
+          <div class="field">
+            <label><span class="t-en">GM Pool</span><span class="t-fr">Pool GM</span><span class="t-es">Pool GM</span></label>
+            <select id="gmPool" onchange="calcGM()" style="width:100%;background:var(--surface-2);border:1px solid var(--line);color:var(--text);font-family:var(--ui);font-size:14px;padding:10px 12px;border-radius:9px;outline:none">
+              <option value="20">BTC/USD GM — ~20% APR</option>
+              <option value="17" selected>ETH/USD GM — ~17% APR</option>
+              <option value="12">ARB/USD GM — ~12% APR</option>
+              <option value="15">SOL/USD GM — ~15% APR</option>
+              <option value="18">AVAX/USD GM — ~18% APR</option>
+              <option value="10">LINK/USD GM — ~10% APR</option>
+              <option value="0">Custom APR (see below)</option>
+            </select>
+          </div>
+          <div class="field" id="gmCustomField" style="display:none">
+            <label><span class="t-en">Custom APR (%)</span><span class="t-fr">APR personnalisé (%)</span><span class="t-es">APR personalizado (%)</span></label>
+            <input type="number" id="gmCustomApr" value="15" step="0.5" min="0" max="200" oninput="calcGM()" style="width:100%;background:var(--surface-2);border:1px solid var(--line);color:var(--text);font-family:var(--mono);font-size:14px;padding:10px 12px;border-radius:9px;outline:none"/>
+          </div>
+          <div class="field">
+            <label><span class="t-en">Duration</span><span class="t-fr">Durée</span><span class="t-es">Duración</span></label>
+            <select id="gmDur" onchange="calcGM()" style="width:100%;background:var(--surface-2);border:1px solid var(--line);color:var(--text);font-family:var(--ui);font-size:14px;padding:10px 12px;border-radius:9px;outline:none">
+              <option value="1"><span class="t-en">1 day</span><span class="t-fr">1 jour</span><span class="t-es">1 día</span></option>
+              <option value="7" selected><span class="t-en">7 days</span><span class="t-fr">7 jours</span><span class="t-es">7 días</span></option>
+              <option value="30"><span class="t-en">30 days</span><span class="t-fr">30 jours</span><span class="t-es">30 días</span></option>
+              <option value="365"><span class="t-en">1 year</span><span class="t-fr">1 an</span><span class="t-es">1 año</span></option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <div id="gmResult" style="background:var(--good-pale);border:1px solid rgba(14,159,110,.2);border-radius:12px;padding:18px">
+            <div style="font-size:.72rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--good);margin-bottom:12px"><span class="t-en">Estimated yield</span><span class="t-fr">Rendement estimé</span><span class="t-es">Rendimiento estimado</span></div>
+            <div style="font-size:2rem;font-family:var(--mono);font-weight:700;color:var(--text)" id="gmYield">$0</div>
+            <div style="font-size:.8rem;color:var(--dim);margin-top:4px" id="gmYieldLabel">—</div>
+            <div style="border-top:1px solid rgba(14,159,110,.2);margin:14px 0"></div>
+            <div style="display:flex;justify-content:space-between;font-size:.82rem;margin-bottom:6px"><span style="color:var(--dim)"><span class="t-en">Daily</span><span class="t-fr">Par jour</span><span class="t-es">Diario</span></span><b id="gmDaily">—</b></div>
+            <div style="display:flex;justify-content:space-between;font-size:.82rem;margin-bottom:6px"><span style="color:var(--dim)"><span class="t-en">Weekly</span><span class="t-fr">Par semaine</span><span class="t-es">Semanal</span></span><b id="gmWeekly">—</b></div>
+            <div style="display:flex;justify-content:space-between;font-size:.82rem"><span style="color:var(--dim)"><span class="t-en">Monthly</span><span class="t-fr">Par mois</span><span class="t-es">Mensual</span></span><b id="gmMonthly">—</b></div>
+          </div>
+          <div style="margin-top:12px;background:var(--warn-pale);border-radius:10px;padding:12px;font-size:.78rem;color:var(--dim);line-height:1.6">
+            ⚠ <span class="t-en"><strong style="color:var(--text)">GM risk:</strong> isolated pool — directional exposure to the long token (ETH for ETH/USD GM). If ETH drops sharply, your USD value drops too. No esGMX vesting — yields paid directly. APRs above are estimates, verify live.</span><span class="t-fr"><strong style="color:var(--text)">Risque GM :</strong> pool isolée — exposition directionnelle au token long (ETH pour ETH/USD GM). Si ETH baisse fortement, votre valeur USD baisse aussi. Pas de vesting esGMX — rendements payés directement. APR indicatifs, vérifiez en temps réel.</span><span class="t-es"><strong style="color:var(--text)">Riesgo GM:</strong> pool aislado — exposición direccional al token largo (ETH para ETH/USD GM). Si ETH baja mucho, tu valor USD también baja. Sin vesting esGMX — rendimientos pagados directamente. APR son estimaciones, verifica en vivo.</span>
+          </div>
+        </div>
+      </div>
+      <!-- GM Pools reference table -->
+      <div style="margin-top:18px;overflow-x:auto">
+        <div style="font-size:.72rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--faint);margin-bottom:10px"><span class="t-en">GM Pools on Arbitrum (reference APRs)</span><span class="t-fr">Pools GM sur Arbitrum (APR de référence)</span><span class="t-es">Pools GM en Arbitrum (APR de referencia)</span></div>
+        <table style="width:100%;font-size:.8rem;border-collapse:collapse">
+          <thead><tr style="background:var(--surface-2)">
+            <th style="text-align:left;padding:8px 10px;font-weight:700;color:var(--faint);font-size:.7rem;text-transform:uppercase;letter-spacing:.1em"><span class="t-en">Pool</span><span class="t-fr">Pool</span><span class="t-es">Pool</span></th>
+            <th style="text-align:right;padding:8px 10px;font-weight:700;color:var(--faint);font-size:.7rem;text-transform:uppercase;letter-spacing:.1em"><span class="t-en">Est. APR</span><span class="t-fr">APR est.</span><span class="t-es">APR est.</span></th>
+            <th style="text-align:right;padding:8px 10px;font-weight:700;color:var(--faint);font-size:.7rem;text-transform:uppercase;letter-spacing:.1em"><span class="t-en">Long token</span><span class="t-fr">Token long</span><span class="t-es">Token largo</span></th>
+            <th style="text-align:right;padding:8px 10px;font-weight:700;color:var(--faint);font-size:.7rem;text-transform:uppercase;letter-spacing:.1em"><span class="t-en">Short token</span><span class="t-fr">Token short</span><span class="t-es">Token corto</span></th>
+            <th style="text-align:right;padding:8px 10px;font-weight:700;color:var(--faint);font-size:.7rem;text-transform:uppercase;letter-spacing:.1em"><span class="t-en">Risk</span><span class="t-fr">Risque</span><span class="t-es">Riesgo</span></th>
+          </tr></thead>
+          <tbody>
+            <tr style="border-bottom:1px solid var(--line-soft)"><td style="padding:8px 10px;font-weight:600">BTC/USD GM</td><td style="text-align:right;padding:8px 10px;font-family:var(--mono);color:var(--good);font-weight:700">~20%</td><td style="text-align:right;padding:8px 10px;font-family:var(--mono)">WBTC</td><td style="text-align:right;padding:8px 10px;font-family:var(--mono)">USDC</td><td style="text-align:right;padding:8px 10px;color:var(--warn)"><span class="t-en">Medium</span><span class="t-fr">Moyen</span><span class="t-es">Medio</span></td></tr>
+            <tr style="border-bottom:1px solid var(--line-soft)"><td style="padding:8px 10px;font-weight:600">ETH/USD GM</td><td style="text-align:right;padding:8px 10px;font-family:var(--mono);color:var(--good);font-weight:700">~17%</td><td style="text-align:right;padding:8px 10px;font-family:var(--mono)">WETH</td><td style="text-align:right;padding:8px 10px;font-family:var(--mono)">USDC</td><td style="text-align:right;padding:8px 10px;color:var(--warn)"><span class="t-en">Medium</span><span class="t-fr">Moyen</span><span class="t-es">Medio</span></td></tr>
+            <tr style="border-bottom:1px solid var(--line-soft)"><td style="padding:8px 10px;font-weight:600">ARB/USD GM</td><td style="text-align:right;padding:8px 10px;font-family:var(--mono);color:var(--warn);font-weight:700">~12%</td><td style="text-align:right;padding:8px 10px;font-family:var(--mono)">ARB</td><td style="text-align:right;padding:8px 10px;font-family:var(--mono)">USDC</td><td style="text-align:right;padding:8px 10px;color:var(--coral)"><span class="t-en">High</span><span class="t-fr">Élevé</span><span class="t-es">Alto</span></td></tr>
+            <tr style="border-bottom:1px solid var(--line-soft)"><td style="padding:8px 10px;font-weight:600">SOL/USD GM</td><td style="text-align:right;padding:8px 10px;font-family:var(--mono);color:var(--good);font-weight:700">~15%</td><td style="text-align:right;padding:8px 10px;font-family:var(--mono)">SOL</td><td style="text-align:right;padding:8px 10px;font-family:var(--mono)">USDC</td><td style="text-align:right;padding:8px 10px;color:var(--warn)"><span class="t-en">Medium</span><span class="t-fr">Moyen</span><span class="t-es">Medio</span></td></tr>
+            <tr style="border-bottom:1px solid var(--line-soft)"><td style="padding:8px 10px;font-weight:600">AVAX/USD GM</td><td style="text-align:right;padding:8px 10px;font-family:var(--mono);color:var(--good);font-weight:700">~18%</td><td style="text-align:right;padding:8px 10px;font-family:var(--mono)">AVAX</td><td style="text-align:right;padding:8px 10px;font-family:var(--mono)">USDC</td><td style="text-align:right;padding:8px 10px;color:var(--warn)"><span class="t-en">Medium</span><span class="t-fr">Moyen</span><span class="t-es">Medio</span></td></tr>
+            <tr><td style="padding:8px 10px;font-weight:600">LINK/USD GM</td><td style="text-align:right;padding:8px 10px;font-family:var(--mono);color:var(--warn);font-weight:700">~10%</td><td style="text-align:right;padding:8px 10px;font-family:var(--mono)">LINK</td><td style="text-align:right;padding:8px 10px;font-family:var(--mono)">USDC</td><td style="text-align:right;padding:8px 10px;color:var(--coral)"><span class="t-en">High</span><span class="t-fr">Élevé</span><span class="t-es">Alto</span></td></tr>
+          </tbody>
+        </table>
+        <div style="font-size:.72rem;color:var(--faint);margin-top:8px"><span class="t-en">* APRs are estimates based on 30-day historical average. Verify real-time at app.gmx.io/earn.</span><span class="t-fr">* APR estimés sur la base de la moyenne historique 30 jours. Vérifiez en temps réel sur app.gmx.io/earn.</span><span class="t-es">* APR estimados basados en promedio histórico de 30 días. Verifica en tiempo real en app.gmx.io/earn.</span></div>
+      </div>
+    </div>
+  </div>
 </main>
 
 <div class="tools-nav-band">
@@ -277,6 +421,7 @@
     <a href="waste.html" class="tools-nav-btn"><span>🔥</span><span class="t-en">Waste Detector</span><span class="t-fr">Détecteur de Gaspillage</span><span class="t-es">Detector de Desperdicio</span></a>
     <span class="tools-nav-btn current"><span>⚡</span><span class="t-en">GMX Calculator</span><span class="t-fr">Calculateur GMX</span><span class="t-es">Calculadora GMX</span></span>
     <a href="dashboard.html" class="tools-nav-btn"><span>🔭</span><span class="t-en">Position Dashboard</span><span class="t-fr">Dashboard Positions</span><span class="t-es">Dashboard de Posiciones</span></a>
+    <a href="morpho.html" class="tools-nav-btn"><span>🔷</span><span class="t-en">Morpho Blue</span><span class="t-fr">Morpho Blue</span><span class="t-es">Morpho Blue</span></a>
   </div>
 </div>
 
@@ -452,11 +597,70 @@ function restoreGMX(){
   if(el) el.addEventListener('input', saveGMX);
 });
 
+// ===== LP YIELD CALCULATORS =====
+let _poolMode = 'glp';
+
+function switchPool(mode){
+  _poolMode = mode;
+  document.getElementById('glpSection').style.display = mode==='glp' ? '' : 'none';
+  document.getElementById('gmSection').style.display = mode==='gm' ? '' : 'none';
+  document.getElementById('tabGLP').classList.toggle('active', mode==='glp');
+  document.getElementById('tabGM').classList.toggle('active', mode==='gm');
+  if(mode==='glp') calcLP(); else calcGM();
+}
+
+function fmtLP(v){
+  if(v<0.01) return '$0.00';
+  if(v<10) return '$'+v.toFixed(2);
+  return '$'+v.toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:0});
+}
+
+function calcLP(){
+  const amount = parseFloat(document.getElementById('glpAmount').value)||0;
+  const apr = parseFloat(document.getElementById('glpApr').value)||0;
+  const days = parseFloat(document.getElementById('glpDur').value)||7;
+  const daily = amount * (apr/100) / 365;
+  const total = daily * days;
+  const l = (typeof getLang==='function') ? getLang() : 'en';
+  document.getElementById('glpYield').textContent = fmtLP(total);
+  const durLabel = days===1 ? (l==='fr'?'1 jour':l==='es'?'1 día':'1 day') : days===7 ? (l==='fr'?'7 jours':l==='es'?'7 días':'7 days') : days===30 ? (l==='fr'?'30 jours':l==='es'?'30 días':'30 days') : (l==='fr'?'1 an':l==='es'?'1 año':'1 year');
+  document.getElementById('glpYieldLabel').textContent = (l==='fr'?'sur ':l==='es'?'en ':'over ') + durLabel + ' @ ' + apr + '% APR';
+  document.getElementById('glpDaily').textContent = fmtLP(daily);
+  document.getElementById('glpWeekly').textContent = fmtLP(daily*7);
+  document.getElementById('glpMonthly').textContent = fmtLP(daily*30);
+}
+
+function calcGM(){
+  const amount = parseFloat(document.getElementById('gmAmount').value)||0;
+  const poolSel = document.getElementById('gmPool');
+  const customField = document.getElementById('gmCustomField');
+  let aprVal = parseFloat(poolSel.value)||0;
+  if(aprVal===0){
+    customField.style.display = '';
+    aprVal = parseFloat(document.getElementById('gmCustomApr').value)||0;
+  } else {
+    customField.style.display = 'none';
+  }
+  const days = parseFloat(document.getElementById('gmDur').value)||7;
+  const daily = amount * (aprVal/100) / 365;
+  const total = daily * days;
+  const l = (typeof getLang==='function') ? getLang() : 'en';
+  document.getElementById('gmYield').textContent = fmtLP(total);
+  const poolName = poolSel.options[poolSel.selectedIndex].text.split(' — ')[0];
+  const durLabel = days===1 ? (l==='fr'?'1 jour':l==='es'?'1 día':'1 day') : days===7 ? (l==='fr'?'7 jours':l==='es'?'7 días':'7 days') : days===30 ? (l==='fr'?'30 jours':l==='es'?'30 días':'30 days') : (l==='fr'?'1 an':l==='es'?'1 año':'1 year');
+  document.getElementById('gmYieldLabel').textContent = poolName + ' · ' + (l==='fr'?'sur ':l==='es'?'en ':'over ') + durLabel + ' @ ' + aprVal + '% APR';
+  document.getElementById('gmDaily').textContent = fmtLP(daily);
+  document.getElementById('gmWeekly').textContent = fmtLP(daily*7);
+  document.getElementById('gmMonthly').textContent = fmtLP(daily*30);
+}
+
 // Init — wrapped in DOMContentLoaded for safe execution
 document.addEventListener('DOMContentLoaded', function(){
   restoreGMX();
   fetchPrice();
   calc();
+  calcLP();
+  calcGM();
 });
 </script>
 </body>
