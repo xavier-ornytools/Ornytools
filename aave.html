@@ -208,6 +208,16 @@ html.dark .tools-nav-band{background:#161b22!important;border-color:var(--line)!
 html.dark .tools-nav-btn{background:var(--surface-2)!important;border-color:var(--line)!important;color:var(--text)!important}
 .btn-theme{background:transparent;border:1px solid var(--line);border-radius:7px;padding:5px 9px;cursor:pointer;font-size:1rem;line-height:1;transition:.15s}
 .btn-theme:hover{border-color:var(--blue)}
+
+/* E-MODE */
+.emode-toggle{font-size:11px;font-weight:700;padding:5px 11px;border:1.5px solid var(--line);border-radius:7px;background:#fff;color:var(--dim);cursor:pointer;transition:.15s;font-family:var(--ui)}
+.emode-toggle:hover{border-color:var(--blue);color:var(--blue)}
+.emode-toggle.on{background:rgba(26,86,219,.1);color:var(--blue);border-color:var(--blue)}
+.emode-banner{display:none;align-items:flex-start;gap:8px;background:rgba(26,86,219,.07);border:1.5px solid rgba(26,86,219,.25);border-radius:9px;padding:10px 13px;font-size:12px;color:var(--dim);margin-bottom:14px;line-height:1.55}
+.iso-badge{display:inline-block;font-size:9.5px;font-weight:700;background:rgba(245,158,11,.12);color:var(--warn);border:1px solid rgba(245,158,11,.3);border-radius:4px;padding:1px 5px;margin-left:4px;letter-spacing:.04em;vertical-align:middle}
+.iso-banner{display:flex;align-items:flex-start;gap:8px;background:rgba(245,158,11,.07);border:1.5px solid rgba(245,158,11,.3);border-radius:9px;padding:10px 13px;font-size:12px;color:var(--dim);margin-top:12px;line-height:1.55}
+html.dark .emode-toggle{background:var(--surface);border-color:var(--line);color:var(--dim)}
+html.dark .emode-toggle.on{background:rgba(26,86,219,.18);color:#60a5fa;border-color:rgba(26,86,219,.5)}
 </style>
   <script type="application/ld+json">
   {
@@ -299,7 +309,18 @@ html.dark .tools-nav-btn{background:var(--surface-2)!important;border-color:var(
 
     <!-- Collateral -->
     <div class="panel">
-      <div class="panel-title" id="colPanelTitle">Collateral assets</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+        <div class="panel-title" id="colPanelTitle" style="margin-bottom:0">Collateral assets</div>
+        <button id="eModeBtn" class="emode-toggle" onclick="toggleEMode()" title="E-Mode uses higher LTV/LT for same-category assets (e.g. WETH/wstETH/rETH)">⚡ E-Mode</button>
+      </div>
+      <div id="eModeBanner" class="emode-banner">
+        <span style="font-size:16px">⚡</span>
+        <span id="eModeBannerTxt"><strong>E-Mode: ETH correlated</strong> — LTV <strong>93%</strong> · LT <strong>95%</strong> · Liq. bonus <strong>1%</strong>.
+        <span class="t-en"> Works only if ALL collateral is WETH / wstETH / rETH. Debt must be WETH or approved stablecoin.</span>
+        <span class="t-fr"> Fonctionne uniquement si TOUT le collatéral est WETH / wstETH / rETH. La dette doit être en WETH ou stablecoin approuvé.</span>
+        <span class="t-es"> Solo funciona si TODO el colateral es WETH / wstETH / rETH. La deuda debe ser WETH o stablecoin aprobado.</span>
+        </span>
+      </div>
       <div class="collateral-list" id="collateralList"></div>
       <button class="add-btn" id="addColBtn" onclick="addCollateral()">+ <span id="addColText">Add collateral</span></button>
     </div>
@@ -531,7 +552,17 @@ const ASSETS = {
 
 const BORROW_ASSETS = ['USDC','USDT','DAI','USDS','GHO','WETH','WBTC'];
 
+// E-Mode category 1: ETH correlated (Aave V3 Arbitrum + Ethereum)
+const EMODE_CAT1 = { ltv: 0.93, liqThresh: 0.95, liqBonus: 0.01, assets: ['WETH','WSTETH','RETH'] };
+
+// Isolation mode: these assets can only be used as sole collateral, with a debt ceiling
+const ISOLATION_ASSETS = {
+  ARB:  { debtCeiling: 14_000_000 },
+  LINK: { debtCeiling: 10_000_000 },
+};
+
 let _prices = {};
+let eMode = false;
 
 /* ── COLLATERAL & DEBT STATE ──────────────────────────────────────────── */
 let collaterals = [{ id: Date.now(), asset:'WBTC', amount:'0.5' }];
@@ -557,7 +588,20 @@ function fmtPct(n) {
 
 /* ── RENDER ROWS ─────────────────────────────────────────────────────────── */
 function makeAssetOptions(list, selected) {
-  return list.map(k => `<option value="${k}"${k===selected?' selected':''}>${ASSETS[k]?.label || k}</option>`).join('');
+  return list.map(k => {
+    const isoMark = ISOLATION_ASSETS[k] ? ' ⚡ Iso' : '';
+    return `<option value="${k}"${k===selected?' selected':''}>${ASSETS[k]?.label || k}${isoMark}</option>`;
+  }).join('');
+}
+
+function toggleEMode() {
+  eMode = !eMode;
+  const btn = document.getElementById('eModeBtn');
+  const banner = document.getElementById('eModeBanner');
+  btn.classList.toggle('on', eMode);
+  btn.textContent = eMode ? '⚡ E-Mode: ON' : '⚡ E-Mode';
+  banner.style.display = eMode ? 'flex' : 'none';
+  compute();
 }
 
 function renderCollateralRows() {
@@ -650,9 +694,10 @@ function compute() {
     const p = _prices[row.asset] || 0;
     const amt = parseFloat(row.amount) || 0;
     const usd = amt * p;
+    const useE = eMode && EMODE_CAT1.assets.includes(row.asset);
     totalCollUSD += usd;
-    totalWTV     += usd * a.liqThresh;
-    totalMaxBorrow += usd * a.ltv;
+    totalWTV     += usd * (useE ? EMODE_CAT1.liqThresh : a.liqThresh);
+    totalMaxBorrow += usd * (useE ? EMODE_CAT1.ltv : a.ltv);
   });
 
   // Debt total
@@ -677,9 +722,11 @@ function compute() {
     if(a && amt > 0) {
       const otherCollWTV = collaterals.slice(1).reduce((s, r) => {
         const aa = ASSETS[r.asset]; const pp = _prices[r.asset] || 0;
-        return s + (parseFloat(r.amount)||0) * pp * (aa?.liqThresh||0);
+        const ueE = eMode && EMODE_CAT1.assets.includes(r.asset);
+        return s + (parseFloat(r.amount)||0) * pp * (ueE ? EMODE_CAT1.liqThresh : (aa?.liqThresh||0));
       }, 0);
-      liqPrice = (totalDebtUSD - otherCollWTV) / (amt * a.liqThresh);
+      const firstLT = (eMode && EMODE_CAT1.assets.includes(firstRow.asset)) ? EMODE_CAT1.liqThresh : a.liqThresh;
+      liqPrice = (totalDebtUSD - otherCollWTV) / (amt * firstLT);
       if(liqPrice < 0) liqPrice = 0;
     }
   }
@@ -806,6 +853,28 @@ function compute() {
       rows.push(`<div class="insight-row"><div class="insight-ico">🔄</div><div class="insight-text">${col.asset} ${t.insPriceLive||'live price'}: <strong>${fmtUSD(p)}</strong>${liqPrice&&liqPrice>0?` · ${t.insLiqAt||'Liquidation at'} <strong style="color:var(--coral)">${fmtUSD(liqPrice)}</strong> (${((p-liqPrice)/p*100).toFixed(1)}% ${t.insBelow||'below current'})`:''}${t.insSetAlert||''}</div></div>`);
     }
 
+    // 5. E-Mode warning if some assets are not E-Mode compatible
+    if(eMode) {
+      const incompatible = collaterals.filter(r => !EMODE_CAT1.assets.includes(r.asset));
+      if(incompatible.length > 0) {
+        const names = incompatible.map(r => r.asset).join(', ');
+        rows.push(`<div class="insight-row"><div class="insight-ico">⚡</div><div class="insight-text"><strong>E-Mode incompatibility:</strong> ${names} ${lang==='fr' ? 'ne font pas partie de la catégorie ETH correlated. E-Mode ne s\'applique pas à ces actifs — les paramètres standard sont utilisés.' : 'are not in the ETH correlated E-Mode category. Standard params used for these assets.'}</div></div>`);
+      } else {
+        rows.push(`<div class="insight-row"><div class="insight-ico">⚡</div><div class="insight-text"><strong>E-Mode active (ETH correlated)</strong> — LTV <strong>93%</strong> · LT <strong>95%</strong>. ${lang==='fr' ? 'Tous les actifs sont compatibles. Ce mode nécessite que la dette soit également en ETH correlated (WETH ou USDC).' : 'All collateral is compatible. Debt must also be in the same E-Mode category (WETH or USDC).'}</div></div>`);
+      }
+    }
+
+    // 6. Isolation mode warning
+    const isoCol = collaterals.find(r => ISOLATION_ASSETS[r.asset]);
+    if(isoCol) {
+      const isoCfg = ISOLATION_ASSETS[isoCol.asset];
+      if(collaterals.length > 1) {
+        rows.push(`<div class="insight-row"><div class="insight-ico">⚠️</div><div class="insight-text"><strong>${isoCol.asset} — Isolation Mode:</strong> ${lang==='fr' ? 'Cet actif ne peut pas être combiné avec d\'autres collatéraux en mode isolation.' : 'This asset cannot be combined with other collateral in Isolation Mode.'}</div></div>`);
+      } else {
+        rows.push(`<div class="insight-row"><div class="insight-ico">🔒</div><div class="insight-text"><strong>${isoCol.asset} — Isolation Mode</strong> · ${lang==='fr' ? `Plafond de dette : $${(isoCfg.debtCeiling/1e6).toFixed(0)}M. Seuls les stablecoins listés peuvent être empruntés.` : `Debt ceiling: $${(isoCfg.debtCeiling/1e6).toFixed(0)}M. Only listed stablecoins can be borrowed.`}</div></div>`);
+      }
+    }
+
     iBody.innerHTML = rows.length ? rows.join('') : `<div class="insight-row"><div class="insight-ico">✅</div><div class="insight-text">${t.insHealthy||'Position looks healthy.'}</div></div>`;
   } else if(iCard) {
     iCard.style.display = 'none';
@@ -823,9 +892,10 @@ function updateScenario() {
     const p = (_prices[row.asset] || 0) * (1 - pct);
     const amt = parseFloat(row.amount) || 0;
     const usd = amt * p;
+    const useE = eMode && EMODE_CAT1.assets.includes(row.asset);
     totalCollUSD += usd;
-    totalWTV     += usd * a.liqThresh;
-    totalMaxBorrow += usd * a.ltv;
+    totalWTV     += usd * (useE ? EMODE_CAT1.liqThresh : a.liqThresh);
+    totalMaxBorrow += usd * (useE ? EMODE_CAT1.ltv : a.ltv);
   });
   let totalDebtUSD = 0;
   debts.forEach(row => {
