@@ -700,6 +700,38 @@ fee_total  = fee_open + fee_borrow
     <div class="callout good"><span class="t-en"><b>Why this is the most reliable tool in the suite:</b> it reads directly from the protocol's own state, using the same function Aave's UI calls. No modeling — just on-chain truth.</span><span class="t-fr"><b>Pourquoi c'est l'outil le plus fiable de la suite :</b> il lit directement depuis l'état propre du protocole, en utilisant la même fonction qu'appelle l'UI d'Aave. Pas de modélisation — juste la réalité on-chain.</span><span class="t-es"><b>Por qué es la herramienta más fiable de la suite:</b> lee directamente desde el estado propio del protocolo, usando la misma función que llama la UI de Aave. Sin modelado — solo la verdad on-chain.</span></div>
   </div>
 
+  <div class="sec" id="morpho">
+    <div class="sec-num">17 — Morpho Blue Calculator</div>
+    <h2><span class="t-en">Isolated Market Health Factor &amp; Loop Simulator</span><span class="t-fr">Health Factor par marché isolé &amp; simulateur de boucle</span><span class="t-es">Health Factor por mercado aislado &amp; simulador de bucle</span></h2>
+    <p><span class="t-en">Morpho Blue has no global pool — each market is a standalone pair (collateral / loan token) with its own fixed LLTV. Unlike Aave, there is no grace period: liquidation triggers the instant LTV exceeds LLTV.</span><span class="t-fr">Morpho Blue n'a pas de pool globale — chaque marché est une paire autonome (collatéral / token emprunté) avec son propre LLTV fixe. Contrairement à Aave, il n'y a pas de période de grâce : la liquidation est déclenchée dès que LTV dépasse LLTV.</span><span class="t-es">Morpho Blue no tiene pool global — cada mercado es un par autónomo (colateral / token prestado) con su propio LLTV fijo. A diferencia de Aave, no hay periodo de gracia: la liquidación se activa en el instante en que LTV supera LLTV.</span></p>
+
+    <pre class="formula"><span class="comment">// Per-market inputs: collateral amount, borrow amount, price, LLTV</span>
+
+<span class="hl">LTV      = borrow / (collateral × price)</span>
+<span class="hl">HF       = (collateral × price × LLTV) / borrow</span>
+<span class="hl">liqPrice = borrow / (collateral × LLTV)</span>
+
+<span class="comment">// Drop to liquidation (% collateral price decline):</span>
+<span class="hl">dropToLiq = (1 − LTV / LLTV) × 100%</span>
+
+<span class="comment">// HF = LLTV / LTV  →  HF > 1 = safe, HF ≤ 1 = liquidatable</span></pre>
+
+    <p><span class="t-en"><strong>Loop simulator:</strong> each loop borrows a fraction r of remaining LLTV capacity and buys more collateral. After N loops:</span><span class="t-fr"><strong>Simulateur de boucle :</strong> chaque boucle emprunte une fraction r de la capacité LLTV restante et achète plus de collatéral. Après N boucles :</span><span class="t-es"><strong>Simulador de bucle:</strong> cada bucle toma prestado una fracción r de la capacidad LLTV restante y compra más colateral. Tras N bucles:</span></p>
+
+    <pre class="formula"><span class="comment">// r = LLTV × (utilization% / 100)   e.g. 86% × 80% = 0.688</span>
+
+<span class="comment">// Each loop adds r × current_collateral to collateral and debt:</span>
+col_n = col_0 × (1 + r + r² + … + rⁿ) = col_0 × (1 − rⁿ⁺¹) / (1 − r)
+debt_n = col_0 × (r + r² + … + rⁿ) = col_0 × r × (1 − rⁿ) / (1 − r)
+
+<span class="comment">// Effective leverage after N loops:</span>
+<span class="hl">leverage = col_n / col_0 → converges to 1/(1−r) as N→∞</span>
+
+<span class="comment">// Final HF is computed identically to the single-position formula.</span></pre>
+
+    <div class="callout warn"><span class="t-en"><b>No grace period on Morpho Blue:</b> unlike Aave V3 which has a liquidation bonus and health factor buffer, Morpho Blue liquidates at the exact LLTV boundary. A 1% price move past the liquidation price means full liquidation can be triggered. Keep a wider safety margin than you would on Aave.</span><span class="t-fr"><b>Pas de période de grâce sur Morpho Blue :</b> contrairement à Aave V3 qui a un bonus de liquidation et une marge HF, Morpho Blue liquide exactement à la frontière LLTV. Un mouvement de 1% au-delà du prix de liquidation peut déclencher une liquidation complète. Gardez une marge de sécurité plus large que sur Aave.</span><span class="t-es"><b>Sin periodo de gracia en Morpho Blue:</b> a diferencia de Aave V3 que tiene un bonus de liquidación y margen de HF, Morpho Blue liquida exactamente en el límite LLTV. Un movimiento de precio del 1% más allá del precio de liquidación puede desencadenar una liquidación completa. Mantén un margen de seguridad más amplio que en Aave.</span></div>
+  </div>
+
 </div><!-- /content -->
 
 <div class="back-section">
