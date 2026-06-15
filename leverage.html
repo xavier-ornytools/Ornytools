@@ -319,6 +319,24 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <button class="loop-btn" id="loopPlus">+</button>
       <span class="loop-label"><span class="t-en">loops (1 = no leverage)</span><span class="t-fr">loops (1 = sans levier)</span><span class="t-es">loops (1 = sin apalancamiento)</span></span>
     </div>
+
+    <div style="margin-top:14px">
+      <div class="field">
+        <label>
+          <span><span class="t-en">Gas cost per loop</span><span class="t-fr">Coût gas par loop</span><span class="t-es">Costo gas por loop</span></span>
+          <span class="hint" id="gasChainHint">Arbitrum default</span>
+        </label>
+        <div class="with-prefix">
+          <span class="pfx">$</span>
+          <input id="gasPerLoop" class="mono" value="0.05" inputmode="decimal" min="0" step="0.01" style="padding-left:26px"/>
+        </div>
+      </div>
+      <div style="font-size:10.5px;color:var(--faint);line-height:1.55;margin-top:-6px">
+        <span class="t-en">Each loop = 1 tx (flash loan + swap + deposit). Arb ≈ $0.05 · Eth ≈ $3 · Base ≈ $0.02</span>
+        <span class="t-fr">Chaque loop = 1 tx (flash loan + swap + dépôt). Arb ≈ 0,05$ · Eth ≈ 3$ · Base ≈ 0,02$</span>
+        <span class="t-es">Cada loop = 1 tx (flash loan + swap + depósito). Arb ≈ $0,05 · Eth ≈ $3 · Base ≈ $0,02</span>
+      </div>
+    </div>
   </div>
 
   <!-- RESULTS -->
@@ -339,6 +357,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </a>
         <div class="br-row"><span><span class="t-en">Drop to liquidation</span><span class="t-fr">Baisse avant liquidation</span><span class="t-es">Caída hasta liquidación</span></span><b id="resDrop">—</b></div>
         <div class="br-row"><span><span class="t-en">Net APY</span><span class="t-fr">APY Net</span><span class="t-es">APY neto</span></span><b id="resNetApy">—</b></div>
+        <div class="br-row" id="resGasRow" style="display:none"><span><span class="t-en">Net APY after gas</span><span class="t-fr">APY net après gas</span><span class="t-es">APY neto tras gas</span></span><b id="resNetApyGas">—</b></div>
+        <div class="br-row" id="resTotalGasRow" style="display:none"><span><span class="t-en">Total gas (setup)</span><span class="t-fr">Gas total (mise en place)</span><span class="t-es">Gas total (setup)</span></span><b id="resTotalGas">—</b></div>
         <div class="br-row"><span><span class="t-en">Break-even collateral APY</span><span class="t-fr">APY seuil de rentabilité</span><span class="t-es">APY colateral en equilibrio</span></span><b id="resBreakEven">—</b></div>
       </div>
     </div>
@@ -365,6 +385,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <th><span class="t-en">Cumul. collateral</span><span class="t-fr">Collateral cumulé</span><span class="t-es">Colateral acumulado</span></th>
           <th><span class="t-en">Cumul. debt</span><span class="t-fr">Dette cumulée</span><span class="t-es">Deuda acumulada</span></th>
           <th>Health Factor</th>
+          <th id="gasColHeader" style="display:none"><span class="t-en">Cum. Gas</span><span class="t-fr">Gas cumulé</span><span class="t-es">Gas acum.</span></th>
         </tr>
       </thead>
       <tbody id="loopBody"></tbody>
@@ -588,6 +609,7 @@ async function onProtocolChange(){
   });
   const ey = $('heroEyebrow');
   if(ey) ey.textContent = proto.label;
+  updateGasDefault(key);
   await applyPreset(target, key);
   fetchBorrowApy(key);
 }
@@ -616,6 +638,20 @@ async function fetchBorrowApy(protocolKey){
   } catch(e) {}
 }
 
+const GAS_DEFAULTS = {
+  arbitrum: 0.05, ethereum: 3.00, base: 0.02, optimism: 0.05,
+  polygon: 0.02, avalanche: 0.05, bnb: 0.05
+};
+
+function updateGasDefault(protocolKey) {
+  const chain = (protocolKey || '').split(':')[1] || 'arbitrum';
+  const def = GAS_DEFAULTS[chain] ?? 0.10;
+  const inp = $('gasPerLoop');
+  if(inp) { inp.value = def.toFixed(2); }
+  const hint = $('gasChainHint');
+  if(hint) hint.textContent = chain.charAt(0).toUpperCase() + chain.slice(1) + ' default';
+}
+
 $('loopMinus').addEventListener('click', () => { if(loops>1) {loops--;$('loopVal').textContent=loops;calc();} });
 $('loopPlus').addEventListener('click',  () => { if(loops<10){loops++;$('loopVal').textContent=loops;calc();} });
 
@@ -627,6 +663,7 @@ function calc(){
   const lt      = parseFloat($('ltPct').value)     / 100 || 0;
   const borrow  = parseFloat($('borrowApy').value) || 0;
   const colApy  = parseFloat($('colApy').value)    || 0;
+  const gasPerLoop = parseFloat($('gasPerLoop')?.value) || 0;
 
   if(!(colAmt>0 && price>0 && ltv>0 && lt>0)) return;
 
@@ -649,6 +686,10 @@ function calc(){
   const netApy    = colApy * leverage - borrow * (leverage - 1);
   const breakEven = borrow * (leverage - 1) / leverage;
 
+  const totalGas       = gasPerLoop * loops;
+  const netApyAfterGas = netApy - (initUSD > 0 ? (totalGas / initUSD) * 100 : 0);
+  const showGas        = gasPerLoop > 0;
+
   $('resLeverage').textContent  = fmtX(leverage);
   $('resSub').textContent       = `${loops} loop${loops>1?'s':''} · HF = ${hf.toFixed(2)}`;
   $('resTotalCol').textContent  = fmtUSD(last.cumCol);
@@ -657,6 +698,20 @@ function calc(){
   $('resDrop').textContent      = '-'+dropPct.toFixed(1)+'%';
   $('resNetApy').textContent    = fmtPct(netApy);
   $('resBreakEven').textContent = breakEven.toFixed(2)+'% APY';
+
+  if(showGas) {
+    const gasRow = $('resGasRow');
+    const totalGasRow = $('resTotalGasRow');
+    const netGasEl = $('resNetApyGas');
+    const totalGasEl = $('resTotalGas');
+    if(gasRow) gasRow.style.display = 'flex';
+    if(totalGasRow) totalGasRow.style.display = 'flex';
+    if(netGasEl) { netGasEl.textContent = fmtPct(netApyAfterGas); netGasEl.style.color = netApyAfterGas > 0 ? 'var(--good)' : 'var(--coral)'; }
+    if(totalGasEl) totalGasEl.textContent = fmtUSD(totalGas);
+  } else {
+    const gasRow = $('resGasRow'); if(gasRow) gasRow.style.display = 'none';
+    const totalGasRow = $('resTotalGasRow'); if(totalGasRow) totalGasRow.style.display = 'none';
+  }
 
   document.querySelector('.br-row:has(#resNetApy) b').style.color =
     netApy > 0 ? 'var(--good)' : 'var(--coral)';
@@ -698,11 +753,15 @@ function calc(){
       : `HF = ${hf.toFixed(2)}. A ${dropPct.toFixed(1)}% drop liquidates you. Reduce loops or borrow less per step.`;
   }
 
+  const gasColHeader = $('gasColHeader');
+  if(gasColHeader) gasColHeader.style.display = showGas ? '' : 'none';
+
   $('loopBody').innerHTML = steps.map((s,i) => {
     const stepHF  = s.cumDebt > 0 ? (s.cumCol * lt / s.cumDebt) : Infinity;
     const hfStr   = s.cumDebt === 0 ? '∞' : stepHF.toFixed(2);
     const hfClass = stepHF < 1.5 ? 'danger' : stepHF < 2 ? '' : 'good';
     const isLast  = i === steps.length-1;
+    const cumGas  = gasPerLoop * s.loop;
     return `<tr${isLast?' style="font-weight:700"':''}>
       <td>${s.loop === 0 ? 'Init' : s.loop}</td>
       <td>${fmtUSD(s.deposited)}</td>
@@ -710,11 +769,12 @@ function calc(){
       <td>${fmtUSD(s.cumCol)}</td>
       <td>${s.cumDebt > 0 ? fmtUSD(s.cumDebt) : '—'}</td>
       <td class="${hfClass}">${hfStr}</td>
+      ${showGas ? `<td style="color:var(--faint);font-size:12px">${cumGas > 0 ? fmtUSD(cumGas) : '—'}</td>` : ''}
     </tr>`;
   }).join('');
 }
 
-['colAmount','colPrice','ltv','ltPct','borrowApy','colApy'].forEach(id => $(id).addEventListener('input', calc));
+['colAmount','colPrice','ltv','ltPct','borrowApy','colApy','gasPerLoop'].forEach(id => $(id)?.addEventListener('input', calc));
 
 window.onLangChange = function(){ if(typeof calc==='function') calc(); };
 
