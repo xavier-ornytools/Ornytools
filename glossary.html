@@ -114,6 +114,19 @@
     </div>
   </div>
 
+  <div class="letter-group" id="A2">
+    <div class="term">
+      <div class="term-name">APR vs APY</div>
+      <span class="term-tag general">General</span>
+      <p class="term-def"><strong>APR</strong> (Annual Percentage Rate) = simple annual return without compounding. <strong>APY</strong> (Annual Percentage Yield) = effective return with compounding. In DeFi, protocols usually display APY. The conversion: <code>APY = (1 + APR/n)^n − 1</code> where n is the compounding frequency. A 10% APR compounding daily = 10.52% APY. When comparing yields across protocols, always check whether the displayed figure is APR or APY.</p>
+    </div>
+    <div class="term">
+      <div class="term-name">Arbitrage</div>
+      <span class="term-tag amm">AMM</span>
+      <p class="term-def">The practice of exploiting price differences between venues (DEX pools, CEXes) to make a risk-free profit. Arbitrageurs keep prices in sync across markets — when ETH is cheaper on Uniswap than Binance, they buy on Uniswap and sell on Binance until the gap closes. In AMMs, arbitrage is what actually moves the pool price to track the external market.</p>
+    </div>
+  </div>
+
   <div class="letter-group" id="B">
     <div class="letter-anchor">B</div>
     <div class="term">
@@ -126,6 +139,25 @@
       <span class="term-tag trading">Trading</span>
       <p class="term-def">For a leveraged trade: the price the underlying must reach for the position to cover all fees and return zero profit. Calculated as: <code>entry ± (opening fees / position_size)</code>. On GMX with 0.14% round-trip fees, a $10,000 position needs a $14 move just to break even — before borrow fees.</p>
       <a href="gmx.html" class="term-link">→ GMX Calculator</a>
+    </div>
+  </div>
+
+  <div class="letter-group" id="B2">
+    <div class="term">
+      <div class="term-name">Bad debt</div>
+      <span class="term-tag lending">Lending</span>
+      <p class="term-def">In a lending protocol, bad debt arises when a borrower's collateral value falls below the debt value without being liquidated in time — typically during extreme market drops or oracle failures. The protocol absorbs the loss (reducing LP returns or drawing down a reserve fund). Aave V3 minimizes bad debt risk with conservative LTs, high liquidation bonuses, and liquidation incentives.</p>
+    </div>
+    <div class="term">
+      <div class="term-name">Bonding curve</div>
+      <span class="term-tag amm">AMM</span>
+      <p class="term-def">A mathematical relationship between a token's price and its supply, encoded in a smart contract. The classic AMM x·y=k is one type of bonding curve. Others include linear curves (price increases proportionally with supply) or sigmoid curves. Used for token launches, protocol-owned liquidity, and NFT pricing. The curve determines price impact — different shapes optimize for different use cases.</p>
+    </div>
+    <div class="term">
+      <div class="term-name">Bribes</div>
+      <span class="term-tag general">General</span>
+      <p class="term-def">Payments made to veToken holders to direct emission rewards toward specific pools. In Curve/Convex and Balancer ecosystems, protocols with liquidity pools can pay USDC, tokens, or other assets to bribe vlCVX or veBAL holders to vote for their gauge. Bribes have created a secondary market (Votium, Paladin) for "renting" governance votes to boost liquidity.</p>
+      <a href="yield.html" class="term-link">→ Yield Optimizer</a>
     </div>
   </div>
 
@@ -154,9 +186,72 @@
       <a href="v3range.html" class="term-link">→ V3 Range Optimizer</a>
     </div>
     <div class="term">
+      <div class="term-name">Circuit breaker</div>
+      <span class="term-tag general">General</span>
+      <p class="term-def">A mechanism that halts or limits protocol operations when anomalous conditions are detected. In DeFi: pause functions on supply/borrow in Aave when an oracle reports a price deviation exceeding 50% in 30 minutes; or Chainlink's heartbeat check that triggers an alert if a price feed is not updated within N hours. Circuit breakers prevent cascading liquidations from oracle manipulation.</p>
+    </div>
+    <div class="term">
+      <div class="term-name">Counterparty risk</div>
+      <span class="term-tag general">General</span>
+      <p class="term-def">The risk that the other party in a financial arrangement fails to deliver. In DeFi: for a fiat-backed stablecoin, counterparty risk is the issuer going bankrupt or being shut down by regulators. For a CEX-dependent product (USDe, deUSD), it's the exchange failing mid-settlement. For Aave loans, it's theoretical systemic bad debt from oracle failures. Counterparty risk is one of the four risk dimensions in the OrnyTools Stablecoin Analyzer.</p>
+      <a href="stablecoin.html" class="term-link">→ Stablecoin Analyzer</a>
+    </div>
+    <div class="term">
+      <div class="term-name">Curator (Morpho)</div>
+      <span class="term-tag lending">Lending</span>
+      <p class="term-def">In Morpho Blue's MetaMorpho architecture, a curator is a professional risk manager (e.g., Steakhouse Financial, MEV Capital, Gauntlet) responsible for allocating a vault's liquidity across Morpho Blue markets. The curator selects which collateral/loan pairs to use, sets supply caps, and rebalances exposure. Depositors delegate risk management to the curator without giving up custody of funds.</p>
+      <a href="morpho.html" class="term-link">→ Morpho Calculator</a>
+    </div>
+    <div class="term">
       <div class="term-name">Constant-product curve</div>
       <span class="term-tag amm">AMM</span>
       <p class="term-def">The invariant <code>x·y=k</code> that governs Uniswap V2 pools. After any trade, the product of token quantities is unchanged. This means price impact is non-linear: the larger the trade relative to the pool, the more the price moves against the trader. Slippage = <code>A/(R+A)</code> where R is pool depth.</p>
+    </div>
+  </div>
+
+  <div class="letter-group" id="D">
+    <div class="letter-anchor">D</div>
+    <div class="term">
+      <div class="term-name">Debt ceiling</div>
+      <span class="term-tag lending">Lending</span>
+      <p class="term-def">In Aave V3 Isolation Mode, the maximum total amount that can be borrowed against a specific isolated asset, across all users. Example: ARB in isolation mode has a $14M debt ceiling — once that total is reached, no new debt can be issued against ARB collateral. Debt ceilings limit protocol exposure to newer or less liquid assets.</p>
+      <a href="aave.html" class="term-link">→ Aave Calculator</a>
+    </div>
+    <div class="term">
+      <div class="term-name">Delta-neutral</div>
+      <span class="term-tag trading">Trading</span>
+      <p class="term-def">A position where price moves in the underlying asset produce no net P&amp;L — gains on one leg are offset by losses on the other. USDe and deUSD achieve this by holding ETH spot/staked while running equal-size ETH short perpetuals. The dollar value stays constant regardless of ETH price, while the yield comes from staking rewards + funding rates on the shorts.</p>
+    </div>
+    <div class="term">
+      <div class="term-name">Depeg risk</div>
+      <span class="term-tag general">General</span>
+      <p class="term-def">The probability that a stablecoin deviates significantly from its $1 peg. Short-term depegs (minutes, &lt;1%) are common during high volatility. Long-term depegs indicate structural failure — LUNA/UST (−99% in 3 days, May 2022) being the most catastrophic. OrnyTools monitors 10 stablecoins live and alerts when price deviates beyond a configurable threshold.</p>
+      <a href="stablecoin.html" class="term-link">→ Stablecoin Analyzer</a>
+    </div>
+    <div class="term">
+      <div class="term-name">DEX — Decentralized Exchange</div>
+      <span class="term-tag amm">AMM</span>
+      <p class="term-def">A protocol for trading tokens directly from a wallet, without a central intermediary holding funds. DEXes run on smart contracts and use AMM curves (Uniswap, Curve), order books (dYdX), or hybrid models. Key difference from CEX: no custody risk, but also no fiat on/off ramp, higher gas costs, and smart contract risk instead.</p>
+    </div>
+  </div>
+
+  <div class="letter-group" id="E">
+    <div class="letter-anchor">E</div>
+    <div class="term">
+      <div class="term-name">E-Mode (Aave V3)</div>
+      <span class="term-tag lending">Lending</span>
+      <p class="term-def">Efficiency Mode — Aave V3's feature that allows much higher LTV and LT when collateral and debt belong to the same correlated category. ETH correlated E-Mode (wETH, wstETH, rETH as collateral + ETH debt): LTV 93%, LT 95%, liquidation bonus 1%. This enables up to 13× leverage on a wstETH/ETH carry trade vs ~10× in normal mode. All assets in the position must belong to the same E-Mode category.</p>
+      <a href="aave.html" class="term-link">→ Aave Calculator</a>
+    </div>
+    <div class="term">
+      <div class="term-name">EIP-1559</div>
+      <span class="term-tag general">General</span>
+      <p class="term-def">Ethereum Improvement Proposal 1559 (active since August 2021) that split gas fees into two parts: a <strong>base fee</strong> (burned, set by network congestion) and a <strong>priority fee</strong> (paid to the validator for inclusion). On Arbitrum, gas is computed differently — the L2 execution fee is very cheap ($0.01–0.10) while L1 data posting cost is the main variable. This is why Arbitrum gas is 10–100× cheaper than mainnet.</p>
+    </div>
+    <div class="term">
+      <div class="term-name">ERC-4626 (Tokenized Vault)</div>
+      <span class="term-tag general">General</span>
+      <p class="term-def">An Ethereum token standard for yield-bearing vaults. A vault holds an underlying asset (e.g., USDC) and issues shares (e.g., aUSDC). As yield accrues, each share redeems for more underlying. Key function: <code>previewRedeem(shares) → assets</code>. Used by Aave's aTokens, Morpho's MetaMorpho vaults, wstETH, and wUSD0. Composability benefit: any protocol can integrate an ERC-4626 vault without custom logic.</p>
     </div>
   </div>
 
@@ -171,6 +266,26 @@
       <div class="term-name">Funding rate</div>
       <span class="term-tag trading">Trading</span>
       <p class="term-def">On perpetual DEXes, a periodic payment between longs and shorts to keep the perpetual price anchored to the spot price. When longs pay shorts, the market is in contango (longs dominant). GMX V2 uses a "borrow fee" model rather than traditional funding — longs and shorts both pay, the rate depends on open interest imbalance.</p>
+    </div>
+  </div>
+
+  <div class="letter-group" id="G">
+    <div class="letter-anchor">G</div>
+    <div class="term">
+      <div class="term-name">Gas fee</div>
+      <span class="term-tag general">General</span>
+      <p class="term-def">The cost of executing a transaction on a blockchain, paid to validators. Calculated as <code>gas_used × gas_price (in gwei)</code>. A simple ETH transfer uses 21,000 gas; a complex DeFi interaction (flash loan + swap + deposit) can use 500,000+ gas. On Arbitrum at 0.1 gwei, a complex transaction costs $0.05–0.10. On Ethereum mainnet at 30 gwei, the same interaction can cost $5–50.</p>
+      <a href="waste.html" class="term-link">→ Waste Detector</a>
+    </div>
+    <div class="term">
+      <div class="term-name">Gauge (Curve/Convex)</div>
+      <span class="term-tag general">General</span>
+      <p class="term-def">A smart contract that tracks liquidity in a specific Curve pool and distributes CRV emission rewards proportionally. veCRV holders vote weekly to allocate emission weight to gauges — higher gauge weight = more CRV rewards for LPs in that pool. The gauge weight system is why Convex Finance and Curve Wars emerged: controlling veCRV = controlling which pools attract liquidity.</p>
+    </div>
+    <div class="term">
+      <div class="term-name">Governance risk</div>
+      <span class="term-tag general">General</span>
+      <p class="term-def">The risk that protocol governance (token-weighted votes) passes a malicious or poorly-designed proposal that damages users. Attack vectors: governance token accumulation by a hostile actor, vote-buying via flash loans (flash-loan governance attack), voter apathy letting a small group push harmful changes, or smart contract bugs in the governance system itself. Aave and Compound have timelocks (48h delay) to allow users to exit before malicious proposals execute.</p>
     </div>
   </div>
 
@@ -191,6 +306,15 @@
       <span class="term-tag amm">AMM</span>
       <p class="term-def">The opportunity cost of holding tokens in an AMM pool vs. simply holding them. The formula: <code>IL = 2√r/(1+r) − 1</code> where r = (current price / entry price). IL is symmetric: a 2× price move in either direction gives ~5.7% IL. It's "impermanent" only if the price returns to entry — otherwise it's a realized loss at withdrawal.</p>
       <a href="il-calculator.html" class="term-link">→ IL Calculator</a>
+    </div>
+  </div>
+
+  <div class="letter-group" id="I2">
+    <div class="term">
+      <div class="term-name">Isolation Mode (Aave V3)</div>
+      <span class="term-tag lending">Lending</span>
+      <p class="term-def">A risk containment feature for newer or more volatile assets. An isolated asset can be used as collateral, but: (1) only stablecoins can be borrowed against it, (2) no other collateral can be combined with it, and (3) total borrowing is capped by a debt ceiling. Assets in Isolation Mode on Aave V3 Arbitrum include ARB ($14M ceiling) and LINK ($10M ceiling). The isolation prevents a single failing asset from triggering cascading bad debt.</p>
+      <a href="aave.html" class="term-link">→ Aave Calculator</a>
     </div>
   </div>
 
@@ -219,6 +343,40 @@
       <a href="leverage.html" class="term-link">→ Leverage Calculator</a>
     </div>
     <div class="term">
+      <div class="term-name">Liquidation penalty</div>
+      <span class="term-tag lending">Lending</span>
+      <p class="term-def">Also called the liquidation bonus — the discount at which a liquidator buys collateral when repaying a borrower's debt. On Aave V3 Arbitrum, WBTC has a 10% liquidation bonus: a liquidator repays $100 of debt and receives $110 worth of WBTC. This incentive must be large enough to attract liquidators even during volatile markets, but small enough not to make positions unnecessarily risky for borrowers.</p>
+      <a href="liquidation.html" class="term-link">→ Liquidation Calculator</a>
+    </div>
+    <div class="term">
+      <div class="term-name">Liquidation price</div>
+      <span class="term-tag lending">Lending</span>
+      <p class="term-def">The price at which a collateral asset triggers liquidation (HF = 1.0). Formula for a single-collateral position: <code>liq_price = debt / (collateral_amount × LT)</code>. Example: 1 WBTC ($100,000) with LT 75% and $60,000 USDT debt → liq_price = $60,000 / (1 × 0.75) = $80,000. Multi-collateral positions require solving for the primary collateral price while holding other assets constant.</p>
+      <a href="liquidation.html" class="term-link">→ Liquidation Calculator</a>
+    </div>
+    <div class="term">
+      <div class="term-name">LLTV — Liquidation LTV</div>
+      <span class="term-tag lending">Lending</span>
+      <p class="term-def">Morpho Blue's equivalent of Aave's Liquidation Threshold, expressed as the ratio of debt to collateral value at which liquidation is triggered. Unlike Aave (which uses two parameters: LTV for borrowing cap and LT for liquidation), Morpho uses a single LLTV parameter — there's no separate "max borrow" parameter. Example: sdeUSD/USDC market LLTV = 91.5% means liquidation triggers when debt ≥ 91.5% of collateral value.</p>
+      <a href="morpho.html" class="term-link">→ Morpho Calculator</a>
+    </div>
+    <div class="term">
+      <div class="term-name">LP — Liquidity Provider</div>
+      <span class="term-tag amm">AMM</span>
+      <p class="term-def">An entity that deposits assets into an AMM pool to enable trading. LPs earn a fraction of every swap fee (e.g., 0.05–1% per trade) proportional to their share of the pool. In exchange, they accept impermanent loss and smart contract risk. V3 LPs additionally manage range selection — going "out of range" stops fee accrual but crystallizes IL at the boundary price.</p>
+      <a href="il-calculator.html" class="term-link">→ IL Calculator</a>
+    </div>
+    <div class="term">
+      <div class="term-name">LRT — Liquid Restaking Token</div>
+      <span class="term-tag general">General</span>
+      <p class="term-def">A token representing restaked ETH (ETH delegated to EigenLayer AVSes or similar restaking protocols). LRTs (weETH from ether.fi, ezETH from Renzo, rsETH from KelpDAO) earn both native ETH staking yield (~3.5%) and restaking yield from AVS services. Risk: LRTs add a layer of smart contract risk and liquidity risk — in a crisis, redemption queues can delay exit by days to weeks.</p>
+    </div>
+    <div class="term">
+      <div class="term-name">LST — Liquid Staking Token</div>
+      <span class="term-tag general">General</span>
+      <p class="term-def">A token representing staked ETH (or other PoS asset) that can be used in DeFi while still earning staking yield. Examples: stETH (Lido), rETH (Rocket Pool), cbETH (Coinbase), wstETH (wrapped stETH). LSTs trade at a premium to ETH proportional to accumulated yield. They are accepted as collateral on Aave V3 in E-Mode, where high LTV is available due to their price correlation with ETH.</p>
+    </div>
+    <div class="term">
       <div class="term-name">LTV — Loan to Value</div>
       <span class="term-tag lending">Lending</span>
       <p class="term-def">The maximum fraction of collateral value that can be borrowed. Set per asset by Aave governance. Lower LTV = safer for the protocol, less efficient for the borrower. Volatile assets have lower LTV (e.g., WBTC 70%, ETH 80%) while stablecoins can reach 90%.</p>
@@ -228,6 +386,29 @@
   <div class="letter-group" id="M">
     <div class="letter-anchor">M</div>
     <div class="term">
+      <div class="term-name">Mark price</div>
+      <span class="term-tag trading">Trading</span>
+      <p class="term-def">The reference price used by a perpetual DEX to calculate unrealized P&amp;L and trigger liquidations — as opposed to the last trade price (index price). GMX V2 uses an aggregate of CEX prices (via Chainlink + fallback oracles) as the mark price, preventing manipulation via a single low-liquidity trade from triggering liquidations. The mark price smooths out temporary deviations from the real market price.</p>
+      <a href="gmx.html" class="term-link">→ GMX Calculator</a>
+    </div>
+    <div class="term">
+      <div class="term-name">MEV — Maximal Extractable Value</div>
+      <span class="term-tag general">General</span>
+      <p class="term-def">Profit extracted by validators or block builders by reordering, inserting, or censoring transactions within a block. Types: arbitrage (MEV-neutral), sandwich attacks (MEV against traders), liquidations (MEV-neutral). On Ethereum, MEV-Boost lets validators earn from MEV auctions. On Arbitrum, the sequencer is centralized, reducing but not eliminating MEV risk. Flashbots and MEV protection tools (like RabbyWallet's built-in protection) help users avoid being sandwiched.</p>
+    </div>
+    <div class="term">
+      <div class="term-name">MetaMorpho</div>
+      <span class="term-tag lending">Lending</span>
+      <p class="term-def">Morpho's curated vault layer built on top of Morpho Blue. A MetaMorpho vault (e.g., "Steakhouse USDC", "MEV Capital ETH") aggregates deposits and allocates them across multiple Morpho Blue markets according to a curator's strategy. Users deposit once and get diversified exposure — the curator handles market selection, supply cap management, and rebalancing. Think of it as an actively managed money market fund on-chain.</p>
+      <a href="morpho.html" class="term-link">→ Morpho Calculator</a>
+    </div>
+    <div class="term">
+      <div class="term-name">Morpho Blue</div>
+      <span class="term-tag lending">Lending</span>
+      <p class="term-def">A minimal, immutable lending protocol where each market is defined by a single pair: (collateral asset, loan asset, oracle, LLTV, IRM). No governance can change market parameters after deployment. Unlike Aave (which pools all collateral), each Morpho Blue market is isolated — risk doesn't propagate across markets. Currently the 2nd largest lending protocol by TVL, with markets managed via MetaMorpho curators.</p>
+      <a href="morpho.html" class="term-link">→ Morpho Calculator</a>
+    </div>
+    <div class="term">
       <div class="term-name">Maintenance margin</div>
       <span class="term-tag trading">Trading</span>
       <p class="term-def">The minimum collateral required to keep a leveraged position open. On GMX V2, it's 1% of position size. When collateral − fees falls below this level, the position is liquidated. It acts as the protocol's safety buffer, ensuring the trader covers the closing costs even in fast-moving markets.</p>
@@ -236,6 +417,12 @@
 
   <div class="letter-group" id="O">
     <div class="letter-anchor">O</div>
+    <div class="term">
+      <div class="term-name">Open interest (OI)</div>
+      <span class="term-tag trading">Trading</span>
+      <p class="term-def">The total USD value of all open positions in a perpetual market. In GMX V2, open interest is split between longs and short OI. Imbalance between long and short OI determines the funding rate direction — the larger side pays the smaller side. High OI relative to available liquidity also increases the risk of price impact and marks-to-market losses for the liquidity pool.</p>
+      <a href="gmx.html" class="term-link">→ GMX Calculator</a>
+    </div>
     <div class="term">
       <div class="term-name">On-chain data</div>
       <span class="term-tag general">General</span>
@@ -251,6 +438,27 @@
   <div class="letter-group" id="P">
     <div class="letter-anchor">P</div>
     <div class="term">
+      <div class="term-name">Point farming</div>
+      <span class="term-tag general">General</span>
+      <p class="term-def">The practice of accumulating off-chain points distributed by a protocol to DeFi participants, with the expectation of future token airdrop conversion. Popularized by Ethena (ENA points → airdrop), EigenLayer (EIGEN airdrop to restakers), and many others in 2023–2025. Points farming typically requires locking capital for extended periods with uncertain rewards — similar to mining before a token launch.</p>
+    </div>
+    <div class="term">
+      <div class="term-name">Pool depth</div>
+      <span class="term-tag amm">AMM</span>
+      <p class="term-def">The total liquidity available in a trading pair, which directly determines price impact. A pool with $10M TVL has 10× less price impact per dollar traded than a $1M TVL pool. In V3, effective depth depends on how much liquidity is concentrated near the current price — a narrow V3 position with $1M can have the same price impact as a V2 pool with $10M.</p>
+      <a href="waste.html" class="term-link">→ Waste Detector</a>
+    </div>
+    <div class="term">
+      <div class="term-name">Priority fee</div>
+      <span class="term-tag general">General</span>
+      <p class="term-def">Post-EIP-1559, the tip paid directly to the validator (miner) for including a transaction. Formula: <code>total_fee = (base_fee + priority_fee) × gas_used</code>. The base fee is burned; the priority fee goes to the validator. During congestion, priority fees spike as users compete for inclusion. On Arbitrum, priority fees are minimal since the sequencer processes transactions in FIFO order.</p>
+    </div>
+    <div class="term">
+      <div class="term-name">Protocol risk</div>
+      <span class="term-tag general">General</span>
+      <p class="term-def">The probability of losing funds due to a bug, exploit, or design flaw in a smart contract. Mitigated by: multiple audits, bug bounties, formal verification, time-locked upgrades, and proof of time in production. Protocols with &gt;$1B TVL and 3+ years on mainnet (Aave, Curve, Uniswap) have the lowest protocol risk. New protocols with small TVL and recent audits carry significantly higher risk regardless of APY.</p>
+    </div>
+    <div class="term">
       <div class="term-name">Perpetual (perp)</div>
       <span class="term-tag trading">Trading</span>
       <p class="term-def">A derivative contract with no expiry date that tracks the price of an underlying asset. On-chain perps (GMX, dYdX, Hyperliquid) allow leverage trading directly from a wallet without a CEX. GMX V2 uses a GLP/GM liquidity pool model where liquidity providers are the counterparty to traders.</p>
@@ -264,6 +472,26 @@
 
   <div class="letter-group" id="R">
     <div class="letter-anchor">R</div>
+    <div class="term">
+      <div class="term-name">Real yield</div>
+      <span class="term-tag general">General</span>
+      <p class="term-def">Yield generated from actual protocol revenue (trading fees, borrow interest, liquidation fees) rather than from token emission inflation. A protocol paying 20% APY through native revenue vs. one inflating its token supply to pay 20% APY are fundamentally different — the latter is distributing future dilution as current yield. GMX's GLP model is often cited as a "real yield" example: rewards come from trading fees paid by traders, not token minting.</p>
+    </div>
+    <div class="term">
+      <div class="term-name">Rebase token</div>
+      <span class="term-tag general">General</span>
+      <p class="term-def">A token whose balance in your wallet changes automatically, without any transaction on your part. Two types: <strong>positive rebase</strong> (balance grows — stETH, USDM) to distribute yield; <strong>negative rebase</strong> (balance shrinks — used in elastic supply systems). Rebase tokens can cause issues with DeFi protocols that expect fixed balances — which is why wstETH (wrapper, non-rebasing) exists alongside stETH.</p>
+    </div>
+    <div class="term">
+      <div class="term-name">rETH (Rocket Pool)</div>
+      <span class="term-tag general">General</span>
+      <p class="term-def">The liquid staking token from Rocket Pool, a decentralized ETH staking protocol. Unlike stETH (which rebases), rETH is non-rebasing — its price vs ETH increases over time as staking rewards accumulate. Rocket Pool uses a network of permissionless node operators (minimum 8 ETH + 2.4 ETH RPL bond). Accepted as Aave V3 collateral in E-Mode with 93% LTV.</p>
+    </div>
+    <div class="term">
+      <div class="term-name">RWA — Real World Asset</div>
+      <span class="term-tag general">General</span>
+      <p class="term-def">A tokenized representation of an off-chain asset — US Treasury bills (BUIDL, USDM, USDY), real estate, corporate bonds, or commodities. RWA protocols bridge traditional finance yield into DeFi. Key risks: custodian failure, regulatory seizure, and smart contract bugs. RWA-backed stablecoins (USD0, BUIDL) currently offer the cleanest risk profile for yield, assuming no regulatory shock.</p>
+    </div>
     <div class="term">
       <div class="term-name">Range (Uniswap V3)</div>
       <span class="term-tag amm">AMM</span>
@@ -280,6 +508,22 @@
   <div class="letter-group" id="S">
     <div class="letter-anchor">S</div>
     <div class="term">
+      <div class="term-name">Sandwich attack</div>
+      <span class="term-tag general">General</span>
+      <p class="term-def">A MEV attack where a bot front-runs a pending DEX trade (buys the token first, driving the price up) and then back-runs it (immediately sells after the victim's trade completes). The victim pays extra slippage; the attacker pockets the difference. Defense: use slippage tolerance of ≤0.5%, avoid mempool exposure (use RabbyWallet's MEV protection or send via private RPC), or use aggregators that split routes.</p>
+    </div>
+    <div class="term">
+      <div class="term-name">Smart contract risk</div>
+      <span class="term-tag general">General</span>
+      <p class="term-def">The probability of losing funds due to a bug, exploit, or unintended behavior in a protocol's code. One of the four risk dimensions in OrnyTools Stablecoin Analyzer. Cannot be fully eliminated — even heavily audited protocols (Euler Finance: $197M hack 2023, Curve: $47M hack 2023) get exploited. Managed through multiple audits, bug bounties, time-locks, limited TVL exposure per protocol, and insurance (Nexus Mutual, InsurAce).</p>
+      <a href="stablecoin.html" class="term-link">→ Stablecoin Analyzer</a>
+    </div>
+    <div class="term">
+      <div class="term-name">Shortfall / Surplus buffer</div>
+      <span class="term-tag lending">Lending</span>
+      <p class="term-def">In Aave, the <strong>Safety Module</strong> holds staked AAVE tokens as a surplus buffer — a last resort if the protocol incurs bad debt that can't be covered by reserves. Staked AAVE earns yield but can be slashed up to 30% in a "shortfall event." The Aave DAO treasury is a separate surplus buffer for smaller losses. Understanding these mechanisms is important when evaluating a protocol's ability to remain solvent in a crisis.</p>
+    </div>
+    <div class="term">
       <div class="term-name">Slippage</div>
       <span class="term-tag amm">AMM</span>
       <p class="term-def">The difference between the expected price and the executed price of a trade. In AMMs, it's driven by price impact. In order books, it comes from thin liquidity at specific levels. Slippage tolerance (e.g., 0.5%) set in your wallet prevents execution if the price moves more than that between submission and confirmation.</p>
@@ -295,6 +539,11 @@
   <div class="letter-group" id="T">
     <div class="letter-anchor">T</div>
     <div class="term">
+      <div class="term-name">TWAP — Time-Weighted Average Price</div>
+      <span class="term-tag amm">AMM</span>
+      <p class="term-def">An average price computed over a time window, giving equal weight to each time unit. Formula: <code>TWAP = Σ(price_t × Δt) / total_time</code>. Uniswap V3 stores cumulative price data on-chain, allowing anyone to compute a trustless TWAP over any interval. Used as a manipulation-resistant oracle alternative — a flash loan can spike price in one block, but can't sustain it for minutes without enormous capital.</p>
+    </div>
+    <div class="term">
       <div class="term-name">TVL — Total Value Locked</div>
       <span class="term-tag general">General</span>
       <p class="term-def">The total USD value of assets deposited in a protocol or pool. In an AMM pool, TVL = 2 × value of one side (since pools hold equal-value amounts of both tokens). Higher TVL means deeper liquidity and lower price impact per dollar traded. TVL data comes from DeFiLlama and GeckoTerminal in OrnyTools.</p>
@@ -309,9 +558,57 @@
   <div class="letter-group" id="U">
     <div class="letter-anchor">U</div>
     <div class="term">
+      <div class="term-name">Underlying asset</div>
+      <span class="term-tag general">General</span>
+      <p class="term-def">The real asset that a derivative, wrapped token, or vault represents. For aUSDC (Aave's supply token), the underlying is USDC. For wstETH, the underlying is stETH → ETH. For an options contract, it's the token the option is written on. Understanding the underlying is critical for risk analysis — a yield-bearing wrapper inherits all risks of its underlying asset plus its own smart contract risk.</p>
+    </div>
+    <div class="term">
       <div class="term-name">Utilization rate</div>
       <span class="term-tag lending">Lending</span>
       <p class="term-def">The fraction of supplied assets that are currently borrowed: <code>utilization = total_borrows / total_supply</code>. Aave uses a kinked interest rate model — below the optimal utilization (typically 80–90%), rates rise gently; above it, rates spike sharply to incentivize repayments and more supply.</p>
+    </div>
+  </div>
+
+  <div class="letter-group" id="V">
+    <div class="letter-anchor">V</div>
+    <div class="term">
+      <div class="term-name">Vault</div>
+      <span class="term-tag general">General</span>
+      <p class="term-def">A smart contract that holds assets and executes a strategy on behalf of depositors. Varieties: <strong>yield vaults</strong> (auto-compound farming rewards — Yearn, Beefy), <strong>lending vaults</strong> (MetaMorpho, Aave aTokens), <strong>LP vaults</strong> (Arrakis manages V3 ranges). Vaults abstract complexity — users deposit one asset and receive a share token representing their proportion. ERC-4626 standardizes vault interfaces.</p>
+    </div>
+    <div class="term">
+      <div class="term-name">veToken — Vote-Escrow Token</div>
+      <span class="term-tag general">General</span>
+      <p class="term-def">A governance token model where holders lock tokens for up to 4 years to receive voting power (veCRV, veBAL, vlCVX). Longer lock = more power. Benefits: fee share (veCRV holders receive 50% of Curve trading fees), governance voting (gauge weights), and bribe income. Trade-off: tokens are locked and non-transferable for the duration. Convex Finance abstracts this — deposit CRV, receive liquid cvxCRV + voting power via vlCVX.</p>
+    </div>
+    <div class="term">
+      <div class="term-name">VWAP — Volume-Weighted Average Price</div>
+      <span class="term-tag trading">Trading</span>
+      <p class="term-def">Average price weighted by trading volume: <code>VWAP = Σ(price_i × volume_i) / Σ(volume_i)</code>. Used by institutional traders to benchmark execution quality — buying below VWAP is considered efficient. In DeFi, VWAP is less standard than TWAP because on-chain volume data is harder to aggregate, but CEX VWAP is used as reference for GMX mark prices and oracle aggregation.</p>
+    </div>
+  </div>
+
+  <div class="letter-group" id="W">
+    <div class="letter-anchor">W</div>
+    <div class="term">
+      <div class="term-name">weETH (ether.fi)</div>
+      <span class="term-tag general">General</span>
+      <p class="term-def">The non-rebasing wrapped version of eETH, ether.fi's liquid restaking token (LRT). Holds ETH + EigenLayer restaking position. weETH price vs ETH increases as restaking rewards accumulate. Used as collateral on Aave V3 and Morpho Blue. Risk profile: ETH staking risk + EigenLayer AVS slashing risk + ether.fi smart contract risk. Currently one of the largest LRTs by TVL.</p>
+    </div>
+    <div class="term">
+      <div class="term-name">wstETH (Lido)</div>
+      <span class="term-tag general">General</span>
+      <p class="term-def">The non-rebasing wrapper of stETH (Lido's liquid staking token). Unlike stETH (whose balance grows daily), wstETH has a constant balance — its price vs ETH increases as staking yield accrues. <code>1 wstETH ≈ 1.19 ETH</code> (grows over time). Used in Aave V3 E-Mode (93% LTV), as collateral in Morpho Blue, and in Pendle yield markets. Preferred over stETH in DeFi due to non-rebasing compatibility.</p>
+    </div>
+    <div class="term">
+      <div class="term-name">Whale</div>
+      <span class="term-tag general">General</span>
+      <p class="term-def">An address holding a disproportionately large amount of a token or protocol position. A whale withdrawing from a lending protocol can spike utilization instantly (pushing borrow rates up), or a whale entering a V3 range can dilute existing LPs' fee share significantly. Monitoring whale movements (via Etherscan, DeBank, or Nansen) is an important part of DeFi risk management.</p>
+    </div>
+    <div class="term">
+      <div class="term-name">Wrapped token</div>
+      <span class="term-tag general">General</span>
+      <p class="term-def">A token pegged 1:1 to another asset, issued by a smart contract. Purpose: bridge an asset to a different chain or standard (WBTC = ERC-20 BTC on Ethereum), change its behavior (wstETH = non-rebasing stETH), or enable DeFi compatibility (WETH = ERC-20 ETH). Always carries the risk of the bridge/custodian holding the underlying (WBTC: BitGo custody, centralization risk).</p>
     </div>
   </div>
 

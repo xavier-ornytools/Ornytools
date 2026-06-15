@@ -165,6 +165,36 @@
       <a href="#art-v3-ranges" class="read-more">Read →</a>
     </div>
 
+    <div class="post-card">
+      <div class="post-meta">
+        <span class="post-date">June 2026</span>
+        <span class="post-tag analysis">Analysis</span>
+      </div>
+      <div class="post-title"><a href="#art-morpho-vs-aave">Morpho Blue vs Aave V3: which one for your WBTC?</a></div>
+      <p class="post-excerpt">Both protocols let you borrow USDC against WBTC — but the risk model, liquidation mechanics, and yield distribution are fundamentally different. <strong>Morpho's LLTV can reach 86% vs Aave's 75% LT, but the liquidation works differently and there's no supply-side safety buffer.</strong> A practical comparison.</p>
+      <a href="#art-morpho-vs-aave" class="read-more">Read →</a>
+    </div>
+
+    <div class="post-card">
+      <div class="post-meta">
+        <span class="post-date">June 2026</span>
+        <span class="post-tag guide">Guide</span>
+      </div>
+      <div class="post-title"><a href="#art-gmx-funding">GMX funding rate: the hidden cost destroying your perps</a></div>
+      <p class="post-excerpt">GMX's borrow fee runs 24/7 — even when your position is making money. <strong>A 10× ETH long held for 7 days pays ~0.84% in borrow fees alone, before any market move.</strong> Here's how to account for it in your strategy and when to avoid it entirely.</p>
+      <a href="#art-gmx-funding" class="read-more">Read →</a>
+    </div>
+
+    <div class="post-card">
+      <div class="post-meta">
+        <span class="post-date">June 2026</span>
+        <span class="post-tag research">Research</span>
+      </div>
+      <div class="post-title"><a href="#art-stablecoin-ranking">Stablecoin risk ranking 2026: USDC vs USDe vs USD0</a></div>
+      <p class="post-excerpt">Three stablecoins, three completely different risk models — and three different reasons to hold them. <strong>USDC has regulatory clarity. USDe has the highest yield. USD0 bridges both.</strong> A structured comparison across depeg risk, counterparty, liquidity, and protocol safety.</p>
+      <a href="#art-stablecoin-ranking" class="read-more">Read →</a>
+    </div>
+
   </div>
 
   <!-- ARTICLE 1 -->
@@ -316,6 +346,126 @@
       <p>For volatile pairs (ETH, BTC) with active management: ±20% gives multiplier ~5× and ~7% weekly breach — manageable. For set-and-forget positions: ±30–50% is more realistic. For stablecoin pairs: ±0.5–1% is standard practice, as breach risk is near zero and the multiplier can reach 100×+.</p>
       <p>The V3 Range Calculator computes impermanent loss, fee income estimate, and the capital efficiency multiplier for any price range. It also feeds into the IL Calculator to model the full position P&amp;L including fees vs. holding.</p>
       <a href="v3range.html" class="art-cta">Calculate your V3 range →</a>
+    </div>
+  </div>
+
+  <!-- ARTICLE 6 — Morpho vs Aave -->
+  <div class="article" id="art-morpho-vs-aave">
+    <a href="#" class="article-back" onclick="history.back();return false">← Back to blog</a>
+    <div class="art-hero">
+      <div class="post-meta"><span class="post-date">June 2026</span><span class="post-tag analysis">Analysis</span></div>
+      <h1 class="art-title">Morpho Blue vs Aave V3: which one for your WBTC?</h1>
+      <p class="art-sub">Same collateral, different risk models. Understanding the tradeoffs before you borrow.</p>
+    </div>
+    <div class="art-body">
+      <h2>The setup looks similar — the mechanics aren't</h2>
+      <p>Both Aave V3 and Morpho Blue let you deposit WBTC and borrow USDC. The surface-level similarity ends there. Aave is a pooled protocol with governance-managed risk parameters; Morpho Blue is an immutable, isolated-market protocol where every parameter is fixed at market creation. The difference matters when markets move fast.</p>
+
+      <h2>Aave V3: LTV 70%, LT 75%, buffer built in</h2>
+      <p>On Aave V3 Arbitrum, WBTC has a <strong>max LTV of 70%</strong> (how much you can borrow) and a <strong>liquidation threshold of 75%</strong> (when liquidation triggers). The 5% buffer is your safety margin — the protocol can begin liquidating before you're technically insolvent, giving liquidators time to act. The supply-side also benefits from Aave's Safety Module (staked AAVE) as a last-resort backstop for bad debt.</p>
+      <p>Liquidation is partial by default (up to 50% of debt per call) with a 10% liquidation bonus for WBTC. You can exit a position, add collateral, or repay during a liquidation — the system is designed to recover iteratively, not in one shot.</p>
+
+      <h2>Morpho Blue: LLTV 86%, no buffer, different rules</h2>
+      <p>The primary WBTC/USDC market on Morpho Blue uses an <strong>LLTV of 86%</strong> — significantly higher than Aave's LT. However, Morpho uses a single parameter for both "max borrow" and "liquidation trigger": once your debt reaches 86% of your WBTC collateral value, liquidation begins immediately.</p>
+      <p>Morpho liquidation is also different in mechanics: liquidators can close <strong>100% of the position in one transaction</strong>, not just 50%. There's no Safety Module — bad debt, if any occurs, is absorbed by the lending vault (MetaMorpho depositors) rather than a protocol backstop. Each Morpho market is also fully isolated: a crash in one market can't contaminate another.</p>
+
+      <h2>Which gives more borrowing capacity?</h2>
+      <p>On $100,000 WBTC (at current prices):</p>
+      <ul>
+        <li><strong>Aave V3:</strong> Max borrow = $70,000 USDC. Liquidation triggers when WBTC drops to $80,000 (−20%).</li>
+        <li><strong>Morpho Blue (86% LLTV):</strong> Max borrow = $86,000 USDC. Liquidation triggers when WBTC drops such that debt ≥ 86% of collateral — with $86K debt, that's the moment collateral = $100K = immediately. You need to borrow below 86% for any buffer at all.</li>
+      </ul>
+      <p>In practice, most Morpho borrowers target 70–80% utilization (of the LLTV), giving them a real buffer. But at 80% utilization vs 86% LLTV, a 7.2% WBTC drop liquidates the position. On Aave at 70% LTV vs 75% LT, you have a 6.67% buffer — similar in absolute terms but with explicit governance protections around the parameters.</p>
+
+      <h2>Yield for lenders</h2>
+      <p>Morpho Blue's supply rate for the lending vault depends on the curator's strategy. Since each market is isolated, utilization in the WBTC/USDC market directly sets the rate curve. MetaMorpho vaults (e.g., Steakhouse USDC) aggregate across multiple markets, smoothing volatility in rates.</p>
+      <p>Aave's supply rate for USDC on Arbitrum is typically 3–7% APY in normal conditions, rising sharply above the optimal utilization threshold. Morpho rates can be higher or lower depending on curator allocation and demand in specific markets.</p>
+
+      <h2>The honest answer: it depends on your risk tolerance</h2>
+      <p>Use <strong>Aave V3</strong> if you want: governance-protected parameters, partial liquidation mechanics, and a protocol that has operated at $10B+ TVL for 3+ years. The Safety Module is a genuine backstop. E-Mode gives you high LTV on ETH-correlated pairs specifically.</p>
+      <p>Use <strong>Morpho Blue</strong> if you want: higher LLTV (more borrowing power per unit of collateral), immutable market parameters (no governance can change the LLTV on you), and you're comfortable managing tighter liquidation margins with more active monitoring.</p>
+      <a href="morpho.html" class="art-cta">Open Morpho Calculator →</a>
+      <a href="aave.html" class="art-cta" style="margin-left:10px">Open Aave Calculator →</a>
+    </div>
+  </div>
+
+  <!-- ARTICLE 7 — GMX Funding Rate -->
+  <div class="article" id="art-gmx-funding">
+    <a href="#" class="article-back" onclick="history.back();return false">← Back to blog</a>
+    <div class="art-hero">
+      <div class="post-meta"><span class="post-date">June 2026</span><span class="post-tag guide">Guide</span></div>
+      <h1 class="art-title">GMX funding rate: the hidden cost destroying your perps</h1>
+      <p class="art-sub">It runs 24/7. It compounds. And most traders forget to model it before opening a position.</p>
+    </div>
+    <div class="art-body">
+      <h2>What the funding rate actually is on GMX</h2>
+      <p>GMX V2 doesn't use the traditional perpetual funding rate model (longs pay shorts or vice versa, based on premium). Instead, it uses a <strong>borrow fee</strong> charged to both longs and shorts, proportional to their position size. The rate depends on utilization of the pool for that market.</p>
+      <p>Typical borrow fee on GMX V2 ETH/USD: <strong>~0.012% per hour</strong> for the dominant side when utilization is 80%+. That's 0.288% per day, or <strong>~105% per year on the borrowed portion</strong>. Most traders mentally model this as "small" — it's not small if you hold for more than a day or two.</p>
+
+      <h2>The math on a real position</h2>
+      <p>Let's take a 10× ETH long with $1,000 collateral → $10,000 position size. Borrow fee of 0.012%/hour applies to the position size ($10,000), not the collateral:</p>
+      <ul>
+        <li>Hourly cost: $10,000 × 0.012% = <strong>$1.20/hour</strong></li>
+        <li>Daily cost: $28.80</li>
+        <li>Weekly cost: <strong>$201.60</strong> — 20.2% of your collateral in 7 days</li>
+        <li>Monthly cost: <strong>$864</strong> — your entire collateral is consumed in ~35 days</li>
+      </ul>
+      <p>ETH needs to move up <strong>2.8%</strong> in the first 24 hours just to break even on borrow fees alone — before the open/close fee (0.05% × 2 = 0.1% round trip = $10 more on a $10K position).</p>
+
+      <h2>Funding vs traditional perp exchange</h2>
+      <p>On a CEX (Binance, Bybit), the funding rate is charged every 8 hours and can be negative (shorts pay longs). At 0.01% per 8h (typical bullish market), longs pay 3× per day = 0.03%/day = 11% annualized. This is lower than GMX's effective rate — but CEX funding can also spike to 0.1–0.3% per 8h during crypto mania, far exceeding GMX's flat borrow.</p>
+      <p>The key difference: GMX borrow fee is <strong>always a cost</strong> (both sides pay). CEX funding can be income (if you're on the paid side). For longs during bullish markets, GMX's borrow fee is predictable — CEX funding is not.</p>
+
+      <h2>How to factor it into your trade plan</h2>
+      <p>Before opening any GMX position that you plan to hold more than 12 hours:</p>
+      <ol>
+        <li>Estimate hours in trade (be honest — "I'll close at the right time" usually means you won't)</li>
+        <li>Compute total borrow cost: <code>position_size × hourly_rate × hours</code></li>
+        <li>Add to open + close fees (0.1% round trip on position size)</li>
+        <li>Your break-even price move = <code>total_fees / position_size × 100%</code></li>
+      </ol>
+      <p>For a 10× position held 48 hours: break-even = 0.1% (fees) + 0.576% (borrow) = 0.676% price move needed just to cover costs. This isn't a trading edge problem — it's a cost accounting problem.</p>
+
+      <h2>When GMX perps make sense</h2>
+      <p>Short-term directional plays (&lt;24h) where the expected price move far exceeds the fee structure. Hedging a spot position where the borrow cost is acceptable insurance premium. Positions where you expect a fast, clean move — not "I'll ride the trend." The GMX Calculator models all these costs before you open a position.</p>
+      <a href="gmx.html" class="art-cta">Model your GMX position →</a>
+    </div>
+  </div>
+
+  <!-- ARTICLE 8 — Stablecoin Ranking -->
+  <div class="article" id="art-stablecoin-ranking">
+    <a href="#" class="article-back" onclick="history.back();return false">← Back to blog</a>
+    <div class="art-hero">
+      <div class="post-meta"><span class="post-date">June 2026</span><span class="post-tag research">Research</span></div>
+      <h1 class="art-title">Stablecoin risk ranking 2026: USDC vs USDe vs USD0</h1>
+      <p class="art-sub">Three stablecoins with completely different risk models — and different roles in a DeFi portfolio.</p>
+    </div>
+    <div class="art-body">
+      <h2>Why stablecoin risk isn't uniform</h2>
+      <p>A stablecoin that holds $1 in a bank is not the same risk as a stablecoin that holds ETH + short perpetuals to synthetically construct $1. Both trade near $1 on most days. The difference only becomes visible during stress. LUNA/UST demonstrated this in May 2022 — an algorithmic stablecoin that was $18B in supply one week and zero the next. Understanding the underlying mechanism is not optional.</p>
+
+      <h2>USDC: the known-risk leader</h2>
+      <p><strong>Mechanism:</strong> Each USDC is backed 1:1 by dollars and short-duration US Treasuries held at US-regulated financial institutions. Circle (the issuer) publishes monthly attestations from Deloitte.</p>
+      <p><strong>Depeg risk:</strong> Very low in normal conditions. March 2023 saw a 10-hour depeg to $0.87 when $3.3B of USDC reserves were stuck at Silicon Valley Bank during its collapse. The depeg resolved when Circle confirmed federal intervention. This was a counterparty failure — not a mechanism failure.</p>
+      <p><strong>Main risk:</strong> Regulatory action against Circle, or a custodian failure. A US government T-bill default would also impact USDC — but that's a systemic collapse scenario affecting everything.</p>
+      <p><strong>OrnyTools score:</strong> 88/100 — highest counterparty score (82), strong liquidity (90), lowest protocol risk (95).</p>
+
+      <h2>USDe (Ethena): synthetic yield leader</h2>
+      <p><strong>Mechanism:</strong> Delta-neutral synthetic dollar. Ethena holds stETH/ETH as collateral and runs equal-size ETH short perpetual positions on major CEXes (Binance, OKX, Bybit). Net ETH exposure = 0. Yield comes from: (1) stETH staking rewards (~3.5%) + (2) ETH funding rates paid by longs to shorts (historically 5–15% APY on shorts).</p>
+      <p><strong>Depeg risk:</strong> Higher than USDC. Two scenarios that break the peg: sustained negative funding rates (shorts pay longs, eroding backing) and a major CEX collapse during settlement. In March 2024, USDe briefly hit $0.97 during a sharp ETH sell-off — it recovered within hours as funding normalized.</p>
+      <p><strong>Why people hold it:</strong> sUSDe (staked USDe) earns 8–20% APY during bull markets — no other top-20 stablecoin comes close. The yield is real (funding rates, staking) rather than inflated token emissions.</p>
+      <p><strong>OrnyTools score:</strong> 76/100 — high protocol score (80, extensively audited), but lower counterparty (55) and depeg base (65) due to CEX and funding rate exposure.</p>
+
+      <h2>USD0 (Usual): T-bill yield with DeFi composability</h2>
+      <p><strong>Mechanism:</strong> USD0 is backed by US T-bills, similar to USDC — but issued by Usual Protocol, not Circle. USD0++ (staked USD0) earns the T-bill yield as a liquid, yield-bearing token. wUSD0 is the ERC-4626 wrapper allowing DeFi composability while earning.</p>
+      <p><strong>The key difference from USDC:</strong> The yield goes to USD0++ holders, not to the issuer. Usual distributes ~90% of T-bill revenue to stakers, keeping ~10% as protocol fee. Circle keeps all the T-bill yield internally.</p>
+      <p><strong>Depeg risk:</strong> Moderate. The mechanism is simpler than USDe (T-bill backing, not synthetic), but Usual Protocol is newer with less track record. The USUAL token incentives also introduce risk — if USUAL collapses, APY inflated by incentives disappears, potentially triggering outflows.</p>
+      <p><strong>Why people hold it:</strong> 4–6% base T-bill yield + USUAL token incentives. Strong Morpho ecosystem (MEV Capital and Steakhouse vaults use USD0/wUSD0). For USDC-equivalent safety with higher yield, USD0 is the current leading candidate.</p>
+      <p><strong>OrnyTools score:</strong> 74/100 — good mechanism (RWA-backed), but newer protocol (protocol score 60) and moderate counterparty (55) vs USDC's institutional structure.</p>
+
+      <h2>How to allocate across the three</h2>
+      <p>A practical DeFi portfolio typically holds all three for different purposes: USDC for collateral where LTV matters (deepest Aave/Morpho markets), USDe/sUSDe in yield-optimized vaults, USD0/wUSD0 in Morpho Blue vaults for T-bill yield with DeFi composability. The OrnyTools Stablecoin Analyzer provides live prices, risk scores, and DeFiLlama yields for all three.</p>
+      <a href="stablecoin.html" class="art-cta">Analyze all stablecoins →</a>
     </div>
   </div>
 
