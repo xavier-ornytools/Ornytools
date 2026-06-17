@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta name="robots" content="noindex,nofollow"/>
+<title>Revenue Tracker — OrnyTools</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet"/>
+<script src="chart.min.js"></script>
+<style>
+:root{
+  --gmx:#C8841E;--gmx-pale:rgba(200,132,30,.1);
+  --inch:#1A56DB;--inch-pale:rgba(26,86,219,.1);
+  --para:#7C3AED;--para-pale:rgba(124,58,237,.1);
+  --kofi:#FF5E5B;--kofi-pale:rgba(255,94,91,.1);
+  --other:#6B7280;--other-pale:rgba(107,114,128,.1);
+  --good:#0E9F6E;--good-pale:rgba(14,159,110,.1);
+  --text:#111827;--dim:#6B7280;--faint:#9AA5B4;
+  --line:#E4E8F0;--line-soft:#EDF0F5;
+  --surface:#FFFFFF;--bg:#f7f8fc;
+  --display:"Fraunces",Georgia,serif;
+  --ui:"Hanken Grotesk",system-ui,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,monospace;
+  --radius:14px;
+  --shadow:0 2px 8px rgba(0,0,0,.06),0 8px 24px rgba(0,0,0,.06);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--ui);-webkit-font-smoothing:antialiased}
+
+/* HEADER */
+.header{background:linear-gradient(135deg,#0d1b3e 0%,#1A56DB 70%,#7C3AED 100%);padding:32px 36px 28px;color:#fff}
+.header-top{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:8px}
+.header-brand{display:flex;align-items:center;gap:10px}
+.header-brand img{width:32px;height:32px;border-radius:7px;object-fit:cover;object-position:center 15%}
+.header-brand-name{font-family:var(--display);font-size:1rem;font-weight:600;opacity:.9}
+.private-badge{font-size:.65rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);border-radius:99px;padding:3px 10px;opacity:.8}
+.header h1{font-family:var(--display);font-size:clamp(1.6rem,3vw,2.2rem);font-weight:700;line-height:1.1;margin-bottom:6px}
+.header h1 em{font-style:italic;color:#93c5fd}
+.header-sub{font-size:.85rem;opacity:.65}
+
+/* STATS ROW */
+.stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;padding:28px 28px 0;max-width:1100px;margin:0 auto}
+.stat-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px;box-shadow:var(--shadow)}
+.sc-label{font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.15em;color:var(--faint);margin-bottom:8px}
+.sc-val{font-family:var(--mono);font-size:1.7rem;font-weight:700;line-height:1;color:var(--text)}
+.sc-val.good{color:var(--good)}
+.sc-sub{font-size:.72rem;color:var(--faint);margin-top:5px}
+.sc-bar{height:3px;border-radius:99px;margin-top:10px;background:var(--line)}
+.sc-bar-fill{height:100%;border-radius:99px;transition:width .6s}
+
+/* SOURCE PILLS */
+.source-pills{display:flex;flex-wrap:wrap;gap:8px;padding:20px 28px 0;max-width:1100px;margin:0 auto}
+.sp{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:99px;font-size:.78rem;font-weight:700;border:2px solid transparent;cursor:pointer;transition:.15s;user-select:none}
+.sp.gmx{background:var(--gmx-pale);color:var(--gmx);border-color:var(--gmx)}
+.sp.inch{background:var(--inch-pale);color:var(--inch);border-color:var(--inch)}
+.sp.para{background:var(--para-pale);color:var(--para);border-color:var(--para)}
+.sp.kofi{background:var(--kofi-pale);color:var(--kofi);border-color:var(--kofi)}
+.sp.other{background:var(--other-pale);color:var(--other);border-color:var(--other)}
+.sp-dot{width:8px;height:8px;border-radius:50%}
+.sp.gmx .sp-dot{background:var(--gmx)}
+.sp.inch .sp-dot{background:var(--inch)}
+.sp.para .sp-dot{background:var(--para)}
+.sp.kofi .sp-dot{background:var(--kofi)}
+.sp.other .sp-dot{background:var(--other)}
+
+/* MAIN GRID */
+.main{max-width:1100px;margin:0 auto;padding:24px 28px 80px;display:grid;grid-template-columns:1fr 340px;gap:20px;align-items:start}
+@media(max-width:820px){.main{grid-template-columns:1fr}}
+
+/* CHART CARD */
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+.card-header{padding:18px 22px 14px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.card-title{font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.15em;color:var(--faint)}
+.card-body{padding:20px 22px}
+
+/* CHART TABS */
+.chart-tabs{display:flex;gap:4px;background:var(--bg);border-radius:8px;padding:3px}
+.ctab{font-size:.72rem;font-weight:700;padding:5px 12px;border-radius:6px;cursor:pointer;color:var(--dim);border:none;background:none;font-family:var(--ui);transition:.15s}
+.ctab.active{background:var(--surface);color:var(--text);box-shadow:0 1px 4px rgba(0,0,0,.1)}
+
+/* ADD FORM */
+.form-section{display:flex;flex-direction:column;gap:14px}
+.field{display:flex;flex-direction:column;gap:5px}
+.field label{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--faint)}
+.field input,.field select,.field textarea{background:var(--bg);border:1.5px solid var(--line);color:var(--text);font-family:var(--mono);font-size:.88rem;padding:10px 12px;border-radius:9px;outline:none;transition:border-color .15s;width:100%}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--inch);box-shadow:0 0 0 3px var(--inch-pale)}
+.field select{cursor:pointer}
+.btn-add{background:linear-gradient(135deg,var(--inch),var(--para));color:#fff;border:none;padding:12px 20px;border-radius:10px;font-size:.88rem;font-weight:700;cursor:pointer;font-family:var(--ui);width:100%;transition:opacity .15s;margin-top:4px}
+.btn-add:hover{opacity:.88}
+.btn-add:active{opacity:.75}
+
+/* SOURCE SELECTOR */
+.src-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.src-btn{padding:10px 8px;border:2px solid var(--line);border-radius:9px;font-size:.78rem;font-weight:700;cursor:pointer;background:var(--surface);color:var(--dim);transition:.15s;text-align:center;font-family:var(--ui)}
+.src-btn:hover{border-color:var(--inch)}
+.src-btn.sel-gmx{border-color:var(--gmx);background:var(--gmx-pale);color:var(--gmx)}
+.src-btn.sel-inch{border-color:var(--inch);background:var(--inch-pale);color:var(--inch)}
+.src-btn.sel-para{border-color:var(--para);background:var(--para-pale);color:var(--para)}
+.src-btn.sel-kofi{border-color:var(--kofi);background:var(--kofi-pale);color:var(--kofi)}
+.src-btn.sel-other{border-color:var(--other);background:var(--other-pale);color:var(--other)}
+
+/* PLATFORM LINKS */
+.platform-links{display:flex;flex-direction:column;gap:6px;margin-top:6px}
+.pl-link{display:flex;align-items:center;gap:8px;padding:9px 12px;border:1px solid var(--line);border-radius:8px;text-decoration:none;color:var(--dim);font-size:.78rem;font-weight:600;transition:.15s;background:var(--surface)}
+.pl-link:hover{border-color:var(--inch);color:var(--inch)}
+.pl-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+
+/* TABLE */
+.entries-table{width:100%;border-collapse:collapse;font-size:.82rem}
+.entries-table th{font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.12em;color:var(--faint);padding:8px 10px;text-align:left;border-bottom:2px solid var(--line);white-space:nowrap}
+.entries-table td{padding:10px 10px;border-bottom:1px solid var(--line-soft);vertical-align:middle}
+.entries-table tr:last-child td{border-bottom:none}
+.entries-table tr:hover td{background:var(--bg)}
+.src-pill{display:inline-flex;align-items:center;gap:5px;padding:2px 9px;border-radius:99px;font-size:.7rem;font-weight:700}
+.src-pill.gmx{background:var(--gmx-pale);color:var(--gmx)}
+.src-pill.inch{background:var(--inch-pale);color:var(--inch)}
+.src-pill.para{background:var(--para-pale);color:var(--para)}
+.src-pill.kofi{background:var(--kofi-pale);color:var(--kofi)}
+.src-pill.other{background:var(--other-pale);color:var(--other)}
+.amt-cell{font-family:var(--mono);font-weight:700;color:var(--good)}
+.del-btn{background:none;border:none;color:var(--faint);cursor:pointer;font-size:1rem;padding:2px 6px;border-radius:4px;transition:.15s;line-height:1}
+.del-btn:hover{color:var(--kofi);background:var(--kofi-pale)}
+.note-cell{color:var(--dim);font-size:.77rem;max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.empty-state{text-align:center;padding:36px 20px;color:var(--faint)}
+.empty-state .es-icon{font-size:2.2rem;margin-bottom:10px}
+
+/* EXPORT */
+.btn-export{font-size:.72rem;font-weight:700;color:var(--dim);background:none;border:1px solid var(--line);border-radius:7px;padding:5px 12px;cursor:pointer;font-family:var(--ui);transition:.15s}
+.btn-export:hover{border-color:var(--good);color:var(--good)}
+
+/* CANVAS */
+canvas{max-height:240px}
+
+/* FOOTER */
+.page-footer{text-align:center;font-size:.72rem;color:var(--faint);padding:16px;border-top:1px solid var(--line);margin-top:8px}
+.page-footer a{color:var(--faint);text-decoration:none}
+
+@media(max-width:600px){
+  .stats-row{padding:20px 16px 0}
+  .source-pills,.main{padding-left:16px;padding-right:16px}
+  .src-grid{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-top">
+    <div class="header-brand">
+      <img src="logo.png" alt="OrnyTools"/>
+      <span class="header-brand-name">OrnyTools</span>
+    </div>
+    <span class="private-badge">🔒 Usage privé</span>
+  </div>
+  <h1>Revenue <em>Tracker</em></h1>
+  <div class="header-sub">Suivi en temps réel de tous tes revenus de monétisation · Stockage local, zéro serveur</div>
+</div>
+
+<!-- STATS -->
+<div class="stats-row">
+  <div class="stat-card">
+    <div class="sc-label">Total cumulé</div>
+    <div class="sc-val good" id="stat-total">€0.00</div>
+    <div class="sc-sub" id="stat-total-sub">depuis le début</div>
+    <div class="sc-bar"><div class="sc-bar-fill" id="bar-total" style="width:100%;background:var(--good)"></div></div>
+  </div>
+  <div class="stat-card">
+    <div class="sc-label">Ce mois</div>
+    <div class="sc-val" id="stat-month">€0.00</div>
+    <div class="sc-sub" id="stat-month-label">—</div>
+    <div class="sc-bar"><div class="sc-bar-fill" id="bar-month" style="width:0%;background:var(--inch)"></div></div>
+  </div>
+  <div class="stat-card">
+    <div class="sc-label">Meilleur mois</div>
+    <div class="sc-val" id="stat-best">€0.00</div>
+    <div class="sc-sub" id="stat-best-label">—</div>
+    <div class="sc-bar"><div class="sc-bar-fill" id="bar-best" style="width:0%;background:var(--gmx)"></div></div>
+  </div>
+  <div class="stat-card">
+    <div class="sc-label">Moyenne/mois</div>
+    <div class="sc-val" id="stat-avg">€0.00</div>
+    <div class="sc-sub" id="stat-avg-sub">sur les mois actifs</div>
+    <div class="sc-bar"><div class="sc-bar-fill" id="bar-avg" style="width:0%;background:var(--para)"></div></div>
+  </div>
+  <div class="stat-card">
+    <div class="sc-label">Entrées</div>
+    <div class="sc-val" id="stat-count">0</div>
+    <div class="sc-sub" id="stat-count-sub">transactions</div>
+    <div class="sc-bar"><div class="sc-bar-fill" id="bar-count" style="width:0%;background:var(--kofi)"></div></div>
+  </div>
+</div>
+
+<!-- SOURCE PILLS -->
+<div class="source-pills">
+  <div class="sp gmx"><div class="sp-dot"></div>GMX <span id="pill-gmx">€0</span></div>
+  <div class="sp inch"><div class="sp-dot"></div>1inch <span id="pill-inch">€0</span></div>
+  <div class="sp para"><div class="sp-dot"></div>Paraswap <span id="pill-para">€0</span></div>
+  <div class="sp kofi"><div class="sp-dot"></div>Ko-fi <span id="pill-kofi">€0</span></div>
+  <div class="sp other"><div class="sp-dot"></div>Autre <span id="pill-other">€0</span></div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- LEFT: CHART + TABLE -->
+  <div style="display:flex;flex-direction:column;gap:20px">
+
+    <!-- CHART -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Revenus par mois</div>
+        <div class="chart-tabs">
+          <button class="ctab active" onclick="setChartMode('bar',this)">Barres</button>
+          <button class="ctab" onclick="setChartMode('line',this)">Cumul</button>
+        </div>
+      </div>
+      <div class="card-body" style="padding:16px 16px 12px">
+        <canvas id="revenueChart"></canvas>
+        <div id="chart-empty" style="display:none;text-align:center;padding:40px 20px;color:var(--faint);font-size:.85rem">
+          Aucune donnée — ajoute ta première entrée →
+        </div>
+      </div>
+    </div>
+
+    <!-- TABLE -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Historique des entrées</div>
+        <button class="btn-export" onclick="exportCSV()">⬇ Export CSV</button>
+      </div>
+      <div class="card-body" style="padding:0;overflow-x:auto">
+        <div id="table-container"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- RIGHT: ADD FORM + LINKS -->
+  <div style="display:flex;flex-direction:column;gap:16px">
+
+    <!-- ADD FORM -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Ajouter une entrée</div>
+      </div>
+      <div class="card-body">
+        <div class="form-section">
+          <div class="field">
+            <label>Source</label>
+            <div class="src-grid">
+              <button class="src-btn" id="src-gmx" onclick="selectSrc('gmx')">💰 GMX</button>
+              <button class="src-btn" id="src-inch" onclick="selectSrc('inch')">🔄 1inch</button>
+              <button class="src-btn" id="src-para" onclick="selectSrc('para')">⚡ Paraswap</button>
+              <button class="src-btn" id="src-kofi" onclick="selectSrc('kofi')">☕ Ko-fi</button>
+              <button class="src-btn" id="src-other" onclick="selectSrc('other')" style="grid-column:1/-1">📦 Autre</button>
+            </div>
+          </div>
+          <div class="field">
+            <label>Montant (€ ou $)</label>
+            <input type="number" id="f-amount" min="0.01" step="0.01" placeholder="ex: 45.50"/>
+          </div>
+          <div class="field">
+            <label>Date</label>
+            <input type="date" id="f-date"/>
+          </div>
+          <div class="field">
+            <label>Note (optionnel)</label>
+            <input type="text" id="f-note" placeholder="ex: Semaine 25, 3 traders référés"/>
+          </div>
+          <button class="btn-add" onclick="addEntry()">+ Ajouter</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PLATFORM LINKS -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Dashboards externes</div>
+      </div>
+      <div class="card-body" style="padding:14px 16px">
+        <div class="platform-links">
+          <a href="https://app.gmx.io/#/referrals" target="_blank" rel="noopener" class="pl-link">
+            <div class="pl-dot" style="background:var(--gmx)"></div>
+            GMX Referral Dashboard ↗
+          </a>
+          <a href="https://app.1inch.io/#/1/dao/referral" target="_blank" rel="noopener" class="pl-link">
+            <div class="pl-dot" style="background:var(--inch)"></div>
+            1inch Referral Stats ↗
+          </a>
+          <a href="https://app.paraswap.io" target="_blank" rel="noopener" class="pl-link">
+            <div class="pl-dot" style="background:var(--para)"></div>
+            Paraswap App ↗
+          </a>
+          <a href="https://ko-fi.com" target="_blank" rel="noopener" class="pl-link">
+            <div class="pl-dot" style="background:var(--kofi)"></div>
+            Ko-fi Dashboard ↗
+          </a>
+          <a href="https://debank.com/profile/0x8904fFf3CEebd40baBEc17b41496677d4BFf3e6A" target="_blank" rel="noopener" class="pl-link">
+            <div class="pl-dot" style="background:var(--good)"></div>
+            DeBank — Wallet ↗
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="page-footer">
+  OrnyTools Revenue Tracker · Données stockées localement dans ton navigateur · <a href="index.html">← Retour au site</a>
+</div>
+
+<script>
+// ═══════════════════════════════════
+// DATA
+// ═══════════════════════════════════
+const KEY = 'ornytools_revenue';
+let entries = JSON.parse(localStorage.getItem(KEY)||'[]');
+let selSrc = null;
+let chartInst = null;
+let chartMode = 'bar';
+
+const SRC_LABELS = {gmx:'GMX', inch:'1inch', para:'Paraswap', kofi:'Ko-fi', other:'Autre'};
+const SRC_COLORS = {gmx:'#C8841E', inch:'#1A56DB', para:'#7C3AED', kofi:'#FF5E5B', other:'#6B7280'};
+
+function save(){ localStorage.setItem(KEY, JSON.stringify(entries)); }
+
+function fmtE(n){ return '€'+n.toFixed(2); }
+function fmtEShort(n){ return n>=1000?'€'+(n/1000).toFixed(1)+'k':'€'+Math.round(n); }
+
+// ═══════════════════════════════════
+// INIT
+// ═══════════════════════════════════
+window.addEventListener('DOMContentLoaded', function(){
+  document.getElementById('f-date').value = new Date().toISOString().split('T')[0];
+  render();
+});
+
+// ═══════════════════════════════════
+// SOURCE SELECTOR
+// ═══════════════════════════════════
+function selectSrc(src){
+  selSrc = src;
+  ['gmx','inch','para','kofi','other'].forEach(s => {
+    const btn = document.getElementById('src-'+s);
+    btn.className = 'src-btn' + (s===src?' sel-'+s:'');
+  });
+}
+
+// ═══════════════════════════════════
+// ADD ENTRY
+// ═══════════════════════════════════
+function addEntry(){
+  const amount = parseFloat(document.getElementById('f-amount').value);
+  const date   = document.getElementById('f-date').value;
+  const note   = document.getElementById('f-note').value.trim();
+  if(!selSrc){ alert('Choisis une source (GMX, 1inch…)'); return; }
+  if(!amount||amount<=0){ alert('Montant invalide'); return; }
+  if(!date){ alert('Date manquante'); return; }
+  entries.push({ id:Date.now(), date, source:selSrc, amount, note });
+  entries.sort((a,b)=>b.date.localeCompare(a.date));
+  save();
+  document.getElementById('f-amount').value='';
+  document.getElementById('f-note').value='';
+  render();
+}
+
+function deleteEntry(id){
+  if(!confirm('Supprimer cette entrée ?')) return;
+  entries = entries.filter(e=>e.id!==id);
+  save();
+  render();
+}
+
+// ═══════════════════════════════════
+// STATS
+// ═══════════════════════════════════
+function render(){
+  const total = entries.reduce((s,e)=>s+e.amount,0);
+  const now = new Date();
+  const ym = now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0');
+  const thisMonth = entries.filter(e=>e.date.startsWith(ym)).reduce((s,e)=>s+e.amount,0);
+
+  // by month
+  const byMonth = {};
+  entries.forEach(e=>{ const m=e.date.slice(0,7); byMonth[m]=(byMonth[m]||0)+e.amount; });
+  const months = Object.keys(byMonth).sort();
+  const bestMonth = months.length ? Math.max(...Object.values(byMonth)) : 0;
+  const bestMonthKey = months.find(m=>byMonth[m]===bestMonth)||'';
+  const avg = months.length ? total/months.length : 0;
+
+  // per source
+  const bySrc = {gmx:0,inch:0,para:0,kofi:0,other:0};
+  entries.forEach(e=>{ bySrc[e.source]=(bySrc[e.source]||0)+e.amount; });
+
+  // update stats cards
+  document.getElementById('stat-total').textContent = fmtE(total);
+  document.getElementById('stat-total-sub').textContent = entries.length+' entrée'+(entries.length>1?'s':'');
+  document.getElementById('stat-month').textContent = fmtE(thisMonth);
+  document.getElementById('stat-month-label').textContent = monthLabel(ym);
+  document.getElementById('stat-best').textContent = fmtE(bestMonth);
+  document.getElementById('stat-best-label').textContent = bestMonthKey ? monthLabel(bestMonthKey) : '—';
+  document.getElementById('stat-avg').textContent = fmtE(avg);
+  document.getElementById('stat-avg-sub').textContent = months.length+' mois actif'+(months.length>1?'s':'');
+  document.getElementById('stat-count').textContent = entries.length;
+
+  // bar fills (relative)
+  if(total>0){
+    document.getElementById('bar-month').style.width=(thisMonth/total*100)+'%';
+    document.getElementById('bar-best').style.width=(bestMonth/total*100)+'%';
+    document.getElementById('bar-avg').style.width=(avg/total*100)+'%';
+  }
+
+  // source pills
+  Object.keys(bySrc).forEach(s=>{
+    document.getElementById('pill-'+s).textContent=' '+fmtEShort(bySrc[s]);
+  });
+
+  renderChart(byMonth, months, bySrc);
+  renderTable();
+}
+
+function monthLabel(ym){
+  if(!ym) return '—';
+  const [y,m]=ym.split('-');
+  const names=['Jan','Fév','Mar','Avr','Mai','Jun','Jul','Aoû','Sep','Oct','Nov','Déc'];
+  return names[parseInt(m,10)-1]+' '+y;
+}
+
+// ═══════════════════════════════════
+// CHART
+// ═══════════════════════════════════
+function setChartMode(mode, btn){
+  chartMode=mode;
+  document.querySelectorAll('.ctab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  render();
+}
+
+function renderChart(byMonth, months, bySrc){
+  const canvas=document.getElementById('revenueChart');
+  const empty=document.getElementById('chart-empty');
+  if(!months.length){
+    canvas.style.display='none';
+    empty.style.display='block';
+    if(chartInst){chartInst.destroy();chartInst=null;}
+    return;
+  }
+  canvas.style.display='block';
+  empty.style.display='none';
+
+  const last8 = months.slice(-8);
+  const labels = last8.map(monthLabel);
+
+  let datasets;
+  if(chartMode==='bar'){
+    // Stacked by source
+    const srcs=['gmx','inch','para','kofi','other'];
+    datasets = srcs.map(src=>({
+      label: SRC_LABELS[src],
+      data: last8.map(m=>{
+        return entries.filter(e=>e.date.startsWith(m)&&e.source===src).reduce((s,e)=>s+e.amount,0);
+      }),
+      backgroundColor: SRC_COLORS[src]+'cc',
+      borderColor: SRC_COLORS[src],
+      borderWidth:1,
+      borderRadius:4,
+    }));
+  } else {
+    // Cumulative line
+    let cum=0;
+    const allMonths=[...months];
+    const cumData = allMonths.map(m=>{ cum+=(byMonth[m]||0); return cum; });
+    const last8cum = cumData.slice(-8);
+    datasets=[{
+      label:'Revenus cumulés',
+      data: last8cum,
+      borderColor:'#1A56DB',
+      backgroundColor:'rgba(26,86,219,.08)',
+      fill:true,
+      tension:.4,
+      pointRadius:4,
+      pointBackgroundColor:'#1A56DB',
+    }];
+  }
+
+  if(chartInst) chartInst.destroy();
+  chartInst = new Chart(canvas, {
+    type: chartMode==='line'?'line':'bar',
+    data: {labels, datasets},
+    options:{
+      responsive:true,
+      maintainAspectRatio:true,
+      plugins:{
+        legend:{display:chartMode==='bar', position:'bottom', labels:{font:{size:11},padding:12,boxWidth:10}},
+        tooltip:{
+          callbacks:{
+            label:ctx=>' '+SRC_LABELS[ctx.dataset.label]||ctx.dataset.label+': €'+ctx.parsed.y.toFixed(2)
+          }
+        }
+      },
+      scales:{
+        x:{grid:{display:false}, ticks:{font:{size:11}}},
+        y:{
+          stacked: chartMode==='bar',
+          grid:{color:'rgba(0,0,0,.05)'},
+          ticks:{font:{size:11}, callback:v=>'€'+v},
+          beginAtZero:true
+        }
+      }
+    }
+  });
+}
+
+// ═══════════════════════════════════
+// TABLE
+// ═══════════════════════════════════
+function renderTable(){
+  const c=document.getElementById('table-container');
+  if(!entries.length){
+    c.innerHTML=`<div class="empty-state"><div class="es-icon">📊</div><div>Aucune entrée pour l'instant.<br>Ajoute ta première transaction →</div></div>`;
+    return;
+  }
+  const rows = entries.slice(0,50).map(e=>`
+    <tr>
+      <td style="color:var(--dim);white-space:nowrap">${formatDate(e.date)}</td>
+      <td><span class="src-pill ${e.source}">${SRC_LABELS[e.source]}</span></td>
+      <td class="amt-cell">${fmtE(e.amount)}</td>
+      <td class="note-cell">${e.note||'—'}</td>
+      <td><button class="del-btn" onclick="deleteEntry(${e.id})" title="Supprimer">×</button></td>
+    </tr>
+  `).join('');
+  c.innerHTML=`
+    <table class="entries-table">
+      <thead><tr><th>Date</th><th>Source</th><th>Montant</th><th>Note</th><th></th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table>
+  `;
+}
+
+function formatDate(d){
+  const [y,m,day]=d.split('-');
+  const months=['jan','fév','mar','avr','mai','jun','jul','aoû','sep','oct','nov','déc'];
+  return day+' '+months[parseInt(m,10)-1]+' '+y;
+}
+
+// ═══════════════════════════════════
+// EXPORT CSV
+// ═══════════════════════════════════
+function exportCSV(){
+  if(!entries.length){ alert('Aucune donnée à exporter.'); return; }
+  const header='Date,Source,Montant,Note\n';
+  const rows=entries.map(e=>`${e.date},${SRC_LABELS[e.source]},${e.amount.toFixed(2)},"${(e.note||'').replace(/"/g,"'")}"`)
+    .join('\n');
+  const blob=new Blob(['﻿'+header+rows],{type:'text/csv;charset=utf-8'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;
+  a.download='ornytools_revenue_'+new Date().toISOString().slice(0,10)+'.csv';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+</script>
+</body>
+</html>
