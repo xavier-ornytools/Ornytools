@@ -6,6 +6,10 @@
 <meta name="description" content="FAQ — OrnyTools. How the tools work, what data sources are used, how health factor is calculated, and more."/>
 <meta name="robots" content="index,follow"/>
 <link rel="canonical" href="https://ornytools.xyz/faq.html"/>
+<link rel="alternate" hreflang="en" href="https://ornytools.xyz/faq.html"/>
+<link rel="alternate" hreflang="fr" href="https://ornytools.xyz/faq.html"/>
+<link rel="alternate" hreflang="es" href="https://ornytools.xyz/faq.html"/>
+<link rel="alternate" hreflang="x-default" href="https://ornytools.xyz/faq.html"/>
 <meta property="og:type" content="website"/>
 <meta property="og:site_name" content="OrnyTools"/>
 <meta property="og:title" content="FAQ — OrnyTools"/>
@@ -70,6 +74,44 @@
   .btn-theme:hover{border-color:var(--blue)}
 </style>
 <script src="lang.js"></script>
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"FAQPage",
+  "mainEntity":[
+    {
+      "@type":"Question",
+      "name":"What is OrnyTools?",
+      "acceptedAnswer":{"@type":"Answer","text":"OrnyTools is a suite of free DeFi calculation tools covering trade optimization, liquidation risk, leverage, impermanent loss, yield, GMX perpetuals, and Aave V3 positions. All tools are read-only — we never connect to your wallet and never execute transactions."}
+    },
+    {
+      "@type":"Question",
+      "name":"Is OrnyTools free?",
+      "acceptedAnswer":{"@type":"Answer","text":"Yes, all 13 tools are free with no account required. There are no paywalls, no email registration, and no tracking cookies."}
+    },
+    {
+      "@type":"Question",
+      "name":"Do you store my wallet address?",
+      "acceptedAnswer":{"@type":"Answer","text":"No. When you enter a wallet address in the Position Dashboard, it is used only to make a single RPC call to the Aave V3 contract — the result is displayed in your browser and then discarded. Nothing is stored server-side because there is no server. OrnyTools is a static site."}
+    },
+    {
+      "@type":"Question",
+      "name":"Can I trust the calculations?",
+      "acceptedAnswer":{"@type":"Answer","text":"The formulas are documented in full on the Methodology page. On-chain data (health factor, collateral, debt) comes directly from the Aave V3 smart contract. Price data comes from CoinGecko or GeckoTerminal. Always verify critical positions directly in the protocol interface."}
+    },
+    {
+      "@type":"Question",
+      "name":"How is the margin to liquidation percentage calculated?",
+      "acceptedAnswer":{"@type":"Answer","text":"It is the uniform price drop across all collateral assets that would push your health factor to exactly 1.0: drop = 1 − debt / (collateral × LT). This assumes all collateral assets drop by the same percentage simultaneously."}
+    },
+    {
+      "@type":"Question",
+      "name":"Which languages does OrnyTools support?",
+      "acceptedAnswer":{"@type":"Answer","text":"Most tool pages are available in English, French, and Spanish. Use the EN / FR / ES buttons in the navbar to switch languages. Your language preference is saved and applied automatically on all subsequent visits."}
+    }
+  ]
+}
+</script>
 </head>
 <body>
 
@@ -102,7 +144,7 @@
     <details>
       <summary>Is OrnyTools free?</summary>
       <div class="faq-body">
-        <p>Yes, all 11 tools are free with no account required. There are no paywalls, no email registration, and no tracking cookies.</p>
+        <p>Yes, all 13 tools are free with no account required. There are no paywalls, no email registration, and no tracking cookies.</p>
       </div>
     </details>
 

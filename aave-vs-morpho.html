@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta name="description" content="Aave V3 vs Morpho Blue: compare LTV, liquidation threshold, borrow APY and health factor side by side. Which protocol gives you more borrowing power for WBTC, ETH or wstETH?"/>
+<meta name="robots" content="index,follow"/>
+<link rel="canonical" href="https://ornytools.xyz/aave-vs-morpho.html"/>
+<link rel="alternate" hreflang="en" href="https://ornytools.xyz/aave-vs-morpho.html"/>
+<link rel="alternate" hreflang="fr" href="https://ornytools.xyz/aave-vs-morpho.html"/>
+<link rel="alternate" hreflang="es" href="https://ornytools.xyz/aave-vs-morpho.html"/>
+<link rel="alternate" hreflang="x-default" href="https://ornytools.xyz/aave-vs-morpho.html"/>
+<meta property="og:type" content="article"/>
+<meta property="og:site_name" content="OrnyTools"/>
+<meta property="og:title" content="Aave V3 vs Morpho Blue: Which Protocol Wins? — OrnyTools"/>
+<meta property="og:description" content="Side-by-side comparison of Aave V3 and Morpho Blue: LTV, health factor, liquidation price, borrow APY. Free interactive comparator included."/>
+<meta property="og:url" content="https://ornytools.xyz/aave-vs-morpho.html"/>
+<meta property="og:image" content="https://ornytools.xyz/orny-banner.png"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="Aave V3 vs Morpho Blue — OrnyTools"/>
+<meta name="twitter:description" content="LTV 73% vs 86%. Health factor. Borrow APY. Which protocol wins for your collateral? Free comparison tool included."/>
+<meta name="twitter:image" content="https://ornytools.xyz/orny-banner.png"/>
+<title>Aave V3 vs Morpho Blue: Which Protocol Wins? — OrnyTools</title>
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"Article",
+  "headline":"Aave V3 vs Morpho Blue: Which Protocol Wins?",
+  "description":"Side-by-side comparison of Aave V3 and Morpho Blue: LTV, liquidation threshold, borrow APY and health factor for WBTC, ETH and wstETH.",
+  "url":"https://ornytools.xyz/aave-vs-morpho.html",
+  "datePublished":"2026-06-17",
+  "dateModified":"2026-06-17",
+  "author":{"@type":"Organization","name":"OrnyTools","url":"https://ornytools.xyz"},
+  "publisher":{"@type":"Organization","name":"OrnyTools","url":"https://ornytools.xyz"},
+  "inLanguage":["en","fr","es"],
+  "mainEntityOfPage":{"@type":"WebPage","@id":"https://ornytools.xyz/aave-vs-morpho.html"}
+}
+</script>
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-5XT34MFV');</script>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<script src="lang.js"></script>
+<style>
+  :root{
+    --gold:#C8841E;--blue:#2563eb;--green:#16a34a;--red:#dc2626;
+    --aave:#B6509E;--morpho:#2563EB;
+    --text:#111827;--dim:#6B7280;--faint:#9AA5B4;
+    --line:#E4E8F0;--surface:#FFFFFF;
+    --display:"Fraunces",Georgia,serif;
+    --ui:"Hanken Grotesk",system-ui,sans-serif;
+    --mono:"JetBrains Mono",ui-monospace,monospace;
+    --radius:14px;--shadow:0 2px 8px rgba(0,0,0,.07),0 8px 32px rgba(0,0,0,.07);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:#f7f8fc;color:var(--text);font-family:var(--ui);-webkit-font-smoothing:antialiased}
+  .navbar{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(255,255,255,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);padding:10px 24px;display:flex;align-items:center;gap:12px}
+  .nav-logo{width:36px;height:36px;object-fit:cover;object-position:center 15%;border-radius:8px}
+  .nav-brand{font-family:var(--display);font-size:1.05rem;font-weight:600;letter-spacing:-.02em}
+  .nav-brand .dot{color:var(--gold)}
+  .lang-switch{margin-left:auto;display:flex;gap:4px}
+  .lang-btn{background:transparent;border:1px solid var(--line);border-radius:6px;padding:4px 9px;font-size:.72rem;font-weight:700;cursor:pointer;transition:.15s;color:var(--dim)}
+  .lang-btn.active{border-color:var(--blue);color:var(--blue);background:rgba(37,99,235,.06)}
+  .nav-home{font-size:.82rem;font-weight:600;color:var(--dim);text-decoration:none;padding:7px 14px;border:1px solid var(--line);border-radius:7px;transition:.15s;margin-left:8px}
+  .nav-home:hover{border-color:var(--blue);color:var(--blue)}
+  .page-hero{padding:96px 28px 48px;text-align:center;background:#fff;border-bottom:1px solid var(--line)}
+  .eyebrow{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--blue);font-weight:700;margin-bottom:14px}
+  .page-hero h1{font-family:var(--display);font-weight:500;font-size:clamp(1.7rem,3.5vw,2.5rem);letter-spacing:-.02em;margin-bottom:14px;line-height:1.15}
+  .page-hero .lede{color:var(--dim);font-size:.95rem;max-width:55ch;margin:0 auto;line-height:1.8}
+  .page-meta{margin-top:16px;font-size:.75rem;color:var(--faint)}
+  main{max-width:760px;margin:0 auto;padding:48px 24px 80px}
+  /* comparison table */
+  .cmp-table{width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);margin:28px 0}
+  .cmp-table th{padding:12px 16px;font-size:.78rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+  .cmp-table th:first-child{text-align:left;color:var(--faint);background:#fafbfc}
+  .cmp-table th.col-aave{background:rgba(182,80,158,.07);color:var(--aave)}
+  .cmp-table th.col-morpho{background:rgba(37,99,235,.07);color:var(--morpho)}
+  .cmp-table td{padding:11px 16px;font-size:.88rem;border-top:1px solid var(--line)}
+  .cmp-table td:first-child{font-weight:600;color:var(--text);background:#fafbfc;width:38%}
+  .cmp-table td.col-aave{background:rgba(182,80,158,.03);color:var(--text)}
+  .cmp-table td.col-morpho{background:rgba(37,99,235,.03);color:var(--text)}
+  .cmp-table .winner{font-weight:700}
+  .cmp-table .winner.a{color:var(--aave)}
+  .cmp-table .winner.m{color:var(--morpho)}
+  /* article body */
+  .art-body{font-size:.92rem;line-height:1.9;color:var(--dim)}
+  .art-body h2{font-family:var(--display);font-size:1.2rem;font-weight:500;color:var(--text);margin:36px 0 12px;letter-spacing:-.01em}
+  .art-body h3{font-size:.95rem;font-weight:700;color:var(--text);margin:22px 0 8px}
+  .art-body p{margin-bottom:14px}
+  .art-body strong{color:var(--text)}
+  .art-body code{font-family:var(--mono);font-size:.82rem;background:#f7f8fc;padding:2px 6px;border-radius:4px;border:1px solid var(--line);color:var(--text)}
+  .callout{border-radius:10px;padding:16px 20px;font-size:.88rem;line-height:1.75;margin:22px 0}
+  .callout.gold{background:rgba(200,132,30,.06);border-left:3px solid var(--gold)}
+  .callout.blue{background:rgba(37,99,235,.06);border-left:3px solid var(--blue)}
+  .callout.red{background:rgba(220,38,38,.06);border-left:3px solid var(--red)}
+  .cta-band{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:24px 28px;margin:32px 0;box-shadow:var(--shadow);text-align:center}
+  .cta-band p{color:var(--dim);font-size:.9rem;margin-bottom:14px}
+  .btn-cta{display:inline-flex;align-items:center;gap:7px;padding:11px 22px;background:var(--blue);color:#fff;border-radius:9px;font-size:.88rem;font-weight:700;text-decoration:none;transition:background .2s}
+  .btn-cta:hover{background:#1d4ed8}
+  footer{text-align:center;padding:20px;font-size:.72rem;color:var(--faint);border-top:1px solid var(--line)}
+  footer a{color:var(--faint);text-decoration:none}
+  footer a:hover{color:var(--blue)}
+  html.dark{--surface:#161b22;--line:#30363d;--text:#e6edf3;--dim:#8b949e;--faint:#6e7681}
+  html.dark body{background:#0d1117;color:var(--text)}
+  html.dark .navbar,html.dark .page-hero,html.dark .cta-band,html.dark .cmp-table th:first-child,html.dark .cmp-table td:first-child{background:var(--surface);border-color:var(--line)}
+  html.dark .navbar{background:rgba(13,17,23,.95)}
+  html.dark .cmp-table{background:var(--surface);border-color:var(--line)}
+  html.dark .art-body code{background:#1c2128;border-color:var(--line)}
+</style>
+</head>
+<body>
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5XT34MFV" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+
+<nav class="navbar">
+  <a href="index.html"><img src="logo.png" class="nav-logo" alt="OrnyTools"/></a>
+  <span class="nav-brand">ORNY<span class="dot">.</span>TOOLS</span>
+  <div class="lang-switch">
+    <button id="btnEN" class="lang-btn active" onclick="setLang('en')">🇬🇧 EN</button>
+    <button id="btnFR" class="lang-btn" onclick="setLang('fr')">🇫🇷 FR</button>
+    <button id="btnES" class="lang-btn" onclick="setLang('es')">🇪🇸 ES</button>
+  </div>
+  <a href="index.html" class="nav-home">← Home</a>
+</nav>
+
+<div class="page-hero">
+  <div class="eyebrow">Protocol Analysis</div>
+  <h1>
+    <span class="t-en">Aave V3 vs Morpho Blue:<br>Which Protocol Wins?</span>
+    <span class="t-fr">Aave V3 vs Morpho Blue :<br>Lequel choisir ?</span>
+    <span class="t-es">Aave V3 vs Morpho Blue:<br>¿Cuál es mejor?</span>
+  </h1>
+  <p class="lede">
+    <span class="t-en">Same collateral, same borrow target — two very different results. Here's the honest comparison nobody does in French or Spanish.</span>
+    <span class="t-fr">Même collatéral, même objectif d'emprunt — deux résultats très différents. Voici la comparaison honnête.</span>
+    <span class="t-es">Mismo colateral, mismo objetivo de préstamo — dos resultados muy diferentes. La comparación honesta.</span>
+  </p>
+  <div class="page-meta">
+    <span class="t-en">June 2026 · 8 min read · Updated with June 2026 protocol parameters</span>
+    <span class="t-fr">Juin 2026 · 8 min de lecture · Paramètres protocoles mis à jour juin 2026</span>
+    <span class="t-es">Junio 2026 · 8 min de lectura · Parámetros de protocolo actualizados junio 2026</span>
+  </div>
+</div>
+
+<main>
+<div class="art-body">
+
+<h2>
+  <span class="t-en">The Core Difference in One Number</span>
+  <span class="t-fr">La différence essentielle en un chiffre</span>
+  <span class="t-es">La diferencia clave en un número</span>
+</h2>
+<p>
+  <span class="t-en">On Aave V3 Arbitrum, you can borrow up to <strong>73% of your WBTC value</strong> (LTV). On Morpho Blue, the same WBTC gets you up to <strong>86% LLTV</strong>. That 13-point gap is not minor — on a $100,000 BTC position, it's $13,000 more borrowing capacity. The question is whether that extra room is worth the tradeoffs.</span>
+  <span class="t-fr">Sur Aave V3 Arbitrum, vous pouvez emprunter jusqu'à <strong>73% de la valeur de votre WBTC</strong> (LTV). Sur Morpho Blue, le même WBTC vous donne jusqu'à <strong>86% de LLTV</strong>. Ces 13 points de différence ne sont pas anodins — sur une position BTC à 100 000 $, c'est 13 000 $ de capacité d'emprunt supplémentaire. La question est de savoir si cette marge supplémentaire vaut les compromis.</span>
+  <span class="t-es">En Aave V3 Arbitrum, puedes pedir prestado hasta el <strong>73% del valor de tu WBTC</strong> (LTV). En Morpho Blue, el mismo WBTC te da hasta el <strong>86% de LLTV</strong>. Esa diferencia de 13 puntos no es menor — en una posición BTC de $100,000, son $13,000 más de capacidad de préstamo. La pregunta es si esa capacidad extra vale los compromisos.</span>
+</p>
+
+<h2>
+  <span class="t-en">Parameters Side by Side (June 2026)</span>
+  <span class="t-fr">Paramètres côte à côte (juin 2026)</span>
+  <span class="t-es">Parámetros lado a lado (junio 2026)</span>
+</h2>
+
+<table class="cmp-table">
+  <thead>
+    <tr>
+      <th></th>
+      <th class="col-aave">Aave V3 (Arbitrum)</th>
+      <th class="col-morpho">Morpho Blue</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>WBTC Max LTV / LLTV</td>
+      <td class="col-aave">73%</td>
+      <td class="col-morpho winner m">86%</td>
+    </tr>
+    <tr>
+      <td>ETH Max LTV / LLTV</td>
+      <td class="col-aave">80%</td>
+      <td class="col-morpho winner m">86%</td>
+    </tr>
+    <tr>
+      <td>wstETH Max LTV / LLTV</td>
+      <td class="col-aave">75%</td>
+      <td class="col-morpho winner m">94.5%</td>
+    </tr>
+    <tr>
+      <td>WBTC Borrow APY</td>
+      <td class="col-aave">~6.5%</td>
+      <td class="col-morpho winner m">~5.4%</td>
+    </tr>
+    <tr>
+      <td>ETH Borrow APY</td>
+      <td class="col-aave">~5.3%</td>
+      <td class="col-morpho winner m">~4.5%</td>
+    </tr>
+    <tr>
+      <td>WBTC Liquidation Penalty</td>
+      <td class="col-aave">10%</td>
+      <td class="col-morpho winner m">8%</td>
+    </tr>
+    <tr>
+      <td>Multi-collateral</td>
+      <td class="col-aave winner a">Yes</td>
+      <td class="col-morpho">No (isolated pairs)</td>
+    </tr>
+    <tr>
+      <td>Variable rate risk</td>
+      <td class="col-aave">Yes</td>
+      <td class="col-morpho">Yes</td>
+    </tr>
+    <tr>
+      <td>Governance / upgradeable</td>
+      <td class="col-aave">Yes (DAO)</td>
+      <td class="col-morpho winner m">No (immutable)</td>
+    </tr>
+  </tbody>
+</table>
+<p style="font-size:.75rem;color:var(--faint);margin-top:-16px">
+  <span class="t-en">Source: Aave V3 and Morpho Blue protocol interfaces, June 2026. Rates are variable and change daily.</span>
+  <span class="t-fr">Source : interfaces protocoles Aave V3 et Morpho Blue, juin 2026. Les taux sont variables et changent quotidiennement.</span>
+  <span class="t-es">Fuente: interfaces de protocolo Aave V3 y Morpho Blue, junio 2026. Las tasas son variables y cambian diariamente.</span>
+</p>
+
+<h2>
+  <span class="t-en">When Aave V3 Wins</span>
+  <span class="t-fr">Quand Aave V3 gagne</span>
+  <span class="t-es">Cuándo gana Aave V3</span>
+</h2>
+<p>
+  <span class="t-en"><strong>Multi-collateral positions.</strong> Aave lets you deposit WBTC + ETH + stablecoins as collateral simultaneously. Morpho Blue is isolated — each market is one collateral against one borrow asset. If your portfolio is diversified, Aave's aggregation makes managing a single position simpler.</span>
+  <span class="t-fr"><strong>Positions multi-collatéraux.</strong> Aave vous permet de déposer du WBTC + ETH + des stablecoins comme collatéral simultanément. Morpho Blue est isolé — chaque marché est un collatéral contre un actif d'emprunt. Si votre portefeuille est diversifié, l'agrégation d'Aave simplifie la gestion d'une seule position.</span>
+  <span class="t-es"><strong>Posiciones multi-colateral.</strong> Aave te permite depositar WBTC + ETH + stablecoins como colateral simultáneamente. Morpho Blue está aislado — cada mercado es un colateral contra un activo de préstamo. Si tu cartera es diversificada, la agregación de Aave simplifica la gestión de una sola posición.</span>
+</p>
+<p>
+  <span class="t-en"><strong>Ecosystem depth.</strong> Aave V3 has been audited extensively and has more liquidity. For very large positions (>$1M), liquidation risk in thin Morpho markets is a real concern.</span>
+  <span class="t-fr"><strong>Profondeur de l'écosystème.</strong> Aave V3 a été audité de manière approfondie et dispose de plus de liquidité. Pour des positions très importantes (>1M$), le risque de liquidation dans des marchés Morpho peu liquides est une préoccupation réelle.</span>
+  <span class="t-es"><strong>Profundidad del ecosistema.</strong> Aave V3 ha sido auditado extensamente y tiene más liquidez. Para posiciones muy grandes (>$1M), el riesgo de liquidación en mercados Morpho con poca liquidez es una preocupación real.</span>
+</p>
+
+<h2>
+  <span class="t-en">When Morpho Blue Wins</span>
+  <span class="t-fr">Quand Morpho Blue gagne</span>
+  <span class="t-es">Cuándo gana Morpho Blue</span>
+</h2>
+<p>
+  <span class="t-en"><strong>Pure leverage loops.</strong> If your strategy is to borrow stablecoins against a single asset and re-deposit, Morpho's higher LLTV lets you run more loops before hitting the cap. A WBTC→USDC loop on Morpho at 86% can achieve ~7× leverage; on Aave at 73%, you cap at ~3.7×.</span>
+  <span class="t-fr"><strong>Loops de levier pur.</strong> Si votre stratégie consiste à emprunter des stablecoins contre un seul actif et à re-déposer, le LLTV plus élevé de Morpho vous permet d'effectuer plus de loops avant d'atteindre la limite. Un loop WBTC→USDC sur Morpho à 86% peut atteindre un levier ~7× ; sur Aave à 73%, vous plafonnez à ~3.7×.</span>
+  <span class="t-es"><strong>Loops de apalancamiento puro.</strong> Si tu estrategia es pedir stablecoins prestadas contra un solo activo y re-depositar, el LLTV más alto de Morpho te permite ejecutar más loops antes de alcanzar el límite. Un loop WBTC→USDC en Morpho al 86% puede lograr ~7× de apalancamiento; en Aave al 73%, el límite es ~3.7×.</span>
+</p>
+<p>
+  <span class="t-en"><strong>wstETH strategy.</strong> The wstETH/WETH market on Morpho has a 94.5% LLTV. Since wstETH and ETH are highly correlated, the liquidation risk at high LTV is very low. This is the most capital-efficient way to earn staking yield while borrowing ETH.</span>
+  <span class="t-fr"><strong>Stratégie wstETH.</strong> Le marché wstETH/WETH sur Morpho a un LLTV de 94,5%. Comme wstETH et ETH sont très corrélés, le risque de liquidation à LTV élevé est très faible. C'est le moyen le plus efficient en capital pour percevoir un rendement de staking tout en empruntant de l'ETH.</span>
+  <span class="t-es"><strong>Estrategia wstETH.</strong> El mercado wstETH/WETH en Morpho tiene un LLTV del 94.5%. Como wstETH y ETH están muy correlacionados, el riesgo de liquidación con LTV alto es muy bajo. Esta es la forma más eficiente en capital de ganar rendimiento de staking mientras se toma ETH prestado.</span>
+</p>
+
+<div class="callout gold">
+  <strong>
+    <span class="t-en">The honest verdict</span>
+    <span class="t-fr">Le verdict honnête</span>
+    <span class="t-es">El veredicto honesto</span>
+  </strong><br>
+  <span class="t-en">Morpho Blue wins on pure capital efficiency (higher LLTV, lower liquidation penalty, lower rates). Aave V3 wins on flexibility (multi-collateral, larger ecosystem, simpler UX for diverse portfolios). For a BTC maximalist running a leverage loop, Morpho is the better tool. For someone managing a mixed portfolio of crypto assets, Aave is safer and simpler.</span>
+  <span class="t-fr">Morpho Blue gagne sur l'efficacité en capital pur (LLTV plus élevé, pénalité de liquidation plus faible, taux plus bas). Aave V3 gagne sur la flexibilité (multi-collatéral, écosystème plus large, UX plus simple pour des portefeuilles diversifiés). Pour un maximaliste BTC qui exécute un loop de levier, Morpho est le meilleur outil. Pour quelqu'un qui gère un portefeuille mixte d'actifs crypto, Aave est plus sûr et plus simple.</span>
+  <span class="t-es">Morpho Blue gana en eficiencia de capital pura (LLTV más alto, penalización de liquidación más baja, tasas más bajas). Aave V3 gana en flexibilidad (multi-colateral, ecosistema más grande, UX más simple para carteras diversas). Para un maximalista de BTC que ejecuta un loop de apalancamiento, Morpho es la mejor herramienta. Para alguien que gestiona una cartera mixta de activos cripto, Aave es más seguro y más simple.</span>
+</div>
+
+<h2>
+  <span class="t-en">The Health Factor Difference</span>
+  <span class="t-fr">La différence de Health Factor</span>
+  <span class="t-es">La diferencia en Health Factor</span>
+</h2>
+<p>
+  <span class="t-en">This is where things get subtle. Morpho's higher LLTV means you <em>can</em> borrow more — but if you actually use that capacity, your health factor is lower, meaning you're closer to liquidation. The choice is not "more borrowing power = safer". It's "more borrowing power = more responsibility to manage."</span>
+  <span class="t-fr">C'est là que les choses deviennent subtiles. Le LLTV plus élevé de Morpho signifie que vous <em>pouvez</em> emprunter davantage — mais si vous utilisez réellement cette capacité, votre health factor est plus faible, ce qui signifie que vous êtes plus proche de la liquidation. Le choix n'est pas "plus de puissance d'emprunt = plus sûr". C'est "plus de puissance d'emprunt = plus de responsabilité à gérer."</span>
+  <span class="t-es">Aquí es donde las cosas se vuelven sutiles. El LLTV más alto de Morpho significa que <em>puedes</em> pedir más prestado — pero si realmente usas esa capacidad, tu health factor es más bajo, lo que significa que estás más cerca de la liquidación. La elección no es "más capacidad de préstamo = más seguro". Es "más capacidad de préstamo = más responsabilidad para gestionar."</span>
+</p>
+<p>
+  <span class="t-en">Example: $100,000 WBTC, borrowing $60,000 USDC. On Aave V3 (Arbitrum), your health factor is approximately <code>78,000 / 60,000 = 1.30</code>. On Morpho Blue, it's <code>86,000 / 60,000 = 1.43</code>. Same borrow, same collateral — Morpho gives you a higher health factor. The protocol's higher LT is actually protecting you more at the same utilization.</span>
+  <span class="t-fr">Exemple : 100 000 $ en WBTC, emprunt de 60 000 $ USDC. Sur Aave V3 (Arbitrum), votre health factor est approximativement <code>78 000 / 60 000 = 1,30</code>. Sur Morpho Blue, c'est <code>86 000 / 60 000 = 1,43</code>. Même emprunt, même collatéral — Morpho vous donne un health factor plus élevé. Le LT plus élevé du protocole vous protège en réalité davantage à la même utilisation.</span>
+  <span class="t-es">Ejemplo: $100,000 en WBTC, tomando prestados $60,000 USDC. En Aave V3 (Arbitrum), tu health factor es aproximadamente <code>78,000 / 60,000 = 1.30</code>. En Morpho Blue, es <code>86,000 / 60,000 = 1.43</code>. Mismo préstamo, mismo colateral — Morpho te da un health factor más alto. El LT más alto del protocolo te protege más con la misma utilización.</span>
+</p>
+
+<div class="cta-band">
+  <p>
+    <span class="t-en">Calculate your exact health factor, liquidation price and annual borrow cost on both protocols with your own numbers.</span>
+    <span class="t-fr">Calculez votre health factor exact, votre prix de liquidation et votre coût d'emprunt annuel sur les deux protocoles avec vos propres chiffres.</span>
+    <span class="t-es">Calcula tu health factor exacto, precio de liquidación y costo anual de préstamo en ambos protocolos con tus propios números.</span>
+  </p>
+  <a href="compare.html" class="btn-cta">
+    <span class="t-en">⚖️ Open Protocol Comparator →</span>
+    <span class="t-fr">⚖️ Ouvrir le Comparateur de Protocoles →</span>
+    <span class="t-es">⚖️ Abrir el Comparador de Protocolos →</span>
+  </a>
+</div>
+
+<h2>
+  <span class="t-en">Key Risks to Know</span>
+  <span class="t-fr">Risques clés à connaître</span>
+  <span class="t-es">Riesgos clave a conocer</span>
+</h2>
+<p>
+  <span class="t-en"><strong>Morpho market risk:</strong> Each Morpho market is curated independently. A WBTC/USDC market with low liquidity can make liquidations slow — good for borrowers in flash crashes, bad if you need to repay quickly. Always check the total liquidity of the specific market before opening a large position.</span>
+  <span class="t-fr"><strong>Risque de marché Morpho :</strong> Chaque marché Morpho est curé indépendamment. Un marché WBTC/USDC avec une faible liquidité peut rendre les liquidations lentes — bon pour les emprunteurs lors de flash crashes, mauvais si vous devez rembourser rapidement. Vérifiez toujours la liquidité totale du marché spécifique avant d'ouvrir une grande position.</span>
+  <span class="t-es"><strong>Riesgo de mercado Morpho:</strong> Cada mercado de Morpho es curado de forma independiente. Un mercado WBTC/USDC con poca liquidez puede hacer que las liquidaciones sean lentas — bueno para los prestatarios en flash crashes, malo si necesitas repagar rápidamente. Siempre verifica la liquidez total del mercado específico antes de abrir una posición grande.</span>
+</p>
+<p>
+  <span class="t-en"><strong>Aave rate spikes:</strong> Aave's variable rate is governed by a utilization model. When utilization exceeds the "kink" (usually 80-90%), rates can spike from 5% to 100%+ overnight. Always keep a reserve to repay or have alerts set.</span>
+  <span class="t-fr"><strong>Pics de taux Aave :</strong> Le taux variable d'Aave est gouverné par un modèle d'utilisation. Quand l'utilisation dépasse le "kink" (généralement 80-90%), les taux peuvent passer de 5% à 100%+ du jour au lendemain. Gardez toujours une réserve pour rembourser ou configurez des alertes.</span>
+  <span class="t-es"><strong>Picos de tasa en Aave:</strong> La tasa variable de Aave está gobernada por un modelo de utilización. Cuando la utilización supera el "kink" (normalmente 80-90%), las tasas pueden dispararse del 5% al 100%+ de la noche a la mañana. Siempre mantén una reserva para repagar o configura alertas.</span>
+</p>
+
+<div class="callout blue">
+  <span class="t-en"><strong>See also:</strong> <a href="health-factor-guide.html">How to Calculate Your Health Factor</a> — the math behind the number that keeps you safe, and how to set a floor that won't get you liquidated.</span>
+  <span class="t-fr"><strong>Voir aussi :</strong> <a href="health-factor-guide.html">Comment calculer son Health Factor</a> — les maths derrière le chiffre qui vous protège, et comment définir un plancher pour éviter la liquidation.</span>
+  <span class="t-es"><strong>Ver también:</strong> <a href="health-factor-guide.html">Cómo calcular tu Health Factor</a> — las matemáticas detrás del número que te mantiene seguro, y cómo establecer un mínimo para no ser liquidado.</span>
+</div>
+
+</div><!-- end art-body -->
+</main>
+
+<footer>
+  <a href="index.html">OrnyTools</a> · <a href="compare.html">Protocol Comparator</a> · <a href="aave.html">Aave Calculator</a> · <a href="morpho.html">Morpho Calculator</a> · <a href="blog.html">Blog</a>
+</footer>
+
+</body>
+</html>

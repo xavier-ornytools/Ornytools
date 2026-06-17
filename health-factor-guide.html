@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta name="description" content="What is health factor in DeFi? How to calculate it on Aave V3, what 1.0 means, and the exact thresholds to set to avoid liquidation. With formula and live calculator."/>
+<meta name="robots" content="index,follow"/>
+<link rel="canonical" href="https://ornytools.xyz/health-factor-guide.html"/>
+<link rel="alternate" hreflang="en" href="https://ornytools.xyz/health-factor-guide.html"/>
+<link rel="alternate" hreflang="fr" href="https://ornytools.xyz/health-factor-guide.html"/>
+<link rel="alternate" hreflang="es" href="https://ornytools.xyz/health-factor-guide.html"/>
+<link rel="alternate" hreflang="x-default" href="https://ornytools.xyz/health-factor-guide.html"/>
+<meta property="og:type" content="article"/>
+<meta property="og:site_name" content="OrnyTools"/>
+<meta property="og:title" content="Health Factor in DeFi: The Complete Guide — OrnyTools"/>
+<meta property="og:description" content="What is health factor in Aave? How is it calculated? What thresholds should you target? The formula, the examples, and a live calculator."/>
+<meta property="og:url" content="https://ornytools.xyz/health-factor-guide.html"/>
+<meta property="og:image" content="https://ornytools.xyz/orny-banner.png"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="Health Factor Guide — OrnyTools"/>
+<meta name="twitter:description" content="What is health factor? How to calculate it in Aave V3? The complete guide with formula and live tool."/>
+<meta name="twitter:image" content="https://ornytools.xyz/orny-banner.png"/>
+<title>Health Factor in DeFi: The Complete Guide — OrnyTools</title>
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"Article",
+  "headline":"Health Factor in DeFi: The Complete Guide",
+  "description":"What is health factor on Aave V3? How to calculate it, what 1.0 means, and the exact liquidation thresholds to watch.",
+  "url":"https://ornytools.xyz/health-factor-guide.html",
+  "datePublished":"2026-06-17",
+  "dateModified":"2026-06-17",
+  "author":{"@type":"Organization","name":"OrnyTools","url":"https://ornytools.xyz"},
+  "publisher":{"@type":"Organization","name":"OrnyTools","url":"https://ornytools.xyz"},
+  "inLanguage":["en","fr","es"],
+  "mainEntityOfPage":{"@type":"WebPage","@id":"https://ornytools.xyz/health-factor-guide.html"}
+}
+</script>
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-5XT34MFV');</script>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<script src="lang.js"></script>
+<style>
+  :root{
+    --gold:#C8841E;--blue:#2563eb;--green:#16a34a;--red:#dc2626;
+    --text:#111827;--dim:#6B7280;--faint:#9AA5B4;
+    --line:#E4E8F0;
+    --display:"Fraunces",Georgia,serif;
+    --ui:"Hanken Grotesk",system-ui,sans-serif;
+    --mono:"JetBrains Mono",ui-monospace,monospace;
+    --radius:14px;--shadow:0 2px 8px rgba(0,0,0,.07),0 8px 32px rgba(0,0,0,.07);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:#f7f8fc;color:var(--text);font-family:var(--ui);-webkit-font-smoothing:antialiased}
+  .navbar{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(255,255,255,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);padding:10px 24px;display:flex;align-items:center;gap:12px}
+  .nav-logo{width:36px;height:36px;object-fit:cover;object-position:center 15%;border-radius:8px}
+  .nav-brand{font-family:var(--display);font-size:1.05rem;font-weight:600;letter-spacing:-.02em}
+  .nav-brand .dot{color:var(--gold)}
+  .lang-switch{margin-left:auto;display:flex;gap:4px}
+  .lang-btn{background:transparent;border:1px solid var(--line);border-radius:6px;padding:4px 9px;font-size:.72rem;font-weight:700;cursor:pointer;transition:.15s;color:var(--dim)}
+  .lang-btn.active{border-color:var(--blue);color:var(--blue);background:rgba(37,99,235,.06)}
+  .nav-home{font-size:.82rem;font-weight:600;color:var(--dim);text-decoration:none;padding:7px 14px;border:1px solid var(--line);border-radius:7px;transition:.15s;margin-left:8px}
+  .nav-home:hover{border-color:var(--blue);color:var(--blue)}
+  .page-hero{padding:96px 28px 48px;text-align:center;background:#fff;border-bottom:1px solid var(--line)}
+  .eyebrow{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--blue);font-weight:700;margin-bottom:14px}
+  .page-hero h1{font-family:var(--display);font-weight:500;font-size:clamp(1.7rem,3.5vw,2.5rem);letter-spacing:-.02em;margin-bottom:14px;line-height:1.15}
+  .page-hero .lede{color:var(--dim);font-size:.95rem;max-width:55ch;margin:0 auto;line-height:1.8}
+  .page-meta{margin-top:16px;font-size:.75rem;color:var(--faint)}
+  main{max-width:760px;margin:0 auto;padding:48px 24px 80px}
+  .art-body{font-size:.92rem;line-height:1.9;color:var(--dim)}
+  .art-body h2{font-family:var(--display);font-size:1.2rem;font-weight:500;color:var(--text);margin:36px 0 12px;letter-spacing:-.01em}
+  .art-body h3{font-size:.95rem;font-weight:700;color:var(--text);margin:22px 0 8px}
+  .art-body p{margin-bottom:14px}
+  .art-body strong{color:var(--text)}
+  .art-body a{color:var(--blue)}
+  .art-body code{font-family:var(--mono);font-size:.82rem;background:#f7f8fc;padding:2px 6px;border-radius:4px;border:1px solid var(--line);color:var(--text)}
+  .formula-block{background:#fff;border:1px solid var(--line);border-radius:10px;padding:18px 22px;font-family:var(--mono);font-size:.9rem;color:var(--text);margin:20px 0;box-shadow:var(--shadow)}
+  .formula-block .formula-label{font-family:var(--ui);font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);margin-bottom:8px}
+  .formula-main{font-size:1rem;font-weight:700;color:var(--blue)}
+  .hf-zones{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:20px 0}
+  .hf-zone{padding:16px;border-radius:10px;text-align:center}
+  .hf-zone .hf-val{font-family:var(--display);font-size:1.5rem;font-weight:500;margin-bottom:6px}
+  .hf-zone .hf-label{font-size:.78rem;font-weight:600;margin-bottom:4px}
+  .hf-zone .hf-desc{font-size:.73rem;color:var(--dim);line-height:1.5}
+  .hf-zone.danger{background:rgba(220,38,38,.06);border:1px solid rgba(220,38,38,.2)}
+  .hf-zone.danger .hf-val{color:var(--red)}
+  .hf-zone.caution{background:rgba(200,132,30,.06);border:1px solid rgba(200,132,30,.2)}
+  .hf-zone.caution .hf-val{color:var(--gold)}
+  .hf-zone.safe{background:rgba(22,163,74,.06);border:1px solid rgba(22,163,74,.2)}
+  .hf-zone.safe .hf-val{color:var(--green)}
+  .callout{border-radius:10px;padding:16px 20px;font-size:.88rem;line-height:1.75;margin:22px 0}
+  .callout.gold{background:rgba(200,132,30,.06);border-left:3px solid var(--gold)}
+  .callout.blue{background:rgba(37,99,235,.06);border-left:3px solid var(--blue)}
+  .callout.red{background:rgba(220,38,38,.06);border-left:3px solid var(--red)}
+  .cta-band{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:24px 28px;margin:32px 0;box-shadow:var(--shadow);text-align:center}
+  .cta-band p{color:var(--dim);font-size:.9rem;margin-bottom:14px}
+  .btn-cta{display:inline-flex;align-items:center;gap:7px;padding:11px 22px;background:var(--blue);color:#fff;border-radius:9px;font-size:.88rem;font-weight:700;text-decoration:none;transition:background .2s;margin:4px}
+  .btn-cta:hover{background:#1d4ed8}
+  .btn-cta.gold{background:var(--gold)}
+  .btn-cta.gold:hover{background:#a86c15}
+  footer{text-align:center;padding:20px;font-size:.72rem;color:var(--faint);border-top:1px solid var(--line)}
+  footer a{color:var(--faint);text-decoration:none}
+  footer a:hover{color:var(--blue)}
+  html.dark{--line:#30363d;--text:#e6edf3;--dim:#8b949e;--faint:#6e7681}
+  html.dark body{background:#0d1117;color:var(--text)}
+  html.dark .navbar{background:rgba(13,17,23,.95);border-color:var(--line)}
+  html.dark .page-hero,html.dark .cta-band,html.dark .formula-block{background:#161b22;border-color:var(--line)}
+  html.dark .art-body code{background:#1c2128;border-color:var(--line)}
+  @media(max-width:560px){.hf-zones{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5XT34MFV" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+
+<nav class="navbar">
+  <a href="index.html"><img src="logo.png" class="nav-logo" alt="OrnyTools"/></a>
+  <span class="nav-brand">ORNY<span class="dot">.</span>TOOLS</span>
+  <div class="lang-switch">
+    <button id="btnEN" class="lang-btn active" onclick="setLang('en')">🇬🇧 EN</button>
+    <button id="btnFR" class="lang-btn" onclick="setLang('fr')">🇫🇷 FR</button>
+    <button id="btnES" class="lang-btn" onclick="setLang('es')">🇪🇸 ES</button>
+  </div>
+  <a href="index.html" class="nav-home">← Home</a>
+</nav>
+
+<div class="page-hero">
+  <div class="eyebrow">DeFi Guide</div>
+  <h1>
+    <span class="t-en">Health Factor:<br>The Number That Keeps You Safe</span>
+    <span class="t-fr">Le Health Factor :<br>Le chiffre qui vous protège</span>
+    <span class="t-es">Health Factor:<br>El número que te mantiene seguro</span>
+  </h1>
+  <p class="lede">
+    <span class="t-en">What it is, exactly how it's calculated on Aave V3, which thresholds to target, and the precise price that will trigger your liquidation.</span>
+    <span class="t-fr">Ce qu'il est, comment il est calculé exactement sur Aave V3, quels seuils cibler, et le prix précis qui déclenchera votre liquidation.</span>
+    <span class="t-es">Qué es, cómo se calcula exactamente en Aave V3, qué umbrales apuntar y el precio preciso que desencadenará tu liquidación.</span>
+  </p>
+  <div class="page-meta">
+    <span class="t-en">June 2026 · 7 min read</span>
+    <span class="t-fr">Juin 2026 · 7 min de lecture</span>
+    <span class="t-es">Junio 2026 · 7 min de lectura</span>
+  </div>
+</div>
+
+<main>
+<div class="art-body">
+
+<h2>
+  <span class="t-en">What Health Factor Actually Measures</span>
+  <span class="t-fr">Ce que le Health Factor mesure réellement</span>
+  <span class="t-es">Qué mide realmente el Health Factor</span>
+</h2>
+<p>
+  <span class="t-en">Health factor is a single number that tells you how far your position is from liquidation. It's not a percentage of your collateral used — it's the ratio of what the protocol <em>allows</em> you to owe versus what you <em>actually</em> owe.</span>
+  <span class="t-fr">Le health factor est un chiffre unique qui vous indique à quelle distance votre position est de la liquidation. Ce n'est pas un pourcentage de votre collatéral utilisé — c'est le ratio de ce que le protocole <em>vous autorise</em> à devoir par rapport à ce que vous <em>devez réellement</em>.</span>
+  <span class="t-es">El health factor es un número único que te dice qué tan lejos está tu posición de la liquidación. No es un porcentaje de tu colateral utilizado — es la proporción de lo que el protocolo <em>te permite</em> deber versus lo que <em>realmente</em> debes.</span>
+</p>
+
+<div class="formula-block">
+  <div class="formula-label">
+    <span class="t-en">Aave V3 Health Factor Formula</span>
+    <span class="t-fr">Formule du Health Factor Aave V3</span>
+    <span class="t-es">Fórmula del Health Factor Aave V3</span>
+  </div>
+  <div class="formula-main">HF = (Σ collateral_i × price_i × LT_i) / total_debt_USD</div>
+  <div style="margin-top:10px;font-size:.78rem;color:var(--dim);font-family:var(--ui)">
+    <span class="t-en">LT = Liquidation Threshold (asset-specific, set by Aave governance). When HF &lt; 1.0, you get liquidated.</span>
+    <span class="t-fr">LT = Seuil de Liquidation (spécifique à l'actif, fixé par la gouvernance Aave). Quand HF &lt; 1,0, vous êtes liquidé.</span>
+    <span class="t-es">LT = Umbral de Liquidación (específico del activo, establecido por la gobernanza de Aave). Cuando HF &lt; 1.0, eres liquidado.</span>
+  </div>
+</div>
+
+<p>
+  <span class="t-en">Concrete example: you deposit 1 BTC worth $65,000 on Aave V3 Arbitrum. The liquidation threshold for WBTC is 78%. You borrow $40,000 USDC.</span>
+  <span class="t-fr">Exemple concret : vous déposez 1 BTC valant 65 000 $ sur Aave V3 Arbitrum. Le seuil de liquidation pour WBTC est de 78%. Vous empruntez 40 000 $ USDC.</span>
+  <span class="t-es">Ejemplo concreto: depositas 1 BTC por valor de $65,000 en Aave V3 Arbitrum. El umbral de liquidación para WBTC es del 78%. Pides prestados $40,000 USDC.</span>
+</p>
+<p>
+  <span class="t-en">Your HF = (65,000 × 0.78) / 40,000 = <strong>50,700 / 40,000 = 1.27</strong>. BTC would need to drop to about $51,000 before you get liquidated (your liquidation price).</span>
+  <span class="t-fr">Votre HF = (65 000 × 0,78) / 40 000 = <strong>50 700 / 40 000 = 1,27</strong>. Le BTC devrait tomber à environ 51 000 $ avant que vous soyez liquidé (votre prix de liquidation).</span>
+  <span class="t-es">Tu HF = (65,000 × 0.78) / 40,000 = <strong>50,700 / 40,000 = 1.27</strong>. El BTC tendría que caer a aproximadamente $51,000 antes de ser liquidado (tu precio de liquidación).</span>
+</p>
+
+<h2>
+  <span class="t-en">The Three Zones</span>
+  <span class="t-fr">Les trois zones</span>
+  <span class="t-es">Las tres zonas</span>
+</h2>
+
+<div class="hf-zones">
+  <div class="hf-zone danger">
+    <div class="hf-val">1.0 – 1.1</div>
+    <div class="hf-label">
+      <span class="t-en">Danger Zone</span>
+      <span class="t-fr">Zone dangereuse</span>
+      <span class="t-es">Zona de peligro</span>
+    </div>
+    <div class="hf-desc">
+      <span class="t-en">Any 5–10% price drop triggers liquidation. Act immediately.</span>
+      <span class="t-fr">Une baisse de 5 à 10% déclenche la liquidation. Agissez immédiatement.</span>
+      <span class="t-es">Una caída del 5-10% desencadena la liquidación. Actúa inmediatamente.</span>
+    </div>
+  </div>
+  <div class="hf-zone caution">
+    <div class="hf-val">1.1 – 1.5</div>
+    <div class="hf-label">
+      <span class="t-en">Caution Zone</span>
+      <span class="t-fr">Zone de prudence</span>
+      <span class="t-es">Zona de precaución</span>
+    </div>
+    <div class="hf-desc">
+      <span class="t-en">Manageable, but watch daily. A 10–35% drop liquidates you.</span>
+      <span class="t-fr">Gérable, mais surveillez quotidiennement. Une baisse de 10 à 35% vous liquide.</span>
+      <span class="t-es">Manejable, pero monitorea diariamente. Una caída del 10-35% te liquida.</span>
+    </div>
+  </div>
+  <div class="hf-zone safe">
+    <div class="hf-val">> 1.5</div>
+    <div class="hf-label">
+      <span class="t-en">Safe Zone</span>
+      <span class="t-fr">Zone sûre</span>
+      <span class="t-es">Zona segura</span>
+    </div>
+    <div class="hf-desc">
+      <span class="t-en">Comfortable buffer. Still monitor weekly — rates change your HF too.</span>
+      <span class="t-fr">Tampon confortable. Surveillez quand même hebdomadairement — les taux modifient aussi votre HF.</span>
+      <span class="t-es">Margen cómodo. Monitorea semanalmente — las tasas también cambian tu HF.</span>
+    </div>
+  </div>
+</div>
+
+<div class="callout red">
+  <strong>
+    <span class="t-en">The most common mistake:</span>
+    <span class="t-fr">L'erreur la plus fréquente :</span>
+    <span class="t-es">El error más común:</span>
+  </strong>
+  <span class="t-en"> Opening a position at HF 1.2-1.3 and then ignoring it for weeks. Borrow interest accumulates daily — your debt grows while your collateral price stays flat or drops. An HF of 1.25 can become 1.10 in 2-3 months on a 6% APY borrow if BTC falls 10%.</span>
+  <span class="t-fr"> Ouvrir une position à un HF de 1,2-1,3 puis l'ignorer pendant des semaines. Les intérêts d'emprunt s'accumulent quotidiennement — votre dette augmente pendant que le prix de votre collatéral reste stable ou baisse. Un HF de 1,25 peut devenir 1,10 en 2 à 3 mois avec un emprunt à 6% d'APY si le BTC chute de 10%.</span>
+  <span class="t-es"> Abrir una posición con HF 1.2-1.3 y luego ignorarla durante semanas. El interés del préstamo se acumula diariamente — tu deuda crece mientras el precio de tu colateral se mantiene plano o cae. Un HF de 1.25 puede convertirse en 1.10 en 2-3 meses con un préstamo al 6% de APY si el BTC cae un 10%.</span>
+</div>
+
+<h2>
+  <span class="t-en">How Borrow Interest Erodes Your Health Factor</span>
+  <span class="t-fr">Comment les intérêts d'emprunt érodent votre Health Factor</span>
+  <span class="t-es">Cómo el interés del préstamo erosiona tu Health Factor</span>
+</h2>
+<p>
+  <span class="t-en">This is the hidden mechanic most guides skip. Your health factor is not static. Even if BTC stays flat, your debt grows because borrow interest is compounded continuously on Aave. At 6% APY, a $40,000 debt becomes $42,400 in one year. If your collateral didn't move, your HF dropped from 1.27 to 1.20 — silently.</span>
+  <span class="t-fr">C'est la mécanique cachée que la plupart des guides omettent. Votre health factor n'est pas statique. Même si le BTC reste stable, votre dette augmente car les intérêts d'emprunt sont composés continuellement sur Aave. À 6% d'APY, une dette de 40 000 $ devient 42 400 $ en un an. Si votre collatéral n'a pas bougé, votre HF est passé de 1,27 à 1,20 — silencieusement.</span>
+  <span class="t-es">Esta es la mecánica oculta que la mayoría de las guías omiten. Tu health factor no es estático. Incluso si el BTC se mantiene plano, tu deuda crece porque el interés del préstamo se compone continuamente en Aave. Al 6% de APY, una deuda de $40,000 se convierte en $42,400 en un año. Si tu colateral no se movió, tu HF bajó de 1.27 a 1.20 — silenciosamente.</span>
+</p>
+<p>
+  <span class="t-en">The formula for your liquidation price (the BTC price at which you get liquidated) is: <code>liqPrice = debt / (collateral_amount × LT)</code>. With $42,400 debt and 1 BTC at 78% LT: liq price = 42,400 / (1 × 0.78) = <strong>$54,359</strong> — that's $3,400 higher than when you opened the position.</span>
+  <span class="t-fr">La formule pour votre prix de liquidation (le prix du BTC auquel vous êtes liquidé) est : <code>liqPrice = dette / (quantité_collatéral × LT)</code>. Avec 42 400 $ de dette et 1 BTC à 78% LT : prix liq = 42 400 / (1 × 0,78) = <strong>54 359 $</strong> — soit 3 400 $ de plus qu'à l'ouverture de la position.</span>
+  <span class="t-es">La fórmula para tu precio de liquidación (el precio del BTC al que serás liquidado) es: <code>liqPrice = deuda / (cantidad_colateral × LT)</code>. Con $42,400 de deuda y 1 BTC al 78% LT: precio liq = 42,400 / (1 × 0.78) = <strong>$54,359</strong> — eso es $3,400 más alto que cuando abriste la posición.</span>
+</p>
+
+<h2>
+  <span class="t-en">The Recommended Minimum: HF 1.5 or Higher</span>
+  <span class="t-fr">Le minimum recommandé : HF 1,5 ou plus</span>
+  <span class="t-es">El mínimo recomendado: HF 1.5 o más</span>
+</h2>
+<p>
+  <span class="t-en">For volatile assets like BTC or ETH, a health factor below 1.5 is uncomfortable. Here's why: BTC can drop 20% in a single weekend during market stress. At HF 1.5, a 20% BTC drop would bring you to approximately HF 1.20 — still safe but suddenly urgent. At HF 1.25, the same 20% drop puts you at roughly HF 1.00 — liquidated.</span>
+  <span class="t-fr">Pour les actifs volatils comme le BTC ou l'ETH, un health factor inférieur à 1,5 est inconfortable. Voici pourquoi : le BTC peut chuter de 20% en un seul week-end lors d'un stress de marché. À un HF de 1,5, une baisse de 20% du BTC vous amènerait à environ HF 1,20 — toujours sûr mais soudainement urgent. À un HF de 1,25, la même baisse de 20% vous place à environ HF 1,00 — liquidé.</span>
+  <span class="t-es">Para activos volátiles como BTC o ETH, un health factor por debajo de 1.5 es incómodo. He aquí por qué: el BTC puede caer un 20% en un solo fin de semana durante el estrés del mercado. Con HF 1.5, una caída del 20% del BTC te llevaría a aproximadamente HF 1.20 — todavía seguro pero repentinamente urgente. Con HF 1.25, la misma caída del 20% te sitúa en aproximadamente HF 1.00 — liquidado.</span>
+</p>
+<p>
+  <span class="t-en">For stablecoin-backed positions or correlated assets (wstETH borrowing ETH), you can work with lower HF because the price ratio is stable. But for BTC, ETH, or any single-asset position against stablecoins, stay above 1.5.</span>
+  <span class="t-fr">Pour les positions adossées à des stablecoins ou des actifs corrélés (wstETH empruntant ETH), vous pouvez travailler avec un HF plus faible car le ratio de prix est stable. Mais pour le BTC, l'ETH ou toute position à actif unique contre des stablecoins, restez au-dessus de 1,5.</span>
+  <span class="t-es">Para posiciones respaldadas por stablecoins o activos correlacionados (wstETH tomando ETH prestado), puedes trabajar con un HF más bajo porque la relación de precios es estable. Pero para BTC, ETH, o cualquier posición de activo único contra stablecoins, mantente por encima de 1.5.</span>
+</p>
+
+<div class="callout gold">
+  <strong>
+    <span class="t-en">Practical rule:</span>
+    <span class="t-fr">Règle pratique :</span>
+    <span class="t-es">Regla práctica:</span>
+  </strong>
+  <span class="t-en"> Set an alert when HF drops below 1.6. Act (repay or add collateral) before it reaches 1.3. Never let it touch 1.1 — at that level, liquidation bots are already scanning your position.</span>
+  <span class="t-fr"> Configurez une alerte quand le HF passe sous 1,6. Agissez (remboursez ou ajoutez du collatéral) avant qu'il atteigne 1,3. Ne le laissez jamais toucher 1,1 — à ce niveau, les bots de liquidation scannent déjà votre position.</span>
+  <span class="t-es"> Configura una alerta cuando el HF caiga por debajo de 1.6. Actúa (reembolsa o añade colateral) antes de que llegue a 1.3. Nunca dejes que toque 1.1 — a ese nivel, los bots de liquidación ya están escaneando tu posición.</span>
+</div>
+
+<div class="cta-band">
+  <p>
+    <span class="t-en">Enter your position details to see your exact health factor, liquidation price, and how far BTC needs to drop to wipe you out.</span>
+    <span class="t-fr">Entrez les détails de votre position pour voir votre health factor exact, votre prix de liquidation, et à quelle baisse du BTC vous seriez liquidé.</span>
+    <span class="t-es">Introduce los detalles de tu posición para ver tu health factor exacto, precio de liquidación y cuánto necesita caer el BTC para liquidarte.</span>
+  </p>
+  <a href="aave.html" class="btn-cta">
+    <span class="t-en">🧮 Aave V3 Calculator →</span>
+    <span class="t-fr">🧮 Calculateur Aave V3 →</span>
+    <span class="t-es">🧮 Calculadora Aave V3 →</span>
+  </a>
+  <a href="dashboard.html" class="btn-cta gold">
+    <span class="t-en">📊 Live Position Dashboard →</span>
+    <span class="t-fr">📊 Dashboard de Position Live →</span>
+    <span class="t-es">📊 Dashboard de Posición Live →</span>
+  </a>
+</div>
+
+<div class="callout blue">
+  <span class="t-en"><strong>See also:</strong> <a href="aave-vs-morpho.html">Aave V3 vs Morpho Blue</a> — how the same position has a different health factor depending on which protocol you use, and when Morpho's higher LLTV actually makes your position safer at the same borrow amount.</span>
+  <span class="t-fr"><strong>Voir aussi :</strong> <a href="aave-vs-morpho.html">Aave V3 vs Morpho Blue</a> — comment la même position a un health factor différent selon le protocole utilisé, et quand le LLTV plus élevé de Morpho rend votre position plus sûre pour le même montant emprunté.</span>
+  <span class="t-es"><strong>Ver también:</strong> <a href="aave-vs-morpho.html">Aave V3 vs Morpho Blue</a> — cómo la misma posición tiene un health factor diferente según el protocolo que uses, y cuándo el LLTV más alto de Morpho hace tu posición más segura con el mismo monto prestado.</span>
+</div>
+
+</div>
+</main>
+
+<footer>
+  <a href="index.html">OrnyTools</a> · <a href="aave.html">Aave Calculator</a> · <a href="dashboard.html">Position Dashboard</a> · <a href="liquidation.html">Liquidation Risk</a> · <a href="blog.html">Blog</a>
+</footer>
+
+</body>
+</html>
