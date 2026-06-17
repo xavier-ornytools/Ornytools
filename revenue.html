@@ -287,34 +287,67 @@ canvas{max-height:240px}
       </div>
     </div>
 
-    <!-- PLATFORM LINKS -->
+    <!-- MANUAL PROTOCOLS -->
     <div class="card">
       <div class="card-header">
-        <div class="card-title">Dashboards externes</div>
+        <div class="card-title">Comment vérifier et saisir</div>
       </div>
-      <div class="card-body" style="padding:14px 16px">
-        <div class="platform-links">
-          <a href="https://app.gmx.io/#/referrals" target="_blank" rel="noopener" class="pl-link">
-            <div class="pl-dot" style="background:var(--gmx)"></div>
-            GMX Referral Dashboard ↗
-          </a>
-          <a href="https://app.1inch.io/#/1/dao/referral" target="_blank" rel="noopener" class="pl-link">
-            <div class="pl-dot" style="background:var(--inch)"></div>
-            1inch Referral Stats ↗
-          </a>
-          <a href="https://app.paraswap.io" target="_blank" rel="noopener" class="pl-link">
-            <div class="pl-dot" style="background:var(--para)"></div>
-            Paraswap App ↗
-          </a>
-          <a href="https://ko-fi.com" target="_blank" rel="noopener" class="pl-link">
-            <div class="pl-dot" style="background:var(--kofi)"></div>
-            Ko-fi Dashboard ↗
-          </a>
-          <a href="https://debank.com/profile/0x8904fFf3CEebd40baBEc17b41496677d4BFf3e6A" target="_blank" rel="noopener" class="pl-link">
-            <div class="pl-dot" style="background:var(--good)"></div>
-            DeBank — Wallet ↗
-          </a>
+      <div class="card-body" style="padding:14px 16px;display:flex;flex-direction:column;gap:12px">
+
+        <!-- GMX -->
+        <div style="border:1px solid rgba(200,132,30,.25);border-radius:10px;overflow:hidden">
+          <div style="background:var(--gmx-pale);padding:9px 14px;display:flex;align-items:center;justify-content:space-between">
+            <span style="font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--gmx)">💰 GMX — Automatique</span>
+            <span style="font-size:.68rem;background:var(--gmx);color:#fff;border-radius:99px;padding:2px 8px;font-weight:700">SYNC ↑</span>
+          </div>
+          <div style="padding:10px 14px;font-size:.78rem;color:var(--dim);line-height:1.6">
+            Utilise le bouton <strong>⚡ Sync</strong> ci-dessus — les données arrivent directement depuis la blockchain.<br>
+            <a href="https://app.gmx.io/#/referrals" target="_blank" rel="noopener" style="color:var(--gmx);font-weight:700;text-decoration:none">→ app.gmx.io/#/referrals</a> (onglet Affiliates pour vérifier)
+          </div>
         </div>
+
+        <!-- 1INCH -->
+        <div style="border:1px solid rgba(26,86,219,.25);border-radius:10px;overflow:hidden">
+          <div style="background:var(--inch-pale);padding:9px 14px;display:flex;align-items:center;justify-content:space-between">
+            <span style="font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--inch)">🔄 1inch — Manuel</span>
+            <span style="font-size:.68rem;background:var(--inch);color:#fff;border-radius:99px;padding:2px 8px;font-weight:700">WALLET</span>
+          </div>
+          <div style="padding:10px 14px;font-size:.78rem;color:var(--dim);line-height:1.6">
+            Les revenus 1inch arrivent directement en <strong>USDC ou ETH</strong> sur ton wallet Rabby.<br>
+            1. Va sur <a href="https://debank.com/profile/0x8904fFf3CEebd40baBEc17b41496677d4BFf3e6A" target="_blank" rel="noopener" style="color:var(--inch);font-weight:700;text-decoration:none">→ DeBank — ton wallet</a><br>
+            2. Onglet <strong>History</strong> → cherche les transactions entrantes depuis 1inch<br>
+            3. Note le montant → sélectionne <strong>1inch</strong> dans le formulaire → entre le montant
+          </div>
+        </div>
+
+        <!-- PARASWAP -->
+        <div style="border:1px solid rgba(124,58,237,.25);border-radius:10px;overflow:hidden">
+          <div style="background:var(--para-pale);padding:9px 14px;display:flex;align-items:center;justify-content:space-between">
+            <span style="font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--para)">⚡ Paraswap — Manuel</span>
+            <span style="font-size:.68rem;background:var(--para);color:#fff;border-radius:99px;padding:2px 8px;font-weight:700">WALLET</span>
+          </div>
+          <div style="padding:10px 14px;font-size:.78rem;color:var(--dim);line-height:1.6">
+            Les revenus Paraswap arrivent en <strong>ETH ou token natif</strong> sur ton wallet.<br>
+            1. Va sur <a href="https://arbiscan.io/address/0x8904fFf3CEebd40baBEc17b41496677d4BFf3e6A" target="_blank" rel="noopener" style="color:var(--para);font-weight:700;text-decoration:none">→ Arbiscan — ton adresse</a><br>
+            2. Onglet <strong>ERC-20 Token Txns</strong> → cherche les tokens reçus depuis Paraswap<br>
+            3. Note le montant → sélectionne <strong>Paraswap</strong> → entre le montant
+          </div>
+        </div>
+
+        <!-- KO-FI -->
+        <div style="border:1px solid rgba(255,94,91,.25);border-radius:10px;overflow:hidden">
+          <div style="background:var(--kofi-pale);padding:9px 14px;display:flex;align-items:center;justify-content:space-between">
+            <span style="font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--kofi)">☕ Ko-fi — Manuel</span>
+            <span style="font-size:.68rem;background:var(--kofi);color:#fff;border-radius:99px;padding:2px 8px;font-weight:700">EMAIL</span>
+          </div>
+          <div style="padding:10px 14px;font-size:.78rem;color:var(--dim);line-height:1.6">
+            Tu reçois un <strong>email automatique</strong> à chaque don + notification dans Ko-fi.<br>
+            1. Va sur <a href="https://ko-fi.com/manage/donations" target="_blank" rel="noopener" style="color:var(--kofi);font-weight:700;text-decoration:none">→ ko-fi.com/manage/donations</a><br>
+            2. Copie le montant reçu (après commission Stripe ~2.9%)<br>
+            3. Sélectionne <strong>Ko-fi</strong> dans le formulaire → entre le montant net
+          </div>
+        </div>
+
       </div>
     </div>
 
