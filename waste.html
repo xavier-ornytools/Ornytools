@@ -428,12 +428,27 @@ const CHAIN_RECS = {
   },
 };
 
+/* REMPLACER les placeholders ci-dessous après inscription aux programmes d'affiliation :
+   YOUR_1INCH_ADDRESS → votre adresse wallet ETH (portal.1inch.dev)
+   YOUR_PARASWAP_ID   → votre partner ID (paraswap.io/partners) */
+const DEX_LINKS = {
+  '1inch':    'https://app.1inch.io/#/?referrerAddress=YOUR_1INCH_ADDRESS&utm_source=ornytools',
+  'Paraswap': 'https://app.paraswap.io/#/?referrer=YOUR_PARASWAP_ID',
+  'CoW Swap': 'https://swap.cow.fi/',
+  'Camelot DEX': 'https://app.camelot.exchange/',
+  'Aerodrome': 'https://aerodrome.finance/',
+  'Velodrome': 'https://velodrome.finance/',
+};
+
 function chainRecs(chain, l){
   const rec = CHAIN_RECS[chain];
   if(!rec) return '';
   const tools = rec[l] || rec.en;
   const label = rec['label_'+l] || rec.label_en;
-  const pills = tools.map(t => `<span style="display:inline-block;background:var(--surface-2);border:1px solid var(--line);border-radius:99px;padding:3px 10px;font-size:.75rem;font-weight:600;margin:2px">${t}</span>`).join('');
+  const pills = tools.map(t => {
+    const url = DEX_LINKS[t] || '#';
+    return `<a href="${url}" target="_blank" rel="noopener sponsored" style="display:inline-block;background:var(--surface-2);border:1px solid var(--line);border-radius:99px;padding:3px 10px;font-size:.75rem;font-weight:600;margin:2px;text-decoration:none;color:inherit;transition:.15s" onmouseover="this.style.borderColor='#1A56DB';this.style.color='#1A56DB'" onmouseout="this.style.borderColor='';this.style.color=''">${t} ↗</a>`;
+  }).join('');
   return `<div style="margin-top:12px;padding:11px 14px;background:var(--blue-pale);border-radius:10px;font-size:.78rem;color:var(--dim)"><span style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--blue);display:block;margin-bottom:6px">${label}</span>${pills}</div>`;
 }
 
