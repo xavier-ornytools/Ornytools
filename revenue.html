@@ -274,6 +274,19 @@ canvas{max-height:240px}
       </div>
     </div>
 
+    <!-- GMX LIVE SYNC -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">GMX — Stats en direct</div>
+        <button class="btn-export" id="gmx-sync-btn" onclick="syncGMX()" style="border-color:var(--gmx);color:var(--gmx)">⚡ Sync</button>
+      </div>
+      <div class="card-body" style="padding:14px 16px">
+        <div id="gmx-live" style="font-size:.82rem;color:var(--dim);line-height:1.6">
+          Clique <strong>Sync</strong> pour charger tes stats referral GMX en direct depuis la blockchain.
+        </div>
+      </div>
+    </div>
+
     <!-- PLATFORM LINKS -->
     <div class="card">
       <div class="card-header">
@@ -544,6 +557,97 @@ function formatDate(d){
   const [y,m,day]=d.split('-');
   const months=['jan','fév','mar','avr','mai','jun','jul','aoû','sep','oct','nov','déc'];
   return day+' '+months[parseInt(m,10)-1]+' '+y;
+}
+
+// ═══════════════════════════════════
+// GMX LIVE SYNC
+// ═══════════════════════════════════
+const GMX_WALLET = '0x8904fff3ceebd40babec17b41496677d4bff3e6a';
+const GMX_SUBGRAPH = 'https://subgraph.satsuma-prod.com/3b2ced13c8d9/gmx/gmx-arbitrum-referrals/api';
+const GMX_SUBGRAPH_FALLBACK = 'https://api.thegraph.com/subgraphs/name/gmx-io/gmx-arbitrum-referrals';
+
+async function syncGMX(){
+  const btn = document.getElementById('gmx-sync-btn');
+  const box = document.getElementById('gmx-live');
+  btn.textContent = '⏳ Chargement…';
+  btn.disabled = true;
+
+  const query = `{
+    affiliateStats(
+      first: 1
+      where: { affiliate: "${GMX_WALLET}", period: "total" }
+    ) {
+      volume
+      trades
+      totalRebateUsd
+      discountUsd
+      tradedReferralsCount
+    }
+  }`;
+
+  async function fetchSubgraph(url){
+    const r = await fetch(url, {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({query})
+    });
+    if(!r.ok) throw new Error('HTTP '+r.status);
+    return r.json();
+  }
+
+  try {
+    let json;
+    try { json = await fetchSubgraph(GMX_SUBGRAPH); }
+    catch(e){ json = await fetchSubgraph(GMX_SUBGRAPH_FALLBACK); }
+
+    const stats = json?.data?.affiliateStats;
+    if(!stats || stats.length===0){
+      box.innerHTML = `<div style="color:var(--warn)">⚠ Aucune donnée pour l'instant — normal si aucun trader n'a encore utilisé ton code <strong>ORNYTOOLS</strong>.<br><br><a href="https://app.gmx.io/#/referrals" target="_blank" rel="noopener" style="color:var(--gmx);font-weight:700">Vérifier sur app.gmx.io →</a></div>`;
+    } else {
+      const s = stats[0];
+      const earned  = parseFloat(s.totalRebateUsd||0) / 1e30;
+      const volume  = parseFloat(s.volume||0) / 1e30;
+      const traders = parseInt(s.tradedReferralsCount||0);
+      const trades  = parseInt(s.trades||0);
+
+      box.innerHTML = `
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px">
+          <div style="background:var(--gmx-pale);border:1px solid rgba(200,132,30,.2);border-radius:9px;padding:12px">
+            <div style="font-size:.6rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--gmx);margin-bottom:4px">Revenus gagnés</div>
+            <div style="font-family:var(--mono);font-size:1.3rem;font-weight:700;color:var(--good)">$${earned.toFixed(2)}</div>
+          </div>
+          <div style="background:var(--gmx-pale);border:1px solid rgba(200,132,30,.2);border-radius:9px;padding:12px">
+            <div style="font-size:.6rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--gmx);margin-bottom:4px">Traders référés</div>
+            <div style="font-family:var(--mono);font-size:1.3rem;font-weight:700">${traders}</div>
+          </div>
+          <div style="background:var(--surface-2);border:1px solid var(--line);border-radius:9px;padding:12px">
+            <div style="font-size:.6rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--faint);margin-bottom:4px">Volume référé</div>
+            <div style="font-family:var(--mono);font-size:.95rem;font-weight:700">$${volume>=1000000?(volume/1000000).toFixed(2)+'M':volume>=1000?(volume/1000).toFixed(1)+'k':volume.toFixed(0)}</div>
+          </div>
+          <div style="background:var(--surface-2);border:1px solid var(--line);border-radius:9px;padding:12px">
+            <div style="font-size:.6rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--faint);margin-bottom:4px">Trades totaux</div>
+            <div style="font-family:var(--mono);font-size:.95rem;font-weight:700">${trades}</div>
+          </div>
+        </div>
+        ${earned>0?`<button onclick="prefillGMX(${earned.toFixed(2)})" style="width:100%;padding:10px;background:var(--gmx);color:#fff;border:none;border-radius:8px;font-size:.82rem;font-weight:700;cursor:pointer;font-family:var(--ui)">+ Ajouter $${earned.toFixed(2)} au tracker</button>`:''}
+        <div style="font-size:.68rem;color:var(--faint);margin-top:8px;text-align:center">Dernière synchro : ${new Date().toLocaleTimeString('fr-FR')} · <a href="https://app.gmx.io/#/referrals" target="_blank" style="color:var(--faint)">Voir sur GMX ↗</a></div>
+      `;
+    }
+  } catch(err){
+    box.innerHTML = `<div style="color:var(--coral)">❌ Erreur de connexion au subgraph GMX.<br><small style="color:var(--faint)">${err.message}</small><br><br><a href="https://app.gmx.io/#/referrals" target="_blank" rel="noopener" style="color:var(--gmx);font-weight:700">Consulter manuellement sur app.gmx.io →</a></div>`;
+  } finally {
+    btn.textContent = '⚡ Sync';
+    btn.disabled = false;
+  }
+}
+
+function prefillGMX(amount){
+  selectSrc('gmx');
+  document.getElementById('f-amount').value = amount.toFixed(2);
+  document.getElementById('f-date').value = new Date().toISOString().split('T')[0];
+  document.getElementById('f-note').value = 'Sync GMX on-chain';
+  document.getElementById('f-amount').focus();
+  document.querySelector('.form-section').scrollIntoView({behavior:'smooth'});
 }
 
 // ═══════════════════════════════════
