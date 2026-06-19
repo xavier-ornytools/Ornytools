@@ -95,26 +95,33 @@
 <nav class="navbar">
   <a href="index.html"><img src="logo.png" class="nav-logo" alt="OrnyTools"/></a>
   <span class="nav-brand">ORNY<span class="dot">.</span>TOOLS</span>
-  <button class="btn-theme" onclick="toggleTheme()" title="Dark mode">🌙</button>
-  <a href="index.html" class="nav-home">← Home</a>
+  <div style="margin-left:auto;display:flex;align-items:center;gap:8px;">
+    <div class="lang-switch">
+      <button id="btnEN" class="lang-btn active" onclick="setLang('en')">🇬🇧 EN</button>
+      <button id="btnFR" class="lang-btn" onclick="setLang('fr')">🇫🇷 FR</button>
+      <button id="btnES" class="lang-btn" onclick="setLang('es')">🇪🇸 ES</button>
+    </div>
+    <button class="btn-theme" onclick="toggleTheme()" title="Dark mode">🌙</button>
+    <a href="index.html" class="nav-home" style="margin-left:0"><span class="t-en">← Home</span><span class="t-fr">← Accueil</span><span class="t-es">← Inicio</span></a>
+  </div>
 </nav>
 
 <div class="page-hero">
-  <div class="eyebrow">Practical DeFi Guides</div>
-  <h1>The math behind the trade.</h1>
-  <p>Each guide explains a key DeFi concept, the formula that governs it, and how to use OrnyTools to get the right answer quickly.</p>
+  <div class="eyebrow"><span class="t-en">Practical DeFi Guides</span><span class="t-fr">Guides DeFi Pratiques</span><span class="t-es">Guías DeFi Prácticas</span></div>
+  <h1><span class="t-en">The math behind the trade.</span><span class="t-fr">Les maths derrière le trade.</span><span class="t-es">Las matemáticas detrás del trade.</span></h1>
+  <p><span class="t-en">Each guide explains a key DeFi concept, the formula that governs it, and how to use OrnyTools to get the right answer quickly.</span><span class="t-fr">Chaque guide explique un concept DeFi clé, la formule qui le gouverne, et comment utiliser OrnyTools pour obtenir la bonne réponse rapidement.</span><span class="t-es">Cada guía explica un concepto DeFi clave, la fórmula que lo rige y cómo usar OrnyTools para obtener la respuesta correcta rápidamente.</span></p>
 </div>
 
 <main>
 
   <div class="toc">
-    <div class="toc-title">Contents</div>
+    <div class="toc-title"><span class="t-en">Contents</span><span class="t-fr">Sommaire</span><span class="t-es">Contenido</span></div>
     <ul class="toc-list">
-      <li><a href="#guide-01"><span class="toc-num">1</span>Optimal trade size on Uniswap (gas vs. slippage)</a></li>
-      <li><a href="#guide-02"><span class="toc-num">2</span>Aave V3 health factor — what it means and when to act</a></li>
-      <li><a href="#guide-03"><span class="toc-num">3</span>GMX liquidation price — how to calculate it</a></li>
-      <li><a href="#guide-04"><span class="toc-num">4</span>Uniswap V3 range selection — concentrated liquidity explained</a></li>
-      <li><a href="#guide-05"><span class="toc-num">5</span>Impermanent loss — when does it become permanent?</a></li>
+      <li><a href="#guide-01"><span class="toc-num">1</span><span class="t-en">Optimal trade size on Uniswap (gas vs. slippage)</span><span class="t-fr">Taille de trade optimale sur Uniswap (gas vs slippage)</span><span class="t-es">Tamaño óptimo de trade en Uniswap (gas vs. slippage)</span></a></li>
+      <li><a href="#guide-02"><span class="toc-num">2</span><span class="t-en">Aave V3 health factor — what it means and when to act</span><span class="t-fr">Health factor Aave V3 — ce que ça signifie et quand agir</span><span class="t-es">Health factor Aave V3 — qué significa y cuándo actuar</span></a></li>
+      <li><a href="#guide-03"><span class="toc-num">3</span><span class="t-en">GMX liquidation price — how to calculate it</span><span class="t-fr">Prix de liquidation GMX — comment le calculer</span><span class="t-es">Precio de liquidación GMX — cómo calcularlo</span></a></li>
+      <li><a href="#guide-04"><span class="toc-num">4</span><span class="t-en">Uniswap V3 range selection — concentrated liquidity explained</span><span class="t-fr">Sélection de plage Uniswap V3 — liquidité concentrée expliquée</span><span class="t-es">Selección de rango Uniswap V3 — liquidez concentrada explicada</span></a></li>
+      <li><a href="#guide-05"><span class="toc-num">5</span><span class="t-en">Impermanent loss — when does it become permanent?</span><span class="t-fr">Perte impermanente — quand devient-elle permanente ?</span><span class="t-es">Pérdida impermanente — ¿cuándo se vuelve permanente?</span></a></li>
     </ul>
   </div>
 
@@ -122,26 +129,26 @@
   <div class="guide-sec" id="guide-01">
     <div class="guide-header">
       <div class="sec-num">Guide 01</div>
-      <h2>Optimal trade size on Uniswap</h2>
-      <p class="lede">Every AMM trade has two costs: a fixed gas fee and a variable slippage. Trade too small and gas dominates. Trade too large and slippage does. The optimal size sits exactly at the crossover.</p>
+      <h2><span class="t-en">Optimal trade size on Uniswap</span><span class="t-fr">Taille de trade optimale sur Uniswap</span><span class="t-es">Tamaño óptimo de trade en Uniswap</span></h2>
+      <p class="lede"><span class="t-en">Every AMM trade has two costs: a fixed gas fee and a variable slippage. Trade too small and gas dominates. Trade too large and slippage does. The optimal size sits exactly at the crossover.</span><span class="t-fr">Chaque trade AMM a deux coûts : un gas fixe et un slippage variable. Trop petit, le gas domine. Trop grand, le slippage domine. La taille optimale se trouve exactement au croisement.</span><span class="t-es">Cada trade AMM tiene dos costos: un gas fijo y un slippage variable. Demasiado pequeño y el gas domina. Demasiado grande y domina el slippage. El tamaño óptimo está exactamente en el cruce.</span></p>
     </div>
     <div class="panel">
-      <h3>Why this matters</h3>
-      <p>On Ethereum mainnet a typical Uniswap V3 swap costs ~$3–8 in gas. On Arbitrum it's less than $0.05. If you trade $50 on Ethereum and pay $5 in gas, that's a 10% overhead before slippage. The optimal size is the point where gas cost = slippage cost — below it, you're paying gas overhead unnecessarily; above it, slippage erodes more than gas.</p>
+      <h3><span class="t-en">Why this matters</span><span class="t-fr">Pourquoi c'est important</span><span class="t-es">Por qué importa</span></h3>
+      <p><span class="t-en">On Ethereum mainnet a typical Uniswap V3 swap costs ~$3–8 in gas. On Arbitrum it's less than $0.05. If you trade $50 on Ethereum and pay $5 in gas, that's a 10% overhead before slippage. The optimal size is the point where gas cost = slippage cost.</span><span class="t-fr">Sur Ethereum mainnet, un swap Uniswap V3 typique coûte ~3–8$ en gas. Sur Arbitrum, moins de 0,05$. Si vous tradez 50$ sur Ethereum et payez 5$ en gas, c'est un overhead de 10% avant le slippage. La taille optimale est le point où coût gas = coût slippage.</span><span class="t-es">En Ethereum mainnet, un swap típico de Uniswap V3 cuesta ~$3–8 en gas. En Arbitrum menos de $0,05. Si tradeas $50 en Ethereum y pagas $5 en gas, eso es un overhead del 10% antes del slippage. El tamaño óptimo es el punto donde costo gas = costo slippage.</span></p>
     </div>
     <div class="panel">
-      <h3>The formula</h3>
-      <p>For a constant-product pool (x·y=k), the total cost as a fraction of trade size A is:</p>
+      <h3><span class="t-en">The formula</span><span class="t-fr">La formule</span><span class="t-es">La fórmula</span></h3>
+      <p><span class="t-en">For a constant-product pool (x·y=k), the total cost as a fraction of trade size A is:</span><span class="t-fr">Pour un pool à produit constant (x·y=k), le coût total en fraction de la taille de trade A est :</span><span class="t-es">Para un pool de producto constante (x·y=k), el costo total como fracción del tamaño de trade A es:</span></p>
       <div class="formula">cost(A) = gas/A + A/(R+A) + fee</div>
-      <p>Where <strong>R</strong> = pool TVL × 0.5 (single-sided depth), <strong>gas</strong> = network fee in USD, <strong>fee</strong> = pool fee. Minimising gives the exact optimal A:</p>
+      <p><span class="t-en">Where <strong>R</strong> = pool TVL × 0.5 (single-sided depth), <strong>gas</strong> = network fee in USD, <strong>fee</strong> = pool fee. Minimising gives the exact optimal A:</span><span class="t-fr">Où <strong>R</strong> = TVL pool × 0,5 (profondeur unilatérale), <strong>gas</strong> = frais réseau en USD, <strong>fee</strong> = frais pool. La minimisation donne l'A optimal exact :</span><span class="t-es">Donde <strong>R</strong> = TVL del pool × 0,5 (profundidad unilateral), <strong>gas</strong> = comisión de red en USD, <strong>fee</strong> = comisión del pool. Minimizando se obtiene la A óptima exacta:</span></p>
       <div class="formula">A* = √(gas × R)</div>
-      <p>The <span style="font-family:var(--mono)">√(2·gas·TVL)</span> approximation is commonly cited but <strong>overestimates optimal size by up to 2×</strong> — OrnyTools uses the exact constant-product derivation, not the shortcut.</p>
+      <p><span class="t-en">The <span style="font-family:var(--mono)">√(2·gas·TVL)</span> approximation is commonly cited but <strong>overestimates optimal size by up to 2×</strong> — OrnyTools uses the exact constant-product derivation, not the shortcut.</span><span class="t-fr">L'approximation <span style="font-family:var(--mono)">√(2·gas·TVL)</span> est souvent citée mais <strong>surestime la taille optimale jusqu'à 2×</strong> — OrnyTools utilise la dérivation exacte à produit constant, pas le raccourci.</span><span class="t-es">La aproximación <span style="font-family:var(--mono)">√(2·gas·TVL)</span> se cita frecuentemente pero <strong>sobreestima el tamaño óptimo hasta 2×</strong> — OrnyTools usa la derivación exacta de producto constante, no el atajo.</span></p>
     </div>
-    <div class="callout gold"><strong>Rule of thumb:</strong> At the optimum, your gas cost and slippage cost are approximately equal. If you see one dominating the other in the result breakdown, you're away from the optimum.</div>
+    <div class="callout gold"><strong><span class="t-en">Rule of thumb:</span><span class="t-fr">Règle pratique :</span><span class="t-es">Regla general:</span></strong> <span class="t-en">At the optimum, your gas cost and slippage cost are approximately equal. If you see one dominating the other in the result breakdown, you're away from the optimum.</span><span class="t-fr">À l'optimum, votre coût gas et votre coût slippage sont approximativement égaux. Si l'un domine l'autre dans le détail des résultats, vous êtes loin de l'optimum.</span><span class="t-es">En el óptimo, tu costo de gas y tu costo de slippage son aproximadamente iguales. Si ves que uno domina al otro en el desglose de resultados, estás lejos del óptimo.</span></div>
     <div class="panel">
-      <h3>Practical steps</h3>
-      <p>1. Load the target pool by address (or pick from the curated list). The optimizer fetches TVL and fee live from GeckoTerminal. 2. Check the gas estimate — the optimizer auto-fills based on the selected network. 3. The result gives you the optimal size, the expected slippage at that size, and the total cost breakdown.</p>
-      <a href="optimizer.html" class="tool-cta">Open Trade Size Optimizer →</a>
+      <h3><span class="t-en">Practical steps</span><span class="t-fr">Étapes pratiques</span><span class="t-es">Pasos prácticos</span></h3>
+      <p><span class="t-en">1. Load the target pool by address (or pick from the curated list). The optimizer fetches TVL and fee live from GeckoTerminal. 2. Check the gas estimate — the optimizer auto-fills based on the selected network. 3. The result gives you the optimal size, the expected slippage at that size, and the total cost breakdown.</span><span class="t-fr">1. Chargez le pool cible par adresse (ou choisissez dans la liste). L'optimiseur récupère le TVL et les frais en direct depuis GeckoTerminal. 2. Vérifiez l'estimation du gas — l'optimiseur remplit automatiquement selon le réseau sélectionné. 3. Le résultat vous donne la taille optimale, le slippage attendu et le détail des coûts.</span><span class="t-es">1. Carga el pool objetivo por dirección (o elige de la lista curada). El optimizador obtiene el TVL y la comisión en vivo desde GeckoTerminal. 2. Comprueba la estimación de gas — el optimizador lo rellena automáticamente según la red seleccionada. 3. El resultado te da el tamaño óptimo, el slippage esperado y el desglose de costos.</span></p>
+      <a href="optimizer.html" class="tool-cta"><span class="t-en">Open Trade Size Optimizer →</span><span class="t-fr">Ouvrir l'Optimiseur de Trade →</span><span class="t-es">Abrir el Optimizador de Trade →</span></a>
     </div>
   </div>
 
@@ -149,26 +156,26 @@
   <div class="guide-sec" id="guide-02">
     <div class="guide-header">
       <div class="sec-num">Guide 02</div>
-      <h2>Aave V3 health factor — what it means and when to act</h2>
-      <p class="lede">The health factor is Aave's single number summary of how close your position is to liquidation. Below 1.0, a liquidator can take your collateral.</p>
+      <h2><span class="t-en">Aave V3 health factor — what it means and when to act</span><span class="t-fr">Health factor Aave V3 — ce que ça signifie et quand agir</span><span class="t-es">Health factor Aave V3 — qué significa y cuándo actuar</span></h2>
+      <p class="lede"><span class="t-en">The health factor is Aave's single number summary of how close your position is to liquidation. Below 1.0, a liquidator can take your collateral.</span><span class="t-fr">Le health factor est le chiffre unique d'Aave qui résume la proximité de votre position à la liquidation. En dessous de 1,0, un liquidateur peut saisir votre collatéral.</span><span class="t-es">El health factor es el número único de Aave que resume qué tan cerca está tu posición de la liquidación. Por debajo de 1,0, un liquidador puede tomar tu colateral.</span></p>
     </div>
     <div class="panel">
-      <h3>The formula</h3>
-      <p>Aave computes health factor as:</p>
+      <h3><span class="t-en">The formula</span><span class="t-fr">La formule</span><span class="t-es">La fórmula</span></h3>
+      <p><span class="t-en">Aave computes health factor as:</span><span class="t-fr">Aave calcule le health factor comme :</span><span class="t-es">Aave calcula el health factor como:</span></p>
       <div class="formula">HF = Σ(collateral_i × price_i × LT_i) / Σ(debt_j × price_j)</div>
-      <p>Where <strong>LT</strong> is the liquidation threshold per asset (e.g., WBTC = 75%, USDC = 85%). When HF drops to 1.0, your weighted collateral exactly equals your debt — any further drop and a liquidator takes over.</p>
+      <p><span class="t-en">Where <strong>LT</strong> is the liquidation threshold per asset (e.g., WBTC = 75%, USDC = 85%). When HF drops to 1.0, your weighted collateral exactly equals your debt — any further drop and a liquidator takes over.</span><span class="t-fr">Où <strong>LT</strong> est le seuil de liquidation par actif (ex : WBTC = 75%, USDC = 85%). Quand le HF tombe à 1,0, votre collatéral pondéré égale exactement votre dette — toute baisse supplémentaire et un liquidateur intervient.</span><span class="t-es">Donde <strong>LT</strong> es el umbral de liquidación por activo (ej: WBTC = 75%, USDC = 85%). Cuando el HF cae a 1,0, tu colateral ponderado iguala exactamente tu deuda — cualquier caída adicional y un liquidador interviene.</span></p>
     </div>
     <div class="panel">
-      <h3>Estimated liquidation price</h3>
-      <p>If you have a single collateral and single debt position, you can estimate the price level at which liquidation triggers:</p>
+      <h3><span class="t-en">Estimated liquidation price</span><span class="t-fr">Prix de liquidation estimé</span><span class="t-es">Precio de liquidación estimado</span></h3>
+      <p><span class="t-en">If you have a single collateral and single debt position, you can estimate the price level at which liquidation triggers:</span><span class="t-fr">Si vous avez un seul collatéral et une seule dette, vous pouvez estimer le niveau de prix qui déclenche la liquidation :</span><span class="t-es">Si tienes un único colateral y una única deuda, puedes estimar el nivel de precio que desencadena la liquidación:</span></p>
       <div class="formula">P_liq = debt_USD / (collateral_qty × LT)</div>
-      <p>This assumes all collateral value moves together. Real portfolios with mixed assets are more complex — use the Dashboard to see the on-chain estimate directly from the Aave V3 contract.</p>
+      <p><span class="t-en">This assumes all collateral value moves together. Real portfolios with mixed assets are more complex — use the Dashboard to see the on-chain estimate directly from the Aave V3 contract.</span><span class="t-fr">Cela suppose que toute la valeur du collatéral bouge ensemble. Les portefeuilles réels avec des actifs mixtes sont plus complexes — utilisez le Dashboard pour voir l'estimation on-chain directement depuis le contrat Aave V3.</span><span class="t-es">Esto asume que todo el valor del colateral se mueve junto. Las carteras reales con activos mixtos son más complejas — usa el Dashboard para ver la estimación on-chain directamente desde el contrato Aave V3.</span></p>
     </div>
-    <div class="callout red"><strong>HF &lt; 1.2 is critical.</strong> The gap between 1.2 and 1.0 can be covered by a 15–20% price drop depending on your LT. Add collateral or reduce debt before a volatile move.</div>
-    <div class="callout green"><strong>Safe zone:</strong> HF &gt; 1.5 with volatile assets (BTC, ETH), HF &gt; 1.3 with stablecoins. Lower than these and a single bad wick can trigger liquidation.</div>
+    <div class="callout red"><strong><span class="t-en">HF &lt; 1.2 is critical.</span><span class="t-fr">HF &lt; 1,2 est critique.</span><span class="t-es">HF &lt; 1,2 es crítico.</span></strong> <span class="t-en">The gap between 1.2 and 1.0 can be covered by a 15–20% price drop depending on your LT. Add collateral or reduce debt before a volatile move.</span><span class="t-fr">L'écart entre 1,2 et 1,0 peut être couvert par une baisse de prix de 15 à 20% selon votre LT. Ajoutez du collatéral ou réduisez la dette avant un mouvement volatile.</span><span class="t-es">La diferencia entre 1,2 y 1,0 puede cubrirse con una caída de precio del 15–20% según tu LT. Añade colateral o reduce deuda antes de un movimiento volátil.</span></div>
+    <div class="callout green"><strong><span class="t-en">Safe zone:</span><span class="t-fr">Zone sûre :</span><span class="t-es">Zona segura:</span></strong> <span class="t-en">HF &gt; 1.5 with volatile assets (BTC, ETH), HF &gt; 1.3 with stablecoins. Lower than these and a single bad wick can trigger liquidation.</span><span class="t-fr">HF &gt; 1,5 avec des actifs volatils (BTC, ETH), HF &gt; 1,3 avec des stablecoins. En dessous, une seule mèche défavorable peut déclencher la liquidation.</span><span class="t-es">HF &gt; 1,5 con activos volátiles (BTC, ETH), HF &gt; 1,3 con stablecoins. Por debajo de estos niveles, una sola mecha mala puede desencadenar la liquidación.</span></div>
     <div class="panel">
-      <p>The Position Dashboard reads your HF, collateral, debt, and margin-to-liquidation directly from the Aave V3 contract — no wallet connection needed.</p>
-      <a href="dashboard.html" class="tool-cta">Check my position →</a>
+      <p><span class="t-en">The Position Dashboard reads your HF, collateral, debt, and margin-to-liquidation directly from the Aave V3 contract — no wallet connection needed.</span><span class="t-fr">Le Position Dashboard lit votre HF, collatéral, dette et marge avant liquidation directement depuis le contrat Aave V3 — sans connexion wallet.</span><span class="t-es">El Position Dashboard lee tu HF, colateral, deuda y margen hasta liquidación directamente del contrato Aave V3 — sin conexión de wallet.</span></p>
+      <a href="dashboard.html" class="tool-cta"><span class="t-en">Check my position →</span><span class="t-fr">Vérifier ma position →</span><span class="t-es">Ver mi posición →</span></a>
     </div>
   </div>
 
@@ -176,22 +183,22 @@
   <div class="guide-sec" id="guide-03">
     <div class="guide-header">
       <div class="sec-num">Guide 03</div>
-      <h2>GMX liquidation price — how to calculate it</h2>
-      <p class="lede">On GMX, leveraged positions get liquidated when collateral drops to the maintenance margin. The exact liquidation price depends on opening fees, borrow fees, and leverage.</p>
+      <h2><span class="t-en">GMX liquidation price — how to calculate it</span><span class="t-fr">Prix de liquidation GMX — comment le calculer</span><span class="t-es">Precio de liquidación GMX — cómo calcularlo</span></h2>
+      <p class="lede"><span class="t-en">On GMX, leveraged positions get liquidated when collateral drops to the maintenance margin. The exact liquidation price depends on opening fees, borrow fees, and leverage.</span><span class="t-fr">Sur GMX, les positions à levier sont liquidées quand le collatéral tombe en dessous de la marge de maintenance. Le prix exact dépend des frais d'ouverture, des frais de borrow et du levier.</span><span class="t-es">En GMX, las posiciones apalancadas se liquidan cuando el colateral cae por debajo del margen de mantenimiento. El precio exacto depende de las comisiones de apertura, las comisiones de borrow y el apalancamiento.</span></p>
     </div>
     <div class="panel">
-      <h3>The formula (long position)</h3>
+      <h3><span class="t-en">The formula (long position)</span><span class="t-fr">La formule (position longue)</span><span class="t-es">La fórmula (posición larga)</span></h3>
       <div class="formula">P_liq = P_entry × (1 − (collateral − fees − MAINT × size) / size)</div>
-      <p>Where <strong>fees</strong> = opening fee (0.07% × 2 × size) + accrued borrow fees, and <strong>MAINT</strong> = 1% of position size. The higher your leverage and the longer you hold, the closer your liquidation price moves toward entry.</p>
+      <p><span class="t-en">Where <strong>fees</strong> = opening fee (0.07% × 2 × size) + accrued borrow fees, and <strong>MAINT</strong> = 1% of position size. The higher your leverage and the longer you hold, the closer your liquidation price moves toward entry.</span><span class="t-fr">Où <strong>fees</strong> = frais d'ouverture (0,07% × 2 × taille) + frais de borrow accumulés, et <strong>MAINT</strong> = 1% de la taille de position. Plus le levier est élevé et plus vous détenez longtemps, plus le prix de liquidation se rapproche du prix d'entrée.</span><span class="t-es">Donde <strong>fees</strong> = comisión de apertura (0,07% × 2 × tamaño) + comisiones de borrow acumuladas, y <strong>MAINT</strong> = 1% del tamaño de la posición. Cuanto mayor sea el apalancamiento y más tiempo mantengas, más se acerca el precio de liquidación al de entrada.</span></p>
     </div>
     <div class="panel">
-      <h3>GMX V2 fee structure</h3>
-      <p><strong>Opening fee:</strong> 0.07% of position size, charged each way (open + close = 0.14% round-trip). <strong>Borrow fee:</strong> approximately 0.01%/hour on the <em>borrowed</em> portion of your position. For a 5× leveraged $1,000 trade, borrowed = $4,000 → borrow fee ≈ $0.40/hour.</p>
+      <h3><span class="t-en">GMX V2 fee structure</span><span class="t-fr">Structure de frais GMX V2</span><span class="t-es">Estructura de comisiones GMX V2</span></h3>
+      <p><strong><span class="t-en">Opening fee:</span><span class="t-fr">Frais d'ouverture :</span><span class="t-es">Comisión de apertura:</span></strong> <span class="t-en">0.07% of position size, charged each way (open + close = 0.14% round-trip).</span><span class="t-fr">0,07% de la taille de position, facturé à chaque sens (ouverture + fermeture = 0,14% aller-retour).</span><span class="t-es">0,07% del tamaño de la posición, cobrado en cada dirección (apertura + cierre = 0,14% ida y vuelta).</span> <strong><span class="t-en">Borrow fee:</span><span class="t-fr">Frais de borrow :</span><span class="t-es">Comisión de borrow:</span></strong> <span class="t-en">approximately 0.01%/hour on the <em>borrowed</em> portion. For a 5× leveraged $1,000 trade, borrowed = $4,000 → borrow fee ≈ $0.40/hour.</span><span class="t-fr">environ 0,01%/heure sur la partie <em>empruntée</em>. Pour un trade 5× de 1 000$, emprunté = 4 000$ → frais borrow ≈ 0,40$/heure.</span><span class="t-es">aproximadamente 0,01%/hora sobre la parte <em>prestada</em>. Para un trade 5× de $1.000, prestado = $4.000 → comisión borrow ≈ $0,40/hora.</span></p>
     </div>
-    <div class="callout blue"><strong>Break-even distance</strong> = (collateral − opening fees) / size. This is the minimum favorable move needed just to recover your fees. Many traders focus on liquidation price but ignore break-even — both matter.</div>
+    <div class="callout blue"><strong><span class="t-en">Break-even distance</span><span class="t-fr">Distance de seuil de rentabilité</span><span class="t-es">Distancia de break-even</span></strong> = (collateral − opening fees) / size. <span class="t-en">This is the minimum favorable move needed just to recover your fees. Many traders focus on liquidation price but ignore break-even — both matter.</span><span class="t-fr">C'est le mouvement favorable minimum nécessaire pour récupérer vos frais. Beaucoup de traders se concentrent sur le prix de liquidation mais ignorent le seuil de rentabilité — les deux comptent.</span><span class="t-es">Es el movimiento favorable mínimo necesario solo para recuperar tus comisiones. Muchos traders se centran en el precio de liquidación pero ignoran el break-even — ambos importan.</span></div>
     <div class="panel">
-      <p>The GMX V2 Calculator lets you input size, leverage, and collateral, fetches the live BTC or ETH price, and outputs liquidation price, break-even, opening fees, and max borrow fees — all in one view.</p>
-      <a href="gmx.html" class="tool-cta">Open GMX Calculator →</a>
+      <p><span class="t-en">The GMX V2 Calculator lets you input size, leverage, and collateral, fetches the live BTC or ETH price, and outputs liquidation price, break-even, opening fees, and max borrow fees — all in one view.</span><span class="t-fr">Le Calculateur GMX V2 vous permet de saisir la taille, le levier et le collatéral, récupère le prix BTC ou ETH en direct, et affiche le prix de liquidation, le seuil de rentabilité, les frais d'ouverture et les frais de borrow max — en une seule vue.</span><span class="t-es">El GMX V2 Calculator te permite introducir el tamaño, el apalancamiento y el colateral, obtiene el precio en vivo de BTC o ETH, y muestra el precio de liquidación, el break-even, las comisiones de apertura y las comisiones de borrow máximas — todo en una vista.</span></p>
+      <a href="gmx.html" class="tool-cta"><span class="t-en">Open GMX Calculator →</span><span class="t-fr">Ouvrir le Calculateur GMX →</span><span class="t-es">Abrir el Calculador GMX →</span></a>
     </div>
   </div>
 
@@ -199,19 +206,19 @@
   <div class="guide-sec" id="guide-04">
     <div class="guide-header">
       <div class="sec-num">Guide 04</div>
-      <h2>Uniswap V3 range selection — concentrated liquidity explained</h2>
-      <p class="lede">In Uniswap V3, you earn fees only while the price stays within your chosen range. Narrower range = higher yield per dollar, but more frequent out-of-range periods.</p>
+      <h2><span class="t-en">Uniswap V3 range selection — concentrated liquidity explained</span><span class="t-fr">Sélection de plage Uniswap V3 — liquidité concentrée expliquée</span><span class="t-es">Selección de rango Uniswap V3 — liquidez concentrada explicada</span></h2>
+      <p class="lede"><span class="t-en">In Uniswap V3, you earn fees only while the price stays within your chosen range. Narrower range = higher yield per dollar, but more frequent out-of-range periods.</span><span class="t-fr">Dans Uniswap V3, vous gagnez des frais uniquement lorsque le prix reste dans votre plage. Plage plus étroite = rendement plus élevé par dollar, mais sorties de plage plus fréquentes.</span><span class="t-es">En Uniswap V3, ganas comisiones solo mientras el precio permanece dentro de tu rango. Rango más estrecho = mayor rendimiento por dólar, pero períodos fuera de rango más frecuentes.</span></p>
     </div>
     <div class="panel">
-      <h3>Capital efficiency formula</h3>
-      <p>The capital efficiency multiplier compared to full-range V2 liquidity is:</p>
+      <h3><span class="t-en">Capital efficiency formula</span><span class="t-fr">Formule d'efficacité du capital</span><span class="t-es">Fórmula de eficiencia de capital</span></h3>
+      <p><span class="t-en">The capital efficiency multiplier compared to full-range V2 liquidity is:</span><span class="t-fr">Le multiplicateur d'efficacité du capital par rapport à la liquidité full-range V2 est :</span><span class="t-es">El multiplicador de eficiencia de capital comparado con la liquidez full-range de V2 es:</span></p>
       <div class="formula">CE = 1 / (1 − √(P_lower / P_upper))</div>
-      <p>A range of ±20% (P_lower = 0.8×price, P_upper = 1.2×price) gives CE ≈ 5.5× — you need 5.5× less capital to provide the same depth as a V2 position. Narrower to ±10% gives CE ≈ 11×, but any wick beyond those bounds earns nothing.</p>
+      <p><span class="t-en">A range of ±20% gives CE ≈ 5.5× — you need 5.5× less capital to provide the same depth as a V2 position. Narrower to ±10% gives CE ≈ 11×, but any wick beyond those bounds earns nothing.</span><span class="t-fr">Une plage de ±20% donne CE ≈ 5,5× — vous avez besoin de 5,5× moins de capital pour fournir la même profondeur qu'une position V2. Plus étroite à ±10% donne CE ≈ 11×, mais toute mèche au-delà ne rapporte rien.</span><span class="t-es">Un rango de ±20% da CE ≈ 5,5× — necesitas 5,5× menos capital para proporcionar la misma profundidad que una posición V2. Más estrecho a ±10% da CE ≈ 11×, pero cualquier mecha más allá no gana nada.</span></p>
     </div>
-    <div class="callout gold"><strong>Key tradeoff:</strong> Narrow ranges maximize fee yield when in range, but require active management (repositioning) as the price moves. Wider ranges set-and-forget but dilute your fee rate.</div>
+    <div class="callout gold"><strong><span class="t-en">Key tradeoff:</span><span class="t-fr">Compromis clé :</span><span class="t-es">Compensación clave:</span></strong> <span class="t-en">Narrow ranges maximize fee yield when in range, but require active management (repositioning) as the price moves. Wider ranges set-and-forget but dilute your fee rate.</span><span class="t-fr">Les plages étroites maximisent le rendement des frais quand en plage, mais nécessitent une gestion active (repositionnement) au fil du mouvement des prix. Les plages larges sont passives mais diluent votre taux de frais.</span><span class="t-es">Los rangos estrechos maximizan el rendimiento de comisiones cuando están en rango, pero requieren gestión activa (reposicionamiento) conforme se mueve el precio. Los rangos amplios son de configurar y olvidar, pero diluyen tu tasa de comisiones.</span></div>
     <div class="panel">
-      <p>The V3 Range Optimizer takes a pool, your capital, and a target range and shows you projected daily fees, capital efficiency, and time-out-of-range estimate based on recent volatility.</p>
-      <a href="v3range.html" class="tool-cta">Open V3 Range Optimizer →</a>
+      <p><span class="t-en">The V3 Range Optimizer takes a pool, your capital, and a target range and shows you projected daily fees, capital efficiency, and time-out-of-range estimate based on recent volatility.</span><span class="t-fr">Le V3 Range Optimizer prend un pool, votre capital et une plage cible, et vous montre les frais quotidiens projetés, l'efficacité du capital et une estimation du temps hors plage basée sur la volatilité récente.</span><span class="t-es">El V3 Range Optimizer toma un pool, tu capital y un rango objetivo, y te muestra las comisiones diarias proyectadas, la eficiencia de capital y una estimación del tiempo fuera de rango basada en la volatilidad reciente.</span></p>
+      <a href="v3range.html" class="tool-cta"><span class="t-en">Open V3 Range Optimizer →</span><span class="t-fr">Ouvrir l'Optimiseur Plage V3 →</span><span class="t-es">Abrir el Optimizador de Rango V3 →</span></a>
     </div>
   </div>
 
@@ -219,19 +226,19 @@
   <div class="guide-sec" id="guide-05">
     <div class="guide-header">
       <div class="sec-num">Guide 05</div>
-      <h2>Impermanent loss — when does it become permanent?</h2>
-      <p class="lede">Impermanent loss (IL) is the opportunity cost of holding assets in an AMM pool vs. holding them in a wallet. It's "impermanent" only if the price returns to entry.</p>
+      <h2><span class="t-en">Impermanent loss — when does it become permanent?</span><span class="t-fr">Perte impermanente — quand devient-elle permanente ?</span><span class="t-es">Pérdida impermanente — ¿cuándo se vuelve permanente?</span></h2>
+      <p class="lede"><span class="t-en">Impermanent loss (IL) is the opportunity cost of holding assets in an AMM pool vs. holding them in a wallet. It's "impermanent" only if the price returns to entry.</span><span class="t-fr">La perte impermanente (IL) est le coût d'opportunité de détenir des actifs dans un pool AMM par rapport à les détenir dans un wallet. Elle est "impermanente" uniquement si le prix revient au niveau d'entrée.</span><span class="t-es">La pérdida impermanente (IL) es el costo de oportunidad de mantener activos en un pool AMM frente a mantenerlos en una wallet. Es "impermanente" solo si el precio vuelve al nivel de entrada.</span></p>
     </div>
     <div class="panel">
-      <h3>The formula</h3>
-      <p>For a 50/50 pool with a price ratio of <strong>r</strong> (current price / entry price):</p>
+      <h3><span class="t-en">The formula</span><span class="t-fr">La formule</span><span class="t-es">La fórmula</span></h3>
+      <p><span class="t-en">For a 50/50 pool with a price ratio of <strong>r</strong> (current price / entry price):</span><span class="t-fr">Pour un pool 50/50 avec un ratio de prix <strong>r</strong> (prix actuel / prix d'entrée) :</span><span class="t-es">Para un pool 50/50 con un ratio de precio <strong>r</strong> (precio actual / precio de entrada):</span></p>
       <div class="formula">IL = 2√r / (1+r) − 1</div>
-      <p>At 2× price move (r=2): IL = 2√2/3 − 1 ≈ −5.7%. At 5× (r=5): IL ≈ −25.1%. The loss is symmetric — a 5× price move up or down gives the same IL because the pool rebalances both ways.</p>
+      <p><span class="t-en">At 2× price move (r=2): IL ≈ −5.7%. At 5× (r=5): IL ≈ −25.1%. The loss is symmetric — a 5× price move up or down gives the same IL because the pool rebalances both ways.</span><span class="t-fr">À un mouvement de prix 2× (r=2) : IL ≈ −5,7%. À 5× (r=5) : IL ≈ −25,1%. La perte est symétrique — un mouvement de prix 5× à la hausse ou à la baisse donne le même IL car le pool se rééquilibre dans les deux sens.</span><span class="t-es">Con un movimiento de precio 2× (r=2): IL ≈ −5,7%. Con 5× (r=5): IL ≈ −25,1%. La pérdida es simétrica — un movimiento de precio 5× hacia arriba o abajo da el mismo IL porque el pool se reequilibra en ambas direcciones.</span></p>
     </div>
-    <div class="callout red"><strong>IL becomes permanent when you exit the position</strong> while the ratio is off-peg. If fees earned over the period exceed the IL, you're net positive — but the loss is real and realized the moment you withdraw.</div>
+    <div class="callout red"><strong><span class="t-en">IL becomes permanent when you exit the position</span><span class="t-fr">L'IL devient permanente quand vous quittez la position</span><span class="t-es">La IL se vuelve permanente cuando sales de la posición</span></strong> <span class="t-en">while the ratio is off-peg. If fees earned over the period exceed the IL, you're net positive — but the loss is real and realized the moment you withdraw.</span><span class="t-fr">alors que le ratio est hors parité. Si les frais gagnés sur la période dépassent l'IL, vous êtes en net positif — mais la perte est réelle et réalisée au moment du retrait.</span><span class="t-es">mientras el ratio está fuera de paridad. Si las comisiones ganadas durante el período superan la IL, estás en positivo neto — pero la pérdida es real y se realiza en el momento del retiro.</span></div>
     <div class="panel">
-      <p>Enter your entry price ratio and see IL across a range of scenarios. The IL Calculator also shows what fee yield you'd need to break even at each price level.</p>
-      <a href="il-calculator.html" class="tool-cta">Open IL Calculator →</a>
+      <p><span class="t-en">Enter your entry price ratio and see IL across a range of scenarios. The IL Calculator also shows what fee yield you'd need to break even at each price level.</span><span class="t-fr">Entrez votre ratio de prix d'entrée et voyez l'IL sur une gamme de scénarios. Le Calculateur IL montre également le rendement de frais nécessaire pour atteindre le seuil de rentabilité à chaque niveau de prix.</span><span class="t-es">Introduce tu ratio de precio de entrada y ve la IL en una gama de escenarios. El Calculador de IL también muestra qué rendimiento de comisiones necesitarías para alcanzar el break-even a cada nivel de precio.</span></p>
+      <a href="il-calculator.html" class="tool-cta"><span class="t-en">Open IL Calculator →</span><span class="t-fr">Ouvrir le Calculateur IL →</span><span class="t-es">Abrir el Calculador de IL →</span></a>
     </div>
   </div>
 

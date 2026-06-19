@@ -104,14 +104,21 @@
 <nav class="navbar">
   <a href="index.html"><img src="logo.png" class="nav-logo" alt="OrnyTools"/></a>
   <span class="nav-brand">ORNY<span class="dot">.</span>TOOLS</span>
-  <button class="btn-theme" onclick="toggleTheme()" title="Dark mode">🌙</button>
-  <a href="index.html" class="nav-home">← Home</a>
+  <div style="margin-left:auto;display:flex;align-items:center;gap:8px;">
+    <div class="lang-switch">
+      <button id="btnEN" class="lang-btn active" onclick="setLang('en')">🇬🇧 EN</button>
+      <button id="btnFR" class="lang-btn" onclick="setLang('fr')">🇫🇷 FR</button>
+      <button id="btnES" class="lang-btn" onclick="setLang('es')">🇪🇸 ES</button>
+    </div>
+    <button class="btn-theme" onclick="toggleTheme()" title="Dark mode">🌙</button>
+    <a href="index.html" class="nav-home" style="margin-left:0"><span class="t-en">← Home</span><span class="t-fr">← Accueil</span><span class="t-es">← Inicio</span></a>
+  </div>
 </nav>
 
 <div class="page-hero">
   <div class="eyebrow">OrnyTools Blog</div>
-  <h1>The math most traders ignore.</h1>
-  <p>Practical DeFi analysis — with the formulas, the numbers, and the honest caveats.</p>
+  <h1><span class="t-en">The math most traders ignore.</span><span class="t-fr">Les maths que la plupart des traders ignorent.</span><span class="t-es">Las matemáticas que la mayoría de traders ignora.</span></h1>
+  <p><span class="t-en">Practical DeFi analysis — with the formulas, the numbers, and the honest caveats.</span><span class="t-fr">Analyse DeFi pratique — avec les formules, les chiffres, et les mises en garde honnêtes.</span><span class="t-es">Análisis DeFi práctico — con las fórmulas, los números y las advertencias honestas.</span></p>
 </div>
 
 <main>
@@ -121,112 +128,112 @@
 
     <div class="post-card">
       <div class="post-meta">
-        <span class="post-date">June 2026</span>
-        <span class="post-tag analysis">Analysis</span>
+        <span class="post-date"><span class="t-en">June 2026</span><span class="t-fr">Juin 2026</span><span class="t-es">Junio 2026</span></span>
+        <span class="post-tag analysis"><span class="t-en">Analysis</span><span class="t-fr">Analyse</span><span class="t-es">Análisis</span></span>
       </div>
-      <div class="post-title"><a href="#art-gas-slippage">Your Uniswap trades are costing you more than you think</a></div>
-      <p class="post-excerpt">Gas and slippage are both real costs — but most traders obsess over one and ignore the other. The optimal trade size sits at their exact crossover. <strong>The approximation formula most tools use overstates that size by up to 2×.</strong> Here's the exact math.</p>
-      <a href="#art-gas-slippage" class="read-more">Read →</a>
+      <div class="post-title"><a href="#art-gas-slippage"><span class="t-en">Your Uniswap trades are costing you more than you think</span><span class="t-fr">Vos trades Uniswap vous coûtent plus que vous ne le pensez</span><span class="t-es">Tus trades en Uniswap te cuestan más de lo que crees</span></a></div>
+      <p class="post-excerpt"><span class="t-en">Gas and slippage are both real costs — but most traders obsess over one and ignore the other. The optimal trade size sits at their exact crossover. <strong>The approximation formula most tools use overstates that size by up to 2×.</strong> Here's the exact math.</span><span class="t-fr">Le gas et le slippage sont deux coûts réels — mais la plupart des traders obsèdent sur l'un et ignorent l'autre. La taille optimale se trouve exactement à leur croisement. <strong>La formule d'approximation utilisée par la plupart des outils surestime cette taille jusqu'à 2×.</strong> Voici les maths exactes.</span><span class="t-es">El gas y el slippage son costos reales — pero la mayoría de traders se obsesionan con uno e ignoran el otro. El tamaño óptimo de trade está exactamente en su cruce. <strong>La fórmula de aproximación que usan la mayoría de herramientas sobreestima ese tamaño hasta 2×.</strong> Aquí están las matemáticas exactas.</span></p>
+      <a href="#art-gas-slippage" class="read-more"><span class="t-en">Read →</span><span class="t-fr">Lire →</span><span class="t-es">Leer →</span></a>
     </div>
 
     <div class="post-card">
       <div class="post-meta">
-        <span class="post-date">June 2026</span>
+        <span class="post-date"><span class="t-en">June 2026</span><span class="t-fr">Juin 2026</span><span class="t-es">Junio 2026</span></span>
         <span class="post-tag guide">Guide</span>
       </div>
-      <div class="post-title"><a href="#art-health-factor">Health factor 1.3 — how much margin is that, really?</a></div>
-      <p class="post-excerpt">A health factor of 1.3 sounds safe until you run the actual numbers. <strong>With WBTC as collateral (LT = 75%), HF 1.3 means a 23% price drop triggers liquidation.</strong> This is how to think about it correctly — and what buffer you actually need.</p>
-      <a href="#art-health-factor" class="read-more">Read →</a>
+      <div class="post-title"><a href="#art-health-factor"><span class="t-en">Health factor 1.3 — how much margin is that, really?</span><span class="t-fr">Health factor 1,3 — quelle marge réelle, vraiment ?</span><span class="t-es">Health factor 1,3 — ¿cuánto margen es eso realmente?</span></a></div>
+      <p class="post-excerpt"><span class="t-en">A health factor of 1.3 sounds safe until you run the actual numbers. <strong>With WBTC as collateral (LT = 75%), HF 1.3 means a 23% price drop triggers liquidation.</strong> This is how to think about it correctly — and what buffer you actually need.</span><span class="t-fr">Un health factor de 1,3 semble sûr jusqu'à ce que vous fassiez les vrais calculs. <strong>Avec WBTC comme collatéral (LT = 75%), HF 1,3 signifie qu'une baisse de prix de 23% déclenche la liquidation.</strong> Voici comment raisonner correctement — et quelle marge vous avez réellement besoin.</span><span class="t-es">Un health factor de 1,3 suena seguro hasta que haces los cálculos reales. <strong>Con WBTC como colateral (LT = 75%), HF 1,3 significa que una caída de precio del 23% desencadena la liquidación.</strong> Así es como pensar correctamente — y qué margen necesitas realmente.</span></p>
+      <a href="#art-health-factor" class="read-more"><span class="t-en">Read →</span><span class="t-fr">Lire →</span><span class="t-es">Leer →</span></a>
     </div>
 
     <div class="post-card">
       <div class="post-meta">
-        <span class="post-date">June 2026</span>
-        <span class="post-tag research">Research</span>
+        <span class="post-date"><span class="t-en">June 2026</span><span class="t-fr">Juin 2026</span><span class="t-es">Junio 2026</span></span>
+        <span class="post-tag research"><span class="t-en">Research</span><span class="t-fr">Recherche</span><span class="t-es">Investigación</span></span>
       </div>
-      <div class="post-title"><a href="#art-gmx-fees">GMX perpetuals: the borrow fee is eating your PnL</a></div>
-      <p class="post-excerpt">Opening a 10× long on GMX feels like a $10 decision on a $1,000 position. <strong>After 48 hours, borrow fees alone have taken $1.92 — before the position moves a dollar.</strong> The math on why short holds on leveraged perps are better than you think.</p>
-      <a href="#art-gmx-fees" class="read-more">Read →</a>
+      <div class="post-title"><a href="#art-gmx-fees"><span class="t-en">GMX perpetuals: the borrow fee is eating your PnL</span><span class="t-fr">Perpétuels GMX : les frais de borrow mangent votre PnL</span><span class="t-es">Perpetuos GMX: la comisión de borrow está consumiendo tu PnL</span></a></div>
+      <p class="post-excerpt"><span class="t-en">Opening a 10× long on GMX feels like a $10 decision on a $1,000 position. <strong>After 48 hours, borrow fees alone have taken $1.92 — before the position moves a dollar.</strong> The math on why short holds on leveraged perps are better than you think.</span><span class="t-fr">Ouvrir un long 10× sur GMX ressemble à une décision de 10$ sur une position de 1 000$. <strong>Après 48 heures, les frais de borrow seuls ont pris 1,92$ — avant que la position ne bouge d'un dollar.</strong> Les maths qui expliquent pourquoi les détentions courtes sur les perps à levier sont meilleures que vous ne le pensez.</span><span class="t-es">Abrir un long 10× en GMX parece una decisión de $10 sobre una posición de $1.000. <strong>Después de 48 horas, solo las comisiones de borrow han tomado $1,92 — antes de que la posición se mueva un dólar.</strong> Las matemáticas de por qué las posiciones cortas en perps apalancados son mejores de lo que crees.</span></p>
+      <a href="#art-gmx-fees" class="read-more"><span class="t-en">Read →</span><span class="t-fr">Lire →</span><span class="t-es">Leer →</span></a>
     </div>
 
     <div class="post-card">
       <div class="post-meta">
-        <span class="post-date">June 2026</span>
-        <span class="post-tag analysis">Analysis</span>
+        <span class="post-date"><span class="t-en">June 2026</span><span class="t-fr">Juin 2026</span><span class="t-es">Junio 2026</span></span>
+        <span class="post-tag analysis"><span class="t-en">Analysis</span><span class="t-fr">Analyse</span><span class="t-es">Análisis</span></span>
       </div>
-      <div class="post-title"><a href="#art-leverage-loops">Leverage loops on Aave: the real cost of recursive borrowing</a></div>
-      <p class="post-excerpt">Looping amplifies your BTC exposure cheaply — but the fee drag and liquidation buffer compress simultaneously. <strong>With WBTC at max LTV, four loops give 2.27× exposure but only a 10.7% BTC drop to liquidation.</strong> Here's the math behind the risk.</p>
-      <a href="#art-leverage-loops" class="read-more">Read →</a>
+      <div class="post-title"><a href="#art-leverage-loops"><span class="t-en">Leverage loops on Aave: the real cost of recursive borrowing</span><span class="t-fr">Boucles de levier sur Aave : le vrai coût de l'emprunt récursif</span><span class="t-es">Bucles de apalancamiento en Aave: el costo real del endeudamiento recursivo</span></a></div>
+      <p class="post-excerpt"><span class="t-en">Looping amplifies your BTC exposure cheaply — but the fee drag and liquidation buffer compress simultaneously. <strong>With WBTC at max LTV, four loops give 2.27× exposure but only a 10.7% BTC drop to liquidation.</strong> Here's the math behind the risk.</span><span class="t-fr">Le looping amplifie votre exposition BTC à moindre coût — mais le fardeau des frais et le tampon de liquidation se compriment simultanément. <strong>Avec WBTC au LTV max, quatre boucles donnent une exposition 2,27× mais seulement une baisse BTC de 10,7% jusqu'à la liquidation.</strong> Voici les maths derrière le risque.</span><span class="t-es">El looping amplifica tu exposición a BTC de forma barata — pero el arrastre de comisiones y el colchón de liquidación se comprimen simultáneamente. <strong>Con WBTC al LTV máximo, cuatro bucles dan una exposición 2,27× pero solo una caída del 10,7% de BTC hasta la liquidación.</strong> Aquí están las matemáticas detrás del riesgo.</span></p>
+      <a href="#art-leverage-loops" class="read-more"><span class="t-en">Read →</span><span class="t-fr">Lire →</span><span class="t-es">Leer →</span></a>
     </div>
 
     <div class="post-card">
       <div class="post-meta">
-        <span class="post-date">June 2026</span>
-        <span class="post-tag research">Research</span>
+        <span class="post-date"><span class="t-en">June 2026</span><span class="t-fr">Juin 2026</span><span class="t-es">Junio 2026</span></span>
+        <span class="post-tag research"><span class="t-en">Research</span><span class="t-fr">Recherche</span><span class="t-es">Investigación</span></span>
       </div>
-      <div class="post-title"><a href="#art-v3-ranges">Uniswap V3 ranges: why width matters more than entry</a></div>
-      <p class="post-excerpt">A ±10% range gives a 10× capital efficiency multiplier — but on ETH, it gets breached 28% of weeks. <strong>The fee APR your pool explorer shows assumes you're always in range.</strong> The actual math on range selection and out-of-range risk.</p>
-      <a href="#art-v3-ranges" class="read-more">Read →</a>
+      <div class="post-title"><a href="#art-v3-ranges"><span class="t-en">Uniswap V3 ranges: why width matters more than entry</span><span class="t-fr">Plages Uniswap V3 : pourquoi la largeur compte plus que l'entrée</span><span class="t-es">Rangos Uniswap V3: por qué el ancho importa más que la entrada</span></a></div>
+      <p class="post-excerpt"><span class="t-en">A ±10% range gives a 10× capital efficiency multiplier — but on ETH, it gets breached 28% of weeks. <strong>The fee APR your pool explorer shows assumes you're always in range.</strong> The actual math on range selection and out-of-range risk.</span><span class="t-fr">Une plage ±10% donne un multiplicateur d'efficacité capital de 10× — mais sur ETH, elle est franchie 28% des semaines. <strong>L'APR de frais que montre votre explorateur de pool suppose que vous êtes toujours en plage.</strong> Les maths réelles sur la sélection de plage et le risque hors plage.</span><span class="t-es">Un rango ±10% da un multiplicador de eficiencia de capital 10× — pero en ETH, se rompe el 28% de las semanas. <strong>El APR de comisiones que muestra tu explorador de pool asume que siempre estás en rango.</strong> Las matemáticas reales sobre selección de rango y riesgo fuera de rango.</span></p>
+      <a href="#art-v3-ranges" class="read-more"><span class="t-en">Read →</span><span class="t-fr">Lire →</span><span class="t-es">Leer →</span></a>
     </div>
 
     <div class="post-card">
       <div class="post-meta">
-        <span class="post-date">June 2026</span>
-        <span class="post-tag analysis">Analysis</span>
+        <span class="post-date"><span class="t-en">June 2026</span><span class="t-fr">Juin 2026</span><span class="t-es">Junio 2026</span></span>
+        <span class="post-tag analysis"><span class="t-en">Analysis</span><span class="t-fr">Analyse</span><span class="t-es">Análisis</span></span>
       </div>
-      <div class="post-title"><a href="#art-morpho-vs-aave">Morpho Blue vs Aave V3: which one for your WBTC?</a></div>
-      <p class="post-excerpt">Both protocols let you borrow USDC against WBTC — but the risk model, liquidation mechanics, and yield distribution are fundamentally different. <strong>Morpho's LLTV can reach 86% vs Aave's 75% LT, but the liquidation works differently and there's no supply-side safety buffer.</strong> A practical comparison.</p>
-      <a href="#art-morpho-vs-aave" class="read-more">Read →</a>
+      <div class="post-title"><a href="#art-morpho-vs-aave"><span class="t-en">Morpho Blue vs Aave V3: which one for your WBTC?</span><span class="t-fr">Morpho Blue vs Aave V3 : lequel pour votre WBTC ?</span><span class="t-es">Morpho Blue vs Aave V3: ¿cuál para tu WBTC?</span></a></div>
+      <p class="post-excerpt"><span class="t-en">Both protocols let you borrow USDC against WBTC — but the risk model, liquidation mechanics, and yield distribution are fundamentally different. <strong>Morpho's LLTV can reach 86% vs Aave's 75% LT, but the liquidation works differently and there's no supply-side safety buffer.</strong> A practical comparison.</span><span class="t-fr">Les deux protocoles permettent d'emprunter des USDC contre du WBTC — mais le modèle de risque, les mécaniques de liquidation et la distribution du rendement sont fondamentalement différents. <strong>Le LLTV de Morpho peut atteindre 86% vs 75% LT d'Aave, mais la liquidation fonctionne différemment et il n'y a pas de tampon de sécurité côté offre.</strong> Une comparaison pratique.</span><span class="t-es">Ambos protocolos permiten pedir prestado USDC contra WBTC — pero el modelo de riesgo, los mecanismos de liquidación y la distribución del rendimiento son fundamentalmente diferentes. <strong>El LLTV de Morpho puede llegar al 86% vs el 75% LT de Aave, pero la liquidación funciona diferente y no hay colchón de seguridad en el lado de la oferta.</strong> Una comparación práctica.</span></p>
+      <a href="#art-morpho-vs-aave" class="read-more"><span class="t-en">Read →</span><span class="t-fr">Lire →</span><span class="t-es">Leer →</span></a>
     </div>
 
     <div class="post-card">
       <div class="post-meta">
-        <span class="post-date">June 2026</span>
+        <span class="post-date"><span class="t-en">June 2026</span><span class="t-fr">Juin 2026</span><span class="t-es">Junio 2026</span></span>
         <span class="post-tag guide">Guide</span>
       </div>
-      <div class="post-title"><a href="#art-gmx-funding">GMX funding rate: the hidden cost destroying your perps</a></div>
-      <p class="post-excerpt">GMX's borrow fee runs 24/7 — even when your position is making money. <strong>A 10× ETH long held for 7 days pays ~0.84% in borrow fees alone, before any market move.</strong> Here's how to account for it in your strategy and when to avoid it entirely.</p>
-      <a href="#art-gmx-funding" class="read-more">Read →</a>
+      <div class="post-title"><a href="#art-gmx-funding"><span class="t-en">GMX funding rate: the hidden cost destroying your perps</span><span class="t-fr">Frais de financement GMX : le coût caché qui détruit vos perps</span><span class="t-es">Tasa de financiamiento GMX: el costo oculto que destruye tus perps</span></a></div>
+      <p class="post-excerpt"><span class="t-en">GMX's borrow fee runs 24/7 — even when your position is making money. <strong>A 10× ETH long held for 7 days pays ~0.84% in borrow fees alone, before any market move.</strong> Here's how to account for it in your strategy and when to avoid it entirely.</span><span class="t-fr">Les frais de borrow de GMX tournent 24h/24 — même quand votre position gagne de l'argent. <strong>Un long ETH 10× détenu pendant 7 jours paie ~0,84% en frais de borrow seuls, avant tout mouvement de marché.</strong> Comment l'intégrer dans votre stratégie et quand l'éviter entièrement.</span><span class="t-es">La comisión de borrow de GMX corre 24/7 — incluso cuando tu posición está ganando dinero. <strong>Un long ETH 10× mantenido durante 7 días paga ~0,84% solo en comisiones de borrow, antes de cualquier movimiento de mercado.</strong> Cómo contabilizarlo en tu estrategia y cuándo evitarlo por completo.</span></p>
+      <a href="#art-gmx-funding" class="read-more"><span class="t-en">Read →</span><span class="t-fr">Lire →</span><span class="t-es">Leer →</span></a>
     </div>
 
     <div class="post-card">
       <div class="post-meta">
-        <span class="post-date">June 2026</span>
-        <span class="post-tag research">Research</span>
+        <span class="post-date"><span class="t-en">June 2026</span><span class="t-fr">Juin 2026</span><span class="t-es">Junio 2026</span></span>
+        <span class="post-tag research"><span class="t-en">Research</span><span class="t-fr">Recherche</span><span class="t-es">Investigación</span></span>
       </div>
-      <div class="post-title"><a href="#art-stablecoin-ranking">Stablecoin risk ranking 2026: USDC vs USDe vs USD0</a></div>
-      <p class="post-excerpt">Three stablecoins, three completely different risk models — and three different reasons to hold them. <strong>USDC has regulatory clarity. USDe has the highest yield. USD0 bridges both.</strong> A structured comparison across depeg risk, counterparty, liquidity, and protocol safety.</p>
-      <a href="#art-stablecoin-ranking" class="read-more">Read →</a>
+      <div class="post-title"><a href="#art-stablecoin-ranking"><span class="t-en">Stablecoin risk ranking 2026: USDC vs USDe vs USD0</span><span class="t-fr">Classement des risques stablecoin 2026 : USDC vs USDe vs USD0</span><span class="t-es">Ranking de riesgo de stablecoins 2026: USDC vs USDe vs USD0</span></a></div>
+      <p class="post-excerpt"><span class="t-en">Three stablecoins, three completely different risk models — and three different reasons to hold them. <strong>USDC has regulatory clarity. USDe has the highest yield. USD0 bridges both.</strong> A structured comparison across depeg risk, counterparty, liquidity, and protocol safety.</span><span class="t-fr">Trois stablecoins, trois modèles de risque complètement différents — et trois raisons différentes de les détenir. <strong>USDC a la clarté réglementaire. USDe a le rendement le plus élevé. USD0 fait le pont entre les deux.</strong> Une comparaison structurée sur le risque de dépeg, la contrepartie, la liquidité et la sécurité du protocole.</span><span class="t-es">Tres stablecoins, tres modelos de riesgo completamente diferentes — y tres razones diferentes para mantenerlos. <strong>USDC tiene claridad regulatoria. USDe tiene el mayor rendimiento. USD0 une ambos.</strong> Una comparación estructurada en riesgo de depeg, contraparte, liquidez y seguridad del protocolo.</span></p>
+      <a href="#art-stablecoin-ranking" class="read-more"><span class="t-en">Read →</span><span class="t-fr">Lire →</span><span class="t-es">Leer →</span></a>
     </div>
 
     <div class="post-card">
       <div class="post-meta">
-        <span class="post-date">June 2026</span>
-        <span class="post-tag analysis">Analysis</span>
+        <span class="post-date"><span class="t-en">June 2026</span><span class="t-fr">Juin 2026</span><span class="t-es">Junio 2026</span></span>
+        <span class="post-tag analysis"><span class="t-en">Analysis</span><span class="t-fr">Analyse</span><span class="t-es">Análisis</span></span>
       </div>
-      <div class="post-title"><a href="aave-vs-morpho.html">Aave V3 vs Morpho Blue: which protocol wins for your collateral?</a></div>
-      <p class="post-excerpt">Same WBTC, same borrow target — two very different results. <strong>Morpho's LLTV reaches 86% vs Aave's 73% LTV on Arbitrum, lower liquidation penalties, and cheaper borrow rates.</strong> When Aave wins and when Morpho does — with the full parameter table for June 2026.</p>
-      <a href="aave-vs-morpho.html" class="read-more">Read →</a>
+      <div class="post-title"><a href="aave-vs-morpho.html"><span class="t-en">Aave V3 vs Morpho Blue: which protocol wins for your collateral?</span><span class="t-fr">Aave V3 vs Morpho Blue : quel protocole gagne pour votre collatéral ?</span><span class="t-es">Aave V3 vs Morpho Blue: ¿qué protocolo gana para tu colateral?</span></a></div>
+      <p class="post-excerpt"><span class="t-en">Same WBTC, same borrow target — two very different results. <strong>Morpho's LLTV reaches 86% vs Aave's 73% LTV on Arbitrum, lower liquidation penalties, and cheaper borrow rates.</strong> When Aave wins and when Morpho does — with the full parameter table for June 2026.</span><span class="t-fr">Même WBTC, même objectif d'emprunt — deux résultats très différents. <strong>Le LLTV de Morpho atteint 86% vs 73% LTV d'Aave sur Arbitrum, des pénalités de liquidation plus faibles et des taux d'emprunt moins chers.</strong> Quand Aave gagne et quand Morpho gagne — avec le tableau complet des paramètres de juin 2026.</span><span class="t-es">Mismo WBTC, mismo objetivo de préstamo — dos resultados muy diferentes. <strong>El LLTV de Morpho alcanza el 86% vs el 73% LTV de Aave en Arbitrum, menores penalizaciones de liquidación y tasas de préstamo más baratas.</strong> Cuándo gana Aave y cuándo Morpho — con la tabla completa de parámetros de junio 2026.</span></p>
+      <a href="aave-vs-morpho.html" class="read-more"><span class="t-en">Read →</span><span class="t-fr">Lire →</span><span class="t-es">Leer →</span></a>
     </div>
 
     <div class="post-card">
       <div class="post-meta">
-        <span class="post-date">June 2026</span>
+        <span class="post-date"><span class="t-en">June 2026</span><span class="t-fr">Juin 2026</span><span class="t-es">Junio 2026</span></span>
         <span class="post-tag guide">Guide</span>
       </div>
-      <div class="post-title"><a href="health-factor-guide.html">Health factor: the number that keeps you safe (and how it silently changes)</a></div>
-      <p class="post-excerpt">Your health factor is not static — borrow interest grows your debt daily even when prices don't move. <strong>At 6.5% APY, a $40,000 debt becomes $42,600 in one year, raising your liquidation price by $3,300 without you noticing.</strong> The full formula, the zones, and the thresholds to set.</p>
-      <a href="health-factor-guide.html" class="read-more">Read →</a>
+      <div class="post-title"><a href="health-factor-guide.html"><span class="t-en">Health factor: the number that keeps you safe (and how it silently changes)</span><span class="t-fr">Health factor : le chiffre qui vous protège (et comment il change silencieusement)</span><span class="t-es">Health factor: el número que te mantiene seguro (y cómo cambia silenciosamente)</span></a></div>
+      <p class="post-excerpt"><span class="t-en">Your health factor is not static — borrow interest grows your debt daily even when prices don't move. <strong>At 6.5% APY, a $40,000 debt becomes $42,600 in one year, raising your liquidation price by $3,300 without you noticing.</strong> The full formula, the zones, and the thresholds to set.</span><span class="t-fr">Votre health factor n'est pas statique — les intérêts d'emprunt font croître votre dette quotidiennement même quand les prix ne bougent pas. <strong>À 6,5% d'APY, une dette de 40 000$ devient 42 600$ en un an, augmentant votre prix de liquidation de 3 300$ sans que vous le remarquiez.</strong> La formule complète, les zones et les seuils à définir.</span><span class="t-es">Tu health factor no es estático — el interés de préstamo hace crecer tu deuda diariamente incluso cuando los precios no se mueven. <strong>Al 6,5% APY, una deuda de $40.000 se convierte en $42.600 en un año, elevando tu precio de liquidación en $3.300 sin que te des cuenta.</strong> La fórmula completa, las zonas y los umbrales a establecer.</span></p>
+      <a href="health-factor-guide.html" class="read-more"><span class="t-en">Read →</span><span class="t-fr">Lire →</span><span class="t-es">Leer →</span></a>
     </div>
 
     <div class="post-card">
       <div class="post-meta">
-        <span class="post-date">June 2026</span>
+        <span class="post-date"><span class="t-en">June 2026</span><span class="t-fr">Juin 2026</span><span class="t-es">Junio 2026</span></span>
         <span class="post-tag guide">Guide</span>
       </div>
-      <div class="post-title"><a href="avoid-defi-liquidation.html">7 ways to never get liquidated in DeFi</a></div>
-      <p class="post-excerpt">Liquidation is not bad luck — it's a predictable outcome of ignoring specific thresholds. <strong>On Aave V3, the liquidation penalty is 10% for WBTC: on a $50,000 position that's $5,000 lost in seconds.</strong> The full playbook to avoid it, from opening rules to monitoring habits.</p>
-      <a href="avoid-defi-liquidation.html" class="read-more">Read →</a>
+      <div class="post-title"><a href="avoid-defi-liquidation.html"><span class="t-en">7 ways to never get liquidated in DeFi</span><span class="t-fr">7 façons de ne jamais se faire liquider en DeFi</span><span class="t-es">7 formas de nunca ser liquidado en DeFi</span></a></div>
+      <p class="post-excerpt"><span class="t-en">Liquidation is not bad luck — it's a predictable outcome of ignoring specific thresholds. <strong>On Aave V3, the liquidation penalty is 10% for WBTC: on a $50,000 position that's $5,000 lost in seconds.</strong> The full playbook to avoid it, from opening rules to monitoring habits.</span><span class="t-fr">La liquidation n'est pas de la malchance — c'est un résultat prévisible quand on ignore des seuils spécifiques. <strong>Sur Aave V3, la pénalité de liquidation est de 10% pour WBTC : sur une position de 50 000$, c'est 5 000$ perdus en quelques secondes.</strong> Le guide complet pour l'éviter, des règles d'ouverture aux habitudes de surveillance.</span><span class="t-es">La liquidación no es mala suerte — es un resultado predecible de ignorar umbrales específicos. <strong>En Aave V3, la penalización de liquidación es del 10% para WBTC: en una posición de $50.000 eso son $5.000 perdidos en segundos.</strong> El manual completo para evitarlo, desde las reglas de apertura hasta los hábitos de monitoreo.</span></p>
+      <a href="avoid-defi-liquidation.html" class="read-more"><span class="t-en">Read →</span><span class="t-fr">Lire →</span><span class="t-es">Leer →</span></a>
     </div>
 
     <div class="post-card">

@@ -118,49 +118,56 @@
 <nav class="navbar">
   <a href="index.html"><img src="logo.png" class="nav-logo" alt="OrnyTools"/></a>
   <span class="nav-brand">ORNY<span class="dot">.</span>TOOLS</span>
-  <button class="btn-theme" onclick="toggleTheme()" title="Dark mode">🌙</button>
-  <a href="index.html" class="nav-home">← Home</a>
+  <div style="margin-left:auto;display:flex;align-items:center;gap:8px;">
+    <div class="lang-switch">
+      <button id="btnEN" class="lang-btn active" onclick="setLang('en')">🇬🇧 EN</button>
+      <button id="btnFR" class="lang-btn" onclick="setLang('fr')">🇫🇷 FR</button>
+      <button id="btnES" class="lang-btn" onclick="setLang('es')">🇪🇸 ES</button>
+    </div>
+    <button class="btn-theme" onclick="toggleTheme()" title="Dark mode">🌙</button>
+    <a href="index.html" class="nav-home" style="margin-left:0"><span class="t-en">← Home</span><span class="t-fr">← Accueil</span><span class="t-es">← Inicio</span></a>
+  </div>
 </nav>
 
 <div class="page-hero">
-  <div class="eyebrow">Frequently Asked Questions</div>
-  <h1>Honest answers.</h1>
-  <p>How the tools work, where the data comes from, and what the numbers actually mean.</p>
+  <div class="eyebrow"><span class="t-en">Frequently Asked Questions</span><span class="t-fr">Questions Fréquentes</span><span class="t-es">Preguntas Frecuentes</span></div>
+  <h1><span class="t-en">Honest answers.</span><span class="t-fr">Des réponses honnêtes.</span><span class="t-es">Respuestas honestas.</span></h1>
+  <p><span class="t-en">How the tools work, where the data comes from, and what the numbers actually mean.</span><span class="t-fr">Comment fonctionnent les outils, d'où viennent les données, et ce que signifient vraiment les chiffres.</span><span class="t-es">Cómo funcionan las herramientas, de dónde vienen los datos y qué significan realmente los números.</span></p>
 </div>
 
 <main>
 
   <div class="faq-section">
-    <div class="sec-title">About OrnyTools</div>
+    <div class="sec-title"><span class="t-en">About OrnyTools</span><span class="t-fr">À propos d'OrnyTools</span><span class="t-es">Acerca de OrnyTools</span></div>
 
     <details>
-      <summary>What is OrnyTools?</summary>
+      <summary><span class="t-en">What is OrnyTools?</span><span class="t-fr">Qu'est-ce qu'OrnyTools ?</span><span class="t-es">¿Qué es OrnyTools?</span></summary>
       <div class="faq-body">
-        <p>OrnyTools is a suite of free DeFi calculation tools covering trade optimization, liquidation risk, leverage, impermanent loss, yield, GMX perpetuals, and Aave V3 positions. All tools are read-only — we never connect to your wallet and never execute transactions.</p>
-        <p>Tools use real on-chain data (Chainlink oracles, Aave V3 contracts, Uniswap V3 pool state) fetched directly from public RPCs. Prices where contract data isn't available come from CoinGecko or GeckoTerminal.</p>
+        <p><span class="t-en">OrnyTools is a suite of free DeFi calculation tools covering trade optimization, liquidation risk, leverage, impermanent loss, yield, GMX perpetuals, and Aave V3 positions. All tools are read-only — we never connect to your wallet and never execute transactions.</span><span class="t-fr">OrnyTools est une suite d'outils de calcul DeFi gratuits couvrant l'optimisation des trades, le risque de liquidation, le levier, la perte impermanente, le rendement, les perpétuels GMX et les positions Aave V3. Tous les outils sont en lecture seule — nous ne connectons jamais votre wallet et n'exécutons jamais de transactions.</span><span class="t-es">OrnyTools es una suite de herramientas de cálculo DeFi gratuitas que cubre optimización de trades, riesgo de liquidación, apalancamiento, pérdida impermanente, rendimiento, perpetuos GMX y posiciones Aave V3. Todas las herramientas son de solo lectura — nunca conectamos tu wallet ni ejecutamos transacciones.</span></p>
+        <p><span class="t-en">Tools use real on-chain data (Chainlink oracles, Aave V3 contracts, Uniswap V3 pool state) fetched directly from public RPCs. Prices where contract data isn't available come from CoinGecko or GeckoTerminal.</span><span class="t-fr">Les outils utilisent des données on-chain réelles (oracles Chainlink, contrats Aave V3, état des pools Uniswap V3) récupérées directement depuis des RPCs publics. Les prix non disponibles via contrat proviennent de CoinGecko ou GeckoTerminal.</span><span class="t-es">Las herramientas usan datos on-chain reales (oráculos Chainlink, contratos Aave V3, estado de pools Uniswap V3) obtenidos directamente desde RPCs públicos. Los precios no disponibles vía contrato provienen de CoinGecko o GeckoTerminal.</span></p>
       </div>
     </details>
 
     <details>
-      <summary>Is OrnyTools free?</summary>
+      <summary><span class="t-en">Is OrnyTools free?</span><span class="t-fr">OrnyTools est-il gratuit ?</span><span class="t-es">¿Es gratuito OrnyTools?</span></summary>
       <div class="faq-body">
-        <p>Yes, all 13 tools are free with no account required. There are no paywalls, no email registration, and no tracking cookies.</p>
+        <p><span class="t-en">Yes, all 13 tools are free with no account required. There are no paywalls, no email registration, and no tracking cookies.</span><span class="t-fr">Oui, les 13 outils sont gratuits sans compte requis. Pas de paywall, pas d'inscription par e-mail, pas de cookies de tracking.</span><span class="t-es">Sí, las 13 herramientas son gratuitas sin cuenta requerida. Sin paywall, sin registro de correo electrónico, sin cookies de seguimiento.</span></p>
       </div>
     </details>
 
     <details>
-      <summary>Do you store my wallet address?</summary>
+      <summary><span class="t-en">Do you store my wallet address?</span><span class="t-fr">Stockez-vous mon adresse wallet ?</span><span class="t-es">¿Guardáis mi dirección de wallet?</span></summary>
       <div class="faq-body">
-        <p><strong>No.</strong> When you enter a wallet address in the Position Dashboard, it's used only to make a single RPC call to the Aave V3 contract — the result is displayed in your browser and then discarded. Nothing is stored server-side because there is no server. OrnyTools is a static site.</p>
-        <p>See our <a href="privacy.html">Privacy Policy</a> for the full picture.</p>
+        <p><strong><span class="t-en">No.</span><span class="t-fr">Non.</span><span class="t-es">No.</span></strong> <span class="t-en">When you enter a wallet address in the Position Dashboard, it's used only to make a single RPC call to the Aave V3 contract — the result is displayed in your browser and then discarded. Nothing is stored server-side because there is no server. OrnyTools is a static site.</span><span class="t-fr">Lorsque vous saisissez une adresse wallet dans le Position Dashboard, elle est uniquement utilisée pour effectuer un seul appel RPC vers le contrat Aave V3 — le résultat est affiché dans votre navigateur, puis effacé. Rien n'est stocké côté serveur car il n'y a pas de serveur. OrnyTools est un site statique.</span><span class="t-es">Cuando introduces una dirección de wallet en el Position Dashboard, se usa únicamente para hacer una sola llamada RPC al contrato Aave V3 — el resultado se muestra en tu navegador y se descarta. Nada se almacena en el servidor porque no hay servidor. OrnyTools es un sitio estático.</span></p>
+        <p><span class="t-en">See our <a href="privacy.html">Privacy Policy</a> for the full picture.</span><span class="t-fr">Consultez notre <a href="privacy.html">Politique de confidentialité</a> pour les détails complets.</span><span class="t-es">Consulta nuestra <a href="privacy.html">Política de privacidad</a> para el panorama completo.</span></p>
       </div>
     </details>
 
     <details>
-      <summary>Can I trust the calculations?</summary>
+      <summary><span class="t-en">Can I trust the calculations?</span><span class="t-fr">Puis-je faire confiance aux calculs ?</span><span class="t-es">¿Puedo confiar en los cálculos?</span></summary>
       <div class="faq-body">
-        <p>The formulas are documented in full on the <a href="methodology.html">Methodology page</a>. Key notes:</p>
-        <p><strong>On-chain data</strong> (health factor, collateral, debt) comes directly from the Aave V3 smart contract — the same data your wallet reads. <strong>Price data</strong> comes from CoinGecko or GeckoTerminal and may lag by a few seconds. <strong>Estimated calculations</strong> (liquidation price, optimal trade size) are mathematical models — useful for decision-making but not a guarantee. Always verify critical positions directly in the protocol interface.</p>
+        <p><span class="t-en">The formulas are documented in full on the <a href="methodology.html">Methodology page</a>. Key notes:</span><span class="t-fr">Les formules sont documentées en intégralité sur la <a href="methodology.html">page Méthodologie</a>. Points clés :</span><span class="t-es">Las fórmulas están documentadas completamente en la <a href="methodology.html">página de Metodología</a>. Puntos clave:</span></p>
+        <p><strong><span class="t-en">On-chain data</span><span class="t-fr">Données on-chain</span><span class="t-es">Datos on-chain</span></strong> <span class="t-en">(health factor, collateral, debt) comes directly from the Aave V3 smart contract — the same data your wallet reads.</span><span class="t-fr">(health factor, collatéral, dette) proviennent directement du contrat Aave V3 — les mêmes données que lit votre wallet.</span><span class="t-es">(health factor, colateral, deuda) provienen directamente del contrato Aave V3 — los mismos datos que lee tu wallet.</span> <strong><span class="t-en">Price data</span><span class="t-fr">Les prix</span><span class="t-es">Los precios</span></strong> <span class="t-en">comes from CoinGecko or GeckoTerminal and may lag by a few seconds.</span><span class="t-fr">viennent de CoinGecko ou GeckoTerminal et peuvent avoir quelques secondes de retard.</span><span class="t-es">provienen de CoinGecko o GeckoTerminal y pueden tener unos segundos de retraso.</span> <span class="t-en">Always verify critical positions directly in the protocol interface.</span><span class="t-fr">Vérifiez toujours les positions critiques directement dans l'interface du protocole.</span><span class="t-es">Siempre verifica posiciones críticas directamente en la interfaz del protocolo.</span></p>
       </div>
     </details>
   </div>
@@ -169,24 +176,24 @@
     <div class="sec-title">Position Dashboard</div>
 
     <details>
-      <summary>Which chains does the Position Dashboard support?</summary>
+      <summary><span class="t-en">Which chains does the Position Dashboard support?</span><span class="t-fr">Quelles blockchains le Position Dashboard supporte-t-il ?</span><span class="t-es">¿Qué chains soporta el Position Dashboard?</span></summary>
       <div class="faq-body">
-        <p>Arbitrum, Ethereum mainnet, and Base — the three largest deployments of Aave V3 by TVL. Select the chain with the buttons above the address input. More chains may be added as Aave V3 expands.</p>
+        <p><span class="t-en">Arbitrum, Ethereum mainnet, and Base — the three largest deployments of Aave V3 by TVL. Select the chain with the buttons above the address input. More chains may be added as Aave V3 expands.</span><span class="t-fr">Arbitrum, Ethereum mainnet et Base — les trois plus grands déploiements d'Aave V3 par TVL. Sélectionnez la chaîne avec les boutons au-dessus du champ d'adresse. D'autres chaînes pourront être ajoutées au fil de l'expansion d'Aave V3.</span><span class="t-es">Arbitrum, Ethereum mainnet y Base — los tres despliegues más grandes de Aave V3 por TVL. Selecciona la chain con los botones encima del campo de dirección. Más chains podrán añadirse conforme Aave V3 se expanda.</span></p>
       </div>
     </details>
 
     <details>
-      <summary>Why does it say "no position found" for my address?</summary>
+      <summary><span class="t-en">Why does it say "no position found" for my address?</span><span class="t-fr">Pourquoi affiche-t-il "aucune position trouvée" pour mon adresse ?</span><span class="t-es">¿Por qué dice "no se encontró posición" para mi dirección?</span></summary>
       <div class="faq-body">
-        <p>Two most common reasons: (1) Your Aave V3 position is on a different chain — make sure the correct chain is selected. (2) You have supply-only deposits (no borrowed assets and no collateral enabled). Aave positions with zero borrowed balance return zeros in <code>getUserAccountData</code>.</p>
-        <p>If you have an active position and it still returns nothing, try again — public RPC nodes occasionally time out under load.</p>
+        <p><span class="t-en">Two most common reasons: (1) Your Aave V3 position is on a different chain — make sure the correct chain is selected. (2) You have supply-only deposits (no borrowed assets and no collateral enabled). Aave positions with zero borrowed balance return zeros in <code>getUserAccountData</code>.</span><span class="t-fr">Les deux raisons les plus fréquentes : (1) Votre position Aave V3 est sur une autre chaîne — assurez-vous que la bonne chaîne est sélectionnée. (2) Vous n'avez que des dépôts sans emprunt actif. Les positions Aave sans dette retournent des zéros dans <code>getUserAccountData</code>.</span><span class="t-es">Las dos razones más comunes: (1) Tu posición Aave V3 está en otra chain — asegúrate de seleccionar la correcta. (2) Solo tienes depósitos sin activos prestados. Las posiciones Aave con saldo de deuda cero devuelven ceros en <code>getUserAccountData</code>.</span></p>
+        <p><span class="t-en">If you have an active position and it still returns nothing, try again — public RPC nodes occasionally time out under load.</span><span class="t-fr">Si vous avez une position active et qu'il ne retourne toujours rien, réessayez — les nœuds RPC publics peuvent parfois expirer sous charge.</span><span class="t-es">Si tienes una posición activa y sigue sin devolver resultados, inténtalo de nuevo — los nodos RPC públicos ocasionalmente expiran bajo carga.</span></p>
       </div>
     </details>
 
     <details>
-      <summary>How is the "margin to liquidation" percentage calculated?</summary>
+      <summary><span class="t-en">How is the "margin to liquidation" percentage calculated?</span><span class="t-fr">Comment est calculé le pourcentage de marge avant liquidation ?</span><span class="t-es">¿Cómo se calcula el porcentaje de margen hasta la liquidación?</span></summary>
       <div class="faq-body">
-        <p>It's the uniform price drop across all collateral assets that would push your health factor to exactly 1.0: <code>drop = 1 − debt / (collateral × LT)</code>. This assumes all your collateral assets drop by the same percentage simultaneously — a conservative estimate for diversified portfolios (in reality, uncorrelated assets don't all drop together).</p>
+        <p><span class="t-en">It's the uniform price drop across all collateral assets that would push your health factor to exactly 1.0: <code>drop = 1 − debt / (collateral × LT)</code>. This assumes all your collateral assets drop by the same percentage simultaneously — a conservative estimate for diversified portfolios (in reality, uncorrelated assets don't all drop together).</span><span class="t-fr">C'est la baisse de prix uniforme sur tous les actifs en collatéral qui ferait descendre votre health factor exactement à 1,0 : <code>drop = 1 − debt / (collateral × LT)</code>. Cela suppose que tous vos actifs baissent simultanément du même pourcentage — une estimation conservatrice pour les portefeuilles diversifiés (en réalité, les actifs décorrélés ne baissent pas tous ensemble).</span><span class="t-es">Es la caída de precio uniforme en todos los activos de colateral que llevaría tu health factor exactamente a 1,0: <code>drop = 1 − debt / (collateral × LT)</code>. Esto asume que todos tus activos de colateral caen simultáneamente el mismo porcentaje — una estimación conservadora para carteras diversificadas (en la realidad, los activos no correlacionados no caen todos juntos).</span></p>
       </div>
     </details>
   </div>
@@ -195,23 +202,23 @@
     <div class="sec-title">Trade Size Optimizer</div>
 
     <details>
-      <summary>Why does the optimal size differ from √(2·gas·TVL)?</summary>
+      <summary><span class="t-en">Why does the optimal size differ from √(2·gas·TVL)?</span><span class="t-fr">Pourquoi la taille optimale diffère-t-elle de √(2·gas·TVL) ?</span><span class="t-es">¿Por qué el tamaño óptimo difiere de √(2·gas·TVL)?</span></summary>
       <div class="faq-body">
-        <p>The <code>√(2·gas·TVL)</code> formula is an approximation that assumes a linear cost model. OrnyTools uses the exact constant-product derivation: <code>A* = √(gas × R)</code> where R = single-sided pool depth (TVL/2), derived from the full x·y=k curve. The approximation overstates optimal size by up to 2× in deep pools — which is why we don't use it.</p>
+        <p><span class="t-en">The <code>√(2·gas·TVL)</code> formula is an approximation that assumes a linear cost model. OrnyTools uses the exact constant-product derivation: <code>A* = √(gas × R)</code> where R = single-sided pool depth (TVL/2), derived from the full x·y=k curve. The approximation overstates optimal size by up to 2× in deep pools — which is why we don't use it.</span><span class="t-fr">La formule <code>√(2·gas·TVL)</code> est une approximation qui suppose un modèle de coût linéaire. OrnyTools utilise la dérivation exacte à produit constant : <code>A* = √(gas × R)</code> où R = profondeur unilatérale du pool (TVL/2), dérivée de la courbe complète x·y=k. L'approximation surestime la taille optimale jusqu'à 2× dans les pools profonds — c'est pourquoi nous ne l'utilisons pas.</span><span class="t-es">La fórmula <code>√(2·gas·TVL)</code> es una aproximación que asume un modelo de costo lineal. OrnyTools usa la derivación exacta de producto constante: <code>A* = √(gas × R)</code> donde R = profundidad unilateral del pool (TVL/2), derivada de la curva completa x·y=k. La aproximación sobreestima el tamaño óptimo hasta 2× en pools profundos — por eso no la usamos.</span></p>
       </div>
     </details>
 
     <details>
-      <summary>Where does pool TVL come from?</summary>
+      <summary><span class="t-en">Where does pool TVL come from?</span><span class="t-fr">D'où vient le TVL du pool ?</span><span class="t-es">¿De dónde viene el TVL del pool?</span></summary>
       <div class="faq-body">
-        <p>When you load a pool by address, TVL is fetched live from <a href="https://www.geckoterminal.com" target="_blank">GeckoTerminal</a>. You can also enter TVL manually if you prefer a specific source. The pool fee is fetched directly from the Uniswap V3 contract on-chain.</p>
+        <p><span class="t-en">When you load a pool by address, TVL is fetched live from <a href="https://www.geckoterminal.com" target="_blank">GeckoTerminal</a>. You can also enter TVL manually if you prefer a specific source. The pool fee is fetched directly from the Uniswap V3 contract on-chain.</span><span class="t-fr">Lorsque vous chargez un pool par adresse, le TVL est récupéré en direct depuis <a href="https://www.geckoterminal.com" target="_blank">GeckoTerminal</a>. Vous pouvez aussi saisir le TVL manuellement si vous préférez une source spécifique. Les frais du pool sont récupérés directement depuis le contrat Uniswap V3 on-chain.</span><span class="t-es">Cuando cargas un pool por dirección, el TVL se obtiene en vivo desde <a href="https://www.geckoterminal.com" target="_blank">GeckoTerminal</a>. También puedes introducir el TVL manualmente si prefieres una fuente específica. La comisión del pool se obtiene directamente del contrato Uniswap V3 on-chain.</span></p>
       </div>
     </details>
 
     <details>
-      <summary>What does "Fetch live" do on the gas field?</summary>
+      <summary><span class="t-en">What does "Fetch live" do on the gas field?</span><span class="t-fr">Que fait "Fetch live" sur le champ gas ?</span><span class="t-es">¿Qué hace "Fetch live" en el campo de gas?</span></summary>
       <div class="faq-body">
-        <p>It queries the selected network's RPC for the current gas price (in gwei), fetches the native token price (ETH or BNB etc.) from CoinGecko, and calculates the USD cost of a typical AMM swap (150,000 gas for V2, 220,000 for V3). The result auto-fills the gas field and shows the timestamp. This is an estimate — the actual gas your wallet confirms may differ by ±30%.</p>
+        <p><span class="t-en">It queries the selected network's RPC for the current gas price (in gwei), fetches the native token price (ETH or BNB etc.) from CoinGecko, and calculates the USD cost of a typical AMM swap (150,000 gas for V2, 220,000 for V3). The result auto-fills the gas field and shows the timestamp. This is an estimate — the actual gas your wallet confirms may differ by ±30%.</span><span class="t-fr">Il interroge le RPC du réseau sélectionné pour obtenir le prix du gas actuel (en gwei), récupère le prix du token natif (ETH ou BNB, etc.) depuis CoinGecko, et calcule le coût en USD d'un swap AMM typique (150 000 gas pour V2, 220 000 pour V3). Le résultat remplit automatiquement le champ gas avec l'horodatage. C'est une estimation — le gas réel confirmé par votre wallet peut différer de ±30 %.</span><span class="t-es">Consulta el RPC de la red seleccionada para obtener el precio actual del gas (en gwei), obtiene el precio del token nativo (ETH o BNB, etc.) de CoinGecko, y calcula el costo en USD de un swap AMM típico (150.000 gas para V2, 220.000 para V3). El resultado rellena automáticamente el campo de gas con el timestamp. Es una estimación — el gas real confirmado por tu wallet puede diferir en ±30%.</span></p>
       </div>
     </details>
   </div>
@@ -220,80 +227,80 @@
     <div class="sec-title">GMX Calculator</div>
 
     <details>
-      <summary>Does the GMX Calculator execute trades?</summary>
+      <summary><span class="t-en">Does the GMX Calculator execute trades?</span><span class="t-fr">Le calculateur GMX exécute-t-il des trades ?</span><span class="t-es">¿El GMX Calculator ejecuta trades?</span></summary>
       <div class="faq-body">
-        <p>No. It's a pure calculation tool. You input position parameters, it fetches the live BTC or ETH price from the GMX V2 on-chain price feed, and computes liquidation price, break-even, and fee estimates. No wallet connection, no transaction execution.</p>
+        <p><span class="t-en">No. It's a pure calculation tool. You input position parameters, it fetches the live BTC or ETH price from the GMX V2 on-chain price feed, and computes liquidation price, break-even, and fee estimates. No wallet connection, no transaction execution.</span><span class="t-fr">Non. C'est un outil de calcul pur. Vous saisissez les paramètres de position, il récupère le prix BTC ou ETH en direct depuis le flux de prix on-chain GMX V2, et calcule le prix de liquidation, le seuil de rentabilité et les estimations de frais. Aucune connexion wallet, aucune exécution de transaction.</span><span class="t-es">No. Es una herramienta de cálculo puro. Introduces los parámetros de la posición, obtiene el precio en vivo de BTC o ETH desde el feed de precios on-chain de GMX V2, y calcula el precio de liquidación, el break-even y las estimaciones de comisiones. Sin conexión de wallet, sin ejecución de transacciones.</span></p>
       </div>
     </details>
 
     <details>
-      <summary>Why doesn't my liquidation price match what GMX shows?</summary>
+      <summary><span class="t-en">Why doesn't my liquidation price match what GMX shows?</span><span class="t-fr">Pourquoi mon prix de liquidation ne correspond pas à ce qu'affiche GMX ?</span><span class="t-es">¿Por qué mi precio de liquidación no coincide con lo que muestra GMX?</span></summary>
       <div class="faq-body">
-        <p>Two possible reasons: (1) <strong>Accrued borrow fees</strong> — the GMX interface shows the current liquidation price including fees accrued so far. The calculator shows the price at time of opening. As fees accumulate, liquidation price moves closer to entry. (2) <strong>Price source</strong> — GMX uses its own oracle (median of Chainlink, Uniswap V3 TWAP, and a fast feed). Our calculator uses the same GMX price feed but slight delays are possible.</p>
-      </div>
-    </details>
-  </div>
-
-  <div class="faq-section">
-    <div class="sec-title">Data sources</div>
-
-    <details>
-      <summary>Where do asset prices come from?</summary>
-      <div class="faq-body">
-        <p>Depending on the tool: <strong>Chainlink</strong> price feeds (on-chain, fetched via RPC) for assets in the Leverage Calculator and V3 Range Optimizer; <strong>GeckoTerminal</strong> for AMM pool data; <strong>CoinGecko</strong> for stablecoin monitoring and gas price conversions. Health factor data in the Dashboard comes directly from the Aave V3 contract and uses the protocol's own Chainlink oracle prices.</p>
-      </div>
-    </details>
-
-    <details>
-      <summary>How fresh is the data?</summary>
-      <div class="faq-body">
-        <p>On-chain data (Aave V3 positions, Uniswap V3 slot0/liquidity) is as fresh as the latest block — near real-time. CoinGecko prices update every 30–60 seconds. GeckoTerminal pool data has a similar cadence. Timestamps shown in tools indicate when the last fetch occurred in your browser session.</p>
+        <p><span class="t-en">Two possible reasons: (1) <strong>Accrued borrow fees</strong> — the GMX interface shows the current liquidation price including fees accrued so far. The calculator shows the price at time of opening. As fees accumulate, liquidation price moves closer to entry. (2) <strong>Price source</strong> — GMX uses its own oracle (median of Chainlink, Uniswap V3 TWAP, and a fast feed). Our calculator uses the same GMX price feed but slight delays are possible.</span><span class="t-fr">Deux raisons possibles : (1) <strong>Frais de borrow accumulés</strong> — l'interface GMX affiche le prix de liquidation actuel incluant les frais accumulés jusqu'ici. Le calculateur affiche le prix au moment de l'ouverture. À mesure que les frais s'accumulent, le prix de liquidation se rapproche du prix d'entrée. (2) <strong>Source de prix</strong> — GMX utilise son propre oracle (médiane de Chainlink, TWAP Uniswap V3, et un flux rapide). Notre calculateur utilise le même flux de prix GMX mais de légers décalages sont possibles.</span><span class="t-es">Dos razones posibles: (1) <strong>Comisiones de borrow acumuladas</strong> — la interfaz de GMX muestra el precio de liquidación actual incluyendo las comisiones acumuladas hasta ahora. El calculador muestra el precio en el momento de apertura. A medida que las comisiones se acumulan, el precio de liquidación se acerca al de entrada. (2) <strong>Fuente de precio</strong> — GMX usa su propio oráculo (mediana de Chainlink, TWAP Uniswap V3 y un feed rápido). Nuestro calculador usa el mismo feed de precios de GMX pero pueden producirse pequeños retrasos.</span></p>
       </div>
     </details>
   </div>
 
   <div class="faq-section">
-    <div class="sec-title">Other</div>
+    <div class="sec-title"><span class="t-en">Data sources</span><span class="t-fr">Sources de données</span><span class="t-es">Fuentes de datos</span></div>
 
     <details>
-      <summary>I found a bug or wrong calculation — how do I report it?</summary>
+      <summary><span class="t-en">Where do asset prices come from?</span><span class="t-fr">D'où viennent les prix des actifs ?</span><span class="t-es">¿De dónde vienen los precios de los activos?</span></summary>
       <div class="faq-body">
-        <p>Email <a href="mailto:contact@ornytools.xyz">contact@ornytools.xyz</a> with the tool name, the inputs you used, and what you expected vs. what you got. We'll verify the formula and fix it. The <a href="methodology.html">Methodology page</a> documents every formula — if you see a discrepancy between what's documented and what the tool outputs, that's a bug.</p>
+        <p><span class="t-en">Depending on the tool: <strong>Chainlink</strong> price feeds (on-chain, fetched via RPC) for assets in the Leverage Calculator and V3 Range Optimizer; <strong>GeckoTerminal</strong> for AMM pool data; <strong>CoinGecko</strong> for stablecoin monitoring and gas price conversions. Health factor data in the Dashboard comes directly from the Aave V3 contract and uses the protocol's own Chainlink oracle prices.</span><span class="t-fr">Selon l'outil : flux de prix <strong>Chainlink</strong> (on-chain, via RPC) pour les actifs du Leverage Calculator et V3 Range Optimizer ; <strong>GeckoTerminal</strong> pour les données de pools AMM ; <strong>CoinGecko</strong> pour le suivi des stablecoins et les conversions de prix du gas. Les données de health factor dans le Dashboard proviennent directement du contrat Aave V3 et utilisent les prix oracle Chainlink du protocole.</span><span class="t-es">Según la herramienta: feeds de precios de <strong>Chainlink</strong> (on-chain, vía RPC) para activos en el Leverage Calculator y V3 Range Optimizer; <strong>GeckoTerminal</strong> para datos de pools AMM; <strong>CoinGecko</strong> para monitoreo de stablecoins y conversiones de precios de gas. Los datos de health factor en el Dashboard provienen directamente del contrato Aave V3 y usan los precios del oráculo Chainlink del protocolo.</span></p>
       </div>
     </details>
 
     <details>
-      <summary>Can I embed an OrnyTools calculator on my site?</summary>
+      <summary><span class="t-en">How fresh is the data?</span><span class="t-fr">À quelle fréquence les données sont-elles mises à jour ?</span><span class="t-es">¿Con qué frecuencia se actualizan los datos?</span></summary>
       <div class="faq-body">
-        <p>Not yet as a widget, but the tools are usable as direct links — share any tool URL and it works immediately with no account. If you'd like an embeddable version for a specific use case, contact us at <a href="mailto:contact@ornytools.xyz">contact@ornytools.xyz</a>.</p>
+        <p><span class="t-en">On-chain data (Aave V3 positions, Uniswap V3 slot0/liquidity) is as fresh as the latest block — near real-time. CoinGecko prices update every 30–60 seconds. GeckoTerminal pool data has a similar cadence. Timestamps shown in tools indicate when the last fetch occurred in your browser session.</span><span class="t-fr">Les données on-chain (positions Aave V3, slot0/liquidité Uniswap V3) sont aussi fraîches que le dernier bloc — quasi temps réel. Les prix CoinGecko se mettent à jour toutes les 30 à 60 secondes. Les données de pool GeckoTerminal ont une cadence similaire. Les horodatages dans les outils indiquent quand le dernier chargement a eu lieu dans votre session.</span><span class="t-es">Los datos on-chain (posiciones Aave V3, slot0/liquidez Uniswap V3) son tan frescos como el último bloque — casi en tiempo real. Los precios de CoinGecko se actualizan cada 30–60 segundos. Los datos de pool de GeckoTerminal tienen una cadencia similar. Los timestamps mostrados en las herramientas indican cuándo ocurrió la última obtención en tu sesión.</span></p>
+      </div>
+    </details>
+  </div>
+
+  <div class="faq-section">
+    <div class="sec-title"><span class="t-en">Other</span><span class="t-fr">Autres</span><span class="t-es">Otros</span></div>
+
+    <details>
+      <summary><span class="t-en">I found a bug or wrong calculation — how do I report it?</span><span class="t-fr">J'ai trouvé un bug ou un calcul incorrect — comment le signaler ?</span><span class="t-es">Encontré un error o cálculo incorrecto — ¿cómo lo reporto?</span></summary>
+      <div class="faq-body">
+        <p><span class="t-en">Email <a href="mailto:contact@ornytools.xyz">contact@ornytools.xyz</a> with the tool name, the inputs you used, and what you expected vs. what you got. We'll verify the formula and fix it. The <a href="methodology.html">Methodology page</a> documents every formula — if you see a discrepancy between what's documented and what the tool outputs, that's a bug.</span><span class="t-fr">Envoyez un e-mail à <a href="mailto:contact@ornytools.xyz">contact@ornytools.xyz</a> avec le nom de l'outil, les valeurs saisies, et ce que vous attendiez par rapport à ce que vous avez obtenu. Nous vérifierons la formule et corrigerons. La <a href="methodology.html">page Méthodologie</a> documente chaque formule — si vous constatez un écart entre ce qui est documenté et ce que l'outil affiche, c'est un bug.</span><span class="t-es">Envía un correo a <a href="mailto:contact@ornytools.xyz">contact@ornytools.xyz</a> con el nombre de la herramienta, los valores que usaste y lo que esperabas vs. lo que obtuviste. Verificaremos la fórmula y lo corregiremos. La <a href="methodology.html">página de Metodología</a> documenta cada fórmula — si ves una discrepancia entre lo documentado y lo que muestra la herramienta, es un bug.</span></p>
       </div>
     </details>
 
     <details>
-      <summary>Is there an API?</summary>
+      <summary><span class="t-en">Can I embed an OrnyTools calculator on my site?</span><span class="t-fr">Puis-je intégrer une calculatrice OrnyTools sur mon site ?</span><span class="t-es">¿Puedo integrar una calculadora OrnyTools en mi sitio?</span></summary>
       <div class="faq-body">
-        <p>Not currently. The tools run entirely in the browser — there's no backend API to call. The calculation engine (the core math) is plain JavaScript and is documented in the <a href="methodology.html">Methodology</a>. If you need the formulas in a different language or want to discuss an integration, reach out.</p>
+        <p><span class="t-en">Not yet as a widget, but the tools are usable as direct links — share any tool URL and it works immediately with no account. If you'd like an embeddable version for a specific use case, contact us at <a href="mailto:contact@ornytools.xyz">contact@ornytools.xyz</a>.</span><span class="t-fr">Pas encore en widget, mais les outils fonctionnent comme liens directs — partagez n'importe quelle URL d'outil et elle fonctionne immédiatement sans compte. Si vous souhaitez une version intégrable pour un cas d'usage spécifique, contactez-nous à <a href="mailto:contact@ornytools.xyz">contact@ornytools.xyz</a>.</span><span class="t-es">Aún no como widget, pero las herramientas funcionan como enlaces directos — comparte cualquier URL de herramienta y funciona inmediatamente sin cuenta. Si quieres una versión embebible para un caso de uso específico, contáctanos en <a href="mailto:contact@ornytools.xyz">contact@ornytools.xyz</a>.</span></p>
       </div>
     </details>
 
     <details>
-      <summary>Does OrnyTools have a dark mode?</summary>
+      <summary><span class="t-en">Is there an API?</span><span class="t-fr">Existe-t-il une API ?</span><span class="t-es">¿Hay una API?</span></summary>
       <div class="faq-body">
-        <p>Yes — every page supports dark mode. Click the 🌙 button in the top-right corner of the navbar to toggle it. Your preference is saved in your browser and restored automatically on your next visit. The same button becomes ☀️ in dark mode to switch back to light.</p>
+        <p><span class="t-en">Not currently. The tools run entirely in the browser — there's no backend API to call. The calculation engine (the core math) is plain JavaScript and is documented in the <a href="methodology.html">Methodology</a>. If you need the formulas in a different language or want to discuss an integration, reach out.</span><span class="t-fr">Pas actuellement. Les outils s'exécutent entièrement dans le navigateur — il n'y a pas d'API backend à appeler. Le moteur de calcul (les maths principales) est du JavaScript pur, documenté dans la <a href="methodology.html">Méthodologie</a>. Si vous avez besoin des formules dans un autre langage ou souhaitez discuter d'une intégration, contactez-nous.</span><span class="t-es">Actualmente no. Las herramientas se ejecutan completamente en el navegador — no hay API backend que llamar. El motor de cálculo (las matemáticas principales) es JavaScript puro y está documentado en la <a href="methodology.html">Metodología</a>. Si necesitas las fórmulas en otro lenguaje o quieres hablar de una integración, contáctanos.</span></p>
       </div>
     </details>
 
     <details>
-      <summary>Does OrnyTools save my inputs between sessions?</summary>
+      <summary><span class="t-en">Does OrnyTools have a dark mode?</span><span class="t-fr">OrnyTools dispose-t-il d'un mode sombre ?</span><span class="t-es">¿OrnyTools tiene modo oscuro?</span></summary>
       <div class="faq-body">
-        <p>Yes. All calculator inputs are automatically saved to your browser's localStorage and restored the next time you open that tool. Nothing is sent to any server — the data lives entirely on your device. If you clear your browser data or use a different browser, the saved inputs will be gone. There is no account or sync between devices.</p>
+        <p><span class="t-en">Yes — every page supports dark mode. Click the 🌙 button in the top-right corner of the navbar to toggle it. Your preference is saved in your browser and restored automatically on your next visit.</span><span class="t-fr">Oui — chaque page supporte le mode sombre. Cliquez sur le bouton 🌙 dans le coin supérieur droit de la barre de navigation pour l'activer. Votre préférence est sauvegardée dans votre navigateur et restaurée automatiquement à votre prochaine visite.</span><span class="t-es">Sí — todas las páginas soportan el modo oscuro. Haz clic en el botón 🌙 en la esquina superior derecha de la barra de navegación para activarlo. Tu preferencia se guarda en tu navegador y se restaura automáticamente en tu próxima visita.</span></p>
       </div>
     </details>
 
     <details>
-      <summary>Which languages does OrnyTools support?</summary>
+      <summary><span class="t-en">Does OrnyTools save my inputs between sessions?</span><span class="t-fr">OrnyTools sauvegarde-t-il mes saisies entre les sessions ?</span><span class="t-es">¿OrnyTools guarda mis entradas entre sesiones?</span></summary>
       <div class="faq-body">
-        <p>Most tool pages are available in English, French, and Spanish. Use the EN / FR / ES buttons in the navbar to switch languages. Your language preference is saved and applied automatically on all subsequent visits. The Blog, Guides, Glossary, and FAQ are currently in English only.</p>
+        <p><span class="t-en">Yes. All calculator inputs are automatically saved to your browser's localStorage and restored the next time you open that tool. Nothing is sent to any server — the data lives entirely on your device. If you clear your browser data or use a different browser, the saved inputs will be gone.</span><span class="t-fr">Oui. Toutes les saisies des calculatrices sont automatiquement sauvegardées dans le localStorage de votre navigateur et restaurées à la prochaine ouverture de l'outil. Rien n'est envoyé à un serveur — les données restent entièrement sur votre appareil. Si vous effacez les données du navigateur ou utilisez un autre navigateur, les saisies sauvegardées seront perdues.</span><span class="t-es">Sí. Todas las entradas de las calculadoras se guardan automáticamente en el localStorage de tu navegador y se restauran la próxima vez que abras esa herramienta. Nada se envía a ningún servidor — los datos viven completamente en tu dispositivo. Si borras los datos del navegador o usas un navegador diferente, las entradas guardadas se perderán.</span></p>
+      </div>
+    </details>
+
+    <details>
+      <summary><span class="t-en">Which languages does OrnyTools support?</span><span class="t-fr">Quelles langues OrnyTools supporte-t-il ?</span><span class="t-es">¿Qué idiomas soporta OrnyTools?</span></summary>
+      <div class="faq-body">
+        <p><span class="t-en">All pages are available in English, French, and Spanish. Use the 🇬🇧 EN / 🇫🇷 FR / 🇪🇸 ES buttons in the navbar to switch. Your language preference is saved and applied automatically on all subsequent visits.</span><span class="t-fr">Toutes les pages sont disponibles en anglais, français et espagnol. Utilisez les boutons 🇬🇧 EN / 🇫🇷 FR / 🇪🇸 ES dans la barre de navigation pour changer de langue. Votre préférence est sauvegardée et appliquée automatiquement à toutes vos visites suivantes.</span><span class="t-es">Todas las páginas están disponibles en inglés, francés y español. Usa los botones 🇬🇧 EN / 🇫🇷 FR / 🇪🇸 ES en la barra de navegación para cambiar. Tu preferencia de idioma se guarda y se aplica automáticamente en todas tus visitas posteriores.</span></p>
       </div>
     </details>
   </div>
