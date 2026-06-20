@@ -17,6 +17,8 @@
 <meta property="og:url" content="https://ornytools.xyz/gmx.html"/>
 <meta property="og:image" content="https://ornytools.xyz/orny-banner.png"/>
 <meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:site" content="@OrnyTools"/>
+<meta name="twitter:creator" content="@OrnyTools"/>
 <meta name="twitter:title" content="GMX V2 Position Calculator — OrnyTools"/>
 <meta name="twitter:description" content="Liquidation price, fees and break-even for GMX V2 perps on Arbitrum."/>
 <meta name="twitter:image" content="https://ornytools.xyz/orny-banner.png"/>
@@ -168,6 +170,29 @@
   "provider":{ "@type":"Organization","name":"OrnyTools","url":"https://ornytools.xyz" }
 }
 </script>
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"FAQPage",
+  "mainEntity":[
+    {
+      "@type":"Question",
+      "name":"How are GMX V2 borrow fees calculated?",
+      "acceptedAnswer":{"@type":"Answer","text":"GMX V2 borrow fees run continuously based on pool utilization. Formula: position size × borrow fee rate per hour × hours held. At typical rates, a 10x ETH long held for 7 days accumulates roughly 0.84% in borrow costs — about $84 on a $10,000 position — before any market movement."}
+    },
+    {
+      "@type":"Question",
+      "name":"What is the funding rate on GMX V2?",
+      "acceptedAnswer":{"@type":"Answer","text":"The funding rate on GMX V2 is paid between long and short positions to balance open interest. When longs dominate, long positions pay a funding rate to shorts, and vice versa. This rate fluctuates with market conditions and is separate from the borrow fee."}
+    },
+    {
+      "@type":"Question",
+      "name":"How is liquidation price calculated on GMX V2?",
+      "acceptedAnswer":{"@type":"Answer","text":"GMX liquidation price accounts for position size, collateral, leverage, and accumulated borrow fees. Higher leverage means the liquidation price is closer to entry. Borrow fees reduce your effective collateral over time, gradually moving the liquidation price toward the market price."}
+    }
+  ]
+}
+</script>
 </head>
 <body>
 
@@ -192,6 +217,18 @@
 <div style="padding:40px 28px 0;text-align:center;background:var(--surface,#fff)">
   <img src="img-gmx.png" alt="GMX V2 Calculator — OrnyTools" loading="lazy" style="width:clamp(300px,88vw,980px);border-radius:18px;box-shadow:0 16px 56px rgba(0,0,0,.10);display:inline-block"/>
 </div>
+
+<!-- SEO INTRO -->
+<section style="max-width:860px;margin:0 auto;padding:32px 28px 8px">
+  <h2 style="font-size:1.05rem;font-weight:800;color:var(--text,#111);margin-bottom:12px;line-height:1.35">
+    <span class="t-en">GMX V2 position calculator — real borrow fees and break-even before you trade</span>
+    <span class="t-fr">Calculateur GMX V2 — frais de borrow réels et seuil de rentabilité avant d'ouvrir</span>
+    <span class="t-es">Calculadora GMX V2 — comisiones de borrow reales y punto de equilibrio antes de operar</span>
+  </h2>
+  <p style="font-size:.88rem;color:var(--dim,#444);line-height:1.85;margin-bottom:10px" class="t-en">GMX V2 is a decentralized perpetuals exchange on Arbitrum where borrow fees run continuously, 24 hours a day, every second you hold a position open. Unlike centralized exchanges where fees are paid at open and close, GMX borrow costs accumulate based on pool utilization and the duration of your trade. A 10× ETH long held for 7 days accumulates roughly 0.84% in borrow fees — that's $84 on a $10,000 notional position before the market moves an inch. Add the open and close fees (0.05–0.07% each), and your true break-even on ETH is over 1% just to cover carry costs. This GMX V2 calculator uses live CoinGecko entry prices and real-time borrow rate estimates to give you your exact liquidation price, total fees, and the price move required to profit on your trade.</p>
+  <p style="font-size:.88rem;color:var(--dim,#444);line-height:1.85;margin-bottom:10px" class="t-fr">GMX V2 est un exchange de perpétuels décentralisé sur Arbitrum où les frais de borrow s'accumulent en continu, 24 heures sur 24, chaque seconde que vous maintenez une position ouverte. Contrairement aux exchanges centralisés où les frais sont payés à l'ouverture et à la fermeture, les coûts de borrow GMX s'accumulent en fonction de l'utilisation du pool et de la durée de votre trade. Un long ETH à 10× maintenu 7 jours accumule environ 0,84 % de frais de borrow — soit 84 $ sur une position notionnelle de 10 000 $ avant tout mouvement de marché. En ajoutant les frais d'ouverture et de fermeture (0,05 à 0,07 % chacun), votre vrai seuil de rentabilité sur ETH dépasse 1 % uniquement pour couvrir les coûts de portage. Ce calculateur GMX V2 utilise les prix d'entrée CoinGecko en direct et des estimations de taux de borrow en temps réel pour vous donner votre prix de liquidation exact, vos frais totaux, et le mouvement de prix nécessaire pour être rentable.</p>
+  <p style="font-size:.88rem;color:var(--dim,#444);line-height:1.85;margin-bottom:20px" class="t-es">GMX V2 es un exchange de perpetuos descentralizado en Arbitrum donde las comisiones de borrow se acumulan continuamente, 24 horas al día, cada segundo que mantienes una posición abierta. A diferencia de los exchanges centralizados donde las comisiones se pagan al abrir y cerrar, los costos de borrow de GMX se acumulan según la utilización del pool y la duración de tu operación. Un long ETH a 10× mantenido durante 7 días acumula aproximadamente un 0,84% en comisiones de borrow — eso es $84 en una posición nocional de $10,000 antes de que el mercado se mueva. Sumando las comisiones de apertura y cierre (0,05–0,07% cada una), tu verdadero punto de equilibrio en ETH supera el 1% solo para cubrir los costos de financiamiento. Esta calculadora de GMX V2 usa precios de entrada de CoinGecko en vivo y estimaciones de tasas de borrow en tiempo real para darte tu precio de liquidación exacto, comisiones totales y el movimiento de precio necesario para obtener ganancias.</p>
+</section>
 
 <main>
   <!-- INPUTS -->

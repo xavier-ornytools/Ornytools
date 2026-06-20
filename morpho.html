@@ -17,6 +17,8 @@
 <meta property="og:url" content="https://ornytools.xyz/morpho.html"/>
 <meta property="og:image" content="https://ornytools.xyz/orny-banner.png"/>
 <meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:site" content="@OrnyTools"/>
+<meta name="twitter:creator" content="@OrnyTools"/>
 <meta name="twitter:title" content="Morpho Blue Calculator — OrnyTools"/>
 <meta name="twitter:description" content="Health factor, liquidation price and leverage loop for Morpho Blue markets."/>
 <meta name="twitter:image" content="https://ornytools.xyz/orny-banner.png"/>
@@ -174,6 +176,29 @@
   "provider":{ "@type":"Organization","name":"OrnyTools","url":"https://ornytools.xyz" }
 }
 </script>
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"FAQPage",
+  "mainEntity":[
+    {
+      "@type":"Question",
+      "name":"What is LLTV in Morpho Blue?",
+      "acceptedAnswer":{"@type":"Answer","text":"LLTV (Liquidation Loan-to-Value) in Morpho Blue is the single value that determines both your maximum borrow capacity and your liquidation threshold. Unlike Aave which separates LTV and LT, Morpho uses one unified LLTV value per market (e.g. 86% for WBTC/USDC)."}
+    },
+    {
+      "@type":"Question",
+      "name":"What are isolated markets in Morpho Blue?",
+      "acceptedAnswer":{"@type":"Answer","text":"Morpho Blue uses isolated markets, meaning each collateral/debt pair (e.g. WBTC/USDC, wstETH/ETH) is fully independent. Risk in one market cannot affect other markets. This differs from Aave where all assets share the same liquidity pool and risk is socialized."}
+    },
+    {
+      "@type":"Question",
+      "name":"What is a curator in Morpho Blue?",
+      "acceptedAnswer":{"@type":"Answer","text":"Curators in Morpho Blue are protocols (such as Re7 Capital, Steakhouse Financial, or Gauntlet) that deploy and manage vaults with specific risk parameters. They set LLTV, oracle source, and collateral choices for each market. Choosing a trusted curator is key to safety on Morpho."}
+    }
+  ]
+}
+</script>
 </head>
 <body>
 
@@ -194,6 +219,18 @@
   <h1><span class="t-en">Health factor for <em>isolated</em> markets</span><span class="t-fr">Health factor pour marchés <em>isolés</em></span><span class="t-es">Health factor para mercados <em>aislados</em></span></h1>
   <p><span class="t-en">Morpho Blue has no global pool — each market has its own LLTV. Calculate your liquidation price, safety margin and optimal loop leverage per pair.</span><span class="t-fr">Morpho Blue n'a pas de pool globale — chaque marché a son propre LLTV. Calculez votre prix de liquidation, marge de sécurité et levier de boucle optimal par paire.</span><span class="t-es">Morpho Blue no tiene pool global — cada mercado tiene su propio LLTV. Calcula tu precio de liquidación, margen de seguridad y apalancamiento óptimo por par.</span></p>
 </div>
+
+<!-- SEO INTRO -->
+<section style="max-width:860px;margin:0 auto;padding:32px 28px 8px">
+  <h2 style="font-size:1.05rem;font-weight:800;color:var(--text,#111);margin-bottom:12px;line-height:1.35">
+    <span class="t-en">Morpho Blue calculator — LLTV, health factor and leverage loops per isolated market</span>
+    <span class="t-fr">Calculateur Morpho Blue — LLTV, health factor et boucles de levier par marché isolé</span>
+    <span class="t-es">Calculadora Morpho Blue — LLTV, factor de salud y bucles de apalancamiento por mercado aislado</span>
+  </h2>
+  <p style="font-size:.88rem;color:var(--dim,#444);line-height:1.85;margin-bottom:10px" class="t-en">Morpho Blue is fundamentally different from Aave V3: instead of a global multi-collateral pool, it uses isolated markets where each collateral/debt pair (WBTC/USDC, wstETH/ETH, etc.) has its own LLTV (Liquidation Loan-to-Value) set by a curator. The LLTV is a single number that acts as both the maximum borrow capacity and the liquidation threshold — unlike Aave which separates LTV from LT. The WBTC/USDC market on Morpho has an LLTV of 86%, versus Aave V3 Arbitrum's 73% LTV and 78% liquidation threshold. With the same collateral and same borrow amount, Morpho typically gives you a higher health factor than Aave. The tradeoff: isolated markets mean risk is not socialized — if the curator sets bad parameters, only that market is at risk. This calculator covers the main Morpho Blue markets: WBTC, wstETH, ETH and stablecoin pairs, with live CoinGecko prices.</p>
+  <p style="font-size:.88rem;color:var(--dim,#444);line-height:1.85;margin-bottom:10px" class="t-fr">Morpho Blue est fondamentalement différent d'Aave V3 : au lieu d'un pool multi-collatéral global, il utilise des marchés isolés où chaque paire collatéral/dette (WBTC/USDC, wstETH/ETH, etc.) dispose de son propre LLTV (Liquidation Loan-to-Value) défini par un curator. Le LLTV est un seul chiffre qui agit à la fois comme capacité maximale d'emprunt et seuil de liquidation — contrairement à Aave qui sépare le LTV du LT. Le marché WBTC/USDC sur Morpho a un LLTV de 86 %, contre un LTV de 73 % et un seuil de liquidation de 78 % sur Aave V3 Arbitrum. Avec le même collatéral et le même montant emprunté, Morpho vous donne généralement un health factor plus élevé qu'Aave. La contrepartie : les marchés isolés signifient que le risque n'est pas mutualisé — si le curator définit de mauvais paramètres, seul ce marché est exposé. Ce calculateur couvre les principaux marchés Morpho Blue : WBTC, wstETH, ETH et paires de stablecoins, avec les prix CoinGecko en direct.</p>
+  <p style="font-size:.88rem;color:var(--dim,#444);line-height:1.85;margin-bottom:20px" class="t-es">Morpho Blue es fundamentalmente diferente de Aave V3: en lugar de un pool multi-colateral global, usa mercados aislados donde cada par colateral/deuda (WBTC/USDC, wstETH/ETH, etc.) tiene su propio LLTV (Liquidation Loan-to-Value) establecido por un curador. El LLTV es un solo número que actúa tanto como capacidad máxima de préstamo como umbral de liquidación — a diferencia de Aave que separa LTV de LT. El mercado WBTC/USDC en Morpho tiene un LLTV del 86%, frente al LTV del 73% y el umbral de liquidación del 78% de Aave V3 en Arbitrum. Con el mismo colateral y el mismo monto prestado, Morpho generalmente te da un factor de salud más alto que Aave. La contrapartida: los mercados aislados significan que el riesgo no está socializado — si el curador establece malos parámetros, solo ese mercado está en riesgo. Esta calculadora cubre los principales mercados de Morpho Blue: WBTC, wstETH, ETH y pares de stablecoins, con precios en vivo de CoinGecko.</p>
+</section>
 
 <main>
 

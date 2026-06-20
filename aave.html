@@ -17,6 +17,8 @@
 <meta property="og:url" content="https://ornytools.xyz/aave.html"/>
 <meta property="og:image" content="https://ornytools.xyz/orny-banner.png"/>
 <meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:site" content="@OrnyTools"/>
+<meta name="twitter:creator" content="@OrnyTools"/>
 <meta name="twitter:title" content="Aave V3 Calculator — OrnyTools"/>
 <meta name="twitter:description" content="Real-time Aave V3 health factor, liquidation price, and borrow power."/>
 <meta name="twitter:image" content="https://ornytools.xyz/orny-banner.png"/>
@@ -237,6 +239,29 @@ html.dark .emode-toggle.on{background:rgba(26,86,219,.18);color:#60a5fa;border-c
     "provider":{ "@type":"Organization","name":"OrnyTools","url":"https://ornytools.xyz" }
   }
   </script>
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"FAQPage",
+    "mainEntity":[
+      {
+        "@type":"Question",
+        "name":"What is health factor in Aave V3?",
+        "acceptedAnswer":{"@type":"Answer","text":"Health factor in Aave V3 = (sum of collateral × liquidation threshold) / total debt. A health factor below 1.0 triggers liquidation. Keeping it above 1.5 is recommended for safety."}
+      },
+      {
+        "@type":"Question",
+        "name":"How is liquidation price calculated in Aave V3?",
+        "acceptedAnswer":{"@type":"Answer","text":"Liquidation price = Debt / (Collateral amount × Liquidation Threshold). Example: $40,000 debt / (1 BTC × 0.78 LT) = $51,282 liquidation price. Interest compounding raises this price over time even without market movement."}
+      },
+      {
+        "@type":"Question",
+        "name":"What is E-Mode in Aave V3?",
+        "acceptedAnswer":{"@type":"Answer","text":"E-Mode (Efficiency Mode) in Aave V3 allows up to 93% LTV for correlated asset pairs like wstETH/ETH, compared to 80% standard LTV. The liquidation threshold is 95%, leaving only a 2% buffer at maximum borrow. Only use E-Mode with highly correlated assets."}
+      }
+    ]
+  }
+  </script>
 </head>
 <body>
 <!-- Google Tag Manager (noscript) -->
@@ -267,6 +292,18 @@ html.dark .emode-toggle.on{background:rgba(26,86,219,.18);color:#60a5fa;border-c
 <div style="padding:40px 28px 0;text-align:center;background:var(--surface,#fff)">
   <img src="img-aave.png" alt="Aave V3 Calculator — OrnyTools" loading="lazy" style="width:clamp(300px,88vw,980px);border-radius:18px;box-shadow:0 16px 56px rgba(0,0,0,.10);display:inline-block"/>
 </div>
+
+<!-- SEO INTRO -->
+<section style="max-width:860px;margin:0 auto;padding:36px 28px 8px">
+  <h2 style="font-size:1.1rem;font-weight:800;color:var(--text);margin-bottom:14px;line-height:1.35">
+    <span class="t-en">Why calculate your Aave V3 health factor?</span>
+    <span class="t-fr">Pourquoi calculer son health factor Aave V3 ?</span>
+    <span class="t-es">¿Por qué calcular tu health factor en Aave V3?</span>
+  </h2>
+  <p style="font-size:.9rem;color:var(--dim);line-height:1.85;margin-bottom:12px" class="t-en">The health factor is the single most important number in any Aave V3 position. It measures the ratio between your collateral (adjusted for the liquidation threshold) and your debt. When it drops below 1.0, liquidators can seize your collateral and charge an 8–10% penalty. The problem: most borrowers open positions at health factor 1.3 and think they're safe — but daily interest compounding silently raises the liquidation price over months, without any market movement. On a $40,000 USDT debt at 6.5% APY, your liquidation price increases by over $3,300 in one year. This calculator uses official Aave V3 parameters on Arbitrum and Ethereum, live CoinGecko prices, and the exact protocol formulas to give you your real health factor, real liquidation price, and a stress test at any price drop.</p>
+  <p style="font-size:.9rem;color:var(--dim);line-height:1.85;margin-bottom:12px" class="t-fr">Le health factor (facteur de santé) est le chiffre le plus important de toute position Aave V3. Il mesure le ratio entre votre collatéral (ajusté au seuil de liquidation) et votre dette. Quand il passe sous 1,0, les liquidateurs peuvent saisir votre collatéral et prélever une pénalité de 8 à 10 %. Le problème : la plupart des emprunteurs ouvrent leurs positions à health factor 1,3 et se croient à l'abri — mais les intérêts composés quotidiennement font monter silencieusement le prix de liquidation sur des mois, sans aucun mouvement de marché. Sur une dette USDT de 40 000 $ à 6,5 % d'APY, votre prix de liquidation augmente de plus de 3 300 $ en un an. Ce calculateur Aave V3 utilise les paramètres officiels du protocole sur Arbitrum et Ethereum, les prix CoinGecko en direct, et les formules exactes pour vous donner votre health factor réel, votre prix de liquidation exact, et un stress test à n'importe quel niveau de prix.</p>
+  <p style="font-size:.9rem;color:var(--dim);line-height:1.85;margin-bottom:20px" class="t-es">El factor de salud (health factor) es el número más importante en cualquier posición de Aave V3. Mide la relación entre tu colateral (ajustado al umbral de liquidación) y tu deuda. Cuando cae por debajo de 1,0, los liquidadores pueden confiscar tu colateral y cobrar una penalización del 8 al 10%. El problema: la mayoría de los prestatarios abren posiciones con un factor de salud de 1,3 creyendo que están seguros — pero el interés compuesto diario eleva silenciosamente el precio de liquidación con el tiempo, sin ningún movimiento del mercado. En una deuda de $40,000 USDT al 6,5% APY, tu precio de liquidación aumenta más de $3,300 en un año. Esta calculadora de Aave V3 usa los parámetros oficiales del protocolo en Arbitrum y Ethereum, precios en vivo de CoinGecko y las fórmulas exactas para darte tu factor de salud real, precio de liquidación exacto y un test de estrés a cualquier nivel de precio.</p>
+</section>
 
 <!-- HF GAUGE -->
 <div class="hf-zone">

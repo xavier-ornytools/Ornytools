@@ -300,6 +300,29 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     "provider":{ "@type":"Organization","name":"OrnyTools","url":"https://ornytools.xyz" }
   }
   </script>
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"FAQPage",
+    "mainEntity":[
+      {
+        "@type":"Question",
+        "name":"What is the liquidation penalty on Aave V3?",
+        "acceptedAnswer":{"@type":"Answer","text":"The liquidation penalty (bonus paid to liquidators) on Aave V3 varies by asset: 5% for stablecoins, 7.5% for ETH and LSTs, and up to 10% for more volatile assets like WBTC. On a $50,000 WBTC position, liquidation costs you an additional $5,000 on top of the market drop that triggered it."}
+      },
+      {
+        "@type":"Question",
+        "name":"How can I avoid liquidation in DeFi?",
+        "acceptedAnswer":{"@type":"Answer","text":"Keep your health factor above 1.5, set price alerts at your liquidation price minus 10-15%, recalculate your liquidation price monthly to account for interest compounding, avoid borrowing at maximum LTV, and maintain a buffer collateral in your wallet ready to add if needed."}
+      },
+      {
+        "@type":"Question",
+        "name":"What is the exact formula for liquidation price in Aave V3?",
+        "acceptedAnswer":{"@type":"Answer","text":"Liquidation Price = Total Debt / (Total Collateral Amount × Weighted Liquidation Threshold). For a single asset: Liq Price = Debt / (Collateral × LT). Example: $40,000 debt / (1 BTC × 0.78 LT) = $51,282. This price increases over time as interest compounds on your debt."}
+      }
+    ]
+  }
+  </script>
 </head>
 <body>
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5XT34MFV" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -337,6 +360,18 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     <span class="chain-pill-hero">▲ Avalanche</span>
   </div>
 </div>
+
+<!-- SEO INTRO -->
+<section style="max-width:860px;margin:0 auto;padding:32px 28px 8px">
+  <h2 style="font-size:1.05rem;font-weight:800;color:var(--text,#111);margin-bottom:12px;line-height:1.35">
+    <span class="t-en">DeFi liquidation calculator — know your exact price before it's too late</span>
+    <span class="t-fr">Calculateur de liquidation DeFi — connaissez votre prix exact avant qu'il soit trop tard</span>
+    <span class="t-es">Calculadora de liquidación DeFi — conoce tu precio exacto antes de que sea demasiado tarde</span>
+  </h2>
+  <p style="font-size:.88rem;color:var(--dim,#444);line-height:1.85;margin-bottom:10px" class="t-en">Liquidation in DeFi is brutal: when your health factor hits 1.0, liquidators can instantly seize up to 50% of your collateral and charge an 8–10% bonus on top. On Aave V3, the WBTC liquidation penalty is 10% — on a $50,000 position that's $5,000 gone in seconds, on top of the market drop that triggered it. This calculator gives you the exact liquidation price using official Aave V3 protocol parameters, live Chainlink oracle prices on 6 chains and 35+ assets, and the real liquidation threshold for your collateral type. Enter your collateral and debt — see exactly how far the market has to move to wipe you out.</p>
+  <p style="font-size:.88rem;color:var(--dim,#444);line-height:1.85;margin-bottom:10px" class="t-fr">La liquidation en DeFi est brutale : quand votre health factor atteint 1,0, les liquidateurs peuvent immédiatement saisir jusqu'à 50 % de votre collatéral et percevoir un bonus de liquidation de 8 à 10 %. Sur Aave V3, la pénalité de liquidation sur WBTC est de 10 % — sur une position de 50 000 $, ça représente 5 000 $ perdus en quelques secondes, en plus de la baisse de marché qui a déclenché la liquidation. Ce calculateur de liquidation DeFi utilise les paramètres officiels du protocole Aave V3, les prix Chainlink en direct sur 6 blockchains et 35+ actifs, et le vrai seuil de liquidation pour votre type de collatéral. Entrez votre collatéral et votre dette — voyez exactement jusqu'où le marché doit descendre pour vous liquider.</p>
+  <p style="font-size:.88rem;color:var(--dim,#444);line-height:1.85;margin-bottom:20px" class="t-es">La liquidación en DeFi es brutal: cuando tu factor de salud llega a 1,0, los liquidadores pueden confiscar instantáneamente hasta el 50% de tu colateral y cobrar un bono del 8 al 10%. En Aave V3, la penalización de liquidación para WBTC es del 10% — en una posición de $50,000 eso significa $5,000 perdidos en segundos, además de la caída del mercado que la desencadenó. Esta calculadora DeFi utiliza los parámetros oficiales del protocolo Aave V3, precios en vivo de Chainlink en 6 redes y 35+ activos, y el umbral de liquidación real para tu tipo de colateral. Ingresa tu colateral y deuda — ve exactamente cuánto tiene que caer el mercado para liquidarte.</p>
+</section>
 
 <!-- TOOL -->
 <div class="config-zone">

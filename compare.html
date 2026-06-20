@@ -17,6 +17,8 @@
 <meta property="og:url" content="https://ornytools.xyz/compare.html"/>
 <meta property="og:image" content="https://ornytools.xyz/orny-banner.png"/>
 <meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:site" content="@OrnyTools"/>
+<meta name="twitter:creator" content="@OrnyTools"/>
 <meta name="twitter:title" content="Aave V3 vs Morpho Blue — OrnyTools"/>
 <meta name="twitter:description" content="Same collateral, same borrow — which protocol wins? Compare HF, liquidation price and APY."/>
 <meta name="twitter:image" content="https://ornytools.xyz/orny-banner.png"/>
@@ -162,6 +164,29 @@ footer a:hover{color:var(--dim)}
   "provider":{ "@type":"Organization","name":"OrnyTools","url":"https://ornytools.xyz" }
 }
 </script>
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"FAQPage",
+  "mainEntity":[
+    {
+      "@type":"Question",
+      "name":"What is the difference between Aave V3 and Morpho Blue?",
+      "acceptedAnswer":{"@type":"Answer","text":"Aave V3 uses multi-collateral pools with shared liquidity and socialized risk. Morpho Blue uses isolated markets per collateral/debt pair with curator-defined parameters (LLTV, oracle, collateral) and no socialized losses between markets."}
+    },
+    {
+      "@type":"Question",
+      "name":"What is LLTV vs LTV in DeFi?",
+      "acceptedAnswer":{"@type":"Answer","text":"LTV (Aave) is the maximum you can borrow to open a position. LT (Liquidation Threshold) is the separate value that triggers liquidation. LLTV (Morpho Blue) combines both into one value — it is simultaneously the max borrow capacity and the liquidation threshold."}
+    },
+    {
+      "@type":"Question",
+      "name":"Is Morpho Blue safer than Aave V3?",
+      "acceptedAnswer":{"@type":"Answer","text":"With the same collateral and borrow amount, Morpho Blue often gives a higher health factor than Aave V3 because its LLTV is used directly as the liquidation threshold. However, Morpho markets are isolated and depend on curator quality. Aave offers more liquidity depth for large positions."}
+    }
+  ]
+}
+</script>
 </head>
 <body>
 
@@ -175,10 +200,22 @@ footer a:hover{color:var(--dim)}
 </nav>
 
 <div class="page-hero">
-  <div class="eyebrow"><span class="t-en">PROTOCOL COMPARATOR</span><span class="t-fr">COMPARATEUR DE PROTOCOLES</span><span class="t-es">COMPARADOR DE PROTOCOLOS</span></div>
-  <h1><span class="a-col">Aave V3</span> vs <span class="m-col">Morpho Blue</span></h1>
-  <p><span class="t-en">Same collateral. Same borrow amount. Which protocol gives you more power with less risk?</span><span class="t-fr">Même collatéral. Même montant emprunté. Quel protocole vous donne plus de puissance avec moins de risque ?</span><span class="t-es">Mismo colateral. Mismo monto a tomar prestado. ¿Qué protocolo te da más potencia con menos riesgo?</span></p>
+  <div class="eyebrow"><span class="t-en">PROTOCOL COMPARATOR</span><span class="t-fr">COMPARATEUR DE PROTOCOLES DeFi</span><span class="t-es">COMPARADOR DE PROTOCOLOS DeFi</span></div>
+  <h1><span class="t-en"><span class="a-col">Aave V3</span> vs <span class="m-col">Morpho Blue</span></span><span class="t-fr">Comparateur <span class="a-col">Aave V3</span> vs <span class="m-col">Morpho Blue</span></span><span class="t-es">Comparador <span class="a-col">Aave V3</span> vs <span class="m-col">Morpho Blue</span></span></h1>
+  <p><span class="t-en">Same collateral. Same borrow amount. Which protocol gives you more power with less risk?</span><span class="t-fr">Même collatéral. Même montant emprunté. Quel protocole vous donne plus de puissance avec moins de risque ?</span><span class="t-es">Mismo colateral. Mismo monto prestado. ¿Qué protocolo te da más potencia con menos riesgo?</span></p>
 </div>
+
+<!-- SEO INTRO -->
+<section style="max-width:860px;margin:0 auto;padding:32px 28px 8px">
+  <h2 style="font-size:1.05rem;font-weight:800;color:var(--text,#111);margin-bottom:12px;line-height:1.35">
+    <span class="t-en">Aave V3 vs Morpho Blue — side-by-side health factor and liquidation price comparison</span>
+    <span class="t-fr">Aave V3 vs Morpho Blue — comparaison health factor et prix de liquidation côte à côte</span>
+    <span class="t-es">Aave V3 vs Morpho Blue — comparación del factor de salud y precio de liquidación lado a lado</span>
+  </h2>
+  <p style="font-size:.88rem;color:var(--dim,#444);line-height:1.85;margin-bottom:10px" class="t-en">The most common question in DeFi lending: should I borrow on Aave V3 or Morpho Blue? The answer depends on your collateral, your borrow amount, and your risk tolerance — and the difference is bigger than most people expect. With $100,000 WBTC as collateral borrowing $60,000 USDC: Aave V3 Arbitrum gives you a health factor of 1.30, a liquidation price of $56,923, and a borrow APY of ~6.5%. Morpho Blue (WBTC/USDC, 86% LLTV) gives you a health factor of 1.43, a liquidation price of $48,837, and a borrow APY of ~5.4%. The counterintuitive result: with identical positions, Morpho gives you a higher health factor AND a lower borrow rate. This tool calculates both side by side with your exact numbers.</p>
+  <p style="font-size:.88rem;color:var(--dim,#444);line-height:1.85;margin-bottom:10px" class="t-fr">La question la plus fréquente en DeFi lending : dois-je emprunter sur Aave V3 ou Morpho Blue ? La réponse dépend de votre collatéral, de votre montant emprunté et de votre tolérance au risque — et la différence est plus importante que la plupart des gens ne l'imaginent. Avec 100 000 $ de WBTC en collatéral et 60 000 $ de USDC empruntés : Aave V3 Arbitrum donne un health factor de 1,30, un prix de liquidation de 56 923 $ et un APY d'emprunt de ~6,5 %. Morpho Blue (WBTC/USDC, 86 % LLTV) donne un health factor de 1,43, un prix de liquidation de 48 837 $ et un APY d'emprunt de ~5,4 %. Le résultat contre-intuitif : avec des positions identiques, Morpho offre un health factor plus élevé ET un taux d'emprunt plus bas. Cet outil calcule les deux côte à côte avec vos chiffres exacts.</p>
+  <p style="font-size:.88rem;color:var(--dim,#444);line-height:1.85;margin-bottom:20px" class="t-es">La pregunta más frecuente en DeFi lending: ¿debo pedir prestado en Aave V3 o en Morpho Blue? La respuesta depende de tu colateral, el monto prestado y tu tolerancia al riesgo — y la diferencia es mayor de lo que la mayoría espera. Con $100,000 en WBTC como colateral pidiendo prestados $60,000 USDC: Aave V3 Arbitrum da un factor de salud de 1,30, un precio de liquidación de $56,923 y un APY de préstamo de ~6,5%. Morpho Blue (WBTC/USDC, 86% LLTV) da un factor de salud de 1,43, un precio de liquidación de $48,837 y un APY de préstamo de ~5,4%. El resultado contraintuitivo: con posiciones idénticas, Morpho da un factor de salud más alto Y una tasa de préstamo más baja. Esta herramienta calcula ambos lado a lado con tus cifras exactas.</p>
+</section>
 
 <main>
 

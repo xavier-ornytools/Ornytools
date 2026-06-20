@@ -17,6 +17,8 @@
 <meta property="og:url" content="https://ornytools.xyz/dashboard.html"/>
 <meta property="og:image" content="https://ornytools.xyz/orny-banner.png"/>
 <meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:site" content="@OrnyTools"/>
+<meta name="twitter:creator" content="@OrnyTools"/>
 <meta name="twitter:title" content="DeFi Position Dashboard — OrnyTools"/>
 <meta name="twitter:description" content="Paste any Arbitrum, Ethereum or Base address — Aave V3 health factor, collateral, debt and liquidation price live."/>
 <meta name="twitter:image" content="https://ornytools.xyz/orny-banner.png"/>
@@ -246,6 +248,24 @@
   "provider":{ "@type":"Organization","name":"OrnyTools","url":"https://ornytools.xyz" }
 }
 </script>
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"FAQPage",
+  "mainEntity":[
+    {
+      "@type":"Question",
+      "name":"How do I check a DeFi wallet position without connecting my wallet?",
+      "acceptedAnswer":{"@type":"Answer","text":"Enter any Ethereum, Arbitrum, or Base wallet address in the OrnyTools live dashboard. The tool reads Aave V3 data directly from the blockchain via public RPC endpoints — no wallet connection, no signature, and no approval required. Just paste the address."}
+    },
+    {
+      "@type":"Question",
+      "name":"What data does the OrnyTools live position dashboard show?",
+      "acceptedAnswer":{"@type":"Answer","text":"The dashboard shows health factor, total collateral value and breakdown by asset, total debt, net APY, liquidation price, and margin buffer (how far the price must move to trigger liquidation) for any Aave V3 position on Ethereum, Arbitrum, or Base — all updated in real time."}
+    }
+  ]
+}
+</script>
 </head>
 <body>
 
@@ -281,6 +301,18 @@
   </div>
   <p class="privacy-note"><span class="t-en">🔒 Read-only · no wallet connection · no data stored</span><span class="t-fr">🔒 Lecture seule · aucune connexion wallet · aucune donnée stockée</span><span class="t-es">🔒 Solo lectura · sin conexión de wallet · sin datos almacenados</span></p>
 </div>
+
+<!-- SEO INTRO -->
+<section style="max-width:860px;margin:0 auto;padding:32px 28px 8px">
+  <h2 style="font-size:1.05rem;font-weight:800;color:var(--text,#111);margin-bottom:12px;line-height:1.35">
+    <span class="t-en">Check any DeFi wallet position without connecting — live Aave V3 data</span>
+    <span class="t-fr">Vérifiez n'importe quelle position DeFi sans connecter votre wallet — données Aave V3 en direct</span>
+    <span class="t-es">Verifica cualquier posición DeFi sin conectar tu wallet — datos en vivo de Aave V3</span>
+  </h2>
+  <p style="font-size:.88rem;color:var(--dim,#444);line-height:1.85;margin-bottom:10px" class="t-en">The OrnyTools live position dashboard lets you check any Ethereum, Arbitrum, or Base wallet's full Aave V3 position in under 10 seconds — without connecting your wallet, signing any transaction, or creating an account. Simply paste any 0x address and the dashboard instantly reads the Aave V3 smart contracts on-chain to display: health factor (and alert status), total collateral value and breakdown by asset, total debt and net APY, exact liquidation price, and the margin buffer — how far the market has to move before liquidation. This is useful for monitoring your own position from a device without your wallet, checking a friend's position, or watching large whale positions before significant market moves.</p>
+  <p style="font-size:.88rem;color:var(--dim,#444);line-height:1.85;margin-bottom:10px" class="t-fr">Le dashboard de positions OrnyTools vous permet de vérifier en moins de 10 secondes la position Aave V3 complète de n'importe quel wallet sur Ethereum, Arbitrum ou Base — sans connecter votre wallet, signer la moindre transaction ni créer de compte. Il suffit de coller n'importe quelle adresse 0x et le dashboard lit instantanément les smart contracts Aave V3 on-chain pour afficher : le health factor (et son statut d'alerte), la valeur totale du collatéral et sa répartition par actif, la dette totale et l'APY net, le prix exact de liquidation, et la marge de sécurité — jusqu'où le marché peut descendre avant la liquidation. Utile pour surveiller votre propre position depuis un appareil sans votre wallet, vérifier la position d'un ami, ou surveiller les grandes baleines avant des mouvements de marché importants.</p>
+  <p style="font-size:.88rem;color:var(--dim,#444);line-height:1.85;margin-bottom:20px" class="t-es">El dashboard de posiciones de OrnyTools te permite verificar en menos de 10 segundos la posición completa de Aave V3 de cualquier wallet en Ethereum, Arbitrum o Base — sin conectar tu wallet, firmar ninguna transacción ni crear una cuenta. Simplemente pega cualquier dirección 0x y el dashboard lee instantáneamente los smart contracts de Aave V3 on-chain para mostrar: factor de salud (y estado de alerta), valor total del colateral y desglose por activo, deuda total y APY neto, precio exacto de liquidación, y el margen de seguridad — hasta dónde puede caer el mercado antes de la liquidación. Útil para monitorear tu propia posición desde un dispositivo sin tu wallet, verificar la posición de un amigo, o vigilar posiciones de grandes ballenas antes de movimientos de mercado significativos.</p>
+</section>
 
 <main>
   <!-- Status strip -->

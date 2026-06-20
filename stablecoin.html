@@ -812,11 +812,15 @@ function scoreClass(s){
   if(s>=55) return 's-caution';
   return 's-risky';
 }
+const TYPE_FR={'Fiat-backed':'Adossé en fiat','Overcollateralized':'Surcollatéralisé','Synthetic':'Synthétique','Synthetic (delta-neutral)':'Synthétique (delta-neutre)','Hybrid':'Hybride','Yield-bearing':'Portant du yield','RWA-backed':'Adossé RWA'};
+const TYPE_ES={'Fiat-backed':'Respaldado en fiat','Overcollateralized':'Sobrecolateralizado','Synthetic':'Sintético','Synthetic (delta-neutral)':'Sintético (delta-neutral)','Hybrid':'Híbrido','Yield-bearing':'Con rendimiento','RWA-backed':'Respaldado en RWA'};
+function typeLabel(t){const l=getLang();return l==='fr'?(TYPE_FR[t]||t):l==='es'?(TYPE_ES[t]||t):t;}
+
 function ornyState(s){
   const l = getLang();
-  if(s>=75) return {cls:'safe',   label: l==='fr' ? 'Orny Approuve' : 'Orny Approved'};
-  if(s>=55) return {cls:'caution',label: l==='fr' ? 'Orny Prudence' : 'Orny Caution'};
-  return          {cls:'risky',  label: l==='fr' ? 'Orny Alerte'   : 'Orny Warning'};
+  if(s>=75) return {cls:'safe',   label: l==='fr'?'Orny Approuve':l==='es'?'Orny Aprueba':'Orny Approved'};
+  if(s>=55) return {cls:'caution',label: l==='fr'?'Orny Prudence':l==='es'?'Orny Precaución':'Orny Caution'};
+  return          {cls:'risky',  label: l==='fr'?'Orny Alerte'  :l==='es'?'Orny Alerta':'Orny Warning'};
 }
 
 function computeDepeg(id, base){
@@ -859,13 +863,19 @@ function ornyComment(id, score){
   if(st.cls==='safe')
     return l==='fr'
       ? `<strong>Orny Approuve.</strong> ${d.name} obtient ${score}/100. ${d.issuer.split('(')[0].trim()} maintient des fondamentaux solides. Prix actuel ${priceStr} — dans la plage sécurisée. Adapté comme position principale en stablecoin DeFi.`
+      : l==='es'
+      ? `<strong>Orny Aprueba.</strong> ${d.name} obtiene ${score}/100. ${d.issuer.split('(')[0].trim()} mantiene fundamentos sólidos. Precio actual ${priceStr} — en rango seguro. Adecuado como posición principal en stablecoin DeFi.`
       : `<strong>Orny Approved.</strong> ${d.name} scores ${score}/100. ${d.issuer.split('(')[0].trim()} maintains strong fundamentals. Current price ${priceStr} — within safe range. Suitable as a primary DeFi stablecoin position.`;
   if(st.cls==='caution')
     return l==='fr'
       ? `<strong>Orny Prudence.</strong> ${d.name} obtient ${score}/100. Des facteurs de risque spécifiques nécessitent une surveillance. Prix actuel ${priceStr}. Utilisez en connaissance de ses principaux risques sans surconcentration.`
+      : l==='es'
+      ? `<strong>Orny Precaución.</strong> ${d.name} obtiene ${score}/100. Factores de riesgo específicos requieren seguimiento. Precio actual ${priceStr}. Úsalo con conocimiento de sus riesgos principales sin sobreconcentración.`
       : `<strong>Orny Caution.</strong> ${d.name} scores ${score}/100. Specific risk factors require monitoring. Current price ${priceStr}. Use with awareness of its main risks and don't overconcentrate.`;
   return l==='fr'
     ? `<strong>Orny Alerte.</strong> ${d.name} obtient ${score}/100 — profil de risque élevé. Prix actuel ${priceStr}. Comprenez le mécanisme en profondeur avant de détenir des montants importants. Un rendement élevé cache souvent un risque plus élevé.`
+    : l==='es'
+    ? `<strong>Orny Alerta.</strong> ${d.name} obtiene ${score}/100 — perfil de riesgo elevado. Precio actual ${priceStr}. Comprende el mecanismo en profundidad antes de mantener montos importantes. Un rendimiento alto a menudo oculta un riesgo mayor.`
     : `<strong>Orny Warning.</strong> ${d.name} scores ${score}/100 — elevated risk profile. Current price ${priceStr}. Understand the mechanism deeply before holding large amounts. Higher yield often means higher hidden risk.`;
 }
 
@@ -875,7 +885,7 @@ function renderSelector(){
   grid.innerHTML = Object.entries(DB).map(([sym, d]) => `
     <button class="stable-btn${sym===_selected?' active':''}" data-sym="${sym}">
       <span class="sb-sym">${sym}</span>
-      <span class="sb-type">${d.type.split(' ')[0]}</span>
+      <span class="sb-type">${typeLabel(d.type).split(' ')[0]}</span>
     </button>`).join('');
   grid.querySelectorAll('.stable-btn').forEach(btn => {
     btn.addEventListener('click', () => { _selected = btn.dataset.sym; renderAll(); saveStable(); });
@@ -898,16 +908,21 @@ function renderMain(){
   const r = l === 'fr' && d.risks_fr ? d.risks_fr : d.risks;
   const hist = l === 'fr' && d.history_fr ? d.history_fr : d.history;
 
-  const factors = l === 'fr' ? [
-    { key:'Risque de Dépeg',      score:Math.round(depeg),        desc:`Déviation du prix en direct par rapport à $1 + événements de dépeg historiques. Actuel : ${priceStr} ${devStr}` },
-    { key:'Risque de Contrepartie', score:d.counterparty,         desc:'Transparence de l\'émetteur, statut réglementaire, capacité à geler/censurer les fonds.' },
-    { key:'Risque Protocole',     score:d.protocol,               desc:'Audits des smart contracts, complexité du code, ancienneté battle-tested, profondeur TVL.' },
-    { key:'Risque de Liquidité',  score:d.liquidity,              desc:'Offre en circulation, profondeur DEX on-chain, nombre d\'intégrations de protocoles.' },
+  const factors = l==='fr' ? [
+    { key:'Risque de Dépeg',        score:Math.round(depeg), desc:`Déviation du prix en direct par rapport à $1 + événements de dépeg historiques. Actuel : ${priceStr} ${devStr}` },
+    { key:'Risque de Contrepartie', score:d.counterparty,    desc:'Transparence de l\'émetteur, statut réglementaire, capacité à geler/censurer les fonds.' },
+    { key:'Risque Protocole',       score:d.protocol,        desc:'Audits des smart contracts, complexité du code, ancienneté battle-tested, profondeur TVL.' },
+    { key:'Risque de Liquidité',    score:d.liquidity,       desc:'Offre en circulation, profondeur DEX on-chain, nombre d\'intégrations de protocoles.' },
+  ] : l==='es' ? [
+    { key:'Riesgo de Despeg',       score:Math.round(depeg), desc:`Desviación del precio en vivo respecto a $1 + eventos históricos. Actual: ${priceStr} ${devStr}` },
+    { key:'Riesgo de Contraparte',  score:d.counterparty,    desc:'Transparencia del emisor, estado regulatorio y capacidad de congelar/censurar fondos.' },
+    { key:'Riesgo de Protocolo',    score:d.protocol,        desc:'Auditorías de smart contracts, complejidad del código, tiempo battle-tested, profundidad TVL.' },
+    { key:'Riesgo de Liquidez',     score:d.liquidity,       desc:'Oferta en circulación, profundidad DEX on-chain y número de integraciones de protocolos.' },
   ] : [
-    { key:'Depeg Risk',         score:Math.round(depeg),        desc:`Live price deviation from $1 + historical depeg events. Current: ${priceStr} ${devStr}` },
-    { key:'Counterparty Risk',  score:d.counterparty,           desc:'Issuer transparency, regulatory status, and ability to freeze/censor funds.' },
-    { key:'Protocol Risk',      score:d.protocol,               desc:'Smart contract audits, code complexity, time battle-tested, TVL depth.' },
-    { key:'Liquidity Risk',     score:d.liquidity,              desc:'Circulating supply, on-chain DEX depth, and number of protocol integrations.' },
+    { key:'Depeg Risk',             score:Math.round(depeg), desc:`Live price deviation from $1 + historical depeg events. Current: ${priceStr} ${devStr}` },
+    { key:'Counterparty Risk',      score:d.counterparty,    desc:'Issuer transparency, regulatory status, and ability to freeze/censor funds.' },
+    { key:'Protocol Risk',          score:d.protocol,        desc:'Smart contract audits, code complexity, time battle-tested, TVL depth.' },
+    { key:'Liquidity Risk',         score:d.liquidity,       desc:'Circulating supply, on-chain DEX depth, and number of protocol integrations.' },
   ];
 
   const sColor = scoreColor(score);
@@ -924,7 +939,7 @@ function renderMain(){
         </div>
         <div class="score-info">
           <div class="name">${d.name}</div>
-          <span class="type-badge" style="background:${d.typeColor}18;color:${d.typeColor}">${d.type}</span>
+          <span class="type-badge" style="background:${d.typeColor}18;color:${d.typeColor}">${typeLabel(d.type)}</span>
           <div class="issuer">${d.issuer}</div>
           <div class="price-badge" style="background:${priceColor}14;color:${priceColor}">
             <span>●</span> ${priceStr} <span style="opacity:.6;font-size:11px">${devStr}</span>
@@ -946,7 +961,7 @@ function renderMain(){
       </div>
     </div>
     <div class="history-card" style="margin-top:14px">
-      <b>${l === 'fr' ? 'Historique des dépeg :' : 'Historical depeg events:'}</b> ${hist}
+      <b>${l==='fr'?'Historique des dépeg :':l==='es'?'Historial de despeg:':'Historical depeg events:'}</b> ${hist}
     </div>
   `;
 
@@ -960,11 +975,11 @@ function renderMain(){
       <div class="orny-body">${comment}</div>
     </div>
     <div class="sr-card">
-      <div class="sr-title green">${l === 'fr' ? 'Points forts' : 'Strengths'}</div>
+      <div class="sr-title green">${l==='fr'?'Points forts':l==='es'?'Puntos fuertes':'Strengths'}</div>
       <div class="sr-list">${s.map(x=>`<div class="sr-item"><span class="ic" style="color:var(--good)">✓</span><span>${x}</span></div>`).join('')}</div>
     </div>
     <div class="sr-card">
-      <div class="sr-title red">${l === 'fr' ? 'Risques clés' : 'Key risks'}</div>
+      <div class="sr-title red">${l==='fr'?'Risques clés':l==='es'?'Riesgos clave':'Key risks'}</div>
       <div class="sr-list">${r.map(x=>`<div class="sr-item"><span class="ic" style="color:var(--coral)">⚠</span><span>${x}</span></div>`).join('')}</div>
     </div>
   `;
@@ -978,12 +993,17 @@ function renderTable(){
   const l = getLang();
   $('compareTable').innerHTML = `
     <thead><tr>
-      <th>Stablecoin</th><th>Type</th><th>Score</th>
-      <th>${l==='fr'?'Dépeg':'Depeg'}</th><th>${l==='fr'?'Contrepartie':'Counterparty'}</th><th>Protocol</th><th>${l==='fr'?'Liquidité':'Liquidity'}</th>
+      <th>Stablecoin</th>
+      <th>${l==='fr'?'Type':l==='es'?'Tipo':'Type'}</th>
+      <th>Score</th>
+      <th>${l==='fr'?'Dépeg':l==='es'?'Despeg':'Depeg'}</th>
+      <th>${l==='fr'?'Contrepartie':l==='es'?'Contraparte':'Counterparty'}</th>
+      <th>${l==='fr'?'Protocole':l==='es'?'Protocolo':'Protocol'}</th>
+      <th>${l==='fr'?'Liquidité':l==='es'?'Liquidez':'Liquidity'}</th>
     </tr></thead>
     <tbody>${rows.map(r => `<tr${r.sym===_selected?' class="active-row"':''}>
       <td><strong>${r.sym}</strong> <span style="color:var(--dim);font-size:12px">${r.name}</span></td>
-      <td style="font-size:12px;color:var(--dim)">${r.type}</td>
+      <td style="font-size:12px;color:var(--dim)">${typeLabel(r.type)}</td>
       <td><span class="score-pill ${scoreClass(r.score)}">${r.score}</span></td>
       <td style="color:${scoreColor(Math.round(computeDepeg(r.sym,r.depegBase)))}">${Math.round(computeDepeg(r.sym,r.depegBase))}</td>
       <td style="color:${scoreColor(r.counterparty)}">${r.counterparty}</td>
@@ -1042,11 +1062,10 @@ renderAll();
 fetchPrices();
 
 window.onLangChange = function(l) {
-  // Update yield section labels
   const yt = document.getElementById('yieldTitle');
   const ys = document.getElementById('yieldSub');
-  if(yt) yt.textContent = l==='fr' ? `Rendements disponibles sur ce stablecoin` : `Earn yield on this stablecoin`;
-  if(ys) ys.textContent = l==='fr' ? `APY en direct via DeFiLlama — protocoles de prêt et d'épargne, triés par TVL.` : `Live APY from DeFiLlama — lending & savings protocols, sorted by TVL.`;
+  if(yt) yt.textContent = l==='fr' ? 'Rendements disponibles sur ce stablecoin' : l==='es' ? 'Rendimientos disponibles en este stablecoin' : 'Earn yield on this stablecoin';
+  if(ys) ys.textContent = l==='fr' ? 'APY en direct via DeFiLlama — protocoles de prêt et d\'épargne, triés par TVL.' : l==='es' ? 'APY en vivo vía DeFiLlama — protocolos de préstamo y ahorro, ordenados por TVL.' : 'Live APY from DeFiLlama — lending & savings protocols, sorted by TVL.';
   renderAll();
 };
 
@@ -1055,7 +1074,8 @@ let _yieldCache = null;
 async function fetchAndRenderYield(sym) {
   const zone = document.getElementById('yieldContent');
   if(!zone) return;
-  zone.innerHTML = `<div class="yield-loading">⟳ Loading live rates for ${sym}…</div>`;
+  const l0=getLang();
+  zone.innerHTML = `<div class="yield-loading">⟳ ${l0==='fr'?`Chargement des taux en direct pour ${sym}…`:l0==='es'?`Cargando tasas en vivo para ${sym}…`:`Loading live rates for ${sym}…`}</div>`;
 
   try {
     if(!_yieldCache) {
@@ -1076,7 +1096,7 @@ async function fetchAndRenderYield(sym) {
       .slice(0, 9);
 
     if(!pools.length) {
-      zone.innerHTML = `<p style="color:var(--faint);text-align:center;padding:16px">${l==='fr'?'Aucune donnée de rendement disponible pour '+sym:'No live yield data available for '+sym}</p>`;
+      zone.innerHTML = `<p style="color:var(--faint);text-align:center;padding:16px">${l==='fr'?'Aucune donnée de rendement disponible pour '+sym:l==='es'?'Sin datos de rendimiento disponibles para '+sym:'No live yield data available for '+sym}</p>`;
       return;
     }
 
@@ -1103,13 +1123,13 @@ async function fetchAndRenderYield(sym) {
         </div>
         <div class="yield-apy-block">
           <div class="yield-apy-num">${p.apy.toFixed(2)}%</div>
-          <div class="yield-apy-lbl">APY live</div>
+          <div class="yield-apy-lbl">${getLang()==='fr'?'APY en direct':getLang()==='es'?'APY en vivo':'APY live'}</div>
         </div>
       </div>`;
     }).join('')}</div>`;
   } catch(e) {
     const z = document.getElementById('yieldContent');
-    if(z) z.innerHTML = `<p style="color:var(--faint);text-align:center;padding:16px">Could not load live data</p>`;
+    if(z){const _l=getLang();z.innerHTML=`<p style="color:var(--faint);text-align:center;padding:16px">${_l==='fr'?'Impossible de charger les données en direct':_l==='es'?'No se pudieron cargar los datos en vivo':'Could not load live data'}</p>`;}
   }
 }
 
@@ -1163,7 +1183,8 @@ function renderDepegGrid(){
   const thresh = (parseFloat((document.getElementById('depegThresh') || {value:'0.5'}).value) || 0.5) / 100;
 
   if(!Object.keys(_depegPrices).length){
-    grid.innerHTML = '<div style="grid-column:1/-1;padding:24px;text-align:center;color:var(--faint);font-size:13px">Loading…</div>';
+    const _lg=getLang();
+    grid.innerHTML = `<div style="grid-column:1/-1;padding:24px;text-align:center;color:var(--faint);font-size:13px">${_lg==='fr'?'Chargement…':_lg==='es'?'Cargando…':'Loading…'}</div>`;
     return;
   }
 
@@ -1208,7 +1229,8 @@ async function fetchDepegPrices(){
     const now = new Date();
     const hm = now.getHours().toString().padStart(2,'0') + ':' + now.getMinutes().toString().padStart(2,'0');
     const el = document.getElementById('depegLastUpdate');
-    if(el) el.textContent = 'Last update: ' + hm;
+    const _ld=getLang();
+    if(el) el.textContent = (_ld==='fr'?'Mise à jour : ':_ld==='es'?'Última actualización: ':'Last update: ') + hm;
     renderDepegGrid();
   } catch(e){ renderDepegGrid(); }
 }
@@ -1752,6 +1774,8 @@ async function generatePDF(sym){
 
   const factors = l==='fr'
     ? [{key:'Risque de Dépeg',score:Math.round(depeg)},{key:'Risque de Contrepartie',score:d.counterparty},{key:'Risque Protocole',score:d.protocol},{key:'Risque de Liquidité',score:Math.round(liq)}]
+    : l==='es'
+    ? [{key:'Riesgo de Despeg',score:Math.round(depeg)},{key:'Riesgo de Contraparte',score:d.counterparty},{key:'Riesgo de Protocolo',score:d.protocol},{key:'Riesgo de Liquidez',score:Math.round(liq)}]
     : [{key:'Depeg Risk',score:Math.round(depeg)},{key:'Counterparty Risk',score:d.counterparty},{key:'Protocol Risk',score:d.protocol},{key:'Liquidity Risk',score:Math.round(liq)}];
 
   let yields=[];
@@ -1786,8 +1810,8 @@ async function generatePDF(sym){
 }
 
 function buildReportHTML(sym,d,ext,l,score,factors,price,mcap,vol,yields,dateStr){
-  const fr=l==='fr';
-  const T=(en,fr_)=>fr?fr_:en;
+  const fr=l==='fr', es=l==='es';
+  const T=(en,fr_,es_)=>fr?fr_:es?(es_||en):en;
   const get=(k)=>ext[fr?k+'_fr':k]||ext[k]||'';
   const scoreCol=s=>s>=75?'#10b981':s>=55?'#f59e0b':'#ef4444';
   const devNum=price?((price-1)*100):0;
@@ -1865,22 +1889,22 @@ section h2 .sn{background:#2563eb;color:#fff;border-radius:4px;padding:1px 7px;f
 </style>
 </head><body>
 <div class="ctrl">
-  <button class="bp" onclick="window.print()">🖨️ ${T('Print / Save PDF','Imprimer / Sauvegarder en PDF')}</button>
-  <button class="bc" onclick="window.close()">✕ ${T('Close','Fermer')}</button>
-  <span class="bh">Ctrl+P → ${T('Save as PDF','Sauvegarder en PDF')}</span>
+  <button class="bp" onclick="window.print()">🖨️ ${T('Print / Save PDF','Imprimer / Sauvegarder en PDF','Imprimir / Guardar PDF')}</button>
+  <button class="bc" onclick="window.close()">✕ ${T('Close','Fermer','Cerrar')}</button>
+  <span class="bh">Ctrl+P → ${T('Save as PDF','Sauvegarder en PDF','Guardar como PDF')}</span>
 </div>
 <div class="rp">
   <div class="rh">
-    <div><div class="rh-logo">Orny<span>Tools</span></div><div class="rh-sub">${T('Stablecoin Analysis Report','Rapport d\'Analyse Stablecoin')}</div></div>
+    <div><div class="rh-logo">Orny<span>Tools</span></div><div class="rh-sub">${T('Stablecoin Analysis Report','Rapport d\'Analyse Stablecoin','Informe de Análisis Stablecoin')}</div></div>
     <div class="rh-meta"><div>ornytools.xyz</div><div>${dateStr}</div></div>
   </div>
   <div class="ah">
     <div class="ah-sym">${sym}</div>
     <div><div class="ah-name">${d.name}</div><div class="ah-issuer">${d.issuer}</div>
-    <div class="ah-badge" style="background:${d.typeColor}18;color:${d.typeColor};border:1px solid ${d.typeColor}30">${d.type}</div></div>
+    <div class="ah-badge" style="background:${d.typeColor}18;color:${d.typeColor};border:1px solid ${d.typeColor}30">${fr?(TYPE_FR[d.type]||d.type):es?(TYPE_ES[d.type]||d.type):d.type}</div></div>
   </div>
   <div class="ls">
-    <div class="li"><div class="li-l">${T('Current Price','Prix actuel')}</div>
+    <div class="li"><div class="li-l">${T('Current Price','Prix actuel','Precio actual')}</div>
       <div class="li-v" style="color:${priceCol}">${price?'$'+price.toFixed(4):'—'}</div>
       ${devStr?`<div style="font-size:11px;font-weight:600;color:${priceCol};margin-top:1px">${devStr}</div>`:''}
     </div>
@@ -1889,45 +1913,45 @@ section h2 .sn{background:#2563eb;color:#fff;border-radius:4px;padding:1px 7px;f
     <div class="li hi"><div class="li-l">OrnyScore</div><div class="li-v" style="color:${sCol}">${score}<span style="font-size:12px;font-weight:400;color:#94a3b8">/100</span></div></div>
   </div>
   <div class="sb">
-    <div class="sh">${T('Risk Assessment','Évaluation du Risque')}</div>
+    <div class="sh">${T('Risk Assessment','Évaluation du Risque','Evaluación del Riesgo')}</div>
     ${factors.map(f=>{const fc=scoreCol(f.score);return`<div class="fr"><span class="fn">${f.key}</span><div class="fb"><div class="ff" style="width:${f.score}%;background:${fc}"></div></div><span class="fnum" style="color:${fc}">${f.score}</span></div>`;}).join('')}
   </div>
   <section>
-    <h2><span class="sn">1</span>${T('Identity & Mechanism','Identité & Mécanisme')}</h2>
-    <div class="row"><span class="rl">${T('Family','Famille')}</span><span class="rv">${d.type}</span></div>
-    <div class="row"><span class="rl">${T('Issuer','Émetteur')}</span><span class="rv">${d.issuer}</span></div>
-    <div class="row"><span class="rl">${T('Peg mechanism','Mécanisme de peg')}</span><span class="rv">${get('peg')||na}</span></div>
-    <div class="row"><span class="rl">${T('Backing / Reserves','Collatéral / Réserves')}</span><span class="rv">${get('reserves')||na}</span></div>
-    <div class="row"><span class="rl">Attestation</span><span class="rv">${ext.attestation||na}</span></div>
+    <h2><span class="sn">1</span>${T('Identity & Mechanism','Identité & Mécanisme','Identidad & Mecanismo')}</h2>
+    <div class="row"><span class="rl">${T('Family','Famille','Familia')}</span><span class="rv">${fr?(TYPE_FR[d.type]||d.type):es?(TYPE_ES[d.type]||d.type):d.type}</span></div>
+    <div class="row"><span class="rl">${T('Issuer','Émetteur','Emisor')}</span><span class="rv">${d.issuer}</span></div>
+    <div class="row"><span class="rl">${T('Peg mechanism','Mécanisme de peg','Mecanismo de peg')}</span><span class="rv">${get('peg')||na}</span></div>
+    <div class="row"><span class="rl">${T('Backing / Reserves','Collatéral / Réserves','Colateral / Reservas')}</span><span class="rv">${get('reserves')||na}</span></div>
+    <div class="row"><span class="rl">Attestation</span><span class="rv">${get('attestation')||ext.attestation||na}</span></div>
   </section>
   <section>
-    <h2><span class="sn">2</span>${T('Market & Liquidity','Marché & Liquidité')}</h2>
-    <div class="row"><span class="rl">${T('Mint / Redeem','Mint / Rachat')}</span><span class="rv">${get('mint')||na}</span></div>
-    ${ext.comps?`<div class="row"><span class="rl">${T('Comparables','Comparables')}</span><span class="rv">${ext.comps}</span></div>`:''}
-    ${ext.site?`<div class="row"><span class="rl">${T('Official site','Site officiel')}</span><span class="rv"><a href="https://${ext.site}" style="color:#2563eb" target="_blank">${ext.site}</a></span></div>`:''}
+    <h2><span class="sn">2</span>${T('Market & Liquidity','Marché & Liquidité','Mercado & Liquidez')}</h2>
+    <div class="row"><span class="rl">${T('Mint / Redeem','Mint / Rachat','Mint / Canje')}</span><span class="rv">${get('mint')||na}</span></div>
+    ${ext.comps?`<div class="row"><span class="rl">${T('Comparables','Comparables','Comparables')}</span><span class="rv">${ext.comps}</span></div>`:''}
+    ${ext.site?`<div class="row"><span class="rl">${T('Official site','Site officiel','Sitio oficial')}</span><span class="rv"><a href="https://${ext.site}" style="color:#2563eb" target="_blank">${ext.site}</a></span></div>`:''}
   </section>
   <section>
-    <h2><span class="sn">3</span>${T('DeFi Yields','Rendements DeFi')}</h2>
-    <div class="row"><span class="rl">${T('Yield source','Source du yield')}</span><span class="rv">${get('yield')||na}</span></div>
-    <div class="row"><span class="rl">${T('Ecosystem','Écosystème')}</span><span class="rv">${get('eco')||na}</span></div>
-    ${yieldRows?`<table class="ytbl"><thead><tr><th>${T('Protocol','Protocole')}</th><th>${T('Chain','Réseau')}</th><th>TVL</th><th>APY live</th></tr></thead><tbody>${yieldRows}</tbody></table>`:`<div style="font-size:12px;color:#94a3b8;margin-top:8px">${T('No live yield data','Aucune donnée de yield disponible')}</div>`}
+    <h2><span class="sn">3</span>${T('DeFi Yields','Rendements DeFi','Rendimientos DeFi')}</h2>
+    <div class="row"><span class="rl">${T('Yield source','Source du yield','Fuente de rendimiento')}</span><span class="rv">${get('yield')||na}</span></div>
+    <div class="row"><span class="rl">${T('Ecosystem','Écosystème','Ecosistema')}</span><span class="rv">${get('eco')||na}</span></div>
+    ${yieldRows?`<table class="ytbl"><thead><tr><th>${T('Protocol','Protocole','Protocolo')}</th><th>${T('Chain','Réseau','Red')}</th><th>TVL</th><th>${T('Live APY','APY en direct','APY en vivo')}</th></tr></thead><tbody>${yieldRows}</tbody></table>`:`<div style="font-size:12px;color:#94a3b8;margin-top:8px">${T('No live yield data','Aucune donnée de yield disponible','Sin datos de rendimiento disponibles')}</div>`}
   </section>
   <section>
-    <h2><span class="sn">4</span>${T('Risk & Governance','Risque & Gouvernance')}</h2>
-    <div class="row"><span class="rl">${T('Regulatory','Réglementation')}</span><span class="rv">${get('reg')||na}</span></div>
-    ${fail.length?`<div style="margin-top:10px"><div class="rl" style="font-size:12px;margin-bottom:6px">${T('Failure scenarios','Scénarios de défaillance')}</div><ul class="flist">${fail.map(f=>`<li>${f}</li>`).join('')}</ul></div>`:''}
+    <h2><span class="sn">4</span>${T('Risk & Governance','Risque & Gouvernance','Riesgo & Gobernanza')}</h2>
+    <div class="row"><span class="rl">${T('Regulatory','Réglementation','Regulación')}</span><span class="rv">${get('reg')||na}</span></div>
+    ${fail.length?`<div style="margin-top:10px"><div class="rl" style="font-size:12px;margin-bottom:6px">${T('Failure scenarios','Scénarios de défaillance','Escenarios de fallo')}</div><ul class="flist">${fail.map(f=>`<li>${f}</li>`).join('')}</ul></div>`:''}
     <div class="two" style="margin-top:12px">
-      <div><div class="rl" style="font-size:12px;margin-bottom:6px">${T('Strengths','Points forts')}</div><ul class="slist">${strengths.map(s=>`<li>${s}</li>`).join('')}</ul></div>
-      <div><div class="rl" style="font-size:12px;margin-bottom:6px;color:#ef4444">${T('Key risks','Risques clés')}</div><ul class="flist">${risks.map(r=>`<li>${r}</li>`).join('')}</ul></div>
+      <div><div class="rl" style="font-size:12px;margin-bottom:6px">${T('Strengths','Points forts','Puntos fuertes')}</div><ul class="slist">${strengths.map(s=>`<li>${s}</li>`).join('')}</ul></div>
+      <div><div class="rl" style="font-size:12px;margin-bottom:6px;color:#ef4444">${T('Key risks','Risques clés','Riesgos clave')}</div><ul class="flist">${risks.map(r=>`<li>${r}</li>`).join('')}</ul></div>
     </div>
   </section>
   <section>
-    <h2><span class="sn">5</span>${T('Context & History','Contexte & Historique')}</h2>
-    <div class="row"><span class="rl">${T('Depeg history','Historique depeg')}</span><span class="rv">${hist}</span></div>
+    <h2><span class="sn">5</span>${T('Context & History','Contexte & Historique','Contexto & Historial')}</h2>
+    <div class="row"><span class="rl">${T('Depeg history','Historique depeg','Historial de despeg')}</span><span class="rv">${hist}</span></div>
   </section>
   <div class="rf">
-    <div class="rf-l"><strong style="color:#2563eb">OrnyTools</strong> · ornytools.xyz<br/>${T('Sources','Sources')} : CoinGecko, DeFiLlama, ${d.issuer.split('(')[0].trim()}<br/>${T('Generated on','Généré le')} ${dateStr}</div>
-    <div class="rf-r">${T('For informational purposes only.<br/>Not financial advice.','À titre informatif uniquement.<br/>Pas un conseil financier.')}</div>
+    <div class="rf-l"><strong style="color:#2563eb">OrnyTools</strong> · ornytools.xyz<br/>${T('Sources','Sources','Fuentes')} : CoinGecko, DeFiLlama, ${d.issuer.split('(')[0].trim()}<br/>${T('Generated on','Généré le','Generado el')} ${dateStr}</div>
+    <div class="rf-r">${T('For informational purposes only.<br/>Not financial advice.','À titre informatif uniquement.<br/>Pas un conseil financier.','Solo con fines informativos.<br/>No es consejo financiero.')}</div>
   </div>
 </div>
 </body></html>`;
