@@ -388,6 +388,9 @@ const DB = {
     strengths_fr:['Audits mensuels des réserves par Deloitte','Entité américaine réglementée (FinCEN)','Le plus largement accepté en DeFi'],
     risks:['Circle has banking exposure','USDC addresses can be blacklisted','USD banking system dependency'],
     risks_fr:['Circle a une exposition bancaire','Les adresses USDC peuvent être blacklistées','Dépendance au système bancaire USD'],
+    history_es:'Mar. 2023 (crisis SVB): breve depeg de -12%, recuperado en 48h.',
+    strengths_es:['Auditorías mensuales de reservas por Deloitte','Entidad regulada en EEUU (FinCEN)','Más ampliamente aceptado en DeFi'],
+    risks_es:['Circle tiene exposición bancaria','Las direcciones USDC pueden ser bloqueadas','Dependencia del sistema bancario USD'],
   },
   USDT: {
     name:'Tether', issuer:'Tether Limited (BVI)', type:'Fiat-backed', typeColor:'#26A17B',
@@ -400,6 +403,9 @@ const DB = {
     strengths_fr:['Volume de trading mondial le plus élevé','Track record le plus long (depuis 2014)','Accepté sur tous les CEX et DEX'],
     risks:['Limited reserve transparency','Offshore entity, less regulated','Regulatory uncertainty (DOJ investigations)'],
     risks_fr:['Transparence des réserves limitée','Entité offshore, moins réglementée','Incertitude réglementaire (enquêtes DOJ)'],
+    history_es:'Múltiples episodios breves de depeg. Mayo 2022: -5% durante la crisis LUNA.',
+    strengths_es:['Mayor volumen de trading global','Track record más largo (desde 2014)','Aceptado en todos los CEX y DEX'],
+    risks_es:['Transparencia de reservas limitada','Entidad offshore, menos regulada','Incertidumbre regulatoria (investigaciones del DOJ)'],
   },
   DAI: {
     name:'DAI', issuer:'MakerDAO (decentralized)', type:'Overcollateralized', typeColor:'#F4B731',
@@ -412,6 +418,9 @@ const DB = {
     strengths_fr:['Gouvernance décentralisée','Battle-tested depuis 2017','Aucun point de défaillance unique'],
     risks:['~50% backed by USDC (USDC risk inherited)','Governance decisions can change collateral','Smart contract complexity'],
     risks_fr:['~50% collatéralisé en USDC (risque USDC hérité)','Les décisions de gouvernance peuvent modifier le collateral','Complexité des smart contracts'],
+    history_es:'Black Thursday 2020: breve desviación. SVB 2023: -0,3% (respaldo USDC).',
+    strengths_es:['Gobernanza descentralizada','Battle-tested desde 2017','Sin punto único de fallo'],
+    risks_es:['~50% respaldado por USDC (riesgo USDC heredado)','Las decisiones de gobernanza pueden cambiar el colateral','Complejidad de contratos inteligentes'],
   },
   USDE: {
     name:'USDe (Ethena)', issuer:'Ethena Labs', type:'Synthetic', typeColor:'#8B5CF6',
@@ -424,6 +433,9 @@ const DB = {
     strengths_fr:['Rendement élevé via sUSDe (~15-30% APY)','Mécanisme delta-neutre innovant','TVL en croissance rapide'],
     risks:['Negative funding rates can compress backing','CEX counterparty risk (Binance, Bybit, OKX)','Mechanism untested in bear market'],
     risks_fr:['Les taux de financement négatifs peuvent comprimer la collatéralisation','Risque de contrepartie CEX (Binance, Bybit, OKX)','Mécanisme non testé en marché baissier'],
+    history_es:'Lanzado en feb. 2024. Sin depeg mayor — no probado en mercado bajista prolongado.',
+    strengths_es:['Alto rendimiento vía sUSDe (~15-30% APY)','Mecanismo delta-neutral innovador','TVL en rápido crecimiento'],
+    risks_es:['Las tasas de financiamiento negativas pueden comprimir el respaldo','Riesgo de contraparte CEX (Binance, Bybit, OKX)','Mecanismo no probado en mercado bajista'],
   },
   LUSD: {
     name:'LUSD', issuer:'Liquity Protocol', type:'Overcollateralized', typeColor:'#2FBF71',
@@ -436,6 +448,9 @@ const DB = {
     strengths_fr:['Contrats immuables — aucune clé admin','Collateral ETH uniquement, totalement transparent','Plancher dur à $1 via les rachats'],
     risks:['Less DeFi integrations than USDC/DAI','Can trade above $1 (1.10 soft ceiling)','ETH-concentrated collateral risk'],
     risks_fr:['Moins d\'intégrations DeFi que USDC/DAI','Peut s\'échanger au-dessus de $1 (plafond souple à 1,10)','Risque de concentration du collateral en ETH'],
+    history_es:'Cotiza regularmente entre 1,00 y 1,10 gracias al suelo de redención. Nunca depeg bajo $1.',
+    strengths_es:['Contratos inmutables — sin claves admin','Colateral solo ETH, totalmente transparente','Suelo duro a $1 vía redenciones'],
+    risks_es:['Menos integraciones DeFi que USDC/DAI','Puede cotizar por encima de $1 (techo suave a 1,10)','Riesgo de concentración de colateral en ETH'],
   },
   FRAX: {
     name:'FRAX', issuer:'Frax Finance', type:'Hybrid', typeColor:'#111827',
@@ -448,6 +463,9 @@ const DB = {
     strengths_fr:['Pools de liquidité Curve profonds','Évolution vers une collatéralisation complète','Modèle efficace en capital'],
     risks:['Algorithmic component still active','USDC collateral dependency','Complex multi-token system (FXS)'],
     risks_fr:['Composante algorithmique toujours active','Dépendance au collateral USDC','Système multi-token complexe (FXS)'],
+    history_es:'Mayo 2022: depeg menor durante la crisis LUNA. Transición hacia colateralización al 100%.',
+    strengths_es:['Profundos pools de liquidez en Curve','Evolución hacia colateralización completa','Modelo eficiente en capital'],
+    risks_es:['Componente algorítmico todavía activo','Dependencia del colateral USDC','Sistema multi-token complejo (FXS)'],
   },
   PYUSD: {
     name:'PayPal USD', issuer:'Paxos / PayPal', type:'Fiat-backed', typeColor:'#003087',
@@ -460,6 +478,9 @@ const DB = {
     strengths_fr:['Émetteur réglementé (Paxos, NY DFS)','Réseau de distribution PayPal','Attestations mensuelles des réserves'],
     risks:['Very limited DeFi integrations','PayPal can freeze/burn tokens','Low on-chain liquidity'],
     risks_fr:['Intégrations DeFi très limitées','PayPal peut geler/brûler les tokens','Faible liquidité on-chain'],
+    history_es:'Lanzado ago. 2023. Sin depeg. Adopción DeFi limitada hasta ahora.',
+    strengths_es:['Emisor regulado (Paxos, NY DFS)','Red de distribución de PayPal','Attestations mensuales de reservas'],
+    risks_es:['Integraciones DeFi muy limitadas','PayPal puede congelar/quemar tokens','Baja liquidez on-chain'],
   },
   crvUSD: {
     name:'crvUSD', issuer:'Curve Finance', type:'Overcollateralized', typeColor:'#FF0420',
@@ -472,6 +493,9 @@ const DB = {
     strengths_fr:['Mécanisme innovant de liquidation douce LLAMMA','Liquidité native Curve profonde','Collateral ETH/wstETH/WBTC'],
     risks:['Newer protocol, less battle-tested','Complex mechanism','Concentrated Curve ecosystem dependency'],
     risks_fr:['Protocole plus récent, moins battle-tested','Mécanisme complexe','Dépendance concentrée à l\'écosystème Curve'],
+    history_es:'Lanzado mayo 2023. Diseñado para auto-estabilizarse mediante el mecanismo LLAMMA.',
+    strengths_es:['Innovador mecanismo de liquidación suave LLAMMA','Liquidez nativa profunda en Curve','Colateral ETH/wstETH/WBTC'],
+    risks_es:['Protocolo más reciente, menos battle-tested','Mecanismo complejo','Dependencia concentrada en el ecosistema Curve'],
   },
   USDS: {
     name:'USDS (Sky)', issuer:'Sky DAO (ex-MakerDAO)', type:'Overcollateralized', typeColor:'#F4B731',
@@ -484,6 +508,9 @@ const DB = {
     strengths_fr:['Migration DAI — 7 ans de battle-test','Sky Savings Rate (SSR) intégré','Gouvernance en cours de décentralisation'],
     risks:['SSR incentives could dilute backing','Complex migration from DAI/USDC ecosystem','Transition governance risk'],
     risks_fr:['Les incitations SSR pourraient diluer la collatéralisation','Migration complexe depuis l\'écosystème DAI/USDC','Risque de gouvernance en période de transition'],
+    history_es:'2024: DAI migrado a USDS. Sin depeg. Hereda 7 años de track record de MakerDAO.',
+    strengths_es:['Migración DAI — 7 años de battle-test','Sky Savings Rate (SSR) integrado','Gobernanza en proceso de descentralización'],
+    risks_es:['Los incentivos SSR podrían diluir el respaldo','Migración compleja desde el ecosistema DAI/USDC','Riesgo de gobernanza en período de transición'],
   },
   GHO: {
     name:'GHO', issuer:'Aave DAO', type:'Overcollateralized', typeColor:'#B6509E',
@@ -496,6 +523,9 @@ const DB = {
     strengths_fr:['Collatéralisé par les actifs Aave V3','Taux ajustable par la gouvernance','Mécanisme de remise stkAAVE'],
     risks:['Peg required active governance intervention','Less DeFi integrations than top stables','Dependent on Aave protocol health'],
     risks_fr:['L\'ancrage a nécessité une intervention active de la gouvernance','Moins d\'intégrations DeFi que les top stablecoins','Dépend de la santé du protocole Aave'],
+    history_es:'Lanzado jul. 2023. Múltiples ajustes de tasa para mantener el peg. Estabilizado a finales de 2023.',
+    strengths_es:['Respaldado por activos Aave V3','Tasa ajustable por gobernanza','Mecanismo de descuento stkAAVE'],
+    risks_es:['El peg requirió intervención activa de gobernanza','Menos integraciones DeFi que los top stablecoins','Depende de la salud del protocolo Aave'],
   },
   FDUSD: {
     name:'First Digital USD', issuer:'First Digital (HK)', type:'Fiat-backed', typeColor:'#1A56DB',
@@ -508,6 +538,9 @@ const DB = {
     strengths_fr:['Réserves en bons du Trésor','Entité réglementée à Hong Kong','Volume de trading élevé sur Binance'],
     risks:['Binance-concentrated ecosystem','Limited on-chain DeFi liquidity','Less Western regulatory transparency'],
     risks_fr:['Écosystème concentré sur Binance','Liquidité DeFi on-chain limitée','Moins de transparence réglementaire côté occidental'],
+    history_es:'Lanzado en 2023. Respaldado en letras del Tesoro. Sin depeg mayor. Principalmente ecosistema Binance.',
+    strengths_es:['Reservas en letras del Tesoro','Entidad regulada en Hong Kong','Alto volumen de trading en Binance'],
+    risks_es:['Ecosistema concentrado en Binance','Liquidez DeFi on-chain limitada','Menor transparencia regulatoria en occidente'],
   },
   TUSD: {
     name:'TrueUSD', issuer:'Techteryx (Cayman)', type:'Fiat-backed', typeColor:'#002868',
@@ -520,6 +553,9 @@ const DB = {
     strengths_fr:['Attestations en temps réel (pionnier historique)','Largement listé sur les CEX','Long track record depuis 2018'],
     risks:['Ownership controversy (2023 Techteryx disputes)','Attestation reliability questioned','Declining market relevance'],
     risks_fr:['Controverse sur la propriété (litiges Techteryx 2023)','Fiabilité des attestations remise en question','Pertinence de marché en déclin'],
+    history_es:'2023: disputa de propiedad + cambio de proveedor de attestation → crisis de confianza. Múltiples episodios de depeg menores.',
+    strengths_es:['Attestations en tiempo real (pionero histórico)','Ampliamente listado en CEX','Largo track record desde 2018'],
+    risks_es:['Controversia de propiedad (disputas Techteryx 2023)','Fiabilidad de attestations cuestionada','Relevancia de mercado en declive'],
   },
   USDP: {
     name:'Pax Dollar', issuer:'Paxos (US)', type:'Fiat-backed', typeColor:'#00935F',
@@ -532,6 +568,9 @@ const DB = {
     strengths_fr:['Réglementé par le NY DFS (strict)','Audits mensuels des réserves par Withum','Réputation institutionnelle de Paxos'],
     risks:['Very low DeFi liquidity and integrations','Limited organic demand','Low circulating supply'],
     risks_fr:['Liquidité DeFi et intégrations très faibles','Demande organique limitée','Faible offre en circulation'],
+    history_es:'Sin episodios de depeg. Regulado por NY DFS. Baja adopción DeFi.',
+    strengths_es:['Regulado por NY DFS (estricto)','Auditorías mensuales de reservas por Withum','Reputación institucional de Paxos'],
+    risks_es:['Liquidez DeFi e integraciones muy bajas','Demanda orgánica limitada','Bajo suministro en circulación'],
   },
   GUSD: {
     name:'Gemini Dollar', issuer:'Gemini Trust (US)', type:'Fiat-backed', typeColor:'#00DCFA',
@@ -544,6 +583,9 @@ const DB = {
     strengths_fr:['Émis par un exchange réglementé NY DFS','Attestations hebdomadaires des réserves','ERC-20 natif depuis 2018'],
     risks:['Very low DeFi liquidity','Gemini exchange dependency','Niche adoption outside Gemini'],
     risks_fr:['Liquidité DeFi très faible','Dépendance à l\'exchange Gemini','Adoption de niche hors Gemini'],
+    history_es:'Sin episodios de depeg. Regulado NY DFS. Actividad on-chain muy baja.',
+    strengths_es:['Emitido por exchange regulado NY DFS','Attestations semanales de reservas','ERC-20 nativo desde 2018'],
+    risks_es:['Liquidez DeFi muy baja','Dependencia del exchange Gemini','Adopción de nicho fuera de Gemini'],
   },
   DOLA: {
     name:'DOLA', issuer:'Inverse Finance DAO', type:'Overcollateralized', typeColor:'#38A169',
@@ -556,6 +598,9 @@ const DB = {
     strengths_fr:['Gouverné par DAO, sans permission','Innovation DBR (Droits d\'emprunt)','Liquidité profonde sur Curve/Velodrome'],
     risks:['Protocol suffered major 2022 hack','Small TVL relative to supply','Less battle-tested than top stables'],
     risks_fr:['Protocole victime d\'un hack majeur en 2022','TVL faible par rapport à l\'offre','Moins battle-tested que les top stablecoins'],
+    history_es:'Mar. 2022: hack de flash loan de $15M, breve depeg. Protocolo reconstruido, deuda repagada vía ingresos.',
+    strengths_es:['Gobernado por DAO, sin permisos','Innovación DBR (Derechos de Préstamo)','Liquidez profunda en Curve/Velodrome'],
+    risks_es:['El protocolo sufrió un hack importante en 2022','TVL pequeño en relación al suministro','Menos battle-tested que los top stablecoins'],
   },
   SDAI: {
     name:'sDAI', issuer:'Sky / MakerDAO', type:'Yield-bearing', typeColor:'#FFA500',
@@ -568,6 +613,9 @@ const DB = {
     strengths_fr:['Taux DSR natif — yield DeFi passif','Standard ERC4626 composable','TVL en croissance rapide'],
     risks:['Inherits all DAI and USDC risks','DSR rate can be lowered by governance','Less liquid than raw DAI'],
     risks_fr:['Hérite de tous les risques DAI et USDC','Le taux DSR peut être réduit par la gouvernance','Moins liquide que le DAI brut'],
+    history_es:'Envuelve DAI con rendimiento DSR (5-8%). Sigue DAI 1:1 + acumulación de yield. Sin depeg.',
+    strengths_es:['Tasa DSR nativa — yield DeFi pasivo','Estándar ERC4626 composable','TVL en rápido crecimiento'],
+    risks_es:['Hereda todos los riesgos de DAI y USDC','La tasa DSR puede ser reducida por gobernanza','Menos líquido que el DAI puro'],
   },
   SUSDE: {
     name:'sUSDe', issuer:'Ethena Labs', type:'Yield-bearing', typeColor:'#A78BFA',
@@ -580,6 +628,9 @@ const DB = {
     strengths_fr:['Rendement leader du secteur en marché haussier','Standard ERC4626 composable','Rachetable en USDe 1:1'],
     risks:['Negative funding compresses collateral','CEX custody risk (Binance, Bybit, OKX)','Cooldown unstaking period'],
     risks_fr:['Le financement négatif comprime la collatéralisation','Risque de custody CEX (Binance, Bybit, OKX)','Période de cooldown au dé-staking'],
+    history_es:'Lanzado en 2024. ~20-30% APY en ciclo alcista. Mecanismo no probado en mercado bajista prolongado.',
+    strengths_es:['Rendimiento líder del sector en mercados alcistas','Estándar ERC4626 composable','Canjeable por USDe 1:1'],
+    risks_es:['El financiamiento negativo comprime el respaldo','Riesgo de custodia CEX (Binance, Bybit, OKX)','Período de cooldown al desbloquear'],
   },
   EURC: {
     name:'EURC (Circle)', issuer:'Circle (US)', type:'Fiat-backed (EUR)', typeColor:'#003087',
@@ -592,6 +643,9 @@ const DB = {
     strengths_fr:['Track record réglementaire de Circle','Audits mensuels par Deloitte','Intégrations DeFi en croissance'],
     risks:['EUR/USD FX risk for USD portfolios','Lower liquidity vs USD stables','Banking system exposure'],
     risks_fr:['Risque de change EUR/USD pour les portefeuilles en USD','Liquidité inférieure aux stablecoins USD','Exposition au système bancaire'],
+    history_es:'Lanzado en 2023 por Circle. Primer stablecoin EUR mayor de un emisor regulado en EEUU. Sin depeg.',
+    strengths_es:['Track record regulatorio de Circle','Auditorías mensuales de Deloitte','Integraciones DeFi en crecimiento'],
+    risks_es:['Riesgo de cambio EUR/USD para carteras en USD','Menor liquidez vs stablecoins USD','Exposición al sistema bancario'],
   },
   EURS: {
     name:'EURS', issuer:'STASIS (Malta)', type:'Fiat-backed (EUR)', typeColor:'#0032A0',
@@ -604,6 +658,9 @@ const DB = {
     strengths_fr:['Plus long track record en EUR','Société basée en UE (conforme RGPD)','Réserves en EUR réels'],
     risks:['Very low DeFi liquidity','Malta: less regulatory certainty','Declining market adoption'],
     risks_fr:['Liquidité DeFi très faible','Malte : moins de certitude réglementaire','Adoption de marché en déclin'],
+    history_es:'Stablecoin EUR más antiguo (2018). Adopción DeFi limitada. Emisor con base en UE.',
+    strengths_es:['Más largo track record en EUR','Empresa con base en UE (cumple RGPD)','Reservas reales en EUR'],
+    risks_es:['Liquidez DeFi muy baja','Malta: menor certeza regulatoria','Adopción de mercado en declive'],
   },
   USDD: {
     name:'USDD', issuer:'TRON DAO Reserve', type:'Algorithmic', typeColor:'#EF0027',
@@ -616,6 +673,9 @@ const DB = {
     strengths_fr:['Incitations APY élevées sur TRON','Sur-collatéralisation revendiquée à 200%+','Largement listé sur les CEX'],
     risks:['Algorithmic design similar to LUNA','TRON DAO centralized control','Multiple documented depeg events'],
     risks_fr:['Design algorithmique similaire à LUNA','Contrôle centralisé du TRON DAO','Plusieurs épisodes de dépeg documentés'],
+    history_es:'Lanzado mayo 2022 durante el colapso LUNA. Múltiples episodios de depeg (-1% a -5%).',
+    strengths_es:['Altos incentivos APY en TRON','Sobrecolateralización reclamada del 200%+','Ampliamente listado en CEX'],
+    risks_es:['Diseño algorítmico similar a LUNA','Control centralizado del TRON DAO','Múltiples episodios de depeg documentados'],
   },
   OUSD: {
     name:'OUSD', issuer:'Origin Protocol', type:'Yield-bearing', typeColor:'#1A44C2',
@@ -628,6 +688,9 @@ const DB = {
     strengths_fr:['Yield automatisé via mécanisme de rebase','Réserves transparentes natives ETH','Reconstruit après le hack de 2020'],
     risks:['Suffered major hack (Nov 2020)','Very low on-chain liquidity','Yield depends on underlying vault strategies'],
     risks_fr:['A subi un hack majeur (nov. 2020)','Liquidité on-chain très faible','Le yield dépend des stratégies de vault sous-jacentes'],
+    history_es:'Nov. 2020: hack de $7M por flash loan. Protocolo reconstruido. Liquidez limitada desde entonces. Ver análisis: rapport_OUSD_pmUSD.html',
+    strengths_es:['Yield automatizado vía mecanismo de rebase','Reservas transparentes nativas en ETH','Reconstruido tras el hack de 2020'],
+    risks_es:['Sufrió un hack importante (nov. 2020)','Liquidez on-chain muy baja','El yield depende de las estrategias del vault subyacente'],
   },
   USDY: {
     name:'USDY (Ondo)', issuer:'Ondo Finance', type:'RWA-backed', typeColor:'#6366F1',
@@ -640,6 +703,9 @@ const DB = {
     strengths_fr:['Collatéralisé en bons du Trésor — yield du monde réel','Équipe Ondo de niveau institutionnel','Rapports RWA transparents'],
     risks:['KYC/whitelisting required for some products','Limited permissionless DeFi use','Regulatory RWA uncertainty'],
     risks_fr:['KYC/whitelist requis pour certains produits','Utilisation DeFi sans permission limitée','Incertitude réglementaire autour des RWA'],
+    history_es:'Lanzado en 2023. Token de yield respaldado en letras del Tesoro. Sin depeg. Adopción institucional creciente.',
+    strengths_es:['Respaldado en letras del Tesoro — yield del mundo real','Equipo Ondo de nivel institucional','Informes RWA transparentes'],
+    risks_es:['KYC/whitelist requerido para algunos productos','Uso DeFi sin permisos limitado','Incertidumbre regulatoria RWA'],
   },
   APXUSD: {
     name:'apxUSD', issuer:'Apyx Finance', type:'Synthetic (RWA)', typeColor:'#0EA5E9',
@@ -652,6 +718,9 @@ const DB = {
     strengths_fr:['Adossement innovant en preferred equity — dividendes STRC de Strategy','apyUSD compagnon vise 13–15% de rendement annuel','TVL en forte croissance — 476M$+ en moins de 6 mois'],
     risks:['Documented -10% depeg in June 2026 tied to BTC drop','Heavy STRC concentration — directly correlated with Bitcoin price','Launched early 2026 — mechanism completely untested across a full market cycle'],
     risks_fr:['Dépeg documenté de -10% en juin 2026 lié à la baisse du BTC','Forte concentration STRC — directement corrélé au prix du Bitcoin','Lancé début 2026 — mécanisme totalement non testé sur un cycle de marché complet'],
+    history_es:'Junio 2026: caída a $0,90 (-10%) cuando el colateral STRC bajó con BTC por debajo de $63K. El protocolo lo describió como "una característica, no un bug".',
+    strengths_es:['Novedoso respaldo de preferred equity — dividendos STRC de Strategy','apyUSD compañero apunta al 13-15% de rendimiento anual','TVL en fuerte crecimiento — $476M+ en menos de 6 meses'],
+    risks_es:['Depeg documentado de -10% en junio 2026 ligado a la caída del BTC','Alta concentración STRC — directamente correlado con el precio de Bitcoin','Lanzado a principios de 2026 — mecanismo totalmente no probado en un ciclo de mercado completo'],
   },
   LUSD: {
     name:'LUSD (Liquity V1)', issuer:'Liquity Protocol', type:'Overcollateralized', typeColor:'#F4B731',
@@ -664,6 +733,9 @@ const DB = {
     strengths_fr:['Totalement immuable — aucune clé admin, aucune attaque de gouvernance','Plancher dur à 1,00$ via mécanisme de rachat ETH','Emprunts sans intérêts (frais unique uniquement)'],
     risks:['No ceiling: LUSD can trade above $1.10 during high demand','ETH-only collateral — correlated with market crashes','Low liquidity vs USDC/DAI — spread can widen in stress'],
     risks_fr:['Pas de plafond : LUSD peut dépasser 1,10$ en forte demande','Collateral ETH uniquement — corrélé aux krachs de marché','Liquidité faible vs USDC/DAI — le spread peut s\'élargir en stress'],
+    history_es:'2021–presente: mínimos depegs. Suelo duro a $1,00 vía arbitraje de redención. Breves picos de prima en alta demanda. V1 inmutable — cero gobernanza.',
+    strengths_es:['Totalmente inmutable — sin claves admin, sin ataques de gobernanza','Suelo duro a $1,00 garantizado por mecanismo de redención ETH','Préstamos sin intereses (solo comisión única)'],
+    risks_es:['Sin techo: LUSD puede superar $1,10 en alta demanda','Colateral solo ETH — correlado con caídas del mercado','Baja liquidez vs USDC/DAI — el spread puede ampliarse en estrés'],
   },
   DOLA: {
     name:'DOLA (Inverse Finance)', issuer:'Inverse Finance', type:'Overcollateralized', typeColor:'#2563EB',
@@ -676,6 +748,9 @@ const DB = {
     strengths_fr:['Yield natif via le protocole FiRM à taux fixe','Tokenomics DBR incentivant la stabilité','Support multi-collateral incluant INV, stETH, WBTC'],
     risks:['$15M hack in 2022 — protocol rebuilt but history weighs on trust','Low circulating liquidity limits DeFi composability','Heavy dependence on DBR demand for protocol sustainability'],
     risks_fr:['Hack de 15M$ en 2022 — protocole reconstruit mais historique pèse sur la confiance','Faible liquidité en circulation limite la composabilité DeFi','Dépendance forte à la demande DBR pour la pérennité du protocole'],
+    history_es:'2022: Inverse Finance hackeado por $15M. DOLA temporalmente fuera de peg. Protocolo reconstruido con bonos DOLA. 2023–2025: estable cerca de $1,00 pero nunca recuperó completamente la confianza.',
+    strengths_es:['Yield nativo vía protocolo FiRM de tasa fija','Tokenomics DBR incentivan la estabilidad','Soporte multi-colateral incluyendo INV, stETH, WBTC'],
+    risks_es:['Hack de $15M en 2022 — protocolo reconstruido pero el historial pesa en la confianza','Baja liquidez circulante limita la composabilidad DeFi','Alta dependencia de la demanda DBR para la sostenibilidad del protocolo'],
   },
   EURC: {
     name:'EURC (Circle)', issuer:'Circle', type:'Fiat-backed (EUR)', typeColor:'#003399',
@@ -688,6 +763,9 @@ const DB = {
     strengths_fr:['Circle réglementé — même émetteur que USDC (haute confiance)','Conforme MiCA — solide positionnement réglementaire UE','Réserves EUR entièrement couvertes, attestations mensuelles'],
     risks:['EUR/USD FX risk for non-EUR users','Much lower liquidity than USDC — thinner markets','Centralized: Circle can freeze/blacklist addresses'],
     risks_fr:['Risque de change EUR/USD pour les utilisateurs non-EUR','Liquidité bien inférieure à l\'USDC — marchés plus étroits','Centralisé : Circle peut geler/blacklister les adresses'],
+    history_es:'Lanzado en 2022 por Circle. Pegado al EUR. Respaldado 1:1 por reservas EUR. Regulado en EEUU y UE (cumple MiCA). Sin depegs significativos.',
+    strengths_es:['Circle regulado — mismo emisor que USDC (alta confianza)','Cumple MiCA — sólida posición regulatoria en UE','Reservas EUR totalmente cubiertas, attestations mensuales'],
+    risks_es:['Riesgo de cambio EUR/USD para usuarios no-EUR','Liquidez mucho menor que USDC — mercados más delgados','Centralizado: Circle puede congelar/bloquear direcciones'],
   },
   BOLD: {
     name:'BOLD (Liquity V2)', issuer:'Liquity V2', type:'Overcollateralized', typeColor:'#7C3AED',
@@ -700,6 +778,9 @@ const DB = {
     strengths_fr:['Cœur V2 immuable — aucune clé admin, gouvernance minimale','Supporte ETH + LSTs (wstETH, rETH) comme collateral','Yield natif : intérêts emprunteurs auto-distribués à la Stability Pool'],
     risks:['Very recent — no full market cycle test','Lower liquidity than LUSD V1 — ecosystem still building','V2 introduces complexity vs V1 (per-trove interest rates)'],
     risks_fr:['Très récent — pas de test sur un cycle de marché complet','Liquidité inférieure à LUSD V1 — écosystème en construction','V2 introduit de la complexité vs V1 (taux d\'intérêt par trove)'],
+    history_es:'Lanzado en 2024. Sucesor de LUSD V1. Multi-colateral (ETH, wstETH, rETH). Portador de yield: el interés de los prestatarios fluye a los holders de BOLD en el Stability Pool.',
+    strengths_es:['Core V2 inmutable — sin claves admin, gobernanza minimizada','Soporta ETH + LSTs (wstETH, rETH) como colateral','Yield nativo: intereses de prestatarios auto-distribuidos al Stability Pool'],
+    risks_es:['Muy reciente — sin prueba en ciclo de mercado completo','Menor liquidez que LUSD V1 — ecosistema aún en construcción','V2 introduce complejidad vs V1 (tasas de interés por trove)'],
   },
   RLUSD: {
     name:'RLUSD (Ripple)', issuer:'Ripple / Standard Custody & Trust', type:'Fiat-backed', typeColor:'#346AA9',
@@ -712,6 +793,9 @@ const DB = {
     strengths_fr:['Adoption institutionnelle rapide — 500M$+ en 6 mois','Listing Aave Horizon fournit un accès au yield DeFi','Adossement 1:1 USD via Standard Custody & Trust','Double déploiement : XRP Ledger + Ethereum'],
     risks:['Ripple brand concentration risk — tightly linked to XRP ecosystem','Centralized issuer — Ripple can freeze/blacklist addresses','Smaller DeFi footprint vs USDC/USDT','Lower liquidity depth outside Aave Horizon'],
     risks_fr:['Risque de concentration sur la marque Ripple — lié à l\'écosystème XRP','Émetteur centralisé — Ripple peut geler/blacklister les adresses','Empreinte DeFi plus petite que USDC/USDT','Profondeur de liquidité moindre hors Aave Horizon'],
+    history_es:'Lanzado dic. 2024 en XRP Ledger y Ethereum. Creció a $500M+ de market cap en 6 meses. Listado en Aave Horizon Market ($219M depositados). Sin depeg significativo. Demanda Ripple/SEC resuelta en 2024.',
+    strengths_es:['Rápida adopción institucional — $500M+ en 6 meses','Listing en Aave Horizon proporciona acceso al yield DeFi','Respaldo 1:1 USD vía Standard Custody & Trust','Doble despliegue: XRP Ledger + Ethereum'],
+    risks_es:['Riesgo de concentración en la marca Ripple — vinculado al ecosistema XRP','Emisor centralizado — Ripple puede congelar/bloquear direcciones','Menor huella DeFi vs USDC/USDT','Menor profundidad de liquidez fuera de Aave Horizon'],
   },
   USD0: {
     name:'USD0 (Usual)', issuer:'Usual Protocol', type:'RWA-backed', typeColor:'#3B3B3B',
@@ -724,6 +808,9 @@ const DB = {
     strengths_fr:['Adossé aux T-bills — base de yield du monde réel','USD0++ génère du rendement tout en restant composable','Fort écosystème de vaults Morpho (MEV Capital, Steakhouse)','Token de gouvernance USUAL crée un alignement protocolaire'],
     risks:['New protocol — smart contract risk, limited track record','USD0++ lock-up mechanics create liquidity risk during unstaking','Regulatory RWA uncertainty for tokenized T-bills','USUAL token incentives may inflate APY beyond sustainable levels'],
     risks_fr:['Nouveau protocole — risque smart contract, historique limité','La mécanique de lock-up USD0++ crée un risque de liquidité au déstaking','Incertitude réglementaire RWA pour les T-bills tokenisés','Les incitations USUAL peuvent gonfler l\'APY au-delà de niveaux durables'],
+    history_es:'Lanzado en 2024 por Usual Protocol. Respaldado por T-bills de EEUU. USD0++ es la versión con rendimiento (4,5-6%). El vault MEV Capital Usual USDC en Morpho alcanzó $193M. Rápida adopción DeFi vía vaults Morpho. $300M+ de suministro a mediados de 2025.',
+    strengths_es:['Respaldado en T-bills — base de yield del mundo real','USD0++ genera yield mientras permanece composable','Fuerte ecosistema de vaults Morpho (MEV Capital, Steakhouse)','Token de gobernanza USUAL crea alineación del protocolo'],
+    risks_es:['Nuevo protocolo — riesgo de smart contract, track record limitado','La mecánica de lock-up de USD0++ crea riesgo de liquidez al desbloquear','Incertidumbre regulatoria RWA sobre T-bills tokenizados','Los incentivos USUAL pueden inflar el APY más allá de niveles sostenibles'],
   },
   BUIDL: {
     name:'BUIDL (BlackRock)', issuer:'BlackRock / Securitize', type:'RWA-backed', typeColor:'#1A1A2E',
@@ -736,6 +823,9 @@ const DB = {
     strengths_fr:['Émetteur = BlackRock — crédibilité de contrepartie maximale','Adossé aux T-bills, repos, cash US — collatéral ultra-sûr','Rendement quotidien on-chain (les parts BUIDL croissent en valeur)','Passerelle pour le capital institutionnel dans la DeFi tokenisée'],
     risks:['KYC/whitelist-only — no retail access, limited on-chain liquidity','Not a stablecoin: BUIDL share price ≠ $1 (accumulates yield)','Securitize platform risk (tech + regulatory)','Redemption T+0 via Circle USDC bridge — liquidity depends on Circle'],
     risks_fr:['KYC/whitelist uniquement — pas d\'accès retail, liquidité on-chain limitée','Pas un stablecoin : le prix des parts BUIDL ≠ 1$ (accumule le rendement)','Risque plateforme Securitize (tech + réglementaire)','Rachat T+0 via bridge Circle USDC — liquidité dépend de Circle'],
+    history_es:'Lanzado marzo 2024. BlackRock USD Institutional Digital Liquidity Fund — primer fondo del mercado monetario tokenizado del mayor gestor de activos del mundo ($10T+ en activos). Construido en Ethereum vía Securitize. $500M+ en activos en pocas semanas.',
+    strengths_es:['El emisor es BlackRock — máxima credibilidad de contraparte posible','Respaldado por T-bills, repos, efectivo de EEUU — colateral ultra-seguro','Devengo diario de yield on-chain (las participaciones BUIDL crecen en valor)','Puerta de entrada del capital institucional a la DeFi tokenizada'],
+    risks_es:['Solo KYC/whitelist — sin acceso retail, liquidez on-chain limitada','No es un stablecoin: precio de participación BUIDL ≠ $1 (acumula yield)','Riesgo de la plataforma Securitize (tech + regulatorio)','Redención T+0 vía bridge Circle USDC — liquidez depende de Circle'],
   },
   USDM: {
     name:'USDM (Mountain)', issuer:'Mountain Protocol', type:'RWA-backed', typeColor:'#0EA5E9',
@@ -748,6 +838,9 @@ const DB = {
     strengths_fr:['Rendement T-bill quotidien via rebase — aucun staking nécessaire','Licence réglementaire des Bermudes — conformité plus claire qu\'alternatives non réglementées','Adossé à 100% aux T-bills — audité par des tiers','Multi-chain — natif sur Arbitrum et Optimism'],
     risks:['Mountain Protocol is a newer entity vs Ondo/BlackRock','Rebase mechanism may cause issues with DeFi protocol integrations','Geographic restrictions (US persons restricted)','Lower liquidity depth than USDC/USDT in DEX pools'],
     risks_fr:['Mountain Protocol est une entité récente vs Ondo/BlackRock','Le mécanisme de rebase peut poser des problèmes d\'intégration DeFi','Restrictions géographiques (personnes US restreintes)','Liquidité DEX moindre qu\'USDC/USDT'],
+    history_es:'Lanzado en 2023 por Mountain Protocol (licenciado en Bermudas). Stablecoin con rendimiento respaldado al 100% por T-bills de EEUU. Los holders reciben rebases diarios. Multi-chain: Ethereum, Arbitrum, Optimism, Polygon. Creció a $150M+ de suministro.',
+    strengths_es:['Yield diario de T-bills vía rebase — sin staking necesario','Licencia regulatoria de Bermudas — cumplimiento más claro','Respaldado al 100% por T-bills — auditado por terceros','Multi-chain — nativo en Arbitrum y Optimism'],
+    risks_es:['Mountain Protocol es una entidad más nueva vs Ondo/BlackRock','El mecanismo de rebase puede causar problemas con integraciones DeFi','Restricciones geográficas (personas de EEUU restringidas)','Menor profundidad de liquidez que USDC/USDT en pools DEX'],
   },
   wUSD0: {
     name:'wUSD0 (Usual)', issuer:'Usual Protocol', type:'RWA-backed', typeColor:'#3B3B3B',
@@ -760,6 +853,9 @@ const DB = {
     strengths_fr:['Enveloppe portant du rendement — gains de yield tout en gardant la composabilité DeFi','Même adossement T-bill que USD0 — base de yield réel','Fort écosystème Morpho (vaults MEV Capital, Steakhouse)','wUSD0 peut être utilisé comme collatéral DeFi contrairement à USD0++ verrouillé'],
     risks:['New protocol — track record limited to 2024/2025','USD0 unstaking delay can create temporary liquidity mismatches','USUAL token incentives may inflate APY beyond sustainable rates','Regulatory RWA uncertainty for tokenized T-bills'],
     risks_fr:['Nouveau protocole — track record limité à 2024/2025','Le délai de déstaking USD0 peut créer des décalages de liquidité temporaires','Les incitations USUAL peuvent gonfler l\'APY au-delà des taux durables','Incertitude réglementaire RWA sur les T-bills tokenisés'],
+    history_es:'wUSD0 es el wrapper con rendimiento de USD0 de Usual Protocol. Respaldado por T-bills de EEUU. wUSD0 acumula el yield de USD0++ desde el vault de staking. Lanzado en 2024/2025. Usado en vaults Morpho Blue junto a USD0.',
+    strengths_es:['Wrapper con rendimiento — gana yield manteniendo composabilidad DeFi','Mismo respaldo en T-bills que USD0 — base de yield real','Fuerte ecosistema Morpho (vaults MEV Capital, Steakhouse)','wUSD0 puede usarse como colateral DeFi a diferencia de USD0++ bloqueado'],
+    risks_es:['Nuevo protocolo — track record limitado a 2024/2025','El retraso de desbloqueo de USD0 puede crear desajustes temporales de liquidez','Los incentivos USUAL pueden inflar el APY más allá de tasas sostenibles','Incertidumbre regulatoria RWA sobre T-bills tokenizados'],
   },
   USDz: {
     name:'USDz (Angle)', issuer:'Angle Protocol', type:'Synthetic (delta-neutral)', typeColor:'#F59E0B',
@@ -772,6 +868,9 @@ const DB = {
     strengths_fr:['Track record de l\'équipe avec agEUR depuis 2021','Delta-neutre — yield des taux de financement, pas de risque directionnel','sUSDz génère du yield automatiquement','Natif Ethereum avec présence multi-chain croissante'],
     risks:['Smaller team vs Ethena — less capital and CEX relationship depth','Negative funding rate periods reduce or eliminate yield','Lower liquidity than USDe — fewer DEX integrations','Angle Protocol suffered from Euler hack exposure in March 2023 (indirect losses)'],
     risks_fr:['Équipe plus petite vs Ethena — moins de capital et de relations CEX','Les périodes de taux de financement négatifs réduisent ou suppriment le yield','Liquidité moindre qu\'USDe — moins d\'intégrations DEX','Angle Protocol a subi des pertes liées au hack Euler en mars 2023 (pertes indirectes)'],
+    history_es:'USDz de Angle Protocol (mismo equipo que EURA/agEUR). Lanzado en 2024. Dólar sintético con rendimiento usando estrategia delta-neutral. Angle Protocol tiene historial desde 2021 con agEUR, que sobrevivió múltiples ciclos de mercado.',
+    strengths_es:['Track record del equipo con agEUR desde 2021','Delta-neutral — yield de tasas de financiamiento, sin riesgo direccional','sUSDz genera yield automáticamente','Nativo en Ethereum con creciente presencia multi-chain'],
+    risks_es:['Equipo más pequeño vs Ethena — menos capital y relaciones con CEX','Los períodos de tasas de financiamiento negativas reducen o eliminan el yield','Menor liquidez que USDe — menos integraciones DEX','Angle Protocol sufrió pérdidas por el hack de Euler en marzo 2023 (pérdidas indirectas)'],
   },
   deUSD: {
     name:'deUSD (Elixir)', issuer:'Elixir Protocol', type:'Synthetic (delta-neutral)', typeColor:'#8B5CF6',
@@ -784,6 +883,9 @@ const DB = {
     strengths_fr:['Delta-neutre — collatéral market-neutral réduit le risque directionnel','sdeUSD (staké) génère le yield du taux de financement','Intégration Morpho Blue comme collatéral (sdeUSD/USDC LLTV 91,5%)','Soutien institutionnel de l\'équipe Elixir'],
     risks:['Negative funding rates compress backing (same risk as USDe)','CEX counterparty risk for perpetual positions','New protocol — mechanism untested across full market cycle','Lower liquidity depth than USDe/sUSDe'],
     risks_fr:['Les taux de financement négatifs compriment la collatéralisation (même risque qu\'USDe)','Risque de contrepartie CEX sur les positions perpétuelles','Nouveau protocole — mécanisme non testé sur cycle de marché complet','Profondeur de liquidité moindre qu\'USDe/sUSDe'],
+    history_es:'Lanzado en 2024/2025 por Elixir Protocol. Diseño delta-neutral similar a USDe de Ethena pero con diferente mix de colateral. Usado como colateral en mercados Morpho Blue (sdeUSD/USDC LLTV 91,5%). Creciente integración DeFi institucional.',
+    strengths_es:['Delta-neutral — colateral market-neutral reduce el riesgo direccional','sdeUSD (en staking) genera yield de tasa de financiamiento','Integración Morpho Blue como colateral (sdeUSD/USDC LLTV 91,5%)','Respaldo institucional del equipo Elixir'],
+    risks_es:['Las tasas de financiamiento negativas comprimen el respaldo (mismo riesgo que USDe)','Riesgo de contraparte CEX en posiciones perpetuas','Nuevo protocolo — mecanismo no probado en ciclo de mercado completo','Menor profundidad de liquidez que USDe/sUSDe'],
   },
   AUSD: {
     name:'AUSD (Agora)', issuer:'Agora Finance (US)', type:'Fiat-backed', typeColor:'#4F46E5',
@@ -796,6 +898,9 @@ const DB = {
     strengths_fr:['Réserves chez State Street + VanEck — custody de niveau institutionnel','Partage du yield avec les partenaires DeFi ("Stablecoin 3.0") — aligne les incitations de l\'écosystème','LayerZero OFT natif multi-chain (12+ chaînes) — pas de risque de bridge','Chaos Proof of Reserves : attestation on-chain temps réel','Vaults Morpho Steakhouse : 8%+ APY du rendement des réserves','Dossier OCC Trust Bank Charter — voie vers une licence bancaire complète','Aucun historique de dépeg sur 3 crashs de marché'],
     risks:['Small market cap (~$140M) — thin secondary liquidity vs USDC/USDT','Agora Finance is a startup — execution and regulatory risk','OCC charter not yet granted — could be denied or delayed','Mint/redeem permissioned — retail exit via secondary market only','LayerZero OFT dependency — cross-chain risk if LayerZero is compromised','Yield compression if Fed cuts rates (T-bill yield falls)'],
     risks_fr:['Faible market cap (~140M$) — liquidité secondaire limitée vs USDC/USDT','Agora Finance est une startup — risque d\'exécution et réglementaire','Charte OCC non encore accordée — pourrait être refusée ou retardée','Mint/redeem permissionné — sortie retail uniquement via marché secondaire','Dépendance LayerZero OFT — risque cross-chain si LayerZero est compromis','Compression du yield si la Fed baisse les taux (yield T-bills diminue)'],
+    history_es:'Lanzado en 2024 por Agora Finance. Stablecoin fiat-backed 1:1 USD respaldado por T-bills de EEUU, efectivo y repos overnight. Reservas gestionadas por VanEck ($100B en activos), custodiadas en State Street ($4,1T en activos). Pionero del "Stablecoin 3.0": comparte el rendimiento de las reservas con socios DeFi. Nativo en 12+ cadenas vía LayerZero OFT. Vaults Morpho Steakhouse con 8%+ APY. Suministro ~$140M a mediados de 2026. Sin depeg en 3 caídas del mercado.',
+    strengths_es:['Reservas en State Street + VanEck — custodia de nivel institucional','Comparte yield con socios DeFi ("Stablecoin 3.0") — alinea incentivos del ecosistema','LayerZero OFT multi-chain nativo (12+ cadenas) — sin riesgo de bridge','Chaos Proof of Reserves: attestation on-chain en tiempo real','Vaults Morpho Steakhouse: 8%+ APY del rendimiento de reservas','Solicitud de licencia bancaria OCC — camino a licencia bancaria completa','Sin historial de depeg en 3 caídas del mercado'],
+    risks_es:['Pequeño market cap (~$140M) — liquidez secundaria escasa vs USDC/USDT','Agora Finance es una startup — riesgo de ejecución y regulatorio','Licencia OCC aún no concedida — podría denegarse o retrasarse','Mint/redeem con permisos — salida retail solo vía mercado secundario','Dependencia de LayerZero OFT — riesgo cross-chain si LayerZero se ve comprometido','Compresión del yield si la Fed baja tipos (el yield de T-bills cae)'],
   },
 };
 
@@ -905,9 +1010,9 @@ function renderMain(){
   const devStr   = price ? `${dev>=0?'+':''}${dev.toFixed(3)}%` : '';
 
   const l = getLang ? getLang() : 'en';
-  const s = l === 'fr' && d.strengths_fr ? d.strengths_fr : d.strengths;
-  const r = l === 'fr' && d.risks_fr ? d.risks_fr : d.risks;
-  const hist = l === 'fr' && d.history_fr ? d.history_fr : d.history;
+  const s = l==='fr' && d.strengths_fr ? d.strengths_fr : l==='es' && d.strengths_es ? d.strengths_es : d.strengths;
+  const r = l==='fr' && d.risks_fr ? d.risks_fr : l==='es' && d.risks_es ? d.risks_es : d.risks;
+  const hist = l==='fr' && d.history_fr ? d.history_fr : l==='es' && d.history_es ? d.history_es : d.history;
 
   const factors = l==='fr' ? [
     { key:'Risque de Dépeg',        score:Math.round(depeg), desc:`Déviation du prix en direct par rapport à $1 + événements de dépeg historiques. Actuel : ${priceStr} ${devStr}` },
@@ -1819,11 +1924,11 @@ function buildReportHTML(sym,d,ext,l,score,factors,price,mcap,vol,yields,dateStr
   const devStr=price?((devNum>=0?'+':'')+devNum.toFixed(3)+'%'):'';
   const priceCol=Math.abs(devNum)<0.3?'#10b981':Math.abs(devNum)<1?'#f59e0b':'#ef4444';
   const sCol=scoreCol(score);
-  const hist=fr?(d.history_fr||d.history):d.history;
-  const strengths=fr?(d.strengths_fr||d.strengths):d.strengths;
-  const risks=fr?(d.risks_fr||d.risks):d.risks;
-  const fail=ext[fr?'fail_fr':'fail']||[];
-  const na=fr?'À rechercher':'To research';
+  const hist=fr?(d.history_fr||d.history):es?(d.history_es||d.history):d.history;
+  const strengths=fr?(d.strengths_fr||d.strengths):es?(d.strengths_es||d.strengths):d.strengths;
+  const risks=fr?(d.risks_fr||d.risks):es?(d.risks_es||d.risks):d.risks;
+  const fail=ext[fr?'fail_fr':es?'fail_es':'fail']||[];
+  const na=fr?'À rechercher':es?'Por investigar':'To research';
 
   const yieldRows=yields.map(p=>{
     const tvlS=p.tvlUsd>=1e9?'$'+(p.tvlUsd/1e9).toFixed(1)+'B':'$'+(p.tvlUsd/1e6).toFixed(0)+'M';
