@@ -6,6 +6,7 @@
 <meta name="description" content="OrnyTools Blog — Free DeFi guides and analysis: Aave V3 health factor, liquidation risk, Morpho Blue vs Aave, GMX V2 fees, impermanent loss, and stablecoin risk explained with real numbers."/>
 <meta name="robots" content="index,follow"/>
 <link rel="canonical" href="https://ornytools.xyz/blog.html"/>
+<link rel="icon" href="logo.png" type="image/png" />
 <link rel="alternate" hreflang="en" href="https://ornytools.xyz/blog.html"/>
 <link rel="alternate" hreflang="fr" href="https://ornytools.xyz/blog.html"/>
 <link rel="alternate" hreflang="es" href="https://ornytools.xyz/blog.html"/>
@@ -83,6 +84,8 @@
   footer{text-align:center;padding:20px;font-size:.72rem;color:var(--faint);border-top:1px solid var(--line)}
   footer a{color:var(--faint);text-decoration:none}
   footer a:hover{color:var(--blue)}
+  .art-title{font-family:var(--display);font-size:clamp(1.5rem,3vw,2.1rem);font-weight:500;letter-spacing:-.02em;margin-bottom:12px;line-height:1.2}
+  .art-sub{color:var(--dim);font-size:.95rem;line-height:1.8;border-left:3px solid var(--gold);padding-left:16px}
   /* ── DARK MODE ─────────────────────────────── */
   html.dark{
     --surface:#161b22;--surface-2:#1c2128;--bg:#0d1117;
@@ -139,7 +142,7 @@
     <div class="post-card">
       <div class="post-meta">
         <span class="post-date"><span class="t-en">June 2026</span><span class="t-fr">Juin 2026</span><span class="t-es">Junio 2026</span></span>
-        <span class="post-tag guide">Guide</span>
+        <span class="post-tag guide"><span class="t-en">Guide</span><span class="t-fr">Guide</span><span class="t-es">Guía</span></span>
       </div>
       <div class="post-title"><a href="#art-health-factor"><span class="t-en">Health factor 1.3 — how much margin is that, really?</span><span class="t-fr">Health factor 1,3 — quelle marge réelle, vraiment ?</span><span class="t-es">Health factor 1,3 — ¿cuánto margen es eso realmente?</span></a></div>
       <p class="post-excerpt"><span class="t-en">A health factor of 1.3 sounds safe until you run the actual numbers. <strong>With WBTC as collateral (LT = 75%), HF 1.3 means a 23% price drop triggers liquidation.</strong> This is how to think about it correctly — and what buffer you actually need.</span><span class="t-fr">Un health factor de 1,3 semble sûr jusqu'à ce que vous fassiez les vrais calculs. <strong>Avec WBTC comme collatéral (LT = 75%), HF 1,3 signifie qu'une baisse de prix de 23% déclenche la liquidation.</strong> Voici comment raisonner correctement — et quelle marge vous avez réellement besoin.</span><span class="t-es">Un health factor de 1,3 suena seguro hasta que haces los cálculos reales. <strong>Con WBTC como colateral (LT = 75%), HF 1,3 significa que una caída de precio del 23% desencadena la liquidación.</strong> Así es como pensar correctamente — y qué margen necesitas realmente.</span></p>
@@ -189,7 +192,7 @@
     <div class="post-card">
       <div class="post-meta">
         <span class="post-date"><span class="t-en">June 2026</span><span class="t-fr">Juin 2026</span><span class="t-es">Junio 2026</span></span>
-        <span class="post-tag guide">Guide</span>
+        <span class="post-tag guide"><span class="t-en">Guide</span><span class="t-fr">Guide</span><span class="t-es">Guía</span></span>
       </div>
       <div class="post-title"><a href="#art-gmx-funding"><span class="t-en">GMX funding rate: the hidden cost destroying your perps</span><span class="t-fr">Frais de financement GMX : le coût caché qui détruit vos perps</span><span class="t-es">Tasa de financiamiento GMX: el costo oculto que destruye tus perps</span></a></div>
       <p class="post-excerpt"><span class="t-en">GMX's borrow fee runs 24/7 — even when your position is making money. <strong>A 10× ETH long held for 7 days pays ~0.84% in borrow fees alone, before any market move.</strong> Here's how to account for it in your strategy and when to avoid it entirely.</span><span class="t-fr">Les frais de borrow de GMX tournent 24h/24 — même quand votre position gagne de l'argent. <strong>Un long ETH 10× détenu pendant 7 jours paie ~0,84% en frais de borrow seuls, avant tout mouvement de marché.</strong> Comment l'intégrer dans votre stratégie et quand l'éviter entièrement.</span><span class="t-es">La comisión de borrow de GMX corre 24/7 — incluso cuando tu posición está ganando dinero. <strong>Un long ETH 10× mantenido durante 7 días paga ~0,84% solo en comisiones de borrow, antes de cualquier movimiento de mercado.</strong> Cómo contabilizarlo en tu estrategia y cuándo evitarlo por completo.</span></p>
@@ -219,7 +222,7 @@
     <div class="post-card">
       <div class="post-meta">
         <span class="post-date"><span class="t-en">June 2026</span><span class="t-fr">Juin 2026</span><span class="t-es">Junio 2026</span></span>
-        <span class="post-tag guide">Guide</span>
+        <span class="post-tag guide"><span class="t-en">Guide</span><span class="t-fr">Guide</span><span class="t-es">Guía</span></span>
       </div>
       <div class="post-title"><a href="health-factor-guide.html"><span class="t-en">Health factor: the number that keeps you safe (and how it silently changes)</span><span class="t-fr">Health factor : le chiffre qui vous protège (et comment il change silencieusement)</span><span class="t-es">Health factor: el número que te mantiene seguro (y cómo cambia silenciosamente)</span></a></div>
       <p class="post-excerpt"><span class="t-en">Your health factor is not static — borrow interest grows your debt daily even when prices don't move. <strong>At 6.5% APY, a $40,000 debt becomes $42,600 in one year, raising your liquidation price by $3,300 without you noticing.</strong> The full formula, the zones, and the thresholds to set.</span><span class="t-fr">Votre health factor n'est pas statique — les intérêts d'emprunt font croître votre dette quotidiennement même quand les prix ne bougent pas. <strong>À 6,5% d'APY, une dette de 40 000$ devient 42 600$ en un an, augmentant votre prix de liquidation de 3 300$ sans que vous le remarquiez.</strong> La formule complète, les zones et les seuils à définir.</span><span class="t-es">Tu health factor no es estático — el interés de préstamo hace crecer tu deuda diariamente incluso cuando los precios no se mueven. <strong>Al 6,5% APY, una deuda de $40.000 se convierte en $42.600 en un año, elevando tu precio de liquidación en $3.300 sin que te des cuenta.</strong> La fórmula completa, las zonas y los umbrales a establecer.</span></p>
@@ -229,7 +232,7 @@
     <div class="post-card">
       <div class="post-meta">
         <span class="post-date"><span class="t-en">June 2026</span><span class="t-fr">Juin 2026</span><span class="t-es">Junio 2026</span></span>
-        <span class="post-tag guide">Guide</span>
+        <span class="post-tag guide"><span class="t-en">Guide</span><span class="t-fr">Guide</span><span class="t-es">Guía</span></span>
       </div>
       <div class="post-title"><a href="avoid-defi-liquidation.html"><span class="t-en">7 ways to never get liquidated in DeFi</span><span class="t-fr">7 façons de ne jamais se faire liquider en DeFi</span><span class="t-es">7 formas de nunca ser liquidado en DeFi</span></a></div>
       <p class="post-excerpt"><span class="t-en">Liquidation is not bad luck — it's a predictable outcome of ignoring specific thresholds. <strong>On Aave V3, the liquidation penalty is 10% for WBTC: on a $50,000 position that's $5,000 lost in seconds.</strong> The full playbook to avoid it, from opening rules to monitoring habits.</span><span class="t-fr">La liquidation n'est pas de la malchance — c'est un résultat prévisible quand on ignore des seuils spécifiques. <strong>Sur Aave V3, la pénalité de liquidation est de 10% pour WBTC : sur une position de 50 000$, c'est 5 000$ perdus en quelques secondes.</strong> Le guide complet pour l'éviter, des règles d'ouverture aux habitudes de surveillance.</span><span class="t-es">La liquidación no es mala suerte — es un resultado predecible de ignorar umbrales específicos. <strong>En Aave V3, la penalización de liquidación es del 10% para WBTC: en una posición de $50.000 eso son $5.000 perdidos en segundos.</strong> El manual completo para evitarlo, desde las reglas de apertura hasta los hábitos de monitoreo.</span></p>
@@ -238,21 +241,21 @@
 
     <div class="post-card">
       <div class="post-meta">
-        <span class="post-date">June 2026</span>
-        <span class="post-tag research">Research</span>
+        <span class="post-date"><span class="t-en">June 2026</span><span class="t-fr">Juin 2026</span><span class="t-es">Junio 2026</span></span>
+        <span class="post-tag research"><span class="t-en">Research</span><span class="t-fr">Recherche</span><span class="t-es">Investigación</span></span>
       </div>
-      <div class="post-title"><a href="best-dex-arbitrum.html">Best DEX on Arbitrum 2026: which one actually saves you money?</a></div>
-      <p class="post-excerpt">1inch, Camelot, Paraswap, CoW Swap — the right choice depends entirely on your trade size. <strong>A DeFi user doing two $10,000 swaps per week at 0.5% slippage loses $5,200/year vs $1,040 with optimized routing.</strong> The breakdown by size, MEV protection and hidden costs.</p>
-      <a href="best-dex-arbitrum.html" class="read-more">Read →</a>
+      <div class="post-title"><a href="best-dex-arbitrum.html"><span class="t-en">Best DEX on Arbitrum 2026: which one actually saves you money?</span><span class="t-fr">Meilleur DEX sur Arbitrum 2026 : lequel vous fait vraiment économiser ?</span><span class="t-es">Mejor DEX en Arbitrum 2026: ¿cuál te ahorra dinero de verdad?</span></a></div>
+      <p class="post-excerpt"><span class="t-en">1inch, Camelot, Paraswap, CoW Swap — the right choice depends entirely on your trade size. <strong>A DeFi user doing two $10,000 swaps per week at 0.5% slippage loses $5,200/year vs $1,040 with optimized routing.</strong> The breakdown by size, MEV protection and hidden costs.</span><span class="t-fr">1inch, Camelot, Paraswap, CoW Swap — le bon choix dépend entièrement de la taille de votre trade. <strong>Un utilisateur DeFi faisant deux swaps de 10 000$ par semaine à 0,5% de slippage perd 5 200$/an vs 1 040$ avec un routing optimisé.</strong> Le détail par taille, protection MEV et coûts cachés.</span><span class="t-es">1inch, Camelot, Paraswap, CoW Swap — la elección correcta depende totalmente del tamaño de tu trade. <strong>Un usuario DeFi haciendo dos swaps de $10.000 por semana al 0,5% de slippage pierde $5.200/año vs $1.040 con routing optimizado.</strong> El desglose por tamaño, protección MEV y costos ocultos.</span></p>
+      <a href="best-dex-arbitrum.html" class="read-more"><span class="t-en">Read →</span><span class="t-fr">Lire →</span><span class="t-es">Leer →</span></a>
     </div>
 
   </div>
 
   <!-- ARTICLE 1 -->
   <div class="article" id="art-gas-slippage">
-    <a href="#" class="article-back" onclick="history.back();return false">← Back to blog</a>
+    <a href="#" class="article-back" onclick="history.back();return false"><span class="t-en">← Back to blog</span><span class="t-fr">← Retour au blog</span><span class="t-es">← Volver al blog</span></a>
     <div class="art-hero">
-      <div class="post-meta"><span class="post-date">June 2026</span><span class="post-tag analysis">Analysis</span></div>
+      <div class="post-meta"><span class="post-date"><span class="t-en">June 2026</span><span class="t-fr">Juin 2026</span><span class="t-es">Junio 2026</span></span><span class="post-tag analysis"><span class="t-en">Analysis</span><span class="t-fr">Analyse</span><span class="t-es">Análisis</span></span></div>
       <h1>Your Uniswap trades are costing you more than you think</h1>
       <p class="lede">Gas and slippage work against you from opposite directions. Most traders treat gas as fixed overhead and ignore how it interacts with trade size — that's leaving money on the table every single trade.</p>
     </div>
@@ -280,9 +283,9 @@
 
   <!-- ARTICLE 2 -->
   <div class="article" id="art-health-factor">
-    <a href="#" class="article-back" onclick="history.back();return false">← Back to blog</a>
+    <a href="#" class="article-back" onclick="history.back();return false"><span class="t-en">← Back to blog</span><span class="t-fr">← Retour au blog</span><span class="t-es">← Volver al blog</span></a>
     <div class="art-hero">
-      <div class="post-meta"><span class="post-date">June 2026</span><span class="post-tag guide">Guide</span></div>
+      <div class="post-meta"><span class="post-date"><span class="t-en">June 2026</span><span class="t-fr">Juin 2026</span><span class="t-es">Junio 2026</span></span><span class="post-tag guide"><span class="t-en">Guide</span><span class="t-fr">Guide</span><span class="t-es">Guía</span></span></div>
       <h1>Health factor 1.3 — how much margin is that, really?</h1>
       <p class="lede">A health factor of 1.3 is routinely called "safe" in DeFi communities. Whether it actually is depends entirely on what's in your collateral — and the math is less forgiving than the label suggests.</p>
     </div>
@@ -313,9 +316,9 @@
 
   <!-- ARTICLE 3 -->
   <div class="article" id="art-gmx-fees">
-    <a href="#" class="article-back" onclick="history.back();return false">← Back to blog</a>
+    <a href="#" class="article-back" onclick="history.back();return false"><span class="t-en">← Back to blog</span><span class="t-fr">← Retour au blog</span><span class="t-es">← Volver al blog</span></a>
     <div class="art-hero">
-      <div class="post-meta"><span class="post-date">June 2026</span><span class="post-tag research">Research</span></div>
+      <div class="post-meta"><span class="post-date"><span class="t-en">June 2026</span><span class="t-fr">Juin 2026</span><span class="t-es">Junio 2026</span></span><span class="post-tag research"><span class="t-en">Research</span><span class="t-fr">Recherche</span><span class="t-es">Investigación</span></span></div>
       <h1>GMX perpetuals: the borrow fee is eating your PnL</h1>
       <p class="lede">The opening fee on GMX is visible and easy to account for. The borrow fee is continuous, compounding, and invisible to most traders until they finally close. Here's the actual math — with numbers.</p>
     </div>
@@ -343,9 +346,9 @@
 
   <!-- ARTICLE 4 -->
   <div class="article" id="art-leverage-loops">
-    <a href="#" class="article-back" onclick="history.back();return false">← Back to blog</a>
+    <a href="#" class="article-back" onclick="history.back();return false"><span class="t-en">← Back to blog</span><span class="t-fr">← Retour au blog</span><span class="t-es">← Volver al blog</span></a>
     <div class="art-hero">
-      <div class="post-meta"><span class="post-date">June 2026</span><span class="post-tag analysis">Analysis</span></div>
+      <div class="post-meta"><span class="post-date"><span class="t-en">June 2026</span><span class="t-fr">Juin 2026</span><span class="t-es">Junio 2026</span></span><span class="post-tag analysis"><span class="t-en">Analysis</span><span class="t-fr">Analyse</span><span class="t-es">Análisis</span></span></div>
       <h1>Leverage loops on Aave: the real cost of recursive borrowing</h1>
       <p class="lede">Looping — depositing, borrowing, redepositing — is the standard way to build leveraged exposure inside a lending protocol. The math is clean, but the fee drag and liquidation risk accumulate faster than most users model.</p>
     </div>
@@ -373,9 +376,9 @@
 
   <!-- ARTICLE 5 -->
   <div class="article" id="art-v3-ranges">
-    <a href="#" class="article-back" onclick="history.back();return false">← Back to blog</a>
+    <a href="#" class="article-back" onclick="history.back();return false"><span class="t-en">← Back to blog</span><span class="t-fr">← Retour au blog</span><span class="t-es">← Volver al blog</span></a>
     <div class="art-hero">
-      <div class="post-meta"><span class="post-date">June 2026</span><span class="post-tag research">Research</span></div>
+      <div class="post-meta"><span class="post-date"><span class="t-en">June 2026</span><span class="t-fr">Juin 2026</span><span class="t-es">Junio 2026</span></span><span class="post-tag research"><span class="t-en">Research</span><span class="t-fr">Recherche</span><span class="t-es">Investigación</span></span></div>
       <h1>Uniswap V3 ranges: why width matters more than entry</h1>
       <p class="lede">Concentrated liquidity makes V3 up to 20× more capital-efficient than V2 — but only while price stays in range. The trade-off is quantifiable, and most LPs pick widths by feel rather than by the numbers.</p>
     </div>
@@ -402,9 +405,9 @@
 
   <!-- ARTICLE 6 — Morpho vs Aave -->
   <div class="article" id="art-morpho-vs-aave">
-    <a href="#" class="article-back" onclick="history.back();return false">← Back to blog</a>
+    <a href="#" class="article-back" onclick="history.back();return false"><span class="t-en">← Back to blog</span><span class="t-fr">← Retour au blog</span><span class="t-es">← Volver al blog</span></a>
     <div class="art-hero">
-      <div class="post-meta"><span class="post-date">June 2026</span><span class="post-tag analysis">Analysis</span></div>
+      <div class="post-meta"><span class="post-date"><span class="t-en">June 2026</span><span class="t-fr">Juin 2026</span><span class="t-es">Junio 2026</span></span><span class="post-tag analysis"><span class="t-en">Analysis</span><span class="t-fr">Analyse</span><span class="t-es">Análisis</span></span></div>
       <h1 class="art-title">Morpho Blue vs Aave V3: which one for your WBTC?</h1>
       <p class="art-sub">Same collateral, different risk models. Understanding the tradeoffs before you borrow.</p>
     </div>
@@ -442,9 +445,9 @@
 
   <!-- ARTICLE 7 — GMX Funding Rate -->
   <div class="article" id="art-gmx-funding">
-    <a href="#" class="article-back" onclick="history.back();return false">← Back to blog</a>
+    <a href="#" class="article-back" onclick="history.back();return false"><span class="t-en">← Back to blog</span><span class="t-fr">← Retour au blog</span><span class="t-es">← Volver al blog</span></a>
     <div class="art-hero">
-      <div class="post-meta"><span class="post-date">June 2026</span><span class="post-tag guide">Guide</span></div>
+      <div class="post-meta"><span class="post-date"><span class="t-en">June 2026</span><span class="t-fr">Juin 2026</span><span class="t-es">Junio 2026</span></span><span class="post-tag guide"><span class="t-en">Guide</span><span class="t-fr">Guide</span><span class="t-es">Guía</span></span></div>
       <h1 class="art-title">GMX funding rate: the hidden cost destroying your perps</h1>
       <p class="art-sub">It runs 24/7. It compounds. And most traders forget to model it before opening a position.</p>
     </div>
@@ -485,9 +488,9 @@
 
   <!-- ARTICLE 8 — Stablecoin Ranking -->
   <div class="article" id="art-stablecoin-ranking">
-    <a href="#" class="article-back" onclick="history.back();return false">← Back to blog</a>
+    <a href="#" class="article-back" onclick="history.back();return false"><span class="t-en">← Back to blog</span><span class="t-fr">← Retour au blog</span><span class="t-es">← Volver al blog</span></a>
     <div class="art-hero">
-      <div class="post-meta"><span class="post-date">June 2026</span><span class="post-tag research">Research</span></div>
+      <div class="post-meta"><span class="post-date"><span class="t-en">June 2026</span><span class="t-fr">Juin 2026</span><span class="t-es">Junio 2026</span></span><span class="post-tag research"><span class="t-en">Research</span><span class="t-fr">Recherche</span><span class="t-es">Investigación</span></span></div>
       <h1 class="art-title">Stablecoin risk ranking 2026: USDC vs USDe vs USD0</h1>
       <p class="art-sub">Three stablecoins with completely different risk models — and different roles in a DeFi portfolio.</p>
     </div>

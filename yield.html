@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <meta name="description" content="Yield Allocation Optimizer — OrnyTools. Find the optimal allocation across Aave, Morpho, Spark and Compound with live APY data."/>
 <meta name="robots" content="index,follow"/>
+<link rel="icon" href="logo.png" type="image/png" />
 <link rel="canonical" href="https://ornytools.xyz/yield.html"/>
 <link rel="alternate" hreflang="en" href="https://ornytools.xyz/yield.html"/>
 <link rel="alternate" hreflang="fr" href="https://ornytools.xyz/yield.html"/>
@@ -318,7 +319,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <hr class="divider"/>
 
       <div class="field">
-        <label>Risk profile</label>
+        <label><span class="t-en">Risk profile</span><span class="t-fr">Profil de risque</span><span class="t-es">Perfil de riesgo</span></label>
         <div class="risk-toggle">
           <button class="risk-btn active-conservative" data-risk="conservative"><span class="t-en">Conservative</span><span class="t-fr">Conservateur</span><span class="t-es">Conservador</span></button>
           <button class="risk-btn" data-risk="moderate"><span class="t-en">Moderate</span><span class="t-fr">Modéré</span><span class="t-es">Moderado</span></button>
@@ -341,7 +342,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="result-zone" id="resultZone">
     <div class="placeholder-card">
       <div class="ph-icon">🦅</div>
-      <p>Fetching live APY data…<br>Your allocation will appear here.</p>
+      <p><span class="t-en">Fetching live APY data…<br>Your allocation will appear here.</span><span class="t-fr">Chargement des données APY en direct…<br>Votre allocation apparaîtra ici.</span><span class="t-es">Cargando datos APY en vivo…<br>Tu asignación aparecerá aquí.</span></p>
     </div>
   </div>
 
@@ -356,7 +357,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <footer>
   <div class="ft-tag"><span class="t-en">Allocate smart. <span>Yield more.</span></span><span class="t-fr">Allouez intelligemment. <span>Rendez plus.</span><span class="t-es">Asigna inteligentemente. <span>Rinde más.</span></span></span></div>
-  Live APY via DeFiLlama · read-only · no wallet connection · ornytools.xyz<br/>
+  <span class="t-en">Live APY via DeFiLlama · read-only · no wallet connection · ornytools.xyz</span><span class="t-fr">APY en direct via DeFiLlama · lecture seule · sans connexion wallet · ornytools.xyz</span><span class="t-es">APY en vivo vía DeFiLlama · solo lectura · sin conexión de wallet · ornytools.xyz</span><br/>
   <span style="margin-top:8px;display:inline-block">Built by <a href="https://www.linkedin.com/in/xavier-maquin-5576643b9/" target="_blank" rel="noopener" style="color:var(--good);text-decoration:none;font-weight:600">Xavier Maquin</a></span>
 </footer>
 
@@ -482,7 +483,7 @@ let _lastAllPools = [];
 function renderResults(allocatedPools, capital, risk, allPools){
   if(!allocatedPools.length){
     const l = getLang();
-    $('resultZone').innerHTML = `<div class="placeholder-card"><div class="ph-icon">😕</div><p>${l==='fr' ? 'Aucune donnée trouvée pour cet actif sur cette chaîne.<br>Essayez USDC sur Ethereum — liquidité maximale.' : 'No live data found for this asset on this chain.<br>Try USDC on Ethereum — most liquidity.'}</p></div>`;
+    $('resultZone').innerHTML = `<div class="placeholder-card"><div class="ph-icon">😕</div><p>${l==='fr' ? 'Aucune donnée trouvée pour cet actif sur cette chaîne.<br>Essayez USDC sur Ethereum — liquidité maximale.' : l==='es' ? 'No se encontraron datos en vivo para este activo en esta red.<br>Prueba USDC en Ethereum — máxima liquidez.' : 'No live data found for this asset on this chain.<br>Try USDC on Ethereum — most liquidity.'}</p></div>`;
     return;
   }
 
@@ -623,8 +624,8 @@ async function calc(){
     renderResults(allocated, capital, risk, selected);
   } catch(e) {
     $('fetchDot').className = 'fetch-dot';
-    $('fetchText').textContent = 'Could not fetch APY — check connection';
-    $('resultZone').innerHTML = `<div class="placeholder-card"><div class="ph-icon">⚠️</div><p>Could not load live APY data.<br>Check your internet connection and refresh.</p></div>`;
+    const _yl=getLang(); $('fetchText').textContent = _yl==='fr'?'Impossible de charger l\'APY — vérifiez la connexion':_yl==='es'?'No se pudo cargar el APY — verifica la conexión':'Could not fetch APY — check connection';
+    $('resultZone').innerHTML = `<div class="placeholder-card"><div class="ph-icon">⚠️</div><p>${_yl==='fr'?'Impossible de charger les données APY en direct.<br>Vérifiez votre connexion internet et actualisez.':_yl==='es'?'No se pudieron cargar los datos APY en vivo.<br>Verifica tu conexión a internet y recarga.':'Could not load live APY data.<br>Check your internet connection and refresh.'}</p></div>`;
   }
 }
 

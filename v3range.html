@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <meta name="description" content="Uniswap V3 Range Optimizer — OrnyTools. Calculate your concentration multiplier, token split, IL curve and optimal range for any V3 LP position."/>
 <meta name="robots" content="index,follow"/>
+<link rel="icon" href="logo.png" type="image/png" />
 <link rel="canonical" href="https://ornytools.xyz/v3range.html"/>
 <link rel="alternate" hreflang="en" href="https://ornytools.xyz/v3range.html"/>
 <link rel="alternate" hreflang="fr" href="https://ornytools.xyz/v3range.html"/>
@@ -575,27 +576,31 @@ function analyze() {
   let ornyState, ornyLabel, ornyMsg;
   if (minSide < 5) {
     ornyState = 'tight';
-    ornyLabel = l==='fr' ? 'Alerte Orny — Plage très serrée' : 'Orny Warning — Very Tight Range';
+    ornyLabel = l==='fr' ? 'Alerte Orny — Plage très serrée' : l==='es' ? 'Alerta Orny — Rango muy ajustado' : 'Orny Warning — Very Tight Range';
     ornyMsg = l==='fr'
       ? `<strong>Largeur de plage : ${pctBelow.toFixed(1)}% / +${pctAbove.toFixed(1)}%.</strong> Très concentrée = capture maximale des frais, mais vous sortez de plage au moindre mouvement significatif. Les coûts de gas pour rééquilibrer dévoreront vos gains si vous ne surveillez pas en permanence. Réservé aux paires de stablecoins ou aux market makers professionnels.`
+      : l==='es' ? `<strong>Ancho de rango: ${pctBelow.toFixed(1)}% / +${pctAbove.toFixed(1)}%.</strong> Muy concentrado = captura máxima de comisiones, pero saldrás del rango con cualquier movimiento significativo. Los costos de gas para rebalancear consumirán tus ganancias. Solo recomendado para pares de stablecoins o market makers profesionales.`
       : `<strong>Range width: ${pctBelow.toFixed(1)}% / +${pctAbove.toFixed(1)}%.</strong> Highly concentrated = maximum fee capture, but you'll exit range with any significant move. Gas costs to rebalance will eat your gains unless you're monitoring constantly. Suitable only for stablecoin pairs or professional market makers.`;
   } else if (minSide < 15) {
     ornyState = 'caution';
-    ornyLabel = l==='fr' ? 'Orny Prudence — Plage serrée' : 'Orny Caution — Tight Range';
+    ornyLabel = l==='fr' ? 'Orny Prudence — Plage serrée' : l==='es' ? 'Orny Precaución — Rango ajustado' : 'Orny Caution — Tight Range';
     ornyMsg = l==='fr'
       ? `<strong>Largeur de plage : ${pctBelow.toFixed(1)}% / +${pctAbove.toFixed(1)}%.</strong> ${mult.toFixed(1)}x d'efficacité capitale = fort APR de frais — mais vous devez gérer activement. Si le prix sort de plage, les frais s'arrêtent et l'IL se cristallise. Envisagez une alerte de rééquilibrage à ±${(minSide * 0.8).toFixed(0)}%.`
+      : l==='es' ? `<strong>Ancho de rango: ${pctBelow.toFixed(1)}% / +${pctAbove.toFixed(1)}%.</strong> ${mult.toFixed(1)}x de eficiencia de capital = fuerte APR de comisiones, pero necesitas gestión activa. Si el precio sale del rango, las comisiones se detienen y cristalizas la IL. Considera una alerta de rebalanceo a ±${(minSide * 0.8).toFixed(0)}%.`
       : `<strong>Range width: ${pctBelow.toFixed(1)}% / +${pctAbove.toFixed(1)}%.</strong> ${mult.toFixed(1)}x capital efficiency means strong fee APR — but you need active management. If price exits range, fees stop and you crystallize IL. Consider setting a rebalancing alert at ±${(minSide * 0.8).toFixed(0)}%.`;
   } else if (minSide < 40) {
     ornyState = 'safe';
-    ornyLabel = l==='fr' ? 'Orny Approuvé — Plage équilibrée' : 'Orny Approved — Balanced Range';
+    ornyLabel = l==='fr' ? 'Orny Approuvé — Plage équilibrée' : l==='es' ? 'Orny Aprobado — Rango equilibrado' : 'Orny Approved — Balanced Range';
     ornyMsg = l==='fr'
       ? `<strong>Largeur de plage : ${pctBelow.toFixed(1)}% / +${pctAbove.toFixed(1)}%.</strong> ${mult.toFixed(1)}x vs full-range v2. Bon équilibre entre capture de frais et maintien en plage malgré la volatilité normale. C'est le sweet spot pour la plupart des stratégies LP actives.`
+      : l==='es' ? `<strong>Ancho de rango: ${pctBelow.toFixed(1)}% / +${pctAbove.toFixed(1)}%.</strong> ${mult.toFixed(1)}x vs full-range v2. Buen equilibrio entre captura de comisiones y mantenerse en rango a pesar de la volatilidad normal. Es el punto óptimo para la mayoría de estrategias LP activas.`
       : `<strong>Range width: ${pctBelow.toFixed(1)}% / +${pctAbove.toFixed(1)}%.</strong> ${mult.toFixed(1)}x efficiency vs full-range v2. Good balance between fee capture and staying in range through normal volatility. This is the sweet spot for most active LP strategies.`;
   } else {
     ornyState = 'safe';
-    ornyLabel = l==='fr' ? 'Orny Approuvé — Plage large' : 'Orny Approved — Wide Range';
+    ornyLabel = l==='fr' ? 'Orny Approuvé — Plage large' : l==='es' ? 'Orny Aprobado — Rango amplio' : 'Orny Approved — Wide Range';
     ornyMsg = l==='fr'
       ? `<strong>Largeur de plage : ${pctBelow.toFixed(1)}% / +${pctAbove.toFixed(1)}%.</strong> ${mult.toFixed(1)}x vs v2 — efficacité conservatrice. Vous resterez en plage même lors de mouvements majeurs, idéal pour une approche "set-and-forget". Pour un APR plus élevé, envisagez une sous-plage plus serrée avec une partie du capital.`
+      : l==='es' ? `<strong>Ancho de rango: ${pctBelow.toFixed(1)}% / +${pctAbove.toFixed(1)}%.</strong> ${mult.toFixed(1)}x vs v2 — eficiencia conservadora. Permanecerás en rango incluso con movimientos mayores, ideal para un enfoque "set-and-forget". Para mayor APR, considera un sub-rango más ajustado con parte del capital.`
       : `<strong>Range width: ${pctBelow.toFixed(1)}% / +${pctAbove.toFixed(1)}%.</strong> ${mult.toFixed(1)}x vs v2 — conservative efficiency. You'll stay in range through major moves, which is ideal for set-and-forget. For higher APR, consider a tighter sub-range with a portion of capital.`;
   }
 

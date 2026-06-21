@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <meta name="description" content="Morpho Blue Calculator — OrnyTools. Health factor, liquidation price and loop simulator per isolated market pair on Morpho Blue."/>
 <meta name="robots" content="index,follow"/>
+<link rel="icon" href="logo.png" type="image/png" />
 <link rel="canonical" href="https://ornytools.xyz/morpho.html"/>
 <link rel="alternate" hreflang="en" href="https://ornytools.xyz/morpho.html"/>
 <link rel="alternate" hreflang="fr" href="https://ornytools.xyz/morpho.html"/>
@@ -205,7 +206,7 @@
 <nav class="navbar">
   <a href="index.html"><img src="logo.png" class="nav-logo" alt="OrnyTools"/></a>
   <span class="nav-brand">ORNY<span class="dot">.</span>TOOLS</span>
-  <a href="index.html" class="nav-home">← Home</a>
+  <a href="index.html" class="nav-home"><span class="t-en">← Home</span><span class="t-fr">← Accueil</span><span class="t-es">← Inicio</span></a>
   <div style="margin-left:8px;display:flex;align-items:center;gap:6px">
     <button id="btnEN" class="lang-btn" onclick="setLang('en')">🇬🇧 EN</button>
     <button id="btnFR" class="lang-btn" onclick="setLang('fr')">🇫🇷 FR</button>
@@ -418,8 +419,8 @@ function loadMarket(){
   $('msLltv').textContent = (m.lltv*100)+'%';
   $('msBorrowApy').textContent = '~'+m.apy+'%';
   $('msChain').textContent = m.chain;
-  $('collateralSymHint').textContent = 'units of '+m.col;
-  $('priceHint').textContent = m.loan+' per '+m.col;
+  const _ml=getLang?getLang():'en'; $('collateralSymHint').textContent = (_ml==='fr'?'unités de ':_ml==='es'?'unidades de ':'units of ')+m.col;
+  $('priceHint').textContent = m.loan+(_ml==='fr'?' par ':_ml==='es'?' por ':' per ')+m.col;
   $('borrowHint').textContent = m.loan;
   $('inputPrice').value = m.refPrice;
   $('inputCollateral').value = m.col === 'WBTC' ? 1 : m.col === 'sdeUSD' ? 10000 : 1;
@@ -467,13 +468,13 @@ function calc(){
 
   let comment;
   if(ltv >= m.lltv)
-    comment = l==='fr' ? `⛔ <strong>Position déjà liquidable.</strong> LTV (${(ltv*100).toFixed(1)}%) dépasse le LLTV (${(m.lltv*100)}%). Réduisez l'emprunt immédiatement.` : `⛔ <strong>Position already liquidatable.</strong> LTV (${(ltv*100).toFixed(1)}%) exceeds LLTV (${(m.lltv*100)}%). Reduce borrow immediately.`;
+    comment = l==='fr' ? `⛔ <strong>Position déjà liquidable.</strong> LTV (${(ltv*100).toFixed(1)}%) dépasse le LLTV (${(m.lltv*100)}%). Réduisez l'emprunt immédiatement.` : l==='es' ? `⛔ <strong>Posición ya liquidable.</strong> LTV (${(ltv*100).toFixed(1)}%) supera el LLTV (${(m.lltv*100)}%). Reduce el préstamo de inmediato.` : `⛔ <strong>Position already liquidatable.</strong> LTV (${(ltv*100).toFixed(1)}%) exceeds LLTV (${(m.lltv*100)}%). Reduce borrow immediately.`;
   else if(hf < 1.1)
-    comment = l==='fr' ? `🔴 <strong>Zone critique.</strong> HF ${hf.toFixed(2)} — liquidation à ${dropToLiq.toFixed(1)}% de baisse. Un seul mouvement de marché peut vous sortir. Remboursez ou ajoutez du collatéral.` : `🔴 <strong>Critical zone.</strong> HF ${hf.toFixed(2)} — liquidation at ${dropToLiq.toFixed(1)}% drop. One market move can take you out. Repay or add collateral.`;
+    comment = l==='fr' ? `🔴 <strong>Zone critique.</strong> HF ${hf.toFixed(2)} — liquidation à ${dropToLiq.toFixed(1)}% de baisse. Un seul mouvement de marché peut vous sortir. Remboursez ou ajoutez du collatéral.` : l==='es' ? `🔴 <strong>Zona crítica.</strong> HF ${hf.toFixed(2)} — liquidación al ${dropToLiq.toFixed(1)}% de caída. Un solo movimiento de mercado puede liquidarte. Reembolsa o añade colateral.` : `🔴 <strong>Critical zone.</strong> HF ${hf.toFixed(2)} — liquidation at ${dropToLiq.toFixed(1)}% drop. One market move can take you out. Repay or add collateral.`;
   else if(hf < 1.3)
-    comment = l==='fr' ? `🟡 <strong>Zone à surveiller.</strong> HF ${hf.toFixed(2)} — marge de ${dropToLiq.toFixed(1)}% avant liquidation. Sur Morpho Blue, il n'y a pas de grace period — la liquidation est immédiate quand LTV > LLTV.` : `🟡 <strong>Monitor zone.</strong> HF ${hf.toFixed(2)} — ${dropToLiq.toFixed(1)}% margin before liquidation. On Morpho Blue there's no grace period — liquidation is immediate when LTV > LLTV.`;
+    comment = l==='fr' ? `🟡 <strong>Zone à surveiller.</strong> HF ${hf.toFixed(2)} — marge de ${dropToLiq.toFixed(1)}% avant liquidation. Sur Morpho Blue, il n'y a pas de grace period — la liquidation est immédiate quand LTV > LLTV.` : l==='es' ? `🟡 <strong>Zona a vigilar.</strong> HF ${hf.toFixed(2)} — margen de ${dropToLiq.toFixed(1)}% antes de liquidación. En Morpho Blue no hay grace period — la liquidación es inmediata cuando LTV > LLTV.` : `🟡 <strong>Monitor zone.</strong> HF ${hf.toFixed(2)} — ${dropToLiq.toFixed(1)}% margin before liquidation. On Morpho Blue there's no grace period — liquidation is immediate when LTV > LLTV.`;
   else
-    comment = l==='fr' ? `✅ <strong>Position saine.</strong> HF ${hf.toFixed(2)} — liquidation à ${dropToLiq.toFixed(1)}% de baisse. L'emprunt actuel utilise ${(ltv/m.lltv*100).toFixed(0)}% de la capacité maximum.` : `✅ <strong>Healthy position.</strong> HF ${hf.toFixed(2)} — liquidation at ${dropToLiq.toFixed(1)}% drop. Current borrow uses ${(ltv/m.lltv*100).toFixed(0)}% of max capacity.`;
+    comment = l==='fr' ? `✅ <strong>Position saine.</strong> HF ${hf.toFixed(2)} — liquidation à ${dropToLiq.toFixed(1)}% de baisse. L'emprunt actuel utilise ${(ltv/m.lltv*100).toFixed(0)}% de la capacité maximum.` : l==='es' ? `✅ <strong>Posición saludable.</strong> HF ${hf.toFixed(2)} — liquidación al ${dropToLiq.toFixed(1)}% de caída. El préstamo actual usa el ${(ltv/m.lltv*100).toFixed(0)}% de la capacidad máxima.` : `✅ <strong>Healthy position.</strong> HF ${hf.toFixed(2)} — liquidation at ${dropToLiq.toFixed(1)}% drop. Current borrow uses ${(ltv/m.lltv*100).toFixed(0)}% of max capacity.`;
   $('ornyComment').innerHTML = comment;
 }
 
@@ -487,10 +488,10 @@ function calcLoop(){
 
   let rows = `<table class="loop-table"><thead><tr>
     <th>${l==='fr'?'Boucle':l==='es'?'Bucle':'Loop'}</th>
-    <th>${l==='fr'?'Collatéral':'Collateral'}</th>
-    <th>${l==='fr'?'Dette':'Debt'}</th>
+    <th>${l==='fr'?'Collatéral':l==='es'?'Colateral':'Collateral'}</th>
+    <th>${l==='fr'?'Dette':l==='es'?'Deuda':'Debt'}</th>
     <th>LTV</th>
-    <th>${l==='fr'?'Levier':'Leverage'}</th>
+    <th>${l==='fr'?'Levier':l==='es'?'Apalancamiento':'Leverage'}</th>
   </tr></thead><tbody>`;
 
   let col = C0, debt = 0;
@@ -510,7 +511,7 @@ function calcLoop(){
 
   rows += `</tbody></table>`;
   rows += `<div style="margin-top:10px;padding:10px 12px;background:var(--purple-pale);border-radius:9px;font-size:.8rem;color:var(--dim);line-height:1.7">
-    ${l==='fr'?`<strong>État final :</strong> Collatéral ${fmtUSD(col)}, Dette ${fmtUSD(debt)}, Levier ${(col/C0).toFixed(2)}×, HF ${finalHF.toFixed(2)}, Distance liquidation ${dropLiq.toFixed(1)}%`:`<strong>Final state:</strong> Collateral ${fmtUSD(col)}, Debt ${fmtUSD(debt)}, Leverage ${(col/C0).toFixed(2)}×, HF ${finalHF.toFixed(2)}, Liquidation distance ${dropLiq.toFixed(1)}%`}
+    ${l==='fr'?`<strong>État final :</strong> Collatéral ${fmtUSD(col)}, Dette ${fmtUSD(debt)}, Levier ${(col/C0).toFixed(2)}×, HF ${finalHF.toFixed(2)}, Distance liquidation ${dropLiq.toFixed(1)}%`:l==='es'?`<strong>Estado final:</strong> Colateral ${fmtUSD(col)}, Deuda ${fmtUSD(debt)}, Apalancamiento ${(col/C0).toFixed(2)}×, HF ${finalHF.toFixed(2)}, Distancia liquidación ${dropLiq.toFixed(1)}%`:`<strong>Final state:</strong> Collateral ${fmtUSD(col)}, Debt ${fmtUSD(debt)}, Leverage ${(col/C0).toFixed(2)}×, HF ${finalHF.toFixed(2)}, Liquidation distance ${dropLiq.toFixed(1)}%`}
   </div>`;
   $('loopTableWrap').innerHTML = rows;
 }

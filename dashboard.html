@@ -10,6 +10,7 @@
 <link rel="alternate" hreflang="fr" href="https://ornytools.xyz/dashboard.html"/>
 <link rel="alternate" hreflang="es" href="https://ornytools.xyz/dashboard.html"/>
 <link rel="alternate" hreflang="x-default" href="https://ornytools.xyz/dashboard.html"/>
+<link rel="icon" href="logo.png" type="image/png" />
 <meta property="og:type" content="website"/>
 <meta property="og:site_name" content="OrnyTools"/>
 <meta property="og:title" content="DeFi Position Dashboard — OrnyTools"/>
@@ -272,7 +273,7 @@
 <nav class="navbar">
   <a href="index.html"><img src="logo.png" class="nav-logo" alt="OrnyTools"/></a>
   <span class="nav-brand">ORNY<span class="dot">.</span>TOOLS</span>
-  <a href="index.html" class="nav-home">← Home</a>
+  <a href="index.html" class="nav-home"><span class="t-en">← Home</span><span class="t-fr">← Accueil</span><span class="t-es">← Inicio</span></a>
   <div style="margin-left:8px;display:flex;align-items:center;gap:6px">
     <button id="btnEN" class="lang-btn" onclick="setLang('en')">🇬🇧 EN</button>
     <button id="btnFR" class="lang-btn" onclick="setLang('fr')">🇫🇷 FR</button>
@@ -679,7 +680,7 @@ function renderAaveResults(proto, d, addr, l){
       <div class="stat-label">Health Factor</div>
       <div class="stat-val ${hfClass}">${fmtHF(healthFactor)}</div>
       <div class="hf-bar-wrap"><div class="hf-bar" style="width:${Math.min(100,healthFactor/3*100)}%;background:${hfClass==='safe'?'#16a34a':hfClass==='warn'?'#d97706':'#dc2626'}"></div></div>
-      <div class="stat-sub">${healthFactor<1.2?(l==='fr'?'⚠️ Critique':'⚠️ Critical'):healthFactor<1.5?(l==='fr'?'⚠️ Surveiller':'⚠️ Monitor'):(l==='fr'?'✅ Zone sûre':'✅ Safe zone')}</div>
+      <div class="stat-sub">${healthFactor<1.2?(l==='fr'?'⚠️ Critique':l==='es'?'⚠️ Crítico':'⚠️ Critical'):healthFactor<1.5?(l==='fr'?'⚠️ Surveiller':l==='es'?'⚠️ Vigilar':'⚠️ Monitor'):(l==='fr'?'✅ Zone sûre':l==='es'?'✅ Zona segura':'✅ Safe zone')}</div>
       ${_spark}
     </div>
     <div class="stat-card">
@@ -837,7 +838,7 @@ async function loadCompound(addr, l, cName){
     ${totalSupplyUSD>0?`<div class="stat-card safe">
       <div class="stat-label">${l==='fr'?'Supply USD total':l==='es'?'Supply USD total':'Total USD Supply'}</div>
       <div class="stat-val safe">${fmtUSD(totalSupplyUSD)}</div>
-      <div class="stat-sub">USDC/USDT ${l==='fr'?'marchés':'markets'}</div>
+      <div class="stat-sub">USDC/USDT ${l==='fr'?'marchés':l==='es'?'mercados':'markets'}</div>
     </div>`:''}
     ${totalBorrowUSD>0?`<div class="stat-card ${totalBorrowUSD>totalSupplyUSD*0.85?'danger':'warn'}">
       <div class="stat-label">${l==='fr'?'Emprunt USD total':l==='es'?'Deuda USD total':'Total USD Borrow'}</div>

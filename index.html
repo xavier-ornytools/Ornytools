@@ -6,6 +6,7 @@
   <title>OrnyTools — The DeFi Decision Engine</title>
   <meta name="description" content="13 free DeFi calculators: Aave V3 health factor, liquidation price, Morpho Blue, GMX V2, impermanent loss, leverage loops, stablecoin depeg monitor. No wallet needed. Powered by Chainlink & live on-chain data." />
 <link rel="canonical" href="https://ornytools.xyz/" />
+<link rel="icon" href="logo.png" type="image/png" />
 <link rel="alternate" hreflang="en" href="https://ornytools.xyz/"/>
 <link rel="alternate" hreflang="fr" href="https://ornytools.xyz/"/>
 <link rel="alternate" hreflang="es" href="https://ornytools.xyz/"/>
@@ -22,7 +23,7 @@
   <meta name="twitter:site"        content="@OrnyTools" />
   <meta name="twitter:creator"     content="@OrnyTools" />
   <meta name="twitter:title"       content="OrnyTools — The DeFi Decision Engine" />
-  <meta name="twitter:description" content="12 DeFi calculators, live Chainlink data, no wallet needed." />
+  <meta name="twitter:description" content="13 DeFi calculators, live Chainlink data, no wallet needed." />
   <meta name="twitter:image"       content="https://ornytools.xyz/og-social.png" />
   <script src="chart.min.js"></script>
   <style>
@@ -736,6 +737,26 @@
     <div class="hero-right">
       <div class="hero-img-wrap">
         <img src="orny-command.png" alt="OrnyTools — DeFi Command Center" />
+        <div class="stat-float sf-tvl">
+          <div class="sf-label"><span class="t-en">TOTAL SECURED</span><span class="t-fr">MONTANT SÉCURISÉ</span><span class="t-es">TOTAL ASEGURADO</span></div>
+          <div class="sf-val">$2.1B+</div>
+          <div class="sf-change sf-green">Aave V3 TVL</div>
+        </div>
+        <div class="stat-float sf-eth">
+          <div class="sf-label"><span class="sf-live-dot" id="heroEthDot" style="display:none"></span><span class="t-en">ETH PRICE</span><span class="t-fr">PRIX ETH</span><span class="t-es">PRECIO ETH</span></div>
+          <div class="sf-val" id="heroEthPrice">$—</div>
+          <div class="sf-change sf-muted" id="heroEthChange"><span class="t-en">Loading…</span><span class="t-fr">Chargement…</span><span class="t-es">Cargando…</span></div>
+        </div>
+        <div class="stat-float sf-trend">
+          <div class="sf-label"><span class="t-en">TOOLS LIVE</span><span class="t-fr">OUTILS ACTIFS</span><span class="t-es">HERRAMIENTAS</span></div>
+          <div class="sf-val sf-blue">13</div>
+          <div class="sf-change sf-muted"><span class="t-en">No wallet needed</span><span class="t-fr">Sans wallet</span><span class="t-es">Sin wallet</span></div>
+        </div>
+        <div class="stat-float sf-gas">
+          <div class="sf-label"><span class="sf-live-dot" id="heroGasDot" style="display:none"></span><span class="t-en">ETH GAS</span><span class="t-fr">GAS ETH</span><span class="t-es">GAS ETH</span></div>
+          <div class="sf-val" id="heroGasVal">— Gwei</div>
+          <div class="sf-change sf-muted" id="heroGasChange"><span class="t-en">Loading…</span><span class="t-fr">Chargement…</span><span class="t-es">Cargando…</span></div>
+        </div>
       </div>
     </div>
 
@@ -771,28 +792,28 @@
   <div class="intent-grid">
     <div class="intent-card" onclick="location.href='optimizer.html'">
       <div class="intent-ico" style="background:#eff6ff">🔄</div>
-      <div class="intent-pre">I want to</div>
+      <div class="intent-pre"><span class="t-en">I want to</span><span class="t-fr">Je veux</span><span class="t-es">Quiero</span></div>
       <div class="intent-title">Trade</div>
       <div class="intent-desc"><span class="t-en">Find the optimal trade size and minimize slippage</span><span class="t-fr">Trouvez la taille optimale et minimisez le slippage</span><span class="t-es">Encuentra el tamaño de trade óptimo y minimiza el slippage</span></div>
       <div class="intent-arrow">→</div>
     </div>
     <div class="intent-card" onclick="location.href='il-calculator.html'">
       <div class="intent-ico" style="background:#f0fdf4">💧</div>
-      <div class="intent-pre">I want to</div>
+      <div class="intent-pre"><span class="t-en">I want to</span><span class="t-fr">Je veux</span><span class="t-es">Quiero</span></div>
       <div class="intent-title">Provide LP</div>
       <div class="intent-desc"><span class="t-en">Simulate impermanent loss and optimize returns</span><span class="t-fr">Simulez la perte impermanente et optimisez vos rendements</span><span class="t-es">Simula la pérdida impermanente y optimiza tus retornos</span></div>
       <div class="intent-arrow">→</div>
     </div>
     <div class="intent-card" onclick="location.href='leverage.html'">
       <div class="intent-ico" style="background:#fdf4ff">📈</div>
-      <div class="intent-pre">I want to</div>
+      <div class="intent-pre"><span class="t-en">I want to</span><span class="t-fr">Je veux</span><span class="t-es">Quiero</span></div>
       <div class="intent-title">Leverage</div>
       <div class="intent-desc"><span class="t-en">Maximize yield with safe leverage strategies</span><span class="t-fr">Maximisez le rendement avec des stratégies de levier sûres</span><span class="t-es">Maximiza el rendimiento con estrategias de apalancamiento seguras</span></div>
       <div class="intent-arrow">→</div>
     </div>
     <div class="intent-card" onclick="location.href='liquidation.html'">
       <div class="intent-ico" style="background:#fff7ed">🏛️</div>
-      <div class="intent-pre">I want to</div>
+      <div class="intent-pre"><span class="t-en">I want to</span><span class="t-fr">Je veux</span><span class="t-es">Quiero</span></div>
       <div class="intent-title">Borrow</div>
       <div class="intent-desc"><span class="t-en">Understand liquidation risk and safe borrowing limits</span><span class="t-fr">Comprenez le risque de liquidation et vos limites d'emprunt</span><span class="t-es">Entiende el riesgo de liquidación y los límites de préstamo seguros</span></div>
       <div class="intent-arrow">→</div>
@@ -818,7 +839,7 @@
           <h3>Trade Optimizer</h3>
           <p><span class="t-en">Find the mathematically optimal trade size based on AMM curve, fees, and slippage.</span><span class="t-fr">Trouvez la taille de trade optimale mathématiquement selon la courbe AMM, les frais et le slippage.</span><span class="t-es">Encuentra el tamaño de trade matemáticamente óptimo basado en la curva AMM, comisiones y slippage.</span></p>
         </div>
-        <span class="tc-badge badge-best">BEST TRADES</span>
+        <span class="tc-badge badge-best"><span class="t-en">BEST TRADES</span><span class="t-fr">MEILLEURS TRADES</span><span class="t-es">MEJORES TRADES</span></span>
       </div>
       <button class="open-tool" onclick="location.href='optimizer.html'"><span class="t-en">Open Tool →</span><span class="t-fr">Ouvrir l'outil →</span><span class="t-es">Abrir herramienta →</span></button>
     </div>
@@ -994,7 +1015,7 @@
 
     <div class="why-card" style="border:2px solid var(--blue);box-shadow:0 0 0 4px rgba(37,99,235,.07),var(--shadow)">
       <div class="wc-hd"><span>💡</span><h3><span class="t-en">Orny's Daily Insight</span><span class="t-fr">Insight du Jour d'Orny</span><span class="t-es">El Consejo Diario de Orny</span></h3></div>
-      <div class="insight-quote">"Trading a $50 swap in a $50M pool can cost more in gas than in slippage."</div>
+      <div class="insight-quote"><span class="t-en">"Trading a $50 swap in a $50M pool can cost more in gas than in slippage."</span><span class="t-fr">«&nbsp;Trader un swap de 50$ dans un pool de 50M$ peut coûter plus en gas qu'en slippage.&nbsp;»</span><span class="t-es">«&nbsp;Hacer un swap de $50 en un pool de $50M puede costar más en gas que en slippage.&nbsp;»</span></div>
       <div class="insight-foot"><span class="t-en">Most traders never calculate that.</span><span class="t-fr">La plupart des traders ne calculent jamais ça.</span><span class="t-es">La mayoría de traders nunca calcula eso.</span></div>
     </div>
 
@@ -1018,7 +1039,7 @@
   <div class="stats-inner">
     <div class="stat-item">
       <div class="stat-icon">⚡</div>
-      <div class="stat-num"><span>12</span></div>
+      <div class="stat-num"><span>13</span></div>
       <div class="stat-lbl"><span class="t-en">Free Tools</span><span class="t-fr">Outils gratuits</span><span class="t-es">Herramientas gratuitas</span></div>
     </div>
     <div class="stat-item">
@@ -1241,7 +1262,7 @@
       </button>
     </div>
     <div class="cta-badges">
-      <div class="cta-badge-item"><span>⚡</span> <span class="t-en">12 Free Tools</span><span class="t-fr">12 Outils gratuits</span><span class="t-es">12 Herramientas gratuitas</span></div>
+      <div class="cta-badge-item"><span>⚡</span> <span class="t-en">13 Free Tools</span><span class="t-fr">13 Outils gratuits</span><span class="t-es">13 Herramientas gratuitas</span></div>
       <div class="cta-badge-item"><span>🔗</span> <span class="t-en">Live on-chain data</span><span class="t-fr">Données on-chain en direct</span><span class="t-es">Datos on-chain en vivo</span></div>
       <div class="cta-badge-item"><span>🛡️</span> <span class="t-en">No wallet needed</span><span class="t-fr">Sans connexion wallet</span><span class="t-es">Sin wallet necesaria</span></div>
       <div class="cta-badge-item"><span>🌐</span> EN · FR · ES</div>
@@ -1291,25 +1312,23 @@
         <div class="fbrand-socials">
           <a href="https://x.com/Ornytools" target="_blank" rel="noopener" class="fsoc fsoc-x" title="Follow @OrnyTools on X">𝕏</a>
           <a href="https://www.reddit.com/user/ornytool" target="_blank" rel="noopener" class="fsoc fsoc-reddit" title="OrnyTools on Reddit" style="font-size:.65rem">r/</a>
-          <div class="fsoc">DC</div>
-          <div class="fsoc">GH</div>
         </div>
       </div>
       <div class="fcol">
         <h4><span class="t-en">Product</span><span class="t-fr">Produit</span><span class="t-es">Producto</span></h4>
         <ul>
-          <li><a href="#tools">All Tools</a></li>
-          <li><a href="methodology.html">Methodology</a></li>
-          <li><a href="#" class="soon">Roadmap</a></li>
-          <li><a href="#" class="soon">API (Soon)</a></li>
+          <li><a href="#tools"><span class="t-en">All Tools</span><span class="t-fr">Tous les outils</span><span class="t-es">Todas las herramientas</span></a></li>
+          <li><a href="methodology.html"><span class="t-en">Methodology</span><span class="t-fr">Méthodologie</span><span class="t-es">Metodología</span></a></li>
+          <li><a href="#" class="soon"><span class="t-en">Roadmap</span><span class="t-fr">Feuille de route</span><span class="t-es">Hoja de ruta</span></a></li>
+          <li><a href="#" class="soon"><span class="t-en">API (Soon)</span><span class="t-fr">API (bientôt)</span><span class="t-es">API (próximamente)</span></a></li>
         </ul>
       </div>
       <div class="fcol">
         <h4><span class="t-en">Resources</span><span class="t-fr">Ressources</span><span class="t-es">Recursos</span></h4>
         <ul>
           <li><a href="blog.html">Blog</a></li>
-          <li><a href="guides.html">Guides</a></li>
-          <li><a href="glossary.html">Glossary</a></li>
+          <li><a href="guides.html"><span class="t-en">Guides</span><span class="t-fr">Guides</span><span class="t-es">Guías</span></a></li>
+          <li><a href="glossary.html"><span class="t-en">Glossary</span><span class="t-fr">Glossaire</span><span class="t-es">Glosario</span></a></li>
           <li><a href="faq.html">FAQ</a></li>
         </ul>
       </div>
@@ -1326,8 +1345,8 @@
         <h4 style="font-size:.69rem;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;color:var(--text);margin-bottom:14px"><span class="t-en">Stay Updated</span><span class="t-fr">Restez informé</span><span class="t-es">Mantente al día</span></h4>
         <p class="fnews-desc"><span class="t-en">Get new tools, insights, and updates delivered to your inbox.</span><span class="t-fr">Recevez les nouveaux outils, insights et mises à jour dans votre boîte mail.</span><span class="t-es">Recibe nuevas herramientas, análisis y actualizaciones en tu bandeja de entrada.</span></p>
         <div class="news-form">
-          <input type="email" id="newsEmail" placeholder="Enter your email" />
-          <button onclick="(function(){var i=document.getElementById('newsEmail'),v=i.value.trim();if(!v||!v.includes('@')){i.style.borderColor='#e02424';setTimeout(function(){i.style.borderColor='';},1500);return;}i.value='';i.placeholder='Thanks! ✓';i.style.borderColor='#0e9f6e';setTimeout(function(){i.placeholder='Enter your email';i.style.borderColor='';},3000);})()">→</button>
+          <input type="email" id="newsEmail" class="t-placeholder" placeholder="Enter your email" data-ph-en="Enter your email" data-ph-fr="Votre adresse email" data-ph-es="Tu correo electrónico" />
+          <button onclick="(function(){var l=typeof getLang==='function'?getLang():'en';var ph=l==='fr'?'Votre adresse email':l==='es'?'Tu correo electrónico':'Enter your email';var thanks=l==='fr'?'Merci ! ✓':l==='es'?'¡Gracias! ✓':'Thanks! ✓';var i=document.getElementById('newsEmail'),v=i.value.trim();if(!v||!v.includes('@')){i.style.borderColor='#e02424';setTimeout(function(){i.style.borderColor='';},1500);return;}i.value='';i.placeholder=thanks;i.style.borderColor='#0e9f6e';setTimeout(function(){i.placeholder=ph;i.style.borderColor='';},3000);})()">→</button>
         </div>
         <!-- KO-FI PLACEHOLDER — Remplacer VOTRE_PSEUDO par votre pseudo ko-fi.com après création du compte -->
         <a href="https://ko-fi.com/ornytools" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:7px;margin-top:12px;padding:9px 16px;background:rgba(255,94,91,.08);border:1px solid rgba(255,94,91,.25);border-radius:8px;font-size:.78rem;font-weight:700;color:#FF5E5B;text-decoration:none;transition:.15s" onmouseover="this.style.background='rgba(255,94,91,.15)'" onmouseout="this.style.background='rgba(255,94,91,.08)'">
@@ -1440,10 +1459,17 @@
         document.getElementById('heroGasVal').textContent = Math.round(gwei) + ' Gwei';
         document.getElementById('heroGasDot').style.display = 'inline-block';
         const lbl = document.getElementById('heroGasChange');
-        if      (gwei < 10)  { lbl.textContent = 'Very Low'; lbl.className = 'sf-change sf-green'; }
-        else if (gwei < 30)  { lbl.textContent = 'Low';      lbl.className = 'sf-change sf-green'; }
-        else if (gwei < 60)  { lbl.textContent = 'Normal';   lbl.className = 'sf-change sf-muted'; }
-        else                 { lbl.textContent = 'High';      lbl.className = 'sf-change sf-red';   }
+        const _gl = typeof getLang==='function'?getLang():'en';
+        const _gasLbls = {
+          en:['Very Low','Low','Normal','High'],
+          fr:['Très bas','Bas','Normal','Élevé'],
+          es:['Muy bajo','Bajo','Normal','Alto']
+        };
+        const _gl2 = _gasLbls[_gl]||_gasLbls.en;
+        if      (gwei < 10)  { lbl.textContent = _gl2[0]; lbl.className = 'sf-change sf-green'; }
+        else if (gwei < 30)  { lbl.textContent = _gl2[1]; lbl.className = 'sf-change sf-green'; }
+        else if (gwei < 60)  { lbl.textContent = _gl2[2]; lbl.className = 'sf-change sf-muted'; }
+        else                 { lbl.textContent = _gl2[3]; lbl.className = 'sf-change sf-red';   }
       }
     } catch(_) {}
   }

@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <meta name="description" content="RedZone — Aave V3 &amp; Compound V3 Liquidation Calculator. Multi-chain: Ethereum, Arbitrum, Base, Optimism, Polygon, Avalanche. Know your liquidation price before the market moves."/>
 <meta name="robots" content="index,follow"/>
+<link rel="icon" href="logo.png" type="image/png" />
 <link rel="canonical" href="https://ornytools.xyz/liquidation.html"/>
 <link rel="alternate" hreflang="en" href="https://ornytools.xyz/liquidation.html"/>
 <link rel="alternate" hreflang="fr" href="https://ornytools.xyz/liquidation.html"/>
@@ -348,7 +349,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 <!-- HERO -->
 <div class="page-hero">
-  <div class="eyebrow">RedZone — Aave V3 Liquidation Calculator</div>
+  <div class="eyebrow"><span class="t-en">RedZone — Aave V3 Liquidation Calculator</span><span class="t-fr">RedZone — Calculateur de Liquidation Aave V3</span><span class="t-es">RedZone — Calculadora de Liquidación Aave V3</span></div>
   <h1><span class="t-en">Are you in the <em>RedZone</em>?</span><span class="t-fr">Êtes-vous dans la <em>RedZone</em>&nbsp;?</span><span class="t-es">¿Estás en la <em>RedZone</em>?</span></h1>
   <p><span class="t-en">Health Factor, exact liquidation price, and buffer — live prices, 6 chains, 35+ assets.</span><span class="t-fr">Health Factor, prix de liquidation exact et marge — prix live, 6 blockchains, 35+ actifs.</span><span class="t-es">Health Factor, precio exacto de liquidación y margen — precios en vivo, 6 redes, 35+ activos.</span></p>
   <div class="chain-pills-hero">
@@ -566,7 +567,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       <div class="ac-row"><span><span class="t-en">Or add collateral</span><span class="t-fr">Ou ajouter du collateral</span><span class="t-es">O añadir colateral</span></span><b id="actionAdd">—</b></div>
       <div class="disclaimer" id="disclaimerEl">
         <span class="t-en">Parameters are approximate. Always verify on <a id="verifyLinkEN" href="https://app.aave.com" target="_blank" rel="noopener">app.aave.com</a>.</span>
-        <span class="t-fr">Paramètres indicatifs. Vérifiez sur <a id="verifyLinkFR" href="https://app.aave.com" target="_blank" rel="noopener">app.aave.com</a>.</span><span class="t-es">Parameters are approximate. Always verify on <a id="verifyLinkEN" href="https://app.aave.com" target="_blank" rel="noopener">app.aave.com</a>.</span>
+        <span class="t-fr">Paramètres indicatifs. Vérifiez sur <a id="verifyLinkFR" href="https://app.aave.com" target="_blank" rel="noopener">app.aave.com</a>.</span><span class="t-es">Parámetros aproximados. Verifique siempre en <a id="verifyLinkES" href="https://app.aave.com" target="_blank" rel="noopener">app.aave.com</a>.</span>
       </div>
     </div>
 
@@ -980,8 +981,8 @@ function renderParamChips(){
   if(!t||!t.lt){ $('paramChips').innerHTML=''; return; }
   $('paramChips').innerHTML =
     `<span class="param-chip ltv-chip">Max LTV ${t.ltv}%</span>` +
-    `<span class="param-chip lt-chip">${l==='fr'?'Seuil':'LT'} ${t.lt}%</span>` +
-    `<span class="param-chip pen-chip">${l==='fr'?'Pénalité':'Penalty'} ${t.penalty}%</span>`;
+    `<span class="param-chip lt-chip">${l==='fr'?'Seuil':l==='es'?'Umbral':'LT'} ${t.lt}%</span>` +
+    `<span class="param-chip pen-chip">${l==='fr'?'Pénalité':l==='es'?'Penalización':'Penalty'} ${t.penalty}%</span>`;
 }
 
 /* ── APPLY TOKEN TO FORM INPUTS ───────────────────────────── */
@@ -1055,7 +1056,7 @@ async function refreshPrice(){
   const t = getToken(); if(!t?.gecko) return;
   const btn = $('refreshBtn');
   btn.classList.add('loading');
-  $('priceStatus').textContent = L()==='fr'?'chargement…':'fetching…';
+  $('priceStatus').textContent = L()==='fr'?'chargement…':L()==='es'?'cargando…':'fetching…';
   $('priceStatus').style.color = 'var(--faint)';
   const price = await fetchPrice(t.gecko);
   btn.classList.remove('loading');
@@ -1066,7 +1067,7 @@ async function refreshPrice(){
       : '● CoinGecko';
     $('priceStatus').innerHTML = `<span style="color:var(--good)">${srcLabel}</span>`;
   } else {
-    $('priceStatus').textContent = L()==='fr'?'erreur API':'API error';
+    $('priceStatus').textContent = L()==='fr'?'erreur API':L()==='es'?'error API':'API error';
     $('priceStatus').style.color = 'var(--coral)';
   }
   calc();

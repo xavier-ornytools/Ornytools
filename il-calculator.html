@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <meta name="description" content="Impermanent Loss Calculator — OrnyTools. V2 full-range and Uniswap V3 concentrated liquidity modes. Entry price, range bounds, break-even APR, capital efficiency vs V2."/>
 <meta name="robots" content="index,follow"/>
+<link rel="icon" href="logo.png" type="image/png" />
 <link rel="canonical" href="https://ornytools.xyz/il-calculator.html"/>
 <link rel="alternate" hreflang="en" href="https://ornytools.xyz/il-calculator.html"/>
 <link rel="alternate" hreflang="fr" href="https://ornytools.xyz/il-calculator.html"/>
@@ -266,7 +267,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <div class="page-hero">
   <div class="eyebrow"><span class="t-en">Impermanent Loss Calculator</span><span class="t-fr">Calculateur de Perte Impermanente</span><span class="t-es">Calculadora de Pérdida Impermanente</span></div>
   <h1><span class="t-en">How much does your LP position <em>really</em> cost?</span><span class="t-fr">Combien coûte <em>vraiment</em> votre position LP ?</span><span class="t-es">¿Cuánto cuesta <em>realmente</em> tu posición LP?</span></h1>
-  <p>Enter entry and current prices. See your exact IL, your break-even fee APR, and the full IL curve.</p>
+  <p><span class="t-en">Enter entry and current prices. See your exact IL, your break-even fee APR, and the full IL curve.</span><span class="t-fr">Entrez les prix d'entrée et actuels. Visualisez votre IL exact, l'APR de frais au seuil de rentabilité et la courbe IL complète.</span><span class="t-es">Introduce precios de entrada y actuales. Ve tu IL exacta, el APR de comisiones de equilibrio y la curva IL completa.</span></p>
 </div>
 
 <!-- SEO INTRO -->
@@ -327,7 +328,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </div>
       <hr class="divider"/>
       <div class="field with-prefix">
-        <label><span class="t-en">Initial investment</span><span class="t-fr">Investissement initial</span><span class="t-es">Inversión inicial</span> <span class="hint"><span class="t-en">optional</span><span class="t-fr">optionnel</span><span class="t-es">optional</span></span></label>
+        <label><span class="t-en">Initial investment</span><span class="t-fr">Investissement initial</span><span class="t-es">Inversión inicial</span> <span class="hint"><span class="t-en">optional</span><span class="t-fr">optionnel</span><span class="t-es">opcional</span></span></label>
         <span class="pfx">$</span>
         <input id="ilDeposit" class="mono" value="10000" inputmode="decimal"/>
       </div>
@@ -475,7 +476,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- CHART -->
 <div class="chart-section">
   <div class="chart-header">
-    <h3 id="chartTitle"><span class="t-en">IL curve — price ratio vs loss</span><span class="t-fr">Courbe IL — ratio de prix vs perte</span><span class="t-es">IL curve — price ratio vs loss</span></h3>
+    <h3 id="chartTitle"><span class="t-en">IL curve — price ratio vs loss</span><span class="t-fr">Courbe IL — ratio de prix vs perte</span><span class="t-es">Curva IL — ratio de precio vs pérdida</span></h3>
     <p id="chartDesc"><span class="t-en">How impermanent loss grows as the price of Token A diverges from entry, with Token B stable.</span><span class="t-fr">Comment la perte impermanente croît au fur et à mesure que le prix du Token A diverge de l'entrée, Token B stable.</span><span class="t-es">Cómo crece la pérdida impermanente al alejarse el precio del Token A de la entrada, con Token B estable.</span></p>
   </div>
   <div class="chart-wrap">
@@ -537,7 +538,7 @@ function updateChartHeader() {
       ? 'Bleu : IL V3 dans votre range. Gris tirets : V2 full range. Zone bleue = votre range [Pₐ → Pb].'
       : 'Blue: V3 concentrated IL. Gray dashed: V2 full-range reference. Blue band = your range [Pₐ → Pb].';
   } else {
-    $('chartTitle').innerHTML = '<span class="t-en">IL curve — price ratio vs loss</span><span class="t-fr">Courbe IL — ratio de prix vs perte</span><span class="t-es">IL curve — price ratio vs loss</span>';
+    $('chartTitle').innerHTML = '<span class="t-en">IL curve — price ratio vs loss</span><span class="t-fr">Courbe IL — ratio de prix vs perte</span><span class="t-es">Curva IL — ratio de precio vs pérdida</span>';
     $('chartDesc').innerHTML  = '<span class="t-en">How impermanent loss grows as the price of Token A diverges from entry, with Token B stable.</span><span class="t-fr">Comment la perte impermanente croît au fur et à mesure que le prix du Token A diverge de l\'entrée, Token B stable.</span><span class="t-es">Cómo crece la pérdida impermanente al alejarse el precio del Token A de la entrada, con Token B estable.</span>';
   }
 }
