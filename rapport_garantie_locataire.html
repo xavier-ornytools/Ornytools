@@ -1,0 +1,1066 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="robots" content="noindex,nofollow"/>
+<title>Projet Garantie Locataire — Analyse DeFi RWA</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap');
+
+  :root{
+    --blue:#1E3A8A; --blue-light:#2563EB; --blue-pale:rgba(37,99,235,.07);
+    --gold:#C8841E; --gold-pale:rgba(200,132,30,.08);
+    --good:#0E9F6E; --good-pale:rgba(14,159,110,.09);
+    --warn:#D97706; --warn-pale:rgba(217,119,6,.08);
+    --danger:#E8765A; --danger-pale:rgba(232,118,90,.08);
+    --crit:#DC2626; --crit-pale:rgba(220,38,38,.07);
+    --purple:#7C3AED; --purple-pale:rgba(124,58,237,.07);
+    --text:#111827; --dim:#6B7280; --faint:#9AA5B4;
+    --line:#E4E8F0; --surface:#F7F8FC; --surface2:#F0F2F6;
+    --display:'Fraunces',Georgia,serif;
+    --ui:'Hanken Grotesk',system-ui,sans-serif;
+    --mono:'JetBrains Mono',ui-monospace,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:var(--ui);color:var(--text);background:#fff;font-size:10.5pt;line-height:1.7}
+
+  /* ── PRINT ── */
+  @media print{
+    @page{size:A4;margin:14mm 14mm 16mm}
+    .no-print{display:none!important}
+    .page-break{page-break-before:always}
+    body{font-size:9.5pt}
+    .cover{min-height:0;padding:40px 30px 50px}
+  }
+
+  /* ── TOOLBAR ── */
+  .toolbar{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(255,255,255,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);padding:10px 28px;display:flex;align-items:center;gap:10px}
+  .toolbar .btn-print{background:var(--blue-light);color:#fff;border:none;padding:9px 22px;border-radius:9px;font-size:12px;font-weight:700;cursor:pointer;font-family:var(--ui);display:flex;align-items:center;gap:7px}
+  .toolbar .btn-print:hover{background:var(--blue)}
+  .toolbar .hint{font-size:11px;color:var(--dim)}
+
+  /* ── WRAPPER ── */
+  .doc{max-width:820px;margin:64px auto 80px;padding:0 28px}
+  @media print{.doc{margin:0;padding:0;max-width:100%}}
+
+  /* ── COVER ── */
+  .cover{background:linear-gradient(150deg,#fff 55%,rgba(37,99,235,.05));padding:70px 50px 60px;border-bottom:4px solid var(--blue-light);margin-bottom:0}
+  .cover-brand{font-family:var(--display);font-size:13pt;color:var(--dim);letter-spacing:-.02em;margin-bottom:52px}
+  .cover-brand span{color:var(--blue-light)}
+  .cover-tag{display:inline-block;background:var(--blue-pale);color:var(--blue-light);font-size:9pt;font-weight:700;padding:4px 12px;border-radius:99px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:20px}
+  .cover h1{font-family:var(--display);font-size:28pt;font-weight:500;letter-spacing:-.03em;line-height:1.1;margin-bottom:14px;color:var(--text)}
+  .cover h1 em{font-style:italic;color:var(--blue-light)}
+  .cover h1 strong{color:var(--blue)}
+  .cover-sub{font-size:12pt;color:var(--dim);max-width:52ch;line-height:1.75;margin-bottom:44px}
+  .cover-meta{display:flex;gap:32px;flex-wrap:wrap}
+  .cover-meta-item{display:flex;flex-direction:column;gap:3px}
+  .cover-meta-item .label{font-size:8pt;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--faint)}
+  .cover-meta-item .value{font-size:10.5pt;font-weight:600;color:var(--text)}
+
+  /* ── SECTIONS ── */
+  .section{padding:44px 0 36px;border-bottom:1px solid var(--line)}
+  .section:last-child{border-bottom:none}
+  .section-tag{display:inline-flex;align-items:center;gap:7px;font-size:8.5pt;font-weight:800;text-transform:uppercase;letter-spacing:.15em;color:var(--blue-light);margin-bottom:10px}
+  .section-tag .num{background:var(--blue-light);color:#fff;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:8pt;font-weight:800}
+  .section h2{font-family:var(--display);font-size:19pt;font-weight:500;letter-spacing:-.025em;line-height:1.15;margin-bottom:22px;color:var(--text)}
+  .section h3{font-family:var(--display);font-size:13.5pt;font-weight:500;letter-spacing:-.02em;margin:28px 0 12px;color:var(--text)}
+  .section p{color:var(--dim);line-height:1.75;margin-bottom:14px}
+  .section p:last-child{margin-bottom:0}
+
+  /* ── SUMMARY BOX ── */
+  .summary-box{background:var(--blue-pale);border-left:4px solid var(--blue-light);border-radius:0 12px 12px 0;padding:22px 24px;margin:20px 0}
+  .summary-box .sb-title{font-size:9pt;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--blue-light);margin-bottom:10px}
+  .summary-box p{color:var(--text);font-size:10.5pt}
+
+  /* ── TABLES ── */
+  .tbl-wrap{overflow-x:auto;margin:18px 0}
+  table{width:100%;border-collapse:collapse;font-size:9.5pt}
+  thead tr{background:var(--blue);color:#fff}
+  thead th{padding:11px 14px;text-align:left;font-weight:700;font-size:8.5pt;letter-spacing:.04em}
+  tbody tr{border-bottom:1px solid var(--line)}
+  tbody tr:hover{background:var(--surface)}
+  tbody td{padding:10px 14px;vertical-align:top;line-height:1.55}
+  tbody td:first-child{font-weight:600}
+  .tbl-section{background:var(--blue-pale)!important;border-top:2px solid var(--blue-light)!important}
+  .tbl-section td{font-weight:800!important;color:var(--blue)!important;font-size:8.5pt;text-transform:uppercase;letter-spacing:.05em}
+
+  /* ── STAR RATING ── */
+  .stars{color:var(--gold);font-size:10pt;letter-spacing:1px}
+
+  /* ── BADGES ── */
+  .badge{display:inline-block;padding:2px 9px;border-radius:99px;font-size:8pt;font-weight:700}
+  .badge-crit{background:var(--crit-pale);color:var(--crit)}
+  .badge-warn{background:var(--warn-pale);color:var(--warn)}
+  .badge-ok{background:var(--good-pale);color:var(--good)}
+  .badge-blue{background:var(--blue-pale);color:var(--blue-light)}
+  .badge-purple{background:var(--purple-pale);color:var(--purple)}
+
+  /* ── CARDS GRID ── */
+  .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px;margin:18px 0}
+  .card{background:var(--surface);border:1.5px solid var(--line);border-radius:12px;padding:18px}
+  .card-icon{font-size:20px;margin-bottom:8px}
+  .card-title{font-weight:700;font-size:10.5pt;margin-bottom:6px;color:var(--text)}
+  .card-body{font-size:9.5pt;color:var(--dim);line-height:1.6}
+  .card.good{border-color:var(--good);background:var(--good-pale)}
+  .card.warn{border-color:var(--warn);background:var(--warn-pale)}
+  .card.crit{border-color:var(--danger);background:var(--danger-pale)}
+
+  /* ── ARCHITECTURE BOX ── */
+  .arch-box{background:var(--surface2);border:1.5px solid var(--line);border-radius:14px;padding:26px;margin:18px 0;font-family:var(--mono);font-size:9pt;line-height:2;color:var(--text)}
+  .arch-box .arch-layer{display:flex;align-items:center;gap:12px;padding:6px 10px;border-radius:7px;margin-bottom:4px}
+  .arch-box .arch-layer.l1{background:var(--blue-pale);border:1px solid #BFDBFE}
+  .arch-box .arch-layer.l2{background:#FEF3C7;border:1px solid #FDE68A}
+  .arch-box .arch-layer.l3{background:var(--good-pale);border:1px solid #A7F3D0}
+  .arch-box .arch-layer.l4{background:var(--purple-pale);border:1px solid #DDD6FE}
+  .arch-box .arch-layer.l5{background:var(--danger-pale);border:1px solid #FCA5A5}
+  .arch-arrow{text-align:center;font-size:14pt;color:var(--faint);margin:2px 0}
+
+  /* ── TIMELINE ── */
+  .timeline{margin:18px 0}
+  .tl-week{display:grid;grid-template-columns:90px 1fr;gap:0;margin-bottom:8px}
+  .tl-label{font-size:8.5pt;font-weight:800;color:var(--blue-light);padding-top:11px;text-transform:uppercase;letter-spacing:.06em}
+  .tl-items{border-left:2px solid var(--blue-pale);padding:6px 0 6px 18px}
+  .tl-item{font-size:9.5pt;color:var(--dim);padding:5px 0;display:flex;align-items:flex-start;gap:8px}
+  .tl-item::before{content:"→";color:var(--blue-light);font-weight:700;flex-shrink:0;margin-top:1px}
+  .tl-item strong{color:var(--text)}
+
+  /* ── VERDICT ── */
+  .verdict{background:linear-gradient(135deg,var(--blue),var(--blue-light));color:#fff;border-radius:16px;padding:30px 32px;margin:24px 0}
+  .verdict h3{font-family:var(--display);font-size:15pt;font-weight:500;margin-bottom:12px;letter-spacing:-.02em}
+  .verdict p{opacity:.9;line-height:1.75;font-size:10.5pt}
+
+  /* ── QUOTE ── */
+  .quote{border-left:4px solid var(--gold);padding:14px 20px;margin:20px 0;background:var(--gold-pale);border-radius:0 10px 10px 0}
+  .quote p{font-style:italic;color:var(--text);font-size:10pt;line-height:1.7}
+  .quote .author{font-style:normal;font-size:9pt;font-weight:700;color:var(--dim);margin-top:8px}
+
+  /* ── FOOTER ── */
+  .footer{text-align:center;padding:32px 0;color:var(--faint);font-size:9pt;border-top:1px solid var(--line);margin-top:40px}
+
+  /* ── PRIORITY LIST ── */
+  .priority-list{margin:14px 0}
+  .priority-item{display:flex;align-items:flex-start;gap:14px;padding:14px 16px;border:1px solid var(--line);border-radius:10px;margin-bottom:8px}
+  .priority-item .p-num{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:9.5pt;flex-shrink:0;margin-top:2px}
+  .priority-item.p-crit .p-num{background:var(--crit);color:#fff}
+  .priority-item.p-warn .p-num{background:var(--warn);color:#fff}
+  .priority-item.p-ok .p-num{background:var(--good);color:#fff}
+  .priority-item .p-title{font-weight:700;font-size:10pt;margin-bottom:4px}
+  .priority-item .p-body{font-size:9.5pt;color:var(--dim);line-height:1.6}
+
+  /* ── SCORE PILLS ── */
+  .score-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+  .score-bar-track{flex:1;height:8px;background:var(--line);border-radius:4px;overflow:hidden}
+  .score-bar-fill{height:100%;border-radius:4px}
+  .score-label{font-size:9pt;font-weight:600;width:170px;flex-shrink:0}
+  .score-num{font-family:var(--mono);font-size:9.5pt;font-weight:700;width:38px;text-align:right}
+
+  @media(max-width:640px){.cards{grid-template-columns:1fr}.cover{padding:40px 20px 36px}.doc{padding:0 16px}}
+</style>
+</head>
+<body>
+
+<div class="toolbar no-print">
+  <button class="btn-print" onclick="window.print()">🖨️ Imprimer / Sauvegarder en PDF</button>
+  <span class="hint">Ctrl+P → Enregistrer en PDF</span>
+</div>
+
+<div class="doc">
+
+<!-- ══════════════════════════════════════════════════════════
+     COVER
+════════════════════════════════════════════════════════════ -->
+<div class="cover">
+  <div class="cover-brand">Orny<span>Tools</span> × Alyra DeFi Formation</div>
+  <div class="cover-tag">Projet DeFi — Analyse Complète</div>
+  <h1>Garantie <em>Locataire</em><br><strong>par Tokenisation RWA</strong></h1>
+  <p class="cover-sub">Transformer des biens mobiliers certifiés en collatéral on-chain pour financer l'accès au logement via un mécanisme CDP surcollatéralisé.</p>
+  <div class="cover-meta">
+    <div class="cover-meta-item">
+      <span class="label">Formation</span>
+      <span class="value">Alyra — Promo Blaise Pascal</span>
+    </div>
+    <div class="cover-meta-item">
+      <span class="label">Porteur du projet</span>
+      <span class="value">Gérald Lefebvre</span>
+    </div>
+    <div class="cover-meta-item">
+      <span class="label">Thématique</span>
+      <span class="value">RWA · CDP · Garantie locative</span>
+    </div>
+    <div class="cover-meta-item">
+      <span class="label">Date de l'analyse</span>
+      <span class="value">Juin 2026</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     1. RÉSUMÉ EXÉCUTIF
+════════════════════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-tag"><span class="num">1</span> Résumé exécutif</div>
+  <h2>De quoi s'agit-il ?</h2>
+
+  <div class="summary-box">
+    <div class="sb-title">Concept en une phrase</div>
+    <p>Un locataire apporte ses biens mobiliers de valeur (montres, bijoux, meubles, œuvres d'art, matériel professionnel) certifiés par un commissaire de justice, lesquels sont tokenisés en collatéral on-chain utilisable dans un CDP pour emprunter ~60 % de leur valeur en stablecoins et financer les frais d'installation (agence + premier loyer).</p>
+  </div>
+
+  <p>Le projet s'attaque à un problème concret et documenté : la barrière financière à l'entrée dans un logement, estimée à <strong>2 à 5 mois de loyer</strong> en ville (dépôt de garantie + frais d'agence + premier loyer). Il propose une solution DeFi fondée sur trois piliers :</p>
+
+  <div class="cards" style="margin-top:14px">
+    <div class="card">
+      <div class="card-icon">🏛️</div>
+      <div class="card-title">Tokenisation RWA</div>
+      <div class="card-body">Biens mobiliers certifiés par un commissaire de justice → NFT on-chain représentant la valeur authentifiée.</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🔒</div>
+      <div class="card-title">CDP surcollatéralisé</div>
+      <div class="card-body">Inspiré de MakerDAO et Morpho. LTV ~60%. Double poche : garantie bailleur + garantie prêteur.</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🔄</div>
+      <div class="card-title">Token de créance cessible</div>
+      <div class="card-body">Le prêteur reçoit un droit économique revendable sur un marché secondaire DeFi.</div>
+    </div>
+  </div>
+
+  <h3>Le problème adressé</h3>
+  <p>En France, 37 % des ménages sont locataires. À Paris et dans les grandes métropoles, l'accès à un logement nécessite souvent 3 à 5 mois de loyer mobilisés en un seul versement. Pourtant, de nombreux ménages possèdent un patrimoine mobilier dormant (bijoux, montres, art, mobilier de qualité) dont la valeur réelle reste inexploitée — soit parce qu'ils ignorent comment la mobiliser, soit parce que les instruments classiques (prêt sur gage du Crédit Municipal) sont opaques et stigmatisants.</p>
+
+  <p>Le projet Garantie Locataire propose de transformer ce patrimoine dormant en levier d'accès au logement, en s'appuyant sur la légitimité juridique du commissaire de justice (gage sans dépossession, Art. L.521-1 du Code de commerce) et sur la transparence et la composabilité de la DeFi.</p>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     2. POINTS FORTS
+════════════════════════════════════════════════════════════ -->
+<div class="section page-break">
+  <div class="section-tag"><span class="num">2</span> Points forts</div>
+  <h2>Ce que le projet fait bien</h2>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead>
+        <tr><th>Force</th><th>Développement</th><th>Potentiel</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>🎯 Problème réel et documenté</td>
+          <td>Le marché locatif français est l'un des plus tendus d'Europe. La barrière à l'entrée (dépôt + agence) est un frein tangible, surtout pour les <em>asset-rich, cash-poor</em> : héritiers, freelances, chômeurs temporaires, artistes. Le projet cible un besoin non couvert par les solutions existantes (Visale ne couvre pas les frais d'agence, le Crédit Municipal est stigmatisant).</td>
+          <td><span class="stars">★★★★★</span></td>
+        </tr>
+        <tr>
+          <td>⚖️ Fondement juridique en droit français</td>
+          <td>Le <strong>gage sans dépossession</strong> (Art. L.521-1 C. commerce) est un concept juridique existant depuis 2006. Le commissaire de justice possède déjà la compétence légale pour établir un acte authentique d'inventaire ayant force exécutoire. La blockchain vient <em>renforcer</em> un dispositif légal existant, pas en créer un de toutes pièces — ce qui réduit considérablement le risque juridique de la thèse.</td>
+          <td><span class="stars">★★★★★</span></td>
+        </tr>
+        <tr>
+          <td>🏗️ Architecture CDP éprouvée</td>
+          <td>MakerDAO ($8 Mds TVL), Morpho ($7,2 Mds), Aave ($19 Mds) ont prouvé que le mécanisme CDP est robuste et battle-tested. Le projet n'invente pas un mécanisme DeFi, il l'applique à un nouveau type de collatéral. Cela réduit drastiquement le risque de design de mécanisme.</td>
+          <td><span class="stars">★★★★★</span></td>
+        </tr>
+        <tr>
+          <td>🧱 Double poche (bailleur + prêteur)</td>
+          <td>La séparation entre la poche locative (garantie du bailleur, équivalent du dépôt de garantie) et la poche financière (garantie du prêteur) est une conception élégante. Chaque partie prenante a une sûreté dédiée et explicite — ce qui résout le problème classique de la "queue" de remboursement dans les systèmes de garantie classiques. C'est directement inspiré de la structure Drop/TIN de Centrifuge.</td>
+          <td><span class="stars">★★★★★</span></td>
+        </tr>
+        <tr>
+          <td>🔄 Token de créance cessible</td>
+          <td>Le fait que le prêteur puisse revendre sa créance sur un marché secondaire DeFi est un avantage majeur pour l'adoption côté investisseurs. Cela transforme un prêt illiquide (créance sur collatéral physique) en actif liquide on-chain. Ce mécanisme est similaire à NFTfi, Blend (Blur) et aux tranches Centrifuge.</td>
+          <td><span class="stars">★★★★</span></td>
+        </tr>
+        <tr>
+          <td>🏦 Légitimité du commissaire de justice</td>
+          <td>Le commissaire de justice est un officier ministériel assermenté, nommé par arrêté du Garde des Sceaux. Son acte fait foi devant les tribunaux. C'est un <em>oracle humain</em> d'une crédibilité institutionnelle que peu de projets DeFi peuvent revendiquer. Sa présence répond à la question "qui certifie ?" de manière irréfutable pour les parties prenantes non-DeFi (bailleurs, banques, régulateurs).</td>
+          <td><span class="stars">★★★★★</span></td>
+        </tr>
+        <tr>
+          <td>👤 Profil client précis et inexploité</td>
+          <td>La cible "asset-rich, cash-poor" est une niche large et croissante : (1) héritiers en milieu de carrière — patrimoine mobilier d'héritage, revenus irréguliers ; (2) travailleurs indépendants — patrimoine constitué mais revenus variables ; (3) jeunes cadres en mobilité internationale ; (4) artistes et créateurs. Ces profils sont précisément ceux que les outils classiques (Visale : plafond 1 800 €/mois, garantie bancaire : 3 mois bloqués) ne servent pas bien.</td>
+          <td><span class="stars">★★★★</span></td>
+        </tr>
+        <tr>
+          <td>🔁 Alternative structurelle au dépôt classique</td>
+          <td>Le dépôt de garantie immobilisé pendant 1 à 3 ans sur un compte bancaire rapporte ~0,5 % (Livret A). Le locataire perd le rendement de ce capital. Le projet propose de libérer ce capital tout en offrant une garantie <em>plus robuste</em> au bailleur (collatéral certifié > simple cash immobilisé). C'est un argument de vente fort pour le bailleur progressiste.</td>
+          <td><span class="stars">★★★★</span></td>
+        </tr>
+        <tr>
+          <td>📜 Innovation : RWA mobilier (vs immobilier)</td>
+          <td>98 % des projets RWA tokenisent de l'immobilier ou des instruments financiers (T-bills, obligations). La tokenisation de biens mobiliers certifiés est un espace quasi vierge dans la DeFi. C'est une opportunité de "first mover" dans une niche à fort potentiel — en particulier sur le marché européen des biens de luxe (France : 2ème marché mondial du luxe d'occasion).</td>
+          <td><span class="stars">★★★★★</span></td>
+        </tr>
+        <tr>
+          <td>💡 Inspiration Morpho bien ciblée</td>
+          <td>La référence à Morpho est pertinente. Morpho Blue permet de créer des marchés de prêt isolés avec des paramètres de risque personnalisés. Un marché Morpho "AUSD/RWA-Mobilier" avec une LLTV ajustée à 60 % serait théoriquement déployable dans le cadre de ce projet.</td>
+          <td><span class="stars">★★★★</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     3. POINTS FAIBLES & RISQUES
+════════════════════════════════════════════════════════════ -->
+<div class="section page-break">
+  <div class="section-tag"><span class="num">3</span> Points faibles &amp; Risques</div>
+  <h2>Les obstacles à résoudre</h2>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead>
+        <tr><th>Risque</th><th>Impact</th><th>Développement</th><th>Piste de solution</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>⚡ Liquidation physique impossible en temps réel</td>
+          <td><span class="badge badge-crit">Critique</span></td>
+          <td>Dans un CDP crypto classique, si le prix d'ETH chute, un liquidateur bot vend en quelques secondes. Avec une montre Rolex ou un tableau de Maître, la liquidation prend 30 à 90 jours (procédure de saisie-vente, organisation d'enchères, transfert physique). Cette latence crée un risque systémique : si la valeur des biens chute brutalement (marché du luxe), le prêteur est exposé avant que la liquidation ait lieu.</td>
+          <td>Surbondage élevé (150 % minimum), buffer de sécurité en stablecoins, partenariat formel avec hôtel des ventes (Drouot, Artcurial), procédure de liquidation en deux étapes : (1) déclenchement on-chain automatique, (2) exécution off-chain via commissaire sous 30 jours avec garantie de la chambre.</td>
+        </tr>
+        <tr>
+          <td>📡 Oracle de valorisation non standardisé</td>
+          <td><span class="badge badge-crit">Critique</span></td>
+          <td>Chainlink n'a pas de feed de prix pour une Rolex Submariner série X ou un tableau de Jean-Michel Basquiat. La valeur d'une montre de collection peut fluctuer de 30 % en 6 mois. Qui met à jour le prix on-chain ? À quelle fréquence ? Que se passe-t-il si la valorisation du commissaire lors de l'acte est obsolète 2 ans plus tard ?</td>
+          <td>Revalorisation obligatoire tous les 12 mois par le commissaire de justice. Décote automatique de 10 % par an entre deux revaluations. Catégoriser les actifs par volatilité de prix : Tier 1 (or, montres de marque = valorisation stable), Tier 2 (bijoux = risque moyen), Tier 3 (art, mobilier = volatil, LTV réduite).</td>
+        </tr>
+        <tr>
+          <td>🎭 Fraude : dissimulation ou vente des biens</td>
+          <td><span class="badge badge-crit">Critique</span></td>
+          <td>Le locataire peut vendre ses meubles ou les cacher malgré l'acte de gage. L'article 314-5 du Code pénal punit le "détournement d'objet saisi" — mais la sanction pénale n'empêche pas le préjudice financier et les recours judiciaires sont longs et coûteux. Un locataire de mauvaise foi pourrait vider son appartement avant le déclenchement de la liquidation.</td>
+          <td>NFT lié à un numéro de série gravé ou une plaque d'identification physique inviolable (QR code scellé). Photo haute résolution et hash IPFS dans les métadonnées NFT. Clause d'assurance vol/disparition obligatoire. Inspection aléatoire possible dans les contrats (clause de "droit de vérification" accepté par le locataire à la signature).</td>
+        </tr>
+        <tr>
+          <td>⚖️ Complexité réglementaire FR/EU</td>
+          <td><span class="badge badge-crit">Critique</span></td>
+          <td>MiCA (Markets in Crypto-Assets) s'applique aux tokens émis dans l'UE. Les tokens de créance pourraient être qualifiés d'instruments financiers soumis à MiFID II. Le KYC/AML est obligatoire (Directive AMLD5). La qualification juridique du NFT collatéral (est-ce un titre de propriété ? une sûreté ? un instrument financier ?) reste incertaine en droit français.</td>
+          <td>Consulter un avocat spécialisé DeFi + droit des sûretés (Cabinet August Debouzy, Gide, Linklaters). Envisager une structure SPV (Special Purpose Vehicle) en droit français pour accueillir le collatéral. Saisine de l'ACPR pour guidance informelle. KYC intégré via solution professionnelle (Synaps, Ondato, Fractal).</td>
+        </tr>
+        <tr>
+          <td>🏛️ Adoption des commissaires de justice</td>
+          <td><span class="badge badge-warn">Élevé</span></td>
+          <td>La Chambre Nationale des Commissaires de Justice regroupe ~3 600 professionnels. Leur formation est traditionnelle, leur outil de travail est un logiciel propriétaire (Génapi). Intégrer un workflow blockchain dans leur pratique quotidienne représente un changement culturel significatif. Sans leur adoption, le projet n'existe pas.</td>
+          <td>Ne pas imposer la blockchain aux commissaires — leur fournir une interface ultra-simple (web2 look) qui abstrait toute la partie crypto. Partenariat avec la Chambre Nationale pour des actes "DeFi-compatibles" standardisés. Pilote avec 3-5 commissaires volontaires dans un premier temps.</td>
+        </tr>
+        <tr>
+          <td>📉 Scalabilité et coût marginal élevé</td>
+          <td><span class="badge badge-warn">Élevé</span></td>
+          <td>Chaque dossier nécessite une intervention physique du commissaire (déplacement, inventaire, acte authentique). Coût estimé : 300 à 600 € par inventaire. Sur un prêt de 3 000 € (premier mois + agence), le coût de setup représente 10 à 20 % du montant emprunté — ce qui est prohibitif pour les petits dossiers.</td>
+          <td>Seuil minimum d'accès (collatéral > 10 000 €, emprunt > 5 000 €). Mutualisation des coûts de commissaire sur plusieurs biens simultanément. Partenariat avec agences immobilières (elles absorbent le coût en échange d'un flux de clients). Barèmes standardisés pour les biens les plus courants (bijoux en or au poids, montres par référence).</td>
+        </tr>
+        <tr>
+          <td>🛡️ Assurance des biens physiques</td>
+          <td><span class="badge badge-warn">Élevé</span></td>
+          <td>Si les biens gagés sont volés, détruits dans un incendie ou endommagés, le collatéral on-chain perd sa valeur réelle alors que la dette subsiste. Or, la plupart des assurances habitation ne couvrent pas les bijoux et montres au-delà d'un plafond global de 1 500 à 3 000 €.</td>
+          <td>Obligation contractuelle d'assurance "tous risques" spécifique (Hiscox, AXA Art, Chaucer) pour les biens déposés en gage. Preuve d'assurance on-chain (hash du contrat IPFS ou intégration Chainlink Insurance). En cas de sinistre : l'indemnité d'assurance est versée directement au smart contract pour remboursement du prêteur.</td>
+        </tr>
+        <tr>
+          <td>👥 Marché bilatéral à bootstrapper</td>
+          <td><span class="badge badge-warn">Élevé</span></td>
+          <td>Le projet nécessite simultanément des <em>locataires apporteurs de collatéral</em> et des <em>investisseurs prêteurs</em>. C'est le classique problème "chicken and egg" des plateformes bilatérales. Un investisseur n'investit pas sans dossiers disponibles ; un locataire ne s'inscrit pas sans savoir qu'il trouvera des fonds.</td>
+          <td>Lancer avec des investisseurs seed identifiés (fonds RWA, family offices DeFi) qui s'engagent à financer les premiers dossiers. Partenariat avec agences immobilières pour un flux constant de locataires candidats. Concentrer le lancement sur Paris (marché le plus tendu, ROI le plus élevé).</td>
+        </tr>
+        <tr>
+          <td>💻 Expérience utilisateur DeFi</td>
+          <td><span class="badge badge-warn">Moyen</span></td>
+          <td>Le locataire cible n'est pas un utilisateur DeFi natif. Il ne connaît pas MetaMask, les clés privées, les gas fees. Une mauvaise expérience utilisateur est la cause n°1 d'échec des projets DeFi "grand public". Le bailleur, lui, ne veut probablement pas entendre parler de blockchain.</td>
+          <td>Abstraction totale de la blockchain pour les utilisateurs finaux (account abstraction, social login, fiat on-ramp). Le bailleur n'interagit qu'avec un contrat de location classique + une attestation de garantie numérique. Le locataire utilise une app mobile simple (type Revolut).</td>
+        </tr>
+        <tr>
+          <td>📊 Liquidité secondaire des tokens de créance</td>
+          <td><span class="badge badge-ok">Modéré</span></td>
+          <td>Le marché secondaire des tokens de créance RWA est naissant. Un investisseur qui souhaite sortir avant l'échéance du prêt trouvera difficilement un acheteur au lancement. La liquidité du token de créance dépend directement de la taille du protocole.</td>
+          <td>Créer un pool Morpho Blue dédié (RWA-Mobilier/USDC) comme marché de refinancement. Partenariat avec un market maker spécialisé RWA. Structurer les tokens de créance en format ERC-4626 pour maximiser la composabilité DeFi.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Synthèse visuelle des risques</h3>
+  <div>
+    <div class="score-row">
+      <span class="score-label">Liquidation physique</span>
+      <div class="score-bar-track"><div class="score-bar-fill" style="width:90%;background:#DC2626"></div></div>
+      <span class="score-num" style="color:#DC2626">90</span>
+    </div>
+    <div class="score-row">
+      <span class="score-label">Oracle / valorisation</span>
+      <div class="score-bar-track"><div class="score-bar-fill" style="width:85%;background:#DC2626"></div></div>
+      <span class="score-num" style="color:#DC2626">85</span>
+    </div>
+    <div class="score-row">
+      <span class="score-label">Complexité réglementaire</span>
+      <div class="score-bar-track"><div class="score-bar-fill" style="width:80%;background:#DC2626"></div></div>
+      <span class="score-num" style="color:#DC2626">80</span>
+    </div>
+    <div class="score-row">
+      <span class="score-label">Fraude locataire</span>
+      <div class="score-bar-track"><div class="score-bar-fill" style="width:75%;background:#D97706"></div></div>
+      <span class="score-num" style="color:#D97706">75</span>
+    </div>
+    <div class="score-row">
+      <span class="score-label">Adoption commissaires</span>
+      <div class="score-bar-track"><div class="score-bar-fill" style="width:65%;background:#D97706"></div></div>
+      <span class="score-num" style="color:#D97706">65</span>
+    </div>
+    <div class="score-row">
+      <span class="score-label">Scalabilité / coût marginal</span>
+      <div class="score-bar-track"><div class="score-bar-fill" style="width:60%;background:#D97706"></div></div>
+      <span class="score-num" style="color:#D97706">60</span>
+    </div>
+    <div class="score-row">
+      <span class="score-label">Marché bilatéral (bootstrap)</span>
+      <div class="score-bar-track"><div class="score-bar-fill" style="width:55%;background:#D97706"></div></div>
+      <span class="score-num" style="color:#D97706">55</span>
+    </div>
+    <div class="score-row">
+      <span class="score-label">Assurance physique</span>
+      <div class="score-bar-track"><div class="score-bar-fill" style="width:50%;background:#D97706"></div></div>
+      <span class="score-num" style="color:#D97706">50</span>
+    </div>
+    <div class="score-row">
+      <span class="score-label">UX grand public</span>
+      <div class="score-bar-track"><div class="score-bar-fill" style="width:45%;background:#0E9F6E"></div></div>
+      <span class="score-num" style="color:#0E9F6E">45</span>
+    </div>
+    <div class="score-row">
+      <span class="score-label">Liquidité secondaire tokens</span>
+      <div class="score-bar-track"><div class="score-bar-fill" style="width:35%;background:#0E9F6E"></div></div>
+      <span class="score-num" style="color:#0E9F6E">35</span>
+    </div>
+    <p style="font-size:8.5pt;color:var(--faint);margin-top:6px">Score = niveau de difficulté à résoudre (100 = défi majeur). En rouge : risques bloquants. En orange : risques importants. En vert : risques gérables.</p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     4. ARCHITECTURE TECHNIQUE
+════════════════════════════════════════════════════════════ -->
+<div class="section page-break">
+  <div class="section-tag"><span class="num">4</span> Architecture technique</div>
+  <h2>Comment ça marche</h2>
+
+  <div class="arch-box">
+    <div class="arch-layer l1">
+      <span>🏛️</span>
+      <span><strong>Couche 1 — Certification physique</strong> | Commissaire de Justice → Inventaire authentifié → Hash IPFS de l'acte</span>
+    </div>
+    <div class="arch-arrow">↓</div>
+    <div class="arch-layer l2">
+      <span>🪙</span>
+      <span><strong>Couche 2 — Tokenisation</strong> | NFT ERC-721 par bien certifié | Metadata : valeur, date, ID acte, photo, assurance</span>
+    </div>
+    <div class="arch-arrow">↓</div>
+    <div class="arch-layer l3">
+      <span>🔒</span>
+      <span><strong>Couche 3 — Vault CDP</strong> | Dépôt NFT collatéral → calcul LTV (60%) → séparation poche locative / poche financière</span>
+    </div>
+    <div class="arch-arrow">↓</div>
+    <div class="arch-layer l1">
+      <span>💵</span>
+      <span><strong>Couche 4 — Émission de la dette</strong> | Mint stablecoins (USDC/EURC) pour le locataire | Token créance ERC-20 pour le prêteur</span>
+    </div>
+    <div class="arch-arrow">↓</div>
+    <div class="arch-layer l4">
+      <span>🔄</span>
+      <span><strong>Couche 5 — Marché secondaire</strong> | Token créance cessible (Morpho Blue pool / Uniswap V4) | Prêteur peut sortir avant l'échéance</span>
+    </div>
+    <div class="arch-arrow">↓</div>
+    <div class="arch-layer l5">
+      <span>⚠️</span>
+      <span><strong>Couche 6 — Liquidation hybride</strong> | LTV > seuil → déclenchement on-chain → exécution off-chain commissaire → vente enchères → remboursement smart contract</span>
+    </div>
+  </div>
+
+  <h3>Les catégories de collatéral proposées</h3>
+  <div class="tbl-wrap">
+    <table>
+      <thead>
+        <tr><th>Tier</th><th>Type d'actif</th><th>Exemples</th><th>LTV max</th><th>Liquidité</th><th>Revalorisation</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Tier 1</td>
+          <td>Métaux précieux certifiés</td>
+          <td>Lingots or, pièces numismatiques certifiées</td>
+          <td><strong>70%</strong></td>
+          <td><span class="badge badge-ok">Haute</span></td>
+          <td>Cours spot quotidien (Chainlink)</td>
+        </tr>
+        <tr>
+          <td>Tier 1</td>
+          <td>Montres de collection</td>
+          <td>Rolex, Patek Philippe, Audemars Piguet</td>
+          <td><strong>65%</strong></td>
+          <td><span class="badge badge-ok">Haute</span></td>
+          <td>Watchfinder / Chrono24 index, annuel</td>
+        </tr>
+        <tr>
+          <td>Tier 2</td>
+          <td>Bijoux certifiés</td>
+          <td>Diamants GIA, bijoux signé (Cartier, Van Cleef)</td>
+          <td><strong>55%</strong></td>
+          <td><span class="badge badge-warn">Moyenne</span></td>
+          <td>Revalorisation commissaire, annuel</td>
+        </tr>
+        <tr>
+          <td>Tier 2</td>
+          <td>Matériel professionnel</td>
+          <td>Caméras, équipements photo/son, matériel médical</td>
+          <td><strong>50%</strong></td>
+          <td><span class="badge badge-warn">Moyenne</span></td>
+          <td>Cotes marché secondaire + coefficient d'obsolescence</td>
+        </tr>
+        <tr>
+          <td>Tier 3</td>
+          <td>Art et collections</td>
+          <td>Tableaux, sculptures, art contemporain</td>
+          <td><strong>45%</strong></td>
+          <td><span class="badge badge-crit">Faible</span></td>
+          <td>Artprice index, semestriel obligatoire</td>
+        </tr>
+        <tr>
+          <td>Tier 3</td>
+          <td>Mobilier de qualité</td>
+          <td>Mobilier d'époque, piano, instruments de musique</td>
+          <td><strong>40%</strong></td>
+          <td><span class="badge badge-crit">Faible</span></td>
+          <td>Expertise annuelle obligatoire</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     5. CONCURRENTS & SYSTÈMES SIMILAIRES
+════════════════════════════════════════════════════════════ -->
+<div class="section page-break">
+  <div class="section-tag"><span class="num">5</span> Paysage concurrentiel</div>
+  <h2>Concurrents &amp; systèmes de collatéralisation similaires</h2>
+  <p>Cette liste est <strong>non exhaustive</strong> et couvre quatre grands axes : (A) DeFi RWA, (B) Prêts sur NFT/actifs physiques, (C) Tokenisation immobilière, (D) Garanties locatives traditionnelles et alternatives.</p>
+
+  <!-- A — DeFi RWA -->
+  <div class="tbl-wrap">
+    <table>
+      <thead>
+        <tr><th colspan="5" style="background:var(--blue)">A — Protocoles DeFi RWA (Real World Assets)</th></tr>
+        <tr><th>Protocole</th><th>Actif tokenisé</th><th>Mécanisme</th><th>Similitude</th><th>Réseau</th></tr>
+      </thead>
+      <tbody>
+        <tr class="tbl-section"><td colspan="5">Protocoles de crédit RWA</td></tr>
+        <tr>
+          <td><strong>Centrifuge / Tinlake</strong></td>
+          <td>Factures, prêts automobile, hypothèques</td>
+          <td>Drop (senior) + TIN (junior) — 2 tranches = double poche</td>
+          <td><span class="stars">★★★★★</span></td>
+          <td>Ethereum, Centrifuge Chain</td>
+        </tr>
+        <tr>
+          <td><strong>Goldfinch Protocol</strong></td>
+          <td>Prêts PME Afrique, Asie, Amérique Latine</td>
+          <td>Backers humains + Senior Pool. Audit off-chain des emprunteurs.</td>
+          <td><span class="stars">★★★★</span></td>
+          <td>Ethereum</td>
+        </tr>
+        <tr>
+          <td><strong>Maple Finance</strong></td>
+          <td>Prêts institutionnels (fonds crypto, market makers)</td>
+          <td>Underwriters humains, pools dédiés par pool delegate</td>
+          <td><span class="stars">★★★</span></td>
+          <td>Ethereum, Solana</td>
+        </tr>
+        <tr>
+          <td><strong>Clearpool</strong></td>
+          <td>Prêts non-collatéralisés (institutions)</td>
+          <td>Pools de crédit avec notation de risque CPOOL</td>
+          <td><span class="stars">★★★</span></td>
+          <td>Ethereum, Polygon</td>
+        </tr>
+        <tr>
+          <td><strong>TrueFi</strong></td>
+          <td>Prêts non-collatéralisés (entreprises crypto)</td>
+          <td>Gouvernance TRU pour approbation des prêts</td>
+          <td><span class="stars">★★</span></td>
+          <td>Ethereum</td>
+        </tr>
+        <tr>
+          <td><strong>Credix Finance</strong></td>
+          <td>Créances commerciales Amérique Latine</td>
+          <td>Titrisation on-chain, LP senior/junior</td>
+          <td><span class="stars">★★★</span></td>
+          <td>Solana</td>
+        </tr>
+        <tr class="tbl-section"><td colspan="5">Protocoles RWA financiers (T-bills, obligations)</td></tr>
+        <tr>
+          <td><strong>Ondo Finance</strong></td>
+          <td>T-bills US, obligations USDY</td>
+          <td>Token yield-bearing adossé T-bills. Permissioned.</td>
+          <td><span class="stars">★★</span></td>
+          <td>Ethereum, Solana</td>
+        </tr>
+        <tr>
+          <td><strong>BUIDL (BlackRock)</strong></td>
+          <td>Fonds monétaire US Treasury</td>
+          <td>Token institutionnel ERC-20, KYC strict</td>
+          <td><span class="stars">★</span></td>
+          <td>Ethereum</td>
+        </tr>
+        <tr>
+          <td><strong>Superstate</strong></td>
+          <td>T-bills US tokenisés</td>
+          <td>Fonds régulé SEC, token USTB</td>
+          <td><span class="stars">★</span></td>
+          <td>Ethereum</td>
+        </tr>
+        <tr>
+          <td><strong>Usual Protocol (USD0)</strong></td>
+          <td>T-bills US via Usual</td>
+          <td>Stablecoin adossé T-bills + partage de rendement</td>
+          <td><span class="stars">★</span></td>
+          <td>Ethereum</td>
+        </tr>
+        <tr>
+          <td><strong>Backed Finance</strong></td>
+          <td>ETFs (SPY, QQQ) tokenisés</td>
+          <td>Token 1:1 ETP, permissioned, KYC</td>
+          <td><span class="stars">★</span></td>
+          <td>Ethereum, Polygon</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- B — NFT / Actifs physiques -->
+  <div class="tbl-wrap" style="margin-top:28px">
+    <table>
+      <thead>
+        <tr><th colspan="5" style="background:var(--purple)">B — Prêts sur NFT, actifs physiques et collatéral illiquide</th></tr>
+        <tr><th>Protocole</th><th>Actif collatéral</th><th>Mécanisme</th><th>Similitude</th><th>Réseau</th></tr>
+      </thead>
+      <tbody>
+        <tr class="tbl-section"><td colspan="5">DeFi — NFT Lending</td></tr>
+        <tr>
+          <td><strong>NFTfi</strong></td>
+          <td>NFT (Bored Apes, Azuki, Punks…)</td>
+          <td>Prêt P2P. Prêteur fixe les termes. Token de créance cessible (promissory note ERC-721).</td>
+          <td><span class="stars">★★★★★</span></td>
+          <td>Ethereum</td>
+        </tr>
+        <tr>
+          <td><strong>Blend (Blur)</strong></td>
+          <td>NFT blue-chip</td>
+          <td>Prêt perpétuel. Prêteur peut réclamer le refinancement. Marché secondaire de la dette intégré.</td>
+          <td><span class="stars">★★★★★</span></td>
+          <td>Ethereum</td>
+        </tr>
+        <tr>
+          <td><strong>Arcade.xyz</strong></td>
+          <td>NFT collectibles + actifs physiques tokenisés</td>
+          <td>Prêt P2P, collection de NFT possible comme collatéral groupe</td>
+          <td><span class="stars">★★★★</span></td>
+          <td>Ethereum</td>
+        </tr>
+        <tr>
+          <td><strong>Cyan Finance</strong></td>
+          <td>NFT</td>
+          <td>BNPL (buy now pay later) pour NFT + prêts collatéralisés</td>
+          <td><span class="stars">★★★</span></td>
+          <td>Ethereum, Polygon</td>
+        </tr>
+        <tr>
+          <td><strong>MetaStreet</strong></td>
+          <td>NFT</td>
+          <td>Pool de liquidité NFT, tranche senior/junior. Automatisé.</td>
+          <td><span class="stars">★★★</span></td>
+          <td>Ethereum</td>
+        </tr>
+        <tr>
+          <td><strong>Gondi Protocol</strong></td>
+          <td>NFT</td>
+          <td>Prêt multi-prêteurs, refinancement, token de dette secondaire</td>
+          <td><span class="stars">★★★★</span></td>
+          <td>Ethereum</td>
+        </tr>
+        <tr>
+          <td><strong>PWN Finance</strong></td>
+          <td>Tout token ERC-20 ou NFT</td>
+          <td>Prêt OTC P2P, très flexible. Aussi pour actifs illiquides.</td>
+          <td><span class="stars">★★★</span></td>
+          <td>Ethereum, Polygon</td>
+        </tr>
+        <tr>
+          <td><strong>JPEG'd</strong></td>
+          <td>NFT blue-chip</td>
+          <td>CDP style MakerDAO pour NFT. Mint de pUSD.</td>
+          <td><span class="stars">★★★★</span></td>
+          <td>Ethereum</td>
+        </tr>
+        <tr class="tbl-section"><td colspan="5">Tokenisation d'actifs physiques</td></tr>
+        <tr>
+          <td><strong>4K Protocol</strong></td>
+          <td>Sneakers, cartes, objets collection</td>
+          <td>NFT + certification physique + custody partenaire. Pas de prêt, mais base similaire.</td>
+          <td><span class="stars">★★★</span></td>
+          <td>Ethereum</td>
+        </tr>
+        <tr>
+          <td><strong>Vault (Swiss-based)</strong></td>
+          <td>Bijoux, montres, or</td>
+          <td>Tokenisation + dépôt en coffre. Prêt contre token (custody physique requis — différence clé).</td>
+          <td><span class="stars">★★★★</span></td>
+          <td>Ethereum</td>
+        </tr>
+        <tr>
+          <td><strong>Tesserah</strong></td>
+          <td>Actifs luxe (sacs, montres)</td>
+          <td>NFT d'actifs luxe avec authentication certificat. Similaire sans DeFi lending.</td>
+          <td><span class="stars">★★★</span></td>
+          <td>Ethereum</td>
+        </tr>
+        <tr>
+          <td><strong>Masterworks</strong></td>
+          <td>Art contemporain (Basquiat, Banksy)</td>
+          <td>Fractionnement d'œuvres + marché secondaire. Custody physique.</td>
+          <td><span class="stars">★★</span></td>
+          <td>US (non-DeFi)</td>
+        </tr>
+        <tr>
+          <td><strong>Rally (Republic Collectibles)</strong></td>
+          <td>Objets collection (voitures, montres, cartes)</td>
+          <td>Fractionnement + marché secondaire. Régulé SEC.</td>
+          <td><span class="stars">★★</span></td>
+          <td>US (non-DeFi)</td>
+        </tr>
+        <tr>
+          <td><strong>Freeport</strong></td>
+          <td>Art contemporain</td>
+          <td>Fractionnement NFT d'œuvres. Focus rendement.</td>
+          <td><span class="stars">★★</span></td>
+          <td>Ethereum</td>
+        </tr>
+        <tr class="tbl-section"><td colspan="5">Prêt sur gage (finance traditionnelle numérisée)</td></tr>
+        <tr>
+          <td><strong>Borro (UK)</strong></td>
+          <td>Bijoux, art, voitures de collection</td>
+          <td>Prêt lombard sur actifs de luxe. Custody physique. Équivalent classique du projet.</td>
+          <td><span class="stars">★★★★★</span></td>
+          <td>UK (non-DeFi)</td>
+        </tr>
+        <tr>
+          <td><strong>Pledge (UK)</strong></td>
+          <td>Bijoux, montres, luxe</td>
+          <td>Digital pawn shop. Custody + prêt. Pas de blockchain.</td>
+          <td><span class="stars">★★★★</span></td>
+          <td>UK (non-DeFi)</td>
+        </tr>
+        <tr>
+          <td><strong>Crédit Municipal de Paris</strong></td>
+          <td>Bijoux, montres, objets valeur</td>
+          <td>Mont-de-Piété. Prêt sur gage avec dépossession. Institution étatique.</td>
+          <td><span class="stars">★★★★</span></td>
+          <td>France (non-DeFi)</td>
+        </tr>
+        <tr>
+          <td><strong>Pawngo (Brésil)</strong></td>
+          <td>Bijoux, téléphones, électronique</td>
+          <td>Prêt sur gage digitalisé. Évaluation en ligne.</td>
+          <td><span class="stars">★★★</span></td>
+          <td>Brésil (non-DeFi)</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- C — Immobilier tokenisé -->
+  <div class="tbl-wrap" style="margin-top:28px">
+    <table>
+      <thead>
+        <tr><th colspan="5" style="background:#0F766E">C — Tokenisation immobilière &amp; garanties locatives DeFi</th></tr>
+        <tr><th>Protocole / Startup</th><th>Actif</th><th>Mécanisme</th><th>Similitude</th><th>Marché</th></tr>
+      </thead>
+      <tbody>
+        <tr class="tbl-section"><td colspan="5">Tokenisation immobilière DeFi</td></tr>
+        <tr>
+          <td><strong>RealT</strong></td>
+          <td>Immobilier résidentiel US</td>
+          <td>Token ERC-20 = fraction de propriété. Loyers en stablecoins. Collatéral sur Aave RealT market.</td>
+          <td><span class="stars">★★★</span></td>
+          <td>US / International</td>
+        </tr>
+        <tr>
+          <td><strong>Tangible</strong></td>
+          <td>Immobilier + RWA (or, luxe)</td>
+          <td>NFT immobilier + stablecoin USDR adossé à la propriété. Le plus proche de l'immobilier DeFi.</td>
+          <td><span class="stars">★★★</span></td>
+          <td>Europe / US</td>
+        </tr>
+        <tr>
+          <td><strong>Homium</strong></td>
+          <td>Valeur nette immobilière (home equity)</td>
+          <td>Tokenisation de l'équité dans un bien immobilier. Concept très proche mais immobilier.</td>
+          <td><span class="stars">★★★★</span></td>
+          <td>US</td>
+        </tr>
+        <tr>
+          <td><strong>Lofty.ai</strong></td>
+          <td>Immobilier US</td>
+          <td>Fractionnement immobilier avec rendement locatif en ALGO</td>
+          <td><span class="stars">★★</span></td>
+          <td>US</td>
+        </tr>
+        <tr>
+          <td><strong>Blocksquare</strong></td>
+          <td>Immobilier européen</td>
+          <td>Infrastructure de tokenisation immobilière pour promoteurs</td>
+          <td><span class="stars">★★</span></td>
+          <td>EU</td>
+        </tr>
+        <tr>
+          <td><strong>BendDAO</strong></td>
+          <td>NFT immobilier (Otherdeeds…)</td>
+          <td>Prêt collatéralisé NFT immobilier. Pool de liquidité automatisé.</td>
+          <td><span class="stars">★★★</span></td>
+          <td>Ethereum</td>
+        </tr>
+        <tr>
+          <td><strong>RealFT / Tokeny</strong></td>
+          <td>Actifs réels tokenisés (France)</td>
+          <td>Infrastructure de tokenisation réglementée MiCA, basée à Paris</td>
+          <td><span class="stars">★★</span></td>
+          <td>France / EU</td>
+        </tr>
+        <tr class="tbl-section"><td colspan="5">Garanties locatives (alternatives traditionnelles)</td></tr>
+        <tr>
+          <td><strong>Garantme</strong></td>
+          <td>Garantie locative assurance</td>
+          <td>Garantie privée de loyer impayé. Concurrent direct non-DeFi. ~3,5 % du loyer/an.</td>
+          <td><span class="stars">★★★★</span></td>
+          <td>France</td>
+        </tr>
+        <tr>
+          <td><strong>Unkle</strong></td>
+          <td>Garantie locative assurance</td>
+          <td>Assurance loyers impayés + garantie bailleur. Modèle SaaS B2B (agences).</td>
+          <td><span class="stars">★★★★</span></td>
+          <td>France</td>
+        </tr>
+        <tr>
+          <td><strong>Visale (Action Logement)</strong></td>
+          <td>Garantie locative étatique</td>
+          <td>Caution gratuite de l'État. Plafond 1 800 €/mois Paris. Exclut les frais d'agence.</td>
+          <td><span class="stars">★★★★★</span></td>
+          <td>France</td>
+        </tr>
+        <tr>
+          <td><strong>Cautio / SmartGarant</strong></td>
+          <td>Garantie locative numérique</td>
+          <td>Caution bancaire digitalisée. Dépôt bloqué.</td>
+          <td><span class="stars">★★★</span></td>
+          <td>France</td>
+        </tr>
+        <tr>
+          <td><strong>Louer Serein</strong></td>
+          <td>Garantie loyers impayés</td>
+          <td>Assurance GLI pour bailleurs. B2B assureurs.</td>
+          <td><span class="stars">★★★</span></td>
+          <td>France</td>
+        </tr>
+        <tr>
+          <td><strong>HomeOwners Alliance (UK)</strong></td>
+          <td>Garantie locative</td>
+          <td>Modèle anglais "deposit alternative". Équivalent Garantme.</td>
+          <td><span class="stars">★★★</span></td>
+          <td>UK</td>
+        </tr>
+        <tr class="tbl-section"><td colspan="5">Inspiration "Crypto comme garantie" (extension naturelle du projet)</td></tr>
+        <tr>
+          <td><strong>Idée Corentin (fil)</strong></td>
+          <td>BTC, tokens DeFi (LP, lending)</td>
+          <td>Crypto bloquée en smart contract = preuve de solvabilité pour bailleur. Extension naturelle du projet.</td>
+          <td><span class="stars">★★★★</span></td>
+          <td>Ethereum / Arbitrum</td>
+        </tr>
+        <tr>
+          <td><strong>Vault Protocol (hypothétique)</strong></td>
+          <td>BTC / ETH en collatéral locatif</td>
+          <td>Verrouillage crypto pendant la durée du bail. Aucune solution existante à ce jour.</td>
+          <td><span class="stars">★★★★★</span></td>
+          <td>À créer</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     6. PLAN D'ACTION
+════════════════════════════════════════════════════════════ -->
+<div class="section page-break">
+  <div class="section-tag"><span class="num">6</span> Plan d'action — 2 mois</div>
+  <h2>Roadmap pour la certification Alyra</h2>
+
+  <div class="summary-box">
+    <div class="sb-title">Objectif</div>
+    <p>Produire en 8 semaines un prototype fonctionnel sur testnet + un pitch complet démontrant la faisabilité technique, juridique et économique du projet. La qualité > la quantité — mieux vaut un contrat simple qui fonctionne qu'une architecture ambitieuse cassée.</p>
+  </div>
+
+  <h3>🗓️ Mois 1 — Design & Research</h3>
+  <div class="timeline">
+    <div class="tl-week">
+      <span class="tl-label">Semaine 1</span>
+      <div class="tl-items">
+        <div class="tl-item"><strong>Juridique :</strong> Note sur le gage sans dépossession (Art. L.521-1 C. comm.) + compatibilité MiCA + qualification du NFT collatéral. Consulter un avocat ou un spécialiste DeFi légal.</div>
+        <div class="tl-item"><strong>Benchmark :</strong> Tester Centrifuge, NFTfi, Arcade.xyz comme utilisateur. Documenter les flux UX.</div>
+        <div class="tl-item"><strong>Livrables :</strong> Note juridique 3 pages + tableau comparatif concurrents.</div>
+      </div>
+    </div>
+    <div class="tl-week">
+      <span class="tl-label">Semaine 2</span>
+      <div class="tl-items">
+        <div class="tl-item"><strong>Grille de valorisation :</strong> Définir les 3 tiers d'actifs (Tier 1/2/3) avec LTV par catégorie, source de prix, fréquence de revalorisation.</div>
+        <div class="tl-item"><strong>Architecture smart contracts :</strong> Schéma des 4 contrats (NFT, Vault, DebtToken, Liquidation). Identifier les standards (ERC-721, ERC-20, ERC-4626).</div>
+        <div class="tl-item"><strong>Livrables :</strong> Grille LTV + schéma d'architecture validé par le groupe.</div>
+      </div>
+    </div>
+    <div class="tl-week">
+      <span class="tl-label">Semaine 3</span>
+      <div class="tl-items">
+        <div class="tl-item"><strong>Workflow commissaire :</strong> Flowchart de bout en bout (CJ → inventaire → hash IPFS → mint NFT). Identifier le point de friction principal.</div>
+        <div class="tl-item"><strong>Mécanisme de liquidation :</strong> Conception du processus hybride (on-chain trigger → off-chain exécution). Définir les délais et les acteurs.</div>
+        <div class="tl-item"><strong>Livrables :</strong> Flowchart opérationnel + note sur la liquidation physique.</div>
+      </div>
+    </div>
+    <div class="tl-week">
+      <span class="tl-label">Semaine 4</span>
+      <div class="tl-items">
+        <div class="tl-item"><strong>Tokenomics :</strong> Modèle économique pour le prêteur (APR cible, durée, structure des frais). Simuler 3 scénarios (prêt 3 000 €, 7 000 €, 15 000 €).</div>
+        <div class="tl-item"><strong>Personas :</strong> 3 profils locataires cibles avec leur parcours détaillé de A à Z.</div>
+        <div class="tl-item"><strong>Livrables :</strong> Modèle financier + 3 personas.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>🛠️ Mois 2 — Prototype & Présentation</h3>
+  <div class="timeline">
+    <div class="tl-week">
+      <span class="tl-label">Semaine 5</span>
+      <div class="tl-items">
+        <div class="tl-item"><strong>Contrat NFT (ERC-721) :</strong> Mint par commissaire, metadata (valeur, date, hash acte, tier). Fonction de revalorisation. Tester avec Foundry.</div>
+        <div class="tl-item"><strong>Contrat Vault :</strong> Dépôt NFT, calcul LTV, séparation poche locative / poche financière. Évènements on-chain.</div>
+      </div>
+    </div>
+    <div class="tl-week">
+      <span class="tl-label">Semaine 6</span>
+      <div class="tl-items">
+        <div class="tl-item"><strong>Contrat CDP :</strong> Mint stablecoins (mock EURC) contre collatéral NFT. Fonction de remboursement. Déclencheur de liquidation.</div>
+        <div class="tl-item"><strong>Token de créance (ERC-20) :</strong> Émis au prêteur lors du dépôt. Cessible. Représente les droits sur la dette.</div>
+      </div>
+    </div>
+    <div class="tl-week">
+      <span class="tl-label">Semaine 7</span>
+      <div class="tl-items">
+        <div class="tl-item"><strong>Déploiement testnet :</strong> Sepolia ou Arbitrum Sepolia. Tests end-to-end (dépôt → emprunt → remboursement → liquidation simulée).</div>
+        <div class="tl-item"><strong>Démo (optionnel) :</strong> Interface web minimaliste avec Scaffold-ETH ou interface manuelle via Etherscan.</div>
+      </div>
+    </div>
+    <div class="tl-week">
+      <span class="tl-label">Semaine 8</span>
+      <div class="tl-items">
+        <div class="tl-item"><strong>Pitch deck final :</strong> 10 slides max. Problème → Solution → Architecture → Concurrents → Tokenomics → Roadmap.</div>
+        <div class="tl-item"><strong>Répétitions :</strong> 2 run complets en groupe. Préparer les Q&A sur liquidation, réglementation, oracle.</div>
+        <div class="tl-item"><strong>Livrables :</strong> Présentation Alyra (10 min) + repository GitHub + démo testnet.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>🔥 Les 4 questions critiques à résoudre en priorité</h3>
+  <div class="priority-list">
+    <div class="priority-item p-crit">
+      <div class="p-num">1</div>
+      <div>
+        <div class="p-title">Comment liquider un bien physique rapidement ?</div>
+        <div class="p-body">C'est LE point bloquant du projet. La réponse doit être précise et documentée : quel partenaire (Drouot ? réseau commissaires-priseurs ?), quel délai garanti (30 jours max ?), qui couvre le gap de valeur entre le déclenchement on-chain et la réalisation physique ? Sans cette réponse, le projet n'est pas finançable.</div>
+      </div>
+    </div>
+    <div class="priority-item p-crit">
+      <div class="p-num">2</div>
+      <div>
+        <div class="p-title">Qui est l'oracle de valorisation des biens physiques ?</div>
+        <div class="p-body">Chainlink ne propose pas de feed pour montres Rolex ou bijoux. Solutions : (A) revalorisation annuelle par CJ = oracle humain centralisé mais légitime, (B) agrégateur de cotes (Watchfinder, Artprice, Watchbase) via Chainlink Any API, (C) décote automatique avec le temps. À définir précisément dans l'architecture.</div>
+      </div>
+    </div>
+    <div class="priority-item p-warn">
+      <div class="p-num">3</div>
+      <div>
+        <div class="p-title">Quelle est la structure juridique ?</div>
+        <div class="p-body">Le token de créance est-il un instrument financier (MiFID II) ou un smart contract de droit des contrats ? La tokenisation RWA mobilier nécessite probablement une SPV ou une fiducie en droit français. À valider avant de coder quoi que ce soit — le design juridique conditionne le design technique.</div>
+      </div>
+    </div>
+    <div class="priority-item p-warn">
+      <div class="p-num">4</div>
+      <div>
+        <div class="p-title">Quelle est la couverture assurance des biens gagés ?</div>
+        <div class="p-body">Sans assurance "tous risques" attestée on-chain, le prêteur supporte le risque de destruction/vol. Or l'assurance habitation standard couvre rarement les bijoux et montres au-delà de 1 500 €. Un partenariat avec un assureur spécialisé (Hiscox Art & Private Client, AXA Art) est indispensable dès le lancement.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     7. VERDICT
+════════════════════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-tag"><span class="num">7</span> Verdict &amp; Recommandations</div>
+  <h2>Ce qu'on pense du projet</h2>
+
+  <div class="verdict">
+    <h3>🦅 Verdict OrnyTools</h3>
+    <p>Le projet Garantie Locataire est <strong>l'un des projets DeFi les plus ancrés dans la réalité économique française</strong> qu'il nous a été donné d'analyser. Il combine un problème documenté (barrière d'accès au logement), un fondement juridique existant (gage sans dépossession), et des mécaniques DeFi éprouvées (CDP, token de créance).</p>
+    <p style="margin-top:14px">La principale force du projet est que <strong>l'obstacle n°1 n'est pas technique, c'est la liquidation physique</strong>. C'est une bonne nouvelle : cela signifie que le problème est soluble avec du business development (partenariat Drouot, commissaires) plutôt qu'avec une innovation cryptographique complexe.</p>
+    <p style="margin-top:14px">Recommandation : <strong>commencer par le cas le plus simple</strong> — montres de marque certifiées, LTV 60 %, prêt max 10 000 €, liquidation via un seul partenaire (un commissaire-priseur identifié). Valider le concept sur 5 dossiers pilotes avant de généraliser.</p>
+  </div>
+
+  <div class="quote">
+    <p>"La DeFi ne se limite pas aux actifs crypto. Elle est un système de règles transparentes et composables. Ces règles peuvent s'appliquer à n'importe quel actif du monde réel — à condition d'avoir un pont fiable entre le physique et le numérique. Ce projet propose exactement ce pont."</p>
+    <div class="author">— Analyse OrnyTools × Alyra, Juin 2026</div>
+  </div>
+
+  <h3>Extensions naturelles du projet (roadmap long terme)</h3>
+  <div class="cards">
+    <div class="card good">
+      <div class="card-icon">₿</div>
+      <div class="card-title">Extension crypto (idée Corentin)</div>
+      <div class="card-body">Permettre aux locataires de bloquer du BTC, ETH ou des tokens DeFi (positions LP, lending) en smart contract comme garantie. Cas d'usage immédiat, technique plus simple, marché plus large.</div>
+    </div>
+    <div class="card good">
+      <div class="card-icon">🚀</div>
+      <div class="card-title">Marché secondaire institutionnel</div>
+      <div class="card-body">Créer un pool Morpho Blue dédié "RWA-Mobilier" permettant aux fonds DeFi de refinancer la créance. Transforme les tokens de créance en instrument liquide pour les investisseurs professionnels.</div>
+    </div>
+    <div class="card good">
+      <div class="card-icon">🌍</div>
+      <div class="card-title">Extension européenne</div>
+      <div class="card-body">Le gage sans dépossession existe dans plusieurs droits européens (Allemagne : Pfandrecht, Espagne : prenda). Scaling naturel vers les marchés locatifs tendus (Berlin, Barcelone, Amsterdam).</div>
+    </div>
+    <div class="card warn">
+      <div class="card-icon">🤖</div>
+      <div class="card-title">IA + vision pour valuation</div>
+      <div class="card-body">Modèles de vision (GPT-4V, Gemini Vision) pour pré-estimer automatiquement la valeur d'un bien à partir de photos, avant l'intervention du commissaire. Réduit le coût et le délai du processus.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     FOOTER
+════════════════════════════════════════════════════════════ -->
+<div class="footer">
+  <div style="font-family:'Fraunces',Georgia,serif;font-size:14pt;font-weight:500;color:#374151;margin-bottom:8px">Orny<span style="color:#2563EB">Tools</span> × Alyra DeFi Formation</div>
+  Sources : Alyra Formation, CoinGecko, DeFiLlama, Centrifuge docs, NFTfi docs, Code de commerce français (Art. L.521-1), MiCA Regulation EU 2023/1114<br/>
+  Analyse réalisée le 18 juin 2026 · Pour usage pédagogique uniquement · Pas un conseil financier ou juridique
+</div>
+
+</div><!-- /doc -->
+</body>
+</html>
