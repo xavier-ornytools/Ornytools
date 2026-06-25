@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"/>
+<meta charset="UTF-8" /><style>.t-fr{display:none}.t-es{display:none}</style>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <meta name="description" content="Morpho Blue Calculator — OrnyTools. Health factor, liquidation price and loop simulator per isolated market pair on Morpho Blue."/>
 <meta name="robots" content="index,follow"/>
@@ -520,7 +520,7 @@ async function fetchPrice(){
   try {
     let ids = m.gecko;
     if(m.geckoLoan) ids += ',' + m.geckoLoan;
-    const r = await fetch('https://api.coingecko.com/api/v3/simple/price?ids='+ids+'&vs_currencies=usd');
+    const r = await fetch('https://api.coingecko.com/api/v3/simple/price?ids='+ids+'&vs_currencies=usd', {signal:AbortSignal.timeout(8000)});
     const data = await r.json();
     const colPrice = data[m.gecko]?.usd;
     if(colPrice){
@@ -532,8 +532,11 @@ async function fetchPrice(){
       }
       calc();
     }
-  } catch(e){}
-  btn.innerHTML = '⛓ Live';
+  } catch(e){
+    btn.innerHTML = '⚠ Unavailable';
+    btn.title = 'Live price temporarily unavailable — enter price manually';
+  }
+  if(!btn.title) btn.innerHTML = '⛓ Live';
 }
 
 // Init

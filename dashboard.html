@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"/>
+<meta charset="UTF-8" /><style>.t-fr{display:none}.t-es{display:none}</style>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <meta name="description" content="Enter any Ethereum, Arbitrum or Base address to see your Aave V3 health factor, collateral, debt and exact liquidation price in real time. No wallet connection."/>
 <meta name="robots" content="index,follow"/>
@@ -626,7 +626,8 @@ function resetDash(){
 async function rpcCall(method, params){
   const res = await fetch(CHAINS[currentChain].rpc, {
     method:'POST', headers:{'Content-Type':'application/json'},
-    body: JSON.stringify({jsonrpc:'2.0',id:1,method,params})
+    body: JSON.stringify({jsonrpc:'2.0',id:1,method,params}),
+    signal: AbortSignal.timeout(5000)
   });
   const j = await res.json();
   if(j.error) throw new Error(j.error.message);

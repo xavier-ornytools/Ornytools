@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"/>
+<meta charset="UTF-8" /><style>.t-fr{display:none}.t-es{display:none}</style>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <meta name="description" content="GMX V2 Position Calculator — OrnyTools. Liquidation price, fees, funding cost and break-even for perp positions on Arbitrum."/>
 <meta name="robots" content="index,follow"/>
@@ -532,7 +532,7 @@ function onSlider(){
 
 async function fetchPrice(){
   try{
-    const r = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${_gecko}&vs_currencies=usd`);
+    const r = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${_gecko}&vs_currencies=usd`, {signal:AbortSignal.timeout(8000)});
     const d = await r.json();
     const p = d[_gecko]?.usd;
     if(p){
@@ -541,7 +541,10 @@ async function fetchPrice(){
       const _ts = new Date(); $('priceTs').textContent = _ts.getHours().toString().padStart(2,'0')+':'+_ts.getMinutes().toString().padStart(2,'0');
       calc();
     }
-  }catch(e){}
+  }catch(e){
+    const ts = $('priceTs');
+    if(ts){ ts.textContent='unavailable'; $('priceBadge').style.display='inline-flex'; $('priceBadge').title='Live price temporarily unavailable — enter manually'; }
+  }
 }
 
 function calc(){

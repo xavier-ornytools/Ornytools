@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"/>
+<meta charset="UTF-8" /><style>.t-fr{display:none}.t-es{display:none}</style>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <meta name="description" content="Impermanent loss calculator for Uniswap V2 and V3. Range bounds, break-even fee APR and capital efficiency multiplier for any concentrated liquidity position."/>
 <meta name="robots" content="index,follow"/>
@@ -560,14 +560,20 @@ async function fetchPriceV3() {
   var svgHtml='<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-4.99"/></svg>';
   btn.classList.add('fetching');
   btn.textContent='…';
+  var _fetchOk=false;
   try {
-    var r=await fetch('https://api.coingecko.com/api/v3/simple/price?ids='+_geckoId+'&vs_currencies=usd');
+    var r=await fetch('https://api.coingecko.com/api/v3/simple/price?ids='+_geckoId+'&vs_currencies=usd', {signal:AbortSignal.timeout(8000)});
     var data=await r.json();
     var price=data[_geckoId]&&data[_geckoId].usd;
-    if(price){$('v3P1').value=price; calcV3IL();}
-  } catch(e){}
+    if(price){$('v3P1').value=price; calcV3IL(); _fetchOk=true;}
+  } catch(e){ _fetchOk=false; }
   btn.classList.remove('fetching');
-  btn.innerHTML=svgHtml+'<span class="t-en">Live price</span><span class="t-fr">Prix en direct</span><span class="t-es">Precio en vivo</span>';
+  if(_fetchOk){
+    btn.innerHTML=svgHtml+'<span class="t-en">Live price</span><span class="t-fr">Prix en direct</span><span class="t-es">Precio en vivo</span>';
+  } else {
+    btn.innerHTML=svgHtml+'<span style="color:#ef4444">Unavailable</span>';
+    btn.title='Live price temporarily unavailable — enter price manually';
+  }
 }
 
 /* ── V3 IL calculation ────────────────────────────────────────────────────── */

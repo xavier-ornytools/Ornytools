@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
+<meta charset="UTF-8" /><style>.t-fr{display:none}.t-es{display:none}</style>
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="description" content="Find the optimal trade size for any Uniswap V2 AMM pool. Uses constant-product math to minimize price impact and maximize execution efficiency. Free, no wallet." />
 <meta name="robots" content="index,follow"/>
@@ -1590,13 +1590,13 @@ async function readChainV3() {
         state.fee = feePct;
         $('fee').value = feePct;
         state.feeSource = 'on-chain';
-        console.log(`[OrnyTools] Fee tier : ${feePct}% — on-chain fee() (uint24=${feeUint24})`);
+        console.log(`[OrnyTools] Fee tier: ${feePct}% — on-chain fee() (uint24=${feeUint24})`);
         updateFeeSourceLabel();
       } else {
-        console.warn(`[OrnyTools] fee() : valeur hors plage (${feeUint24}), GeckoTerminal conservé`);
+        console.warn(`[OrnyTools] fee(): out-of-range value (${feeUint24}), keeping GeckoTerminal`);
       }
     } else {
-      console.log('[OrnyTools] Fee tier : fee() on-chain indisponible, GeckoTerminal conservé');
+      console.log('[OrnyTools] Fee tier: on-chain fee() unavailable, keeping GeckoTerminal');
     }
 
     const [d0Hex, d1Hex] = await Promise.all([
@@ -1654,8 +1654,8 @@ async function readChainV3() {
           ? `Prix : ${px.src0} (token0) · ${px.src1} (token1)`
           : `Prices: ${px.src0} (token0) · ${px.src1} (token1)`;
       }
-      console.log(`[OrnyTools] Prix token0 : $${px.p0.toLocaleString('en-US',{maximumFractionDigits:2})} — ${px.src0}`);
-      console.log(`[OrnyTools] Prix token1 : $${px.p1.toLocaleString('en-US',{maximumFractionDigits:2})} — ${px.src1}`);
+      console.log(`[OrnyTools] token0 price: $${px.p0.toLocaleString('en-US',{maximumFractionDigits:2})} — ${px.src0}`);
+      console.log(`[OrnyTools] token1 price: $${px.p1.toLocaleString('en-US',{maximumFractionDigits:2})} — ${px.src1}`);
     }
     $('v3chain').style.display = 'block';
     if (_ocPriceUSD > 0) {
@@ -1701,14 +1701,14 @@ async function fetchChainlinkPrice(net, tokenAddr) {
     const age    = now - updatedAt;
     const maxAge = (entry.heartbeat || 86400) + 3600;  // heartbeat + 1h de tolérance
     if (age > maxAge) {
-      console.warn(`[OrnyTools] Feed Chainlink ${entry.feed} périmé : ${age}s > ${maxAge}s`);
+      console.warn(`[OrnyTools] Chainlink feed ${entry.feed} stale: ${age}s > ${maxAge}s`);
       return null;
     }
     // prix_usd = answer / 10^decimals
     const price = answer / 10 ** decimals;
     return { price, age, feed: entry.feed };
   } catch(e) {
-    console.warn(`[OrnyTools] Chainlink lecture échouée (${tokenAddr}) :`, e.message);
+    console.warn(`[OrnyTools] Chainlink read failed (${tokenAddr}):`, e.message);
     return null;
   }
 }

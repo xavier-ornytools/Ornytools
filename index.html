@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8" /><style>.t-fr{display:none}.t-es{display:none}</style>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>OrnyTools — The DeFi Decision Engine</title>
   <meta name="description" content="Free DeFi calculators: Aave V3, Morpho Blue, GMX V2, impermanent loss, leverage loops, stablecoin depeg. No wallet needed. Live on-chain data via Chainlink." />
@@ -734,9 +734,9 @@
       <div class="hero-img-wrap">
         <img src="orny-command.png" alt="OrnyTools — DeFi Command Center" />
         <div class="stat-float sf-tvl">
-          <div class="sf-label"><span class="t-en">TOTAL SECURED</span><span class="t-fr">MONTANT SÉCURISÉ</span><span class="t-es">TOTAL ASEGURADO</span></div>
+          <div class="sf-label"><span class="t-en">AAVE V3 TVL</span><span class="t-fr">TVL AAVE V3</span><span class="t-es">TVL AAVE V3</span></div>
           <div class="sf-val">$2.1B+</div>
-          <div class="sf-change sf-green">Aave V3 TVL</div>
+          <div class="sf-change sf-green"><span class="t-en">Referenced liquidity</span><span class="t-fr">Liquidité référencée</span><span class="t-es">Liquidez referenciada</span></div>
         </div>
         <div class="stat-float sf-eth">
           <div class="sf-label"><span class="sf-live-dot" id="heroEthDot" style="display:none"></span><span class="t-en">ETH PRICE</span><span class="t-fr">PRIX ETH</span><span class="t-es">PRECIO ETH</span></div>
@@ -1067,6 +1067,40 @@
   </div>
 </section>
 
+<!-- ════════════════════════════ HOW ORNYTOOLS SAVES YOU MONEY ════════════════════════════ -->
+<section style="background:var(--white);padding:52px 40px;border-bottom:1px solid var(--border)">
+  <div style="max-width:860px;margin:0 auto;text-align:center">
+    <div style="font-size:.72rem;font-weight:700;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px">
+      <span class="t-en">Why it matters</span><span class="t-fr">Pourquoi c'est important</span><span class="t-es">Por qué importa</span>
+    </div>
+    <h2 style="font-size:1.55rem;font-weight:800;margin-bottom:28px;color:var(--text)">
+      <span class="t-en">How OrnyTools saves you money</span>
+      <span class="t-fr">Comment OrnyTools vous fait économiser</span>
+      <span class="t-es">Cómo OrnyTools te ahorra dinero</span>
+    </h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px;margin-bottom:32px">
+      <div style="padding:20px;background:var(--light);border-radius:14px;border:1px solid var(--border);text-align:left">
+        <div style="font-size:1.4rem;margin-bottom:8px">⛽</div>
+        <div style="font-weight:700;font-size:.9rem;margin-bottom:6px;color:var(--text)"><span class="t-en">Small trades</span><span class="t-fr">Petits trades</span><span class="t-es">Trades pequeños</span></div>
+        <div style="font-size:.82rem;color:var(--dim);line-height:1.5"><span class="t-en">Gas is a fixed cost. On a $200 swap, a $5 gas fee = 2.5% drag before you even start.</span><span class="t-fr">Le gas est un coût fixe. Sur un swap de 200$, 5$ de gas = 2,5% de perte avant même de commencer.</span><span class="t-es">El gas es un coste fijo. En un swap de $200, una tarifa de $5 = 2,5% de pérdida antes de empezar.</span></div>
+      </div>
+      <div style="padding:20px;background:var(--light);border-radius:14px;border:1px solid var(--border);text-align:left">
+        <div style="font-size:1.4rem;margin-bottom:8px">📉</div>
+        <div style="font-weight:700;font-size:.9rem;margin-bottom:6px;color:var(--text)"><span class="t-en">Large trades</span><span class="t-fr">Grands trades</span><span class="t-es">Trades grandes</span></div>
+        <div style="font-size:.82rem;color:var(--dim);line-height:1.5"><span class="t-en">Slippage scales with size. A $50k swap into a $500k pool moves the price against you by ~10%.</span><span class="t-fr">Le slippage augmente avec la taille. Un swap de 50k$ dans un pool de 500k$ déplace le prix de ~10% contre vous.</span><span class="t-es">El slippage escala con el tamaño. Un swap de $50k en un pool de $500k mueve el precio ~10% en tu contra.</span></div>
+      </div>
+      <div style="padding:20px;background:#f0fdf4;border-radius:14px;border:1px solid #bbf7d0;text-align:left">
+        <div style="font-size:1.4rem;margin-bottom:8px">🎯</div>
+        <div style="font-weight:700;font-size:.9rem;margin-bottom:6px;color:var(--text)"><span class="t-en">The efficient zone</span><span class="t-fr">La zone efficiente</span><span class="t-es">La zona eficiente</span></div>
+        <div style="font-size:.82rem;color:var(--dim);line-height:1.5"><span class="t-en">Between both extremes lies a precise sweet spot. OrnyTools finds it using live pool data and exact AMM math.</span><span class="t-fr">Entre les deux extrêmes se trouve un point précis. OrnyTools le trouve avec les données de pool en direct et les maths AMM exactes.</span><span class="t-es">Entre ambos extremos hay un punto preciso. OrnyTools lo encuentra usando datos de pool en vivo y matemáticas AMM exactas.</span></div>
+      </div>
+    </div>
+    <button class="btn-primary" onclick="location.href='optimizer.html'" style="font-size:.88rem;padding:12px 28px">
+      <span class="t-en">Try the optimizer →</span><span class="t-fr">Essayer l'optimiseur →</span><span class="t-es">Probar el optimizador →</span>
+    </button>
+  </div>
+</section>
+
 <!-- ════════════════════════════ TRADE OPTIMIZER TOOL ════════════════════════════ -->
 <div class="optimizer-outer">
 <div class="optimizer-frame">
@@ -1135,7 +1169,7 @@
       <div class="card how">
         <h2><span class="t-en">How it works</span><span class="t-fr">Comment ça marche</span><span class="t-es">Cómo funciona</span></h2>
         <p><span class="t-en">Gas is a fixed cost — it kills small trades. Slippage grows with size — it kills large ones. Between both lies a precise sweet spot.</span><span class="t-fr">Le gas est un coût fixe — il tue les petits trades. Le slippage augmente avec la taille — il tue les grands. Entre les deux se trouve un point précis.</span><span class="t-es">El gas es un coste fijo — destroza los trades pequeños. El slippage crece con el tamaño — destroza los grandes. Entre ambos hay un punto preciso.</span></p>
-        <p><span class="t-en">OrnyTools solves √(2 × gas × TVL) live, using real blockchain data, to give you that number before every trade.</span><span class="t-fr">OrnyTools résout √(2 × gas × TVL) en direct, avec les données blockchain réelles, pour vous donner ce chiffre avant chaque trade.</span><span class="t-es">OrnyTools resuelve √(2 × gas × TVL) en vivo, con datos reales de la blockchain, para darte ese número antes de cada trade.</span></p>
+        <p><span class="t-en">√(2 × gas × TVL) is a quick educational estimate. OrnyTools uses the exact AMM curve (x·y=k) when live pool reserves are available — giving you a more precise result before every trade.</span><span class="t-fr">√(2 × gas × TVL) est une estimation pédagogique rapide. OrnyTools utilise la courbe AMM exacte (x·y=k) quand les réserves du pool sont disponibles en direct — pour un résultat plus précis avant chaque trade.</span><span class="t-es">√(2 × gas × TVL) es una estimación educativa rápida. OrnyTools usa la curva AMM exacta (x·y=k) cuando los datos del pool están disponibles en vivo — dándote un resultado más preciso antes de cada trade.</span></p>
       </div>
 
       <!-- ALERT -->
@@ -1218,7 +1252,8 @@
         <div class="formula">
           <strong style="color:var(--text);display:block;margin-bottom:6px"><span class="t-en">The math</span><span class="t-fr">La formule</span><span class="t-es">La fórmula</span></strong>
           Total cost (%) = <code>Gas $ / Amount</code> + <code>Amount / (2 × TVL)</code> + <code>Pool fee</code><br>
-          Optimal amount = <code>√(2 × Gas $ × TVL)</code><br><br>
+          Quick approx: <code>√(2 × Gas $ × TVL)</code> — <span style="color:var(--muted);font-size:.8em"><span class="t-en">educational shortcut, may overestimate by up to 2×</span><span class="t-fr">raccourci pédagogique, peut surestimer jusqu'à 2×</span><span class="t-es">atajo educativo, puede sobreestimar hasta 2×</span></span><br>
+          <span style="font-size:.8em;color:var(--muted)"><span class="t-en">When pool reserves are loaded, OrnyTools uses the exact x·y=k curve instead.</span><span class="t-fr">Quand les réserves du pool sont chargées, OrnyTools utilise la courbe x·y=k exacte.</span><span class="t-es">Cuando las reservas del pool están cargadas, OrnyTools usa la curva x·y=k exacta.</span></span><br><br>
           <span class="t-en">Zero derivative of the cost function — mathematical minimum of the U-curve.</span><span class="t-fr">Dérivée nulle de la fonction de coût — minimum mathématique de la courbe en U.</span><span class="t-es">Derivada cero de la función de coste — mínimo matemático de la curva en U.</span>
         </div>
         <div class="sharebox">
@@ -1284,7 +1319,7 @@
        style="display:inline-flex;align-items:center;gap:10px;padding:12px 24px;border-radius:10px;border:1px solid var(--border);background:var(--light);font-size:.88rem;font-weight:700;color:var(--text);text-decoration:none;transition:all .2s"
        onmouseover="this.style.borderColor='#ff4500';this.style.background='#fff1ec';this.style.color='#ff4500'"
        onmouseout="this.style.borderColor='var(--border)';this.style.background='var(--light)';this.style.color='var(--text)'">
-      <span style="font-size:1.1rem;font-weight:900">r/</span> u/ornytool
+      <span style="font-size:1.1rem;font-weight:900">↗</span> Reddit
     </a>
     <a href="mailto:contact@ornytools.xyz"
        style="display:inline-flex;align-items:center;gap:10px;padding:12px 24px;border-radius:10px;border:1px solid var(--border);background:var(--light);font-size:.88rem;font-weight:700;color:var(--text);text-decoration:none;transition:all .2s"
@@ -1294,6 +1329,15 @@
     </a>
   </div>
 </section>
+
+<!-- ════════════════════════════ DISCLAIMER ════════════════════════════ -->
+<div style="background:var(--light);border-top:1px solid var(--border);padding:14px 40px;text-align:center">
+  <p style="font-size:.73rem;color:var(--muted);line-height:1.5;max-width:720px;margin:0 auto">
+    <span class="t-en">OrnyTools is an educational DeFi analytics tool. It does not provide financial advice and does not execute transactions. Always verify pool data and transaction costs before trading.</span>
+    <span class="t-fr">OrnyTools est un outil d'analyse DeFi éducatif. Il ne fournit pas de conseils financiers et n'exécute aucune transaction. Vérifiez toujours les données de pool et les coûts avant de trader.</span>
+    <span class="t-es">OrnyTools es una herramienta educativa de análisis DeFi. No proporciona asesoramiento financiero ni ejecuta transacciones. Verifica siempre los datos del pool y los costes antes de operar.</span>
+  </p>
+</div>
 
 <!-- ════════════════════════════ FOOTER ════════════════════════════ -->
 <footer class="footer-new">
@@ -1307,7 +1351,7 @@
         <p class="fbrand-desc"><span class="t-en">The DeFi Decision Engine.<br>Make better decisions. Every time.</span><span class="t-fr">Le Moteur de Décision DeFi.<br>Prenez de meilleures décisions. À chaque fois.</span><span class="t-es">El Motor de Decisión DeFi.<br>Mejores decisiones. Siempre.</span></p>
         <div class="fbrand-socials">
           <a href="https://x.com/Ornytools" target="_blank" rel="noopener" class="fsoc fsoc-x" title="Follow @OrnyTools on X">𝕏</a>
-          <a href="https://www.reddit.com/user/ornytool" target="_blank" rel="noopener" class="fsoc fsoc-reddit" title="OrnyTools on Reddit" style="font-size:.65rem">r/</a>
+          <a href="https://www.reddit.com/user/ornytool" target="_blank" rel="noopener" class="fsoc fsoc-reddit" title="OrnyTools on Reddit" style="font-size:.62rem;font-weight:700;letter-spacing:-.3px">r/</a>
         </div>
       </div>
       <div class="fcol">
@@ -1519,7 +1563,7 @@
             console.log(`[OrnyTools] Fee tier : ${feePct}% — on-chain fee() (uint24=${feeU24})`);
           }
         } catch(_) {
-          console.log('[OrnyTools] Fee tier : on-chain non disponible, valeur GeckoTerminal conservée');
+          console.log('[OrnyTools] Fee tier: on-chain unavailable, keeping GeckoTerminal value');
         }
       }
       if(ok){const ch=[];if(poolR.status==='fulfilled'&&poolR.value)ch.push('TVL live', feeChip);if(gasR.status==='fulfilled')ch.push('Gas live');setStatus('ok','statusOk',ch);}
